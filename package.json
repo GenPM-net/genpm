@@ -1,0 +1,13 @@
+{
+  "name": "genpm-monorepo",
+  "private": true,
+  "packageManager": "pnpm@10.24.0",
+  "engines": { "node": ">=20.11" },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "test": "turbo run test",
+    "lint": "biome check .",
+    "typecheck": "turbo run typecheck"
+  }
+}
