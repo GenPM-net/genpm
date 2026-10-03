@@ -87,7 +87,7 @@ describe('git hardening (INV-2)', () => {
     const marker = join(home, 'pwned');
     await writeFile(
       join(home, '.gitconfig'),
-      `[filter "evil"]\n\tsmudge = sh -c 'touch ${marker}; cat'\n\tclean = cat\n`,
+      `[filter "evil"]\n\tsmudge = sh -c 'touch ${marker.replaceAll('\\', '/')}; cat'\n\tclean = cat\n`,
     );
     const repo = await makeRepo({ '.gitattributes': '* filter=evil\n', 'a.ts': 'x\n' });
     const prev = process.env['HOME'];

@@ -4,6 +4,7 @@ export default defineConfig({
   test: {
     include: ['src/**/*.test.ts', 'test/**/*.test.ts'],
     testTimeout: 30_000,
+    hookTimeout: 60_000, // crear repos git de fixture es lento en Windows
     coverage: {
       provider: 'v8',
       include: ['src/**/*.ts'],

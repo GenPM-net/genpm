@@ -386,7 +386,17 @@ describe('client-side scan (security §3.1, double verification)', () => {
       const git = (args: string[], stdin?: string) =>
         execFileSync(
           'git',
-          ['-c', 'core.precomposeunicode=false', '-c', 'user.name=t', '-c', 'user.email=t@t', ...args],
+          [
+            '-c',
+            'core.precomposeunicode=false',
+            '-c',
+            'core.protectNTFS=false',
+            '-c',
+            'user.name=t',
+            '-c',
+            'user.email=t@t',
+            ...args,
+          ],
           {
             cwd: repo.dir,
             input: stdin,

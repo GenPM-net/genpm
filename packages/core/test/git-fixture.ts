@@ -52,6 +52,10 @@ export async function makeRepo(
       }
     }
     git(dir, 'add', '-A');
+    // Windows (core.filemode=false) no ve el bit de ejecución en disco: se fija en el índice.
+    for (const [path, v] of Object.entries(f)) {
+      if (typeof v === 'object' && !v.symlink && (v.mode ?? 0) & 0o111) git(dir, 'update-index', '--chmod=+x', path);
+    }
     git(dir, 'commit', '-q', '-m', 'fixture', '--no-verify');
     if (tag) git(dir, 'tag', tag);
     return git(dir, 'rev-parse', 'HEAD');
