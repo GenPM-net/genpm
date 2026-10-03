@@ -1,0 +1,76 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`genpm add > installs with --yes, never MCP or npm without their own flags 1`] = `
+"◆ genpm add @core/auth
+
+  Resolved
+  ├─ @core/auth  1.2.0  <auth7>  → src/lib/auth
+  └─ @core/db    1.0.3  <db7>  → src/lib/db    dependency
+
+  Rules    2 files · ~10 tokens · scan passed  (genpm info <pkg> to read)
+  Context  4 files: AGENTS.md · .cursor/rules/genpm-core-auth.mdc · .cursor/rules/genpm-core-db.mdc · .env.example
+  npm      drizzle-orm@^0.44.0  → pnpm add drizzle-orm@^0.44.0
+  Env      AUTH_SECRET DATABASE_URL  → .env.example
+  MCP      stripe: npx -y @stripe/mcp  (env: STRIPE_SECRET_KEY)
+
+
+✔ Injected 2 packages in <t>s
+  Next
+  › Set AUTH_SECRET and DATABASE_URL (see .env.example)
+  › Follow "Integration" in src/lib/auth/AGENTS.md
+  › Follow "Integration" in src/lib/db/AGENTS.md
+  › Run pnpm add drizzle-orm@^0.44.0
+  › Enable MCP later: genpm mcp add @core/auth
+"
+`;
+
+exports[`genpm add > prints the plan on --dry-run without writing 1`] = `
+"◆ genpm add @core/auth
+
+  Resolved
+  ├─ @core/auth  1.2.0  <auth7>  → src/lib/auth
+  └─ @core/db    1.0.3  <db7>  → src/lib/db    dependency
+
+  Rules    2 files · ~10 tokens · scan passed  (genpm info <pkg> to read)
+  Context  4 files: AGENTS.md · .cursor/rules/genpm-core-auth.mdc · .cursor/rules/genpm-core-db.mdc · .env.example
+  npm      drizzle-orm@^0.44.0  → pnpm add drizzle-orm@^0.44.0
+  Env      AUTH_SECRET DATABASE_URL  → .env.example
+  MCP      stripe: npx -y @stripe/mcp  (env: STRIPE_SECRET_KEY)
+
+Dry run: nothing was written.
+"
+`;
+
+exports[`genpm add > reports conflicts with exit 4 and a fix 1`] = `
+"✖ E_DEST_CONFLICT src/lib/db exists and is not empty.
+  fix: Use --dest <dir> or --force (backs up first).
+  · src/lib/db exists and is not empty
+"
+`;
+
+exports[`other commands > info prints the manifest and rules 1`] = `
+"@core/db 1.0.3  Drizzle client
+  Repository  <db-repo> #v1.0.3
+  Commit      <db-sha>
+  Directory   src/lib/db
+  License     MIT
+  Scan        passed
+  npm         drizzle-orm@^0.44.0
+  Env         DATABASE_URL
+
+Rules
+# @core/db rules
+
+"
+`;
+
+exports[`other commands > list, outdated, remove with drift 1`] = `
+"  @core/auth  1.2.0  src/lib/auth  <auth7>  1 file modified
+  @core/db    1.0.3  src/lib/db    <db7>  clean
+"
+`;
+
+exports[`other commands > search 1`] = `
+"  @core/auth  1.2.0  Sessions + OAuth  mcp ✓  120/30d
+"
+`;

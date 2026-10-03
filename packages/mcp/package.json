@@ -1,0 +1,57 @@
+{
+  "name": "@genpm/mcp",
+  "version": "0.1.0",
+  "description": "GenPM MCP server: lets AI agents search, inspect and inject architecture modules (code + AI rules + MCP)",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "bin": {
+    "genpm-mcp": "./dist/bin.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/server.d.mts",
+      "default": "./dist/server.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "mcp",
+    "genpm",
+    "ai",
+    "agents",
+    "model-context-protocol"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/genpm-net/genpm.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://genpm.net/mcp",
+  "scripts": {
+    "build": "tsdown --config-loader native",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@genpm/core": "workspace:*",
+    "@genpm/manifest": "workspace:*",
+    "@genpm/tsconfig": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.32.0",
+    "@types/node": "^22.0.0",
+    "tsdown": "^0.23.0",
+    "zod": "^4.1.0"
+  },
+  "peerDependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.0"
+  },
+  "peerDependenciesMeta": {
+    "@modelcontextprotocol/sdk": {
+      "optional": true
+    }
+  }
+}

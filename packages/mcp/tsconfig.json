@@ -1,0 +1,5 @@
+{
+  "extends": "@genpm/tsconfig/node.json",
+  "compilerOptions": { "outDir": "dist", "noEmit": true },
+  "include": ["src", "test"]
+}

@@ -1,0 +1,30 @@
+// Bundle único para `npx genpm` (architecture §11, roadmap D5-B-04): todo el código (paquetes @genpm/* y dependencias)
+// va dentro, así `npx` descarga un solo tarball sin árbol de dependencias. Solo `en` va en el chunk principal; el resto
+// de idiomas son chunks que se cargan bajo demanda (i18n §4.1). En .mjs para cargarse igual en Node 20 y 22.
+import { defineConfig } from 'tsdown';
+
+/**
+ * Catálogos que este binario nunca carga: se sustituyen por un objeto vacío para no inflar el tarball.
+ * @param {RegExp} pattern
+ */
+export const stubCatalogs = (pattern) => ({
+  name: 'genpm-stub-catalogs',
+  /** @param {string} id */
+  load(id) {
+    return pattern.test(id) ? '{}' : null;
+  },
+});
+
+export default defineConfig({
+  entry: { bin: 'src/bin.ts' },
+  format: 'esm',
+  platform: 'node',
+  target: 'node20.11',
+  outDir: 'dist',
+  clean: true,
+  dts: false,
+  sourcemap: false,
+  minify: true,
+  deps: { alwaysBundle: [/.*/] },
+  plugins: [stubCatalogs(/[\\/]locales[\\/][^\\/]+[\\/]web\.json$/)],
+});

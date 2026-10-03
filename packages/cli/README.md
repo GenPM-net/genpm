@@ -1,5 +1,34 @@
-# genpm (CLI)
+# genpm
 
-Binario `genpm`. Fachada fina sobre `@genpm/core`: parseo de args (citty), prompts (@clack/prompts), formato humano o `--json`.
+**Install architectures, not dependencies.** Inject complete modules — source code + AI rules + MCP config — into your project from immutable Git commits.
 
-Spec: [docs/cli-mcp-spec.md](../../docs/cli-mcp-spec.md#parte-a--cli)
+![genpm add](https://raw.githubusercontent.com/genpm-net/genpm/main/docs/design/brand/readme-hero.svg)
+
+```bash
+npx genpm add @core/auth
+```
+
+No global install needed. Requires Node 20.11+ (git 2.25+ recommended; without it GenPM falls back to GitHub tarballs).
+
+## Commands
+
+| Command | What it does |
+|---|---|
+| `genpm add <spec…>` | Plan and inject packages and their GenPM dependencies. Shows the plan and asks first. |
+| `genpm search <query>` | Search the registry. |
+| `genpm info <name>` | Manifest, dependencies, env vars, MCP servers and AI rules (`--rules`). |
+| `genpm list` | Installed packages and local changes. |
+| `genpm remove <name>` | Remove a package; refuses to delete code you modified unless `--keep-code` or `--force`. |
+| `genpm outdated` | Newer versions (`--exit-code` for CI). |
+| `genpm audit` | Integrity, signatures, advisories and yanked versions. |
+| `genpm doctor` | Check your environment and project. |
+| `genpm mcp setup` | Register the GenPM MCP server in your AI client. |
+| `genpm init` · `validate` · `publish` · `yank` | Author a package. |
+
+Global flags: `--json` (single-line JSON, English), `--yes`, `--lang <locale>`, `--cwd <dir>`, `--registry <url>`, `--verbose`, `--quiet`. Output is available in English, Spanish, Portuguese (Brazil), French, German, Japanese, Simplified Chinese and Korean.
+
+## Safety
+
+GenPM never runs package code or install scripts, pins every package to a verified commit SHA, only installs registry-signed manifests, writes only inside your project, and never adds MCP servers or npm packages without your consent.
+
+Docs: [genpm.net/docs](https://genpm.net/docs) · Security: [genpm.net/security](https://genpm.net/security) · License: MIT
