@@ -1,0 +1,5 @@
+# Saltos de línea LF en todos los SO (Biome y los hashes de integridad dependen de ello).
+* text=auto eol=lf
+*.png binary
+*.ico binary
+*.woff2 binary

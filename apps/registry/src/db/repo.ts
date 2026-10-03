@@ -63,6 +63,9 @@ export type VersionRow = {
 
 export type PublisherRow = { handle: string; kind: 'user' | 'org'; is_verified: number; avatar_url: string | null };
 
+// Filtro de visibilidad pública (privados y retirados nunca se listan), escrito literal en cada consulta: el SQL de
+// prepare() es siempre texto estático (regla Semgrep d1-prepare-no-template, security §5). La búsqueda compone su
+// WHERE con esta constante.
 const PUBLIC = "p.visibility = 'public' AND p.status != 'removed'";
 
 export class Repo {
@@ -79,7 +82,9 @@ export class Repo {
 
   async packageByName(fullName: string): Promise<PackageRow | null> {
     return this.db
-      .prepare(`SELECT p.* FROM packages p WHERE p.registry_id = ?1 AND p.full_name = ?2 AND ${PUBLIC}`)
+      .prepare(
+        `SELECT p.* FROM packages p WHERE p.registry_id = ?1 AND p.full_name = ?2 AND p.visibility = 'public' AND p.status != 'removed'`,
+      )
       .bind(this.rid, fullName)
       .first<PackageRow>();
   }
@@ -88,7 +93,7 @@ export class Repo {
     if (names.length === 0) return [];
     const { results } = await this.db
       .prepare(
-        `SELECT p.* FROM packages p WHERE p.registry_id = ?1 AND ${PUBLIC} AND p.full_name IN (SELECT value FROM json_each(?2))`,
+        `SELECT p.* FROM packages p WHERE p.registry_id = ?1 AND p.visibility = 'public' AND p.status != 'removed' AND p.full_name IN (SELECT value FROM json_each(?2))`,
       )
       .bind(this.rid, JSON.stringify(names))
       .all<PackageRow>();
@@ -212,7 +217,7 @@ export class Repo {
          WHERE s.registry_id = ?1 AND s.placement = 'search_slot' AND s.status = 'active'
            AND ?2 BETWEEN s.starts_at AND s.ends_at
            AND (s.target IS NULL OR s.target IN (SELECT value FROM json_each(?3)))
-           AND ${PUBLIC} AND p.status = 'active'
+           AND p.visibility = 'public' AND p.status != 'removed' AND p.status = 'active'
          ORDER BY random() LIMIT 1`,
       )
       .bind(this.rid, now, JSON.stringify(keywords))
@@ -223,7 +228,7 @@ export class Repo {
     const { results } = await this.db
       .prepare(
         `SELECT p.*, a.is_verified AS is_verified, a.handle AS publisher FROM packages p JOIN accounts a ON a.id = p.owner_id
-         WHERE p.registry_id = ?1 AND ${PUBLIC} AND p.status = 'active' AND p.is_featured = 1 AND p.latest_version IS NOT NULL
+         WHERE p.registry_id = ?1 AND p.visibility = 'public' AND p.status != 'removed' AND p.status = 'active' AND p.is_featured = 1 AND p.latest_version IS NOT NULL
          ORDER BY p.featured_rank IS NULL, p.featured_rank, p.full_name LIMIT ?2`,
       )
       .bind(this.rid, limit)
@@ -235,7 +240,7 @@ export class Repo {
     const { results } = await this.db
       .prepare(
         `SELECT p.*, a.is_verified AS is_verified, a.handle AS publisher FROM packages p JOIN accounts a ON a.id = p.owner_id
-         WHERE p.registry_id = ?1 AND ${PUBLIC} AND p.status = 'active' AND p.latest_version IS NOT NULL
+         WHERE p.registry_id = ?1 AND p.visibility = 'public' AND p.status != 'removed' AND p.status = 'active' AND p.latest_version IS NOT NULL
          ORDER BY p.installs_30d DESC, p.popularity_score DESC, p.full_name LIMIT ?2`,
       )
       .bind(this.rid, limit)
@@ -254,7 +259,7 @@ export class Repo {
       .prepare(
         `SELECT count(*) AS packages, count(DISTINCT p.owner_id) AS publishers, coalesce(sum(p.installs_30d), 0) AS installs30d,
                 coalesce(sum(p.installs_total), 0) AS installsTotal, coalesce(sum(p.has_mcp), 0) AS withMcp
-         FROM packages p WHERE p.registry_id = ?1 AND ${PUBLIC} AND p.status = 'active' AND p.latest_version IS NOT NULL`,
+         FROM packages p WHERE p.registry_id = ?1 AND p.visibility = 'public' AND p.status != 'removed' AND p.status = 'active' AND p.latest_version IS NOT NULL`,
       )
       .bind(this.rid)
       .first<{ packages: number; publishers: number; installs30d: number; installsTotal: number; withMcp: number }>();
@@ -274,7 +279,7 @@ export class Repo {
     const { results } = await this.db
       .prepare(
         `SELECT p.*, a.is_verified AS is_verified, a.handle AS publisher FROM packages p JOIN accounts a ON a.id = p.owner_id
-         WHERE p.registry_id = ?1 AND p.scope_id = ?2 AND ${PUBLIC} AND p.latest_version IS NOT NULL ORDER BY p.installs_30d DESC, p.full_name`,
+         WHERE p.registry_id = ?1 AND p.scope_id = ?2 AND p.visibility = 'public' AND p.status != 'removed' AND p.latest_version IS NOT NULL ORDER BY p.installs_30d DESC, p.full_name`,
       )
       .bind(this.rid, scopeId)
       .all<PackageRow & { is_verified: number; publisher: string }>();

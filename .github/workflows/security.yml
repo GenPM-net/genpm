@@ -1,4 +1,4 @@
-# Seguridad en cada PR (D1-A-03, security §8.1): Semgrep, CodeQL, OSV-Scanner y gitleaks. Todos bloqueantes.
+# Seguridad en cada PR (D1-A-03, security §8.1): Semgrep, OSV-Scanner, gitleaks y CodeQL (este solo con repo público). Bloqueantes.
 name: security
 
 on:
@@ -22,7 +22,10 @@ jobs:
           persist-credentials: false
       - run: semgrep scan --error --metrics=off --config p/typescript --config p/nodejs --config .semgrep/
 
+  # CodeQL sube a code scanning, que en repos privados exige GitHub Advanced Security (ADR-016/ADR-023):
+  # se activa solo cuando el repo es público. Mientras, Semgrep + OSV + gitleaks son las puertas bloqueantes.
   codeql:
+    if: ${{ !github.event.repository.private }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -37,15 +40,15 @@ jobs:
           queries: security-extended
       - uses: github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
 
+  # OSV-Scanner directo (sin subir SARIF, que exige Advanced Security en privado). Excepciones: osv-scanner.toml.
   osv-scanner:
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
-    with:
-      scan-args: |-
-        --lockfile=pnpm-lock.yaml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # La imagen no trae shell: se ejecuta con docker run en vez de como contenedor del job.
+      - run: docker run --rm -v "$PWD":/src -w /src ghcr.io/google/osv-scanner:v2.6.0 scan source --config=osv-scanner.toml --lockfile=pnpm-lock.yaml
 
   gitleaks:
     runs-on: ubuntu-latest

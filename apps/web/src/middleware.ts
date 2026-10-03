@@ -33,6 +33,7 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
   res.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   res.headers.set('X-Content-Type-Options', 'nosniff');
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  // nosemgrep: javascript.express.security.x-frame-options-misconfiguration.x-frame-options-misconfiguration -- valor constante DENY, no viene del usuario
   res.headers.set('X-Frame-Options', 'DENY');
   res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), interest-cohort=()');
   if (!res.headers.has('Content-Language') && (res.headers.get('content-type') ?? '').includes('text/html')) {

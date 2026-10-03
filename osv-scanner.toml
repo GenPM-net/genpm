@@ -1,0 +1,11 @@
+# OSV-Scanner (security §6): excepciones revisadas a mano, con motivo y fecha de revisión.
+
+[[IgnoredVulns]]
+id = "GHSA-vfj7-8cjw-p6xm"
+ignoreUntil = 2027-01-03
+reason = "braces <= 3.0.3 sin versión corregida. Solo la usa @changesets/cli (devDependency); nunca procesa patrones de terceros ni llega al CLI publicado, al registry ni a la web."
+
+[[IgnoredVulns]]
+id = "GHSA-ch52-4w7c-c8xp"
+ignoreUntil = 2027-01-03
+reason = "http-cache-semantics <= 4.2.0 sin versión corregida. Dependencia de Astro para la caché de imágenes remotas en build/dev; no está en el bundle de producción de apps/web (comprobado en dist/server) y la web usa image service passthrough."
