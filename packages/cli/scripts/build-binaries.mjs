@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// Binarios nativos de genpm (ADR-025): compila el bundle de tsdown (dist/bin.mjs, el mismo que se publica en npm) con
-// `bun build --compile` para cada plataforma y escribe SHA256SUMS. Bun compila de forma cruzada, así que un solo runner
+// Binarios nativos de genpm (ADR-025): genera con tsdown el bundle standalone (dist-standalone/bin.mjs: el de npm más el
+// servidor MCP de `genpm mcp serve`) y lo compila con `bun build --compile` para cada plataforma; escribe SHA256SUMS. Bun compila de forma cruzada, así que un solo runner
 // produce todo. `--define __GENPM_BINARY_TARGET__` deja grabada en cada binario su plataforma (`genpm upgrade`, `doctor`).
 //
 //   node scripts/build-binaries.mjs                 # todas las plataformas → dist-bin/
 //   node scripts/build-binaries.mjs darwin-arm64    # solo algunas
 //
-// Requiere `bun` en el PATH (o BUN=/ruta/a/bun) y `pnpm build` previo.
+// Requiere `bun` en el PATH (o BUN=/ruta/a/bun) y `pnpm build` previo de las dependencias (@genpm/*).
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -29,8 +29,14 @@ const TARGETS = {
   'windows-arm64': 'bun-windows-arm64',
 };
 
-const entry = join(ROOT, 'dist', 'bin.mjs');
-if (!existsSync(entry)) throw new Error('dist/bin.mjs not found: run `pnpm --filter genpm build` first');
+// Mismo tsdown.config.mjs que npm, en modo standalone (incluye @genpm/mcp/serve).
+execFileSync(process.execPath, [join(ROOT, 'node_modules', 'tsdown', 'dist', 'run.mjs'), '--config-loader', 'native'], {
+  cwd: ROOT,
+  env: { ...process.env, GENPM_STANDALONE: '1' },
+  stdio: ['ignore', 'ignore', 'inherit'],
+});
+const entry = join(ROOT, 'dist-standalone', 'bin.mjs');
+if (!existsSync(entry)) throw new Error('dist-standalone/bin.mjs was not generated');
 
 const wanted = process.argv.slice(2);
 for (const t of wanted)

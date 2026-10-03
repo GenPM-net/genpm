@@ -54,8 +54,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  # Binarios nativos (ADR-025): Bun compila de forma cruzada las 8 plataformas desde un solo runner, a partir del mismo
-  # bundle de tsdown que se publica en npm.
+  # Binarios nativos (ADR-025): Bun compila de forma cruzada las 8 plataformas desde un solo runner, a partir del bundle
+  # de tsdown que se publica en npm más el servidor MCP (`genpm mcp serve`).
   binaries:
     runs-on: ubuntu-latest
     permissions:

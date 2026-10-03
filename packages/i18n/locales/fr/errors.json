@@ -179,6 +179,10 @@
     "message": "Le fichier {asset} téléchargé ne correspond pas à sa somme de contrôle SHA-256 publiée.",
     "fix": "Rien n’a été modifié. Réessayez plus tard ; si cela se reproduit, signalez-le à hello@genpm.net avec l’objet [SECURITY]."
   },
+  "E_MCP_SERVE_UNAVAILABLE": {
+    "message": "genpm mcp serve n’est inclus que dans le binaire autonome de genpm.",
+    "fix": "Utilisez npx -y @genpm/mcp comme commande MCP (genpm mcp setup le fait pour vous) ou installez le binaire depuis genpm.net/docs/install."
+  },
   "E_NOT_A_PROJECT": {
     "message": "Aucun projet trouvé dans {path}.",
     "fix": "Exécutez la commande dans un projet (avec package.json ou .git), ou passez --cwd <dir>."

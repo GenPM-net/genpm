@@ -275,7 +275,7 @@ y obliga a escribir `npx` delante. El fundador pidió que los comandos empiecen 
 **Decisión:** la forma principal de instalar es un **binario nativo** por plataforma, con instalador de una línea:
 `curl -fsSL https://genpm.net/install.sh | sh` y `irm https://genpm.net/install.ps1 | iex`. `npm i -g genpm` y `npx genpm`
 siguen funcionando como alternativas (mismo bundle) y `npx` queda para usos puntuales y CI.
-- **Compilación:** `bun build --compile` sobre el bundle de tsdown (`dist/bin.mjs`, el mismo que se publica en npm), en
+- **Compilación:** `bun build --compile` sobre el bundle de tsdown (el de npm más el servidor MCP, `dist-standalone/bin.mjs`), en
   `packages/cli/scripts/build-binaries.mjs`. 8 binarios: macOS arm64/x64, Linux x64/arm64 glibc y musl, Windows x64/arm64
   (x64 en variante *baseline*, sin AVX2). `--define __GENPM_BINARY_TARGET__` graba la plataforma en cada binario.
 - **Distribución:** GitHub Releases con `SHA256SUMS` y *attestation* de procedencia (Sigstore) desde `release.yml`, en el
@@ -283,7 +283,9 @@ siguen funcionando como alternativas (mismo bundle) y `npx` queda para usos punt
   escritura, i18n) y los instaladores se prueban en su sistema (incluido Windows PowerShell 5.1).
 - **Instaladores:** fuente única en `scripts/install/`, servida por la web como texto plano. Detectan SO, arquitectura,
   Rosetta y musl, verifican el SHA-256, instalan en `~/.genpm/bin` sin `sudo` y añaden la carpeta al `PATH` (desactivable).
-- **MCP sin Node:** el binario incluye el servidor MCP (`genpm mcp serve`, mismo `serveStdio()` que `npx -y @genpm/mcp`).
+- **MCP sin Node:** el binario incluye el servidor MCP (`genpm mcp serve`, mismo `serveStdio()` que `npx -y @genpm/mcp`);
+  el paquete de npm no (duplicaría su tamaño y el `npx` en frío pasaría de 2 s): el binario sale de un segundo bundle
+  de tsdown (`GENPM_STANDALONE=1`, `dist-standalone/`).
   `genpm mcp setup` registra `genpm mcp serve` cuando corre como binario y `npx -y @genpm/mcp` cuando corre desde npm/npx;
   la web y la documentación muestran `genpm mcp serve` por defecto. Una config de proyecto compartida (`.mcp.json`) con
   `genpm mcp serve` exige que cada persona del equipo tenga el binario, igual que necesita genpm para el lock.

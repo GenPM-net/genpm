@@ -26,7 +26,7 @@ The recommended install is the native binary: no Node.js needed, and `genpm upgr
 | `genpm audit` | Integrity, signatures, advisories and yanked versions. |
 | `genpm doctor` | Check your environment and project. |
 | `genpm mcp setup` | Register the GenPM MCP server in your AI client. |
-| `genpm mcp serve` | Run the MCP server over stdio (what your AI client launches). |
+| `genpm mcp serve` | Run the MCP server over stdio (native binary only; from npm use `npx -y @genpm/mcp`). |
 | `genpm upgrade` | Update the native binary (`--check` to only look). |
 | `genpm init` · `validate` · `publish` · `yank` | Author a package. |
 

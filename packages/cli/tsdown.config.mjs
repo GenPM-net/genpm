@@ -15,16 +15,23 @@ export const stubCatalogs = (pattern) => ({
   },
 });
 
+// GENPM_STANDALONE=1 (scripts/build-binaries.mjs): bundle del binario nativo en dist-standalone/, con el servidor MCP
+// dentro (`genpm mcp serve`, ADR-025). El paquete de npm lo deja fuera (pesa ~550 KB y alarga el `npx` en frío); desde
+// npm/npx, `genpm mcp setup` registra `npx -y @genpm/mcp`, que es el mismo servidor.
+const standalone = process.env.GENPM_STANDALONE === '1';
+
 export default defineConfig({
   entry: { bin: 'src/bin.ts' },
   format: 'esm',
   platform: 'node',
   target: 'node20.11',
-  outDir: 'dist',
+  outDir: standalone ? 'dist-standalone' : 'dist',
   clean: true,
   dts: false,
   sourcemap: false,
   minify: true,
-  deps: { alwaysBundle: [/.*/] },
+  deps: standalone
+    ? { alwaysBundle: [/.*/] }
+    : { alwaysBundle: [/^(?!@genpm\/mcp\/serve$)/], neverBundle: ['@genpm/mcp/serve'] },
   plugins: [stubCatalogs(/[\\/]locales[\\/][^\\/]+[\\/]web\.json$/)],
 });

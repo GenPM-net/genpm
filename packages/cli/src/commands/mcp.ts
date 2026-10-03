@@ -1,6 +1,7 @@
 // `genpm mcp setup | add | remove` (cli-mcp-spec §A.5, §B.7).
 
 import {
+  fail,
   findRoot,
   mcpAdd,
   mcpRemove,
@@ -26,8 +27,14 @@ export const mcpCmd = (ctx: Ctx) =>
       serve: defineCommand({
         meta: { name: 'serve', description: ctx.t.t('cli.desc.mcpServe') },
         async run() {
-          const { serveStdio } = await import('@genpm/mcp/serve');
-          await serveStdio();
+          // Solo el binario lleva el servidor dentro; en el paquete de npm es un import externo que no se instala.
+          let serve: typeof import('@genpm/mcp/serve');
+          try {
+            serve = await import('@genpm/mcp/serve');
+          } catch {
+            return reportError(ctx, fail('E_MCP_SERVE_UNAVAILABLE'));
+          }
+          await serve.serveStdio();
         },
       }),
       setup: defineCommand({

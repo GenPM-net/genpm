@@ -179,6 +179,10 @@
     "message": "El {asset} descargado no coincide con su checksum SHA-256 publicado.",
     "fix": "No se cambió nada. Reinténtalo más tarde; si se repite, avísanos en hello@genpm.net con el asunto [SECURITY]."
   },
+  "E_MCP_SERVE_UNAVAILABLE": {
+    "message": "genpm mcp serve solo viene incluido en el binario independiente de genpm.",
+    "fix": "Usa npx -y @genpm/mcp como comando MCP (genpm mcp setup lo hace por ti) o instala el binario desde genpm.net/docs/install."
+  },
   "E_NOT_A_PROJECT": {
     "message": "No se encontró un proyecto en {path}.",
     "fix": "Ejecuta el comando dentro de un proyecto (con package.json o .git) o pasa --cwd <dir>."

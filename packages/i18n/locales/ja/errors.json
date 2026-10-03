@@ -179,6 +179,10 @@
     "message": "ダウンロードした {asset} が公開されている SHA-256 チェックサムと一致しません。",
     "fix": "何も変更されていません。後で再試行し、再発する場合は件名 [SECURITY] で hello@genpm.net に報告してください。"
   },
+  "E_MCP_SERVE_UNAVAILABLE": {
+    "message": "genpm mcp serve はスタンドアロンの genpm バイナリにのみ含まれています。",
+    "fix": "MCP コマンドとして npx -y @genpm/mcp を使うか（genpm mcp setup が設定します）、genpm.net/docs/install からバイナリをインストールしてください。"
+  },
   "E_NOT_A_PROJECT": {
     "message": "{path} にプロジェクトが見つかりません。",
     "fix": "プロジェクト（package.json または .git があるもの）の中で実行するか、--cwd <dir> を指定してください。"

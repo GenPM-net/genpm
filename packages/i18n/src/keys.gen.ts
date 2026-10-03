@@ -252,6 +252,8 @@ export interface MessageParams {
   "errors.E_UPGRADE_PERMISSION.fix": undefined;
   "errors.E_UPGRADE_INTEGRITY.message": { asset: string | number };
   "errors.E_UPGRADE_INTEGRITY.fix": undefined;
+  "errors.E_MCP_SERVE_UNAVAILABLE.message": undefined;
+  "errors.E_MCP_SERVE_UNAVAILABLE.fix": undefined;
   "errors.E_NOT_A_PROJECT.message": { path: string | number };
   "errors.E_NOT_A_PROJECT.fix": undefined;
   "web.meta.title": undefined;

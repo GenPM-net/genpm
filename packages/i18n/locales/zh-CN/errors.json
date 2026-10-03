@@ -179,6 +179,10 @@
     "message": "下载的 {asset} 与其发布的 SHA-256 校验和不一致。",
     "fix": "未做任何更改。请稍后重试；如果再次发生，请发送邮件至 hello@genpm.net，主题为 [SECURITY]。"
   },
+  "E_MCP_SERVE_UNAVAILABLE": {
+    "message": "genpm mcp serve 仅包含在独立的 genpm 二进制文件中。",
+    "fix": "请使用 npx -y @genpm/mcp 作为 MCP 命令（genpm mcp setup 会自动配置），或从 genpm.net/docs/install 安装二进制文件。"
+  },
   "E_NOT_A_PROJECT": {
     "message": "在 {path} 中未找到项目。",
     "fix": "请在项目内（包含 package.json 或 .git）运行该命令，或传入 --cwd <dir>。"

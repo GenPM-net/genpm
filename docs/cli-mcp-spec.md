@@ -133,7 +133,7 @@ En modo no interactivo (no TTY o `--json`) cualquier prompt sin respuesta por fl
 | 5 | Red / upstream | `E_NETWORK`, `E_UPSTREAM_GIT`, `E_RATE_LIMITED`, `E_READ_ONLY` |
 | 6 | Seguridad / integridad | `E_INTEGRITY`, `E_SIGNATURE`, `E_PATH_UNSAFE`, `E_AUTORUN_FILE`, `E_SCAN_FAILED`, `E_INSECURE_PERMS`, `E_QUARANTINED`, `E_REF_MUTABLE`, `E_ADVISORY`, `E_UPGRADE_INTEGRITY` |
 | 7 | Autenticación / permisos | `E_AUTH`, `E_FORBIDDEN_SCOPE` |
-| 8 | Entorno | `E_GIT_MISSING`, `E_NODE_VERSION`, `E_NOT_A_PROJECT`, `E_UPGRADE_UNSUPPORTED`, `E_UPGRADE_PERMISSION` |
+| 8 | Entorno | `E_GIT_MISSING`, `E_NODE_VERSION`, `E_NOT_A_PROJECT`, `E_UPGRADE_UNSUPPORTED`, `E_UPGRADE_PERMISSION`, `E_MCP_SERVE_UNAVAILABLE` |
 
 ## A.4 Gramática de specs
 
@@ -269,7 +269,8 @@ Merge de 3 vías (ver [architecture §6.6](architecture.md#66-actualización-con
 ### `genpm mcp serve` ✅
 
 Servidor MCP por stdio (Parte B) dentro del CLI: es lo que lanzan los clientes de IA cuando GenPM está instalado como
-binario nativo, sin Node ni npx (ADR-025). Nunca escribe en stdout fuera del protocolo.
+binario nativo, sin Node ni npx (ADR-025). Nunca escribe en stdout fuera del protocolo. Solo existe en el binario: el
+paquete de npm no lo incluye (~550 KB más en cada `npx` en frío) y responde `E_MCP_SERVE_UNAVAILABLE` con `npx -y @genpm/mcp` en `fix`.
 
 ### `genpm mcp setup [--client <c>] [--scope project|user]` ✅
 
