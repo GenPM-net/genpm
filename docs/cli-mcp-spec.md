@@ -107,7 +107,7 @@ En modo no interactivo (no TTY o `--json`) cualquier prompt sin respuesta por fl
 | 2 | Uso incorrecto / falta confirmación | `E_USAGE`, `E_CONFIRM_REQUIRED` |
 | 3 | No encontrado | `E_NOT_FOUND`, `E_NO_MATCHING_VERSION` |
 | 4 | Conflicto | `E_DEST_CONFLICT`, `E_RANGE_UNSATISFIED`, `E_ALREADY_INSTALLED`, `E_DRIFT`, `E_BUSY`, `E_PLAN_STALE` |
-| 5 | Red / upstream | `E_NETWORK`, `E_UPSTREAM_GIT`, `E_RATE_LIMITED` |
+| 5 | Red / upstream | `E_NETWORK`, `E_UPSTREAM_GIT`, `E_RATE_LIMITED`, `E_READ_ONLY` |
 | 6 | Seguridad / integridad | `E_INTEGRITY`, `E_SIGNATURE`, `E_PATH_UNSAFE`, `E_AUTORUN_FILE`, `E_SCAN_FAILED`, `E_INSECURE_PERMS`, `E_QUARANTINED`, `E_REF_MUTABLE`, `E_ADVISORY` |
 | 7 | Autenticación / permisos | `E_AUTH`, `E_FORBIDDEN_SCOPE` |
 | 8 | Entorno | `E_GIT_MISSING`, `E_NODE_VERSION`, `E_NOT_A_PROJECT` |
@@ -163,7 +163,7 @@ Salida humana:
   Context    src/lib/*/AGENTS.md · .cursor/rules ×2 · AGENTS.md index
   npm        stripe@^17.0.0 arctic@^3.0.0                     → pnpm add …
   Env        STRIPE_SECRET_KEY STRIPE_WEBHOOK_SECRET AUTH_SECRET → .env.example
-  MCP        stripe: npx -y @stripe/mcp --tools=all           (env: STRIPE_SECRET_KEY)
+  MCP        stripe: npx -y @stripe/mcp           (env: STRIPE_SECRET_KEY)
 
 ◇ Inject 2 packages (47 files, 112 KB)? Yes
 ◇ Add MCP server "stripe" to .cursor/mcp.json and .mcp.json? No
@@ -395,7 +395,7 @@ Salida: `{ manifest: ResolvedManifest, deps: ResolvedManifest[], rules: string, 
 Ejemplo de texto de salida (apply):
 ```
 Installed @core/billing@1.2.0 (9f2c4e1) → src/lib/billing; @core/auth@1.2.0 → src/lib/auth. @core/db skipped (1.0.3 satisfies ^1.0.0).
-Pending (needs user consent): MCP "stripe" (npx -y @stripe/mcp --tools=all) · npm: pnpm add stripe@^17.0.0 arctic@^3.0.0
+Pending (needs user consent): MCP "stripe" (npx -y @stripe/mcp) · npm: pnpm add stripe@^17.0.0 arctic@^3.0.0
 Env to configure: STRIPE_SECRET_KEY STRIPE_WEBHOOK_SECRET AUTH_SECRET (.env.example updated)
 Next: read src/lib/billing/AGENTS.md section "Integración" and wire the module.
 ```

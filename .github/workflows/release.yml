@@ -1,0 +1,53 @@
+# Publicación en npm con provenance (security §6, D5-B-05 / D6-P-06). Actions fijadas por SHA.
+# - En cada push a main: dry-run de `npm publish --provenance` de genpm y @genpm/mcp (comprueba bundle, files y firma OIDC).
+# - Con un tag v*: publicación real (requiere el secreto NPM_TOKEN de la org @genpm y repo público: npm solo genera
+#   provenance desde repos públicos, así que este workflow se activa tras la apertura del código, D6-P-07 / ADR-016).
+name: release
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # firma de provenance (Sigstore) vía OIDC
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm test
+        env:
+          GENPM_TELEMETRY: '0'
+      - run: pnpm --filter genpm cold-start
+      - name: Pack (sin dependencias workspace:*)
+        run: |
+          mkdir -p dist-pack
+          pnpm --filter genpm pack --pack-destination "$PWD/dist-pack"
+          pnpm --filter @genpm/mcp pack --pack-destination "$PWD/dist-pack"
+          ls -l dist-pack
+      - name: Dry-run con provenance
+        if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
+        run: for t in dist-pack/*.tgz; do npm publish "$t" --provenance --access public --dry-run; done
+      - name: Publicar
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: for t in dist-pack/*.tgz; do npm publish "$t" --provenance --access public; done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

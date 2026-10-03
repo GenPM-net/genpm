@@ -1,17 +1,18 @@
 # Documentación de GenPM
 
-> Fase: diseño del MVP (sprint de 7 días) · Última actualización: 2026-10-02
+> Fase: MVP implementado, pendiente de staging y lanzamiento · Última actualización: 2026-10-03
 
 Orden de lectura recomendado:
 
 | # | Documento | Para qué | Audiencia |
 |---|---|---|---|
-| 0 | [brainstorming.md](brainstorming.md) | Dudas y decisiones (ADR-001…015), incluidas las del fundador | Todos — leer primero |
+| 0 | [brainstorming.md](brainstorming.md) | Dudas y decisiones (ADR-001…024), incluidas las del fundador | Todos — leer primero |
 | 1 | [architecture.md](architecture.md) | Diseño del sistema, flujos de datos, seguridad, decisiones tecnológicas, camino a SaaS | Ingeniería |
 | 2 | [manifest-spec.md](manifest-spec.md) | Especificación de `genpm.json`, `genpm.lock` y cómo deben interpretarlos los LLMs | Ingeniería, autores de paquetes |
 | 3 | [api-spec.md](api-spec.md) | Endpoints del registry edge y esquema D1 (preparado para registros privados y patrocinios) | Backend |
 | 4 | [cli-mcp-spec.md](cli-mcp-spec.md) | Contratos de comandos del CLI y tools/resources/prompts del servidor MCP | Cliente (CLI/MCP) |
 | 4b | [security.md](security.md) | Invariantes de seguridad, escaneo, firma, cadena de suministro, respuesta a incidentes, riesgo residual | Todos (normativo) |
+| 4b′ | [runbook.md](runbook.md) | Procedimientos de incidentes: cuarentena, rotación y revocación de claves, solo lectura | Operaciones (normativo) |
 | 4c | [i18n.md](i18n.md) | 8 idiomas: superficies, arquitectura `@genpm/i18n`, flujo de traducción, QA | Ingeniería, producto |
 | 5 | [roadmap-mvp.md](roadmap-mvp.md) | Plan día a día, criterios de aceptación, plan de recorte, post-MVP | Todos |
 | 6 | [branding.md](branding.md) | Nombre, posicionamiento, voz, paleta, tipografía, CLI, mensajes de lanzamiento | Producto, diseño, marketing |

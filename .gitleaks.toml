@@ -1,0 +1,15 @@
+# gitleaks (security §6): reglas por defecto + excepciones por ruta. Los tests del escáner usan a propósito claves
+# falsas con formato real (p. ej. AKIA… de la documentación de AWS) para comprobar que GenPM las detecta.
+title = "genpm"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Fixtures de test y artefactos de build"
+paths = [
+  '''(^|/)test/''',
+  '''\.test\.tsx?$''',
+  '''(^|/)apps/registry/seeds/fixtures\.sql$''',
+  '''(^|/)dist/''',
+]

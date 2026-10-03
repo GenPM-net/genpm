@@ -14,11 +14,31 @@ Las semillas se eligieron para demostrar todas las capacidades del manifiesto. C
 | `@core/email` | Módulo independiente, plantillas | `src/lib/email` | — | `resend`, `@react-email/components` | `RESEND_API_KEY`, `EMAIL_FROM` | — |
 | `@core/ai` | Caso "vibe coding" nativo | `src/lib/ai` | `@core/db ^1` (log de uso) | `ai` + proveedor | `AI_PROVIDER_API_KEY`, `AI_MODEL` | — |
 
+## Stack común (S-00-01)
+
+| Pieza | Decisión |
+|---|---|
+| Lenguaje | TypeScript `strict` + `noUncheckedIndexedAccess`, ESM, imports con extensión `.js`, Node ≥ 20.11 |
+| Base de datos | Drizzle ORM 0.45 sobre Postgres (`postgres` 3). Tipos de la BD como `PgDatabase` genérico: el mismo código corre con `postgres`, Neon, PGlite o node-postgres |
+| Esquemas | Cada módulo es dueño de su `schema.ts` (`src/lib/<modulo>/schema.ts`); `drizzle-kit` los recoge con un glob, así ningún módulo edita las tablas de otro |
+| Dependencias entre módulos | Imports relativos (`../db/index.js`) que asumen las rutas `d` por defecto; el `AGENTS.md` explica qué cambiar si se usó `--dest` |
+| Frameworks | Núcleo agnóstico (funciones que reciben `Request`/valores); adaptadores finos en `adapters/hono.ts` y `adapters/next.ts` |
+| Tests | Vitest + PGlite (Postgres en WASM, sin servicios externos); se excluyen de la inyección con `.genpmignore` |
+| Reglas | `AGENTS.md` en inglés con las 5 secciones de [templates/AGENTS.md](templates/AGENTS.md), ≤ 1 500 tokens |
+
+### Flujo de desarrollo
+
+Las 5 semillas se desarrollan juntas en un workspace propio, **fuera de este monorepo** (`../genpm-seeds`), con la misma
+estructura que un proyecto consumidor (`src/lib/{db,auth,billing,email,ai}`): así los imports relativos entre módulos se
+prueban tal y como quedarán tras `genpm add`. Al publicar, cada carpeta se separa en su repo con
+`git subtree split --prefix src/lib/<nombre> -b <nombre>` y se empuja a `github.com/genpm-net/<nombre>` con el tag `v1.0.0`.
+Plantillas: [templates/](templates/).
+
 ## Alcance funcional
 
 ### `@core/db`
 Factoría de cliente (Postgres vía `postgres`; SQLite/D1 como variante documentada), convención de esquemas por módulo
-(`schema/<modulo>.ts`), helper `withTransaction`, IDs ULID, timestamps estándar, scripts de migración `drizzle-kit`.
+(cada módulo con su `src/lib/<modulo>/schema.ts`, recogidos por glob), helper `withTransaction`, IDs ULID, timestamps estándar, scripts de migración `drizzle-kit`.
 Reglas clave: cómo añade cada módulo sus tablas sin tocar las de otros.
 
 ### `@core/auth`

@@ -16,7 +16,12 @@
       "!**/*.gen.ts",
       "!**/worker-configuration.d.ts",
       "!packages/manifest/schema",
-      "!**/fixtures/golden.json"
+      "!**/fixtures/golden.json",
+      "!apps/web/src/styles/tokens.css",
+      "!apps/web/src/styles/theme.css",
+      "!apps/web/src/styles/tailwind.preset.js",
+      "!apps/web/src/styles/tokens.ts",
+      "!apps/web/public"
     ]
   },
   "formatter": {
@@ -39,7 +44,8 @@
       "suspicious": {
         "noExplicitAny": "error",
         "noControlCharactersInRegex": "off",
-        "noUndeclaredEnvVars": "off"
+        "noUndeclaredEnvVars": "off",
+        "noTemplateCurlyInString": "off"
       },
       "style": {
         "noNonNullAssertion": "off",
@@ -56,5 +62,31 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.astro"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["apps/web/src/styles/site.css"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDescendingSpecificity": "off"
+          },
+          "complexity": {
+            "noImportantStyles": "off"
+          }
+        }
+      }
+    }
+  ]
 }

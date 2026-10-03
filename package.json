@@ -4,24 +4,29 @@
   "type": "module",
   "packageManager": "pnpm@10.24.0",
   "engines": {
-    "node": ">=20.11"
+    "node": ">=22.12"
   },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "test": "turbo run test",
-    "lint": "biome check . && node packages/i18n/scripts/lint-literals.mjs && node packages/i18n/scripts/check.mjs",
+    "lint": "biome check . && node packages/i18n/scripts/lint-literals.mjs && node packages/i18n/scripts/check.mjs && pnpm brand:check",
     "format": "biome check --write .",
     "typecheck": "turbo run typecheck",
     "changeset": "changeset",
-    "tasks": "node tasks/board.mjs"
+    "tasks": "node tasks/board.mjs",
+    "brand:check": "node scripts/brand/check-contrast.mjs && node scripts/brand/gen-tokens.mjs --check",
+    "brand:gen": "node scripts/brand/gen-tokens.mjs && node scripts/brand/gen-assets.mjs && node scripts/brand/gen-badges.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
     "@changesets/cli": "^2.29.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^22.0.0",
     "@vitest/coverage-v8": "~4.1.0",
     "fast-check": "^4.10.0",
+    "opentype.js": "^2.0.0",
     "turbo": "^2.11.0",
     "typescript": "~5.9.3",
     "vitest": "~4.1.0"

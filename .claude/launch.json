@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "registry",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@genpm/registry", "dev", "--port", "8787"],
+      "port": 8787
+    },
+    {
+      "name": "web",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@genpm/web", "dev", "--port", "4399"],
+      "port": 4399
+    },
+    {
+      "name": "web-preview",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@genpm/web", "preview", "--port", "4398"],
+      "port": 4398
+    }
+  ]
+}

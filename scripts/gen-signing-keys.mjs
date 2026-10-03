@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { webcrypto as crypto } from 'node:crypto';
 // Genera claves Ed25519 de firma de manifiestos (security §4.3, D0-12).
 //
 //   node scripts/gen-signing-keys.mjs            → k1 (activa), k2 (siguiente) y root (revocación) en ./genpm-keys-<fecha>/
@@ -7,7 +8,6 @@
 // Producción: ejecútalo en una máquina de confianza, sube k1/k2 con `wrangler secret put SIGNING_KEYS`,
 // guarda root.private OFFLINE (nunca en Cloudflare ni en el repo) y fija las claves públicas en packages/core/src/keys.ts.
 import { mkdirSync, writeFileSync } from 'node:fs';
-import { webcrypto as crypto } from 'node:crypto';
 
 const b64url = (buf) => Buffer.from(buf).toString('base64url');
 
@@ -33,11 +33,9 @@ for (const [id, k] of Object.entries(keys)) {
   writeFileSync(`${dir}/${id}.private`, `${k.private}\n`, { mode: 0o600 });
   writeFileSync(`${dir}/${id}.public`, `${k.public}\n`, { mode: 0o644 });
 }
-writeFileSync(
-  `${dir}/SIGNING_KEYS.secret.json`,
-  JSON.stringify({ k1: keys.k1.private, k2: keys.k2.private }),
-  { mode: 0o600 },
-);
+writeFileSync(`${dir}/SIGNING_KEYS.secret.json`, JSON.stringify({ k1: keys.k1.private, k2: keys.k2.private }), {
+  mode: 0o600,
+});
 console.log(`Keys written to ./${dir}/ (keep root.private offline).`);
 console.log('Pin in packages/core/src/keys.ts:');
 console.log(JSON.stringify({ k1: keys.k1.public, k2: keys.k2.public }, null, 2));

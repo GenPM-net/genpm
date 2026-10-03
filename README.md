@@ -1,38 +1,74 @@
-# GenPM — Generative Package Manager
+<p align="center">
+  <img src="docs/design/brand/wordmark.svg" alt="genpm" height="40">
+</p>
 
-> **Instala arquitecturas, no dependencias.**
-> Código que es tuyo · Contexto que tu IA entiende · Conexiones MCP listas.
+<p align="center"><strong>Install architectures, not dependencies.</strong><br>
+Code you own · Context your AI understands · MCP connections, ready.</p>
 
-GenPM inyecta módulos completos (código fuente + reglas de IA + servidores MCP) directamente en tu proyecto
-desde repositorios Git inmutables. Sin `node_modules` opacos: el código queda en `src/`, versionado contigo,
-y tu LLM lo puede leer, modificar y actualizar.
+<p align="center">
+  <img src="docs/design/brand/readme-hero.svg" alt="genpm add @core/billing resolves its dependencies, shows code, AI rules and MCP config, and injects two packages pinned to a commit SHA" width="760">
+</p>
+
+GenPM injects complete modules — **source code + AI rules + MCP servers** — into your project from immutable Git commits. No opaque `node_modules`: the code lands in `src/`, versioned with yours, and your AI agent can read, change and extend it because every module ships the rules that explain how.
 
 ```bash
 npx genpm add @core/auth
 ```
 
-## Estado
+- **Code** lands in `src/lib/auth`, not in `node_modules`. You see it in your diff and you own it.
+- **Context**: an `AGENTS.md` per module (plus Cursor, Copilot, Windsurf and Claude Code rule files), loaded only when your agent works in that folder.
+- **Connections**: the MCP servers a module needs, added only with your consent.
 
-Fase de diseño — MVP de 7 días. **Todavía no hay código de implementación.** Empieza por [docs/README.md](docs/README.md).
+## Use it from your AI
 
-## Estructura del monorepo
-
-```
-genpm/
-├── apps/
-│   ├── registry/      # API Edge: Cloudflare Workers + Hono + D1 (solo metadatos)
-│   └── web/           # genpm.net: Astro SSR en Cloudflare (búsqueda, páginas de paquete, docs)
-├── packages/
-│   ├── manifest/      # @genpm/manifest — esquema zod, tipos, JSON Schema, semver helpers (sin I/O)
-│   ├── core/          # @genpm/core — resolver, fetcher Git, injector, lockfile, contexto, MCP config
-│   ├── cli/           # genpm — binario de terminal (fachada fina sobre core)
-│   ├── mcp/           # @genpm/mcp — servidor MCP stdio (fachada fina sobre core)
-│   ├── i18n/          # @genpm/i18n — catálogos ICU de 8 idiomas + negociación de locale
-│   └── tsconfig/      # configuración TS compartida
-├── seeds/             # especificación de los 5 paquetes semilla (viven en repos Git propios)
-└── docs/              # documentación técnica oficial
+```bash
+claude mcp add genpm -- npx -y @genpm/mcp
 ```
 
-Seguridad: [docs/security.md](docs/security.md) · Idiomas: en, es, pt-BR, fr, de, ja, zh-CN, ko ([docs/i18n.md](docs/i18n.md)) · Web: [genpm.net](https://genpm.net)
+Then ask: *"Add GitHub login to this project with genpm."* Your agent searches, shows you the plan and installs. Setup for Cursor, VS Code, Windsurf and Codex: [genpm.net/docs/mcp](https://genpm.net/docs/mcp).
 
-Stack: TypeScript estricto · pnpm workspaces + Turborepo · Biome · Vitest · Hono · Cloudflare Workers/D1 · Astro.
+## Security
+
+What you reviewed is what gets installed. Every package is pinned to a 40-character commit SHA and verified after download, manifests are signed by the registry, GenPM never runs package code or install scripts, writes stay inside your project, and AI rules are scanned for prompt injection. The ten invariants and how they are tested: [docs/security.md](docs/security.md) · report a vulnerability: [SECURITY.md](SECURITY.md).
+
+## Publish a package
+
+```bash
+npx genpm init && npx genpm validate
+git tag v1.0.0 && git push --tags
+npx genpm publish
+```
+
+Your code stays on GitHub; the registry stores metadata only. Guide: [genpm.net/docs/publishing](https://genpm.net/docs/publishing).
+
+## This repository
+
+```
+apps/
+  registry/   API on Cloudflare Workers + Hono + D1 (metadata only)
+  web/        genpm.net — Astro SSR on Cloudflare
+packages/
+  manifest/   @genpm/manifest — schema, canonical form, signatures, scanner (no I/O)
+  core/       @genpm/core — resolve, fetch, plan, apply, inject, lockfile
+  cli/        genpm — the CLI (thin facade over core)
+  mcp/        @genpm/mcp — the MCP server (thin facade over core)
+  i18n/       @genpm/i18n — ICU catalogs for en, es, pt-BR, fr, de, ja, zh-CN, ko
+docs/         design and specs (Spanish)
+tasks/        MVP plan and task board
+```
+
+Requirements to develop: Node 22.12+ (tsdown and Astro), pnpm 10, git 2.25+. The published `genpm` and `@genpm/mcp` run on Node 20.11+ (CI tests them on Node 20 and 22).
+
+```bash
+pnpm install
+pnpm build && pnpm test      # every package
+pnpm lint                    # Biome, hardcoded-text check, i18n catalogs, brand contrast
+pnpm --filter @genpm/registry dev   # local registry on :8787
+pnpm --filter @genpm/web dev        # genpm.net on :4321
+```
+
+Contributor rules (architecture, invariants, i18n) live in [AGENTS.md](AGENTS.md); the technical design starts at [docs/README.md](docs/README.md).
+
+## License
+
+The client packages (`packages/*`: `genpm`, `@genpm/mcp`, `@genpm/core`, `@genpm/manifest`, `@genpm/i18n`) are MIT-licensed. The registry (`apps/registry`) and the website (`apps/web`) are © GenPM, all rights reserved.

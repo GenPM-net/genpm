@@ -654,6 +654,7 @@ ORDER BY random() LIMIT 1;
 | 429 | `E_RATE_LIMITED` | Rate limit |
 | 451 | `E_QUARANTINED` | Versión/paquete en revisión de seguridad |
 | 502 | `E_UPSTREAM_GIT` | GitHub no respondió / repo inaccesible |
+| 503 | `E_READ_ONLY` | Registry en modo solo lectura por un incidente (`READ_ONLY=1`, runbook §3): se puede leer e instalar, no escribir |
 | 500 | `E_INTERNAL` | Error inesperado (con `requestId`) |
 
 El catálogo vive en `@genpm/manifest/errors` y lo reutilizan CLI y MCP (mismo `code`, distinto envoltorio).

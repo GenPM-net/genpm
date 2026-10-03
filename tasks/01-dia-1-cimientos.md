@@ -13,7 +13,7 @@
 - [x] `D1-A-06` **DONE** Middleware problem+json y requestId, con los códigos E_* de @genpm/manifest · A · 2h · deps: D1-A-04, D1-B-03
 - [ ] `D1-A-07` **BLOCKED** GET /v1/health y deploy a staging · A · 1h · deps: D1-A-05, D1-A-06
   - Bloqueo: GET /v1/health implementado y probado en workerd; el deploy a staging necesita D0-10/D0-11 (cuenta Cloudflare y D1). Comando: `pnpm --filter @genpm/registry deploy:staging`.
-- [ ] `D1-A-08` **TODO** Seed de scopes reservados (genpm, core, genpm-net…) con cuenta de sistema, api-spec §5.3, y test: auto-claim o publish en scope reservado ⇒ 403 E_FORBIDDEN_SCOPE · A · 1h · deps: D1-A-05
+- [x] `D1-A-08` **DONE** Seed de scopes reservados (genpm, core, genpm-net…) con cuenta de sistema, api-spec §5.3, y test: auto-claim o publish en scope reservado ⇒ 403 E_FORBIDDEN_SCOPE · A · 1h · deps: D1-A-05
 
 ## Track B · Cliente
 

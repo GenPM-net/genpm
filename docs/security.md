@@ -216,7 +216,7 @@ Post-mortem público sin culpables para toda severidad alta o crítica.
 - [ ] Corpus §8.2 completo y verde.
 - [ ] Firma de manifiestos activa y verificada por el CLI publicado.
 - [ ] Escáner v1 (deterministas) activo en publish **y** en el cliente.
-- [ ] Las 5 semillas con escaneo `passed` y revisión de dos personas.
+- [ ] Las 5 semillas con escaneo `passed` y revisión de dos personas (o, mientras el fundador trabaje solo, la revisión de ADR-023).
 - [ ] npm publicado con provenance desde CI; 2FA/FIDO2 en todas las cuentas; registrar lock en el dominio.
 - [ ] `security.txt`, política de divulgación y canal de reporte operativos en todos los idiomas de nivel 1.
 - [ ] Runbook de incidentes probado en staging (cuarentena y rotación de clave de firma).

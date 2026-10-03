@@ -105,7 +105,7 @@ Al publicar se infiere: `r` del remoto, `t`=`v1.0.0`, `x`=`AGENTS.md`, `i`=`.`.
   "g": { "@core/db": "^1.0.0", "@core/auth": "^1.1.0" },
   "p": { "stripe": "^17.0.0" },
   "e": ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"],
-  "m": [{ "n": "stripe", "c": "npx", "a": ["-y", "@stripe/mcp", "--tools=all"], "e": ["STRIPE_SECRET_KEY"] }]
+  "m": [{ "n": "stripe", "c": "npx", "a": ["-y", "@stripe/mcp"], "e": ["STRIPE_SECRET_KEY"] }]
 }
 ```
 El autor PUEDE formatearlo con indentación; el registry siempre lo almacena en forma canónica (§8).
@@ -114,7 +114,7 @@ Las reglas IA (`x`) se recomiendan en inglés (menos tokens, cualquier colaborad
 ### 5.3 Manifiesto resuelto (respuesta del API y entrada de lockfile)
 
 ```json
-{"$":1,"n":"@core/billing","v":"1.2.0","s":{"en":"Stripe subscriptions: checkout, portal and idempotent webhooks with Drizzle","es":"Suscripciones Stripe: checkout, portal y webhooks idempotentes con Drizzle","pt-BR":"Assinaturas Stripe: checkout, portal e webhooks idempotentes com Drizzle"},"r":"https://github.com/genpm-net/billing","t":"v1.2.0","c":"9f2c4e1b7a3d5f60e8c2b1a4d7e9f0c3b5a6d8e1","d":"src/lib/billing","i":".","x":"AGENTS.md","l":"MIT","k":["billing","stripe","subscriptions","webhooks"],"g":{"@core/db":"^1.0.0","@core/auth":"^1.1.0"},"p":{"stripe":"^17.0.0"},"e":["STRIPE_SECRET_KEY","STRIPE_WEBHOOK_SECRET"],"m":[{"n":"stripe","c":"npx","a":["-y","@stripe/mcp","--tools=all"],"e":["STRIPE_SECRET_KEY"]}]}
+{"$":1,"n":"@core/billing","v":"1.2.0","s":{"en":"Stripe subscriptions: checkout, portal and idempotent webhooks with Drizzle","es":"Suscripciones Stripe: checkout, portal y webhooks idempotentes con Drizzle","pt-BR":"Assinaturas Stripe: checkout, portal e webhooks idempotentes com Drizzle"},"r":"https://github.com/genpm-net/billing","t":"v1.2.0","c":"9f2c4e1b7a3d5f60e8c2b1a4d7e9f0c3b5a6d8e1","d":"src/lib/billing","i":".","x":"AGENTS.md","l":"MIT","k":["billing","stripe","subscriptions","webhooks"],"g":{"@core/db":"^1.0.0","@core/auth":"^1.1.0"},"p":{"stripe":"^17.0.0"},"e":["STRIPE_SECRET_KEY","STRIPE_WEBHOOK_SECRET"],"m":[{"n":"stripe","c":"npx","a":["-y","@stripe/mcp"],"e":["STRIPE_SECRET_KEY"]}]}
 ```
 
 ### 5.4 Paquete dentro de un monorepo
@@ -158,6 +158,7 @@ Objetivos: legible por LLMs, diffs limpios en Git (**un paquete por línea**), s
 | `sg` | Firma Ed25519 del registry sobre el manifiesto resuelto canónico: `<keyid>:<base64url>`. Permite a `genpm audit` verificar la procedencia offline ([security §4.3](security.md#43-firma-de-manifiestos-inv-8)). |
 | `m` | `1` si se escribió config MCP para este paquete, `0` si se omitió. |
 | `by` | Origen de la instalación: `cli` o `mcp` (útil para auditoría). |
+| `g` | Dependencias GenPM declaradas por el paquete instalado (`{nombre: rango}`), solo si tiene alguna. Permiten a `remove` responder `E_REQUIRED_BY` y a `plan` comprobar rangos sin volver a consultar el registry ([ADR-017](brainstorming.md)). |
 
 Formato del serializador: primera línea `{"$":1,`, segunda `"p":{`, una línea por paquete, cierre `}}`. Cualquier lector JSON lo acepta.
 

@@ -194,6 +194,79 @@ con plazos. El riesgo residual se documenta explícitamente. Especificación com
 Lo que de verdad protege es la marca registrada "GenPM" (`D0-03`), el dominio y las cuentas (ya tuyas), los scopes oficiales y, sobre todo,
 llegar primero y tener la comunidad y los paquetes (efecto de red del registry).
 
+### ADR-017 · Campo `g` en `genpm.lock` — ✅ Decidida (implementación, 2026-10-03)
+
+**Decisión:** cada entrada del lock guarda `g` (las dependencias GenPM del manifiesto instalado) cuando existen.
+**Por qué:** `genpm remove` debe saber quién depende de quién (`E_REQUIRED_BY`) y `plan` debe validar rangos de dependencias ya
+instaladas sin red. Releer manifiestos del registry para eso haría `remove` dependiente de la red. Documentado en manifest-spec §6.
+
+### ADR-018 · Rol de los miembros de una org de GitHub — ✅ Decidida (implementación, 2026-10-03)
+
+**Decisión:** al sincronizar membresías, un *admin* de la org en GitHub es `admin` del scope y un *miembro* es `publisher`.
+Un `publisher` solo publica desde repos cuyo owner es la propia org (`E_REPO_NOT_ALLOWED`), nunca desde repos personales.
+**Por qué:** cualquier miembro de la org ya puede empujar código a sus repos; darle `publisher` evita fricción, y atar la
+publicación al owner del repo impide colar código ajeno bajo el scope de la org.
+
+### ADR-019 · Documentación propia en Astro en lugar de Starlight — ✅ Decidida (implementación, 2026-10-03)
+
+**Decisión:** `/docs` se sirve con páginas Markdown propias dentro de `apps/web` (no Starlight).
+**Por qué:** un solo mecanismo de idiomas (prefijo de URL + `@genpm/i18n`, con fallback a inglés y aviso), cero JS en el
+cliente, la marca del prototipo sin sobrescribir temas, y cada página expuesta también como `.md` para agentes
+(`/docs/<slug>.md`, `llms.txt`). La página de códigos de error se genera desde el catálogo único, en el idioma del lector.
+
+### ADR-020 · Sesión de la web como token `web` — ✅ Decidida (implementación, 2026-10-03)
+
+**Decisión:** el login de la web crea un token de API normal con `name = 'web'`; el middleware le añade el scope `web`, el
+único que permite gestionar tokens (`/settings/tokens`). Los tokens del CLI/CI nunca tienen `web`.
+**Por qué:** una sola tabla y un solo camino de autenticación (hash, expiración, revocación); un token de CI filtrado no puede
+crear más tokens.
+
+### ADR-021 · Migraciones aditivas posteriores al esquema inicial — ✅ Decidida (implementación, 2026-10-03)
+
+`0002_registry_meta` (lista de revocación y firma `sg` guardada por versión, calculada una vez al publicar),
+`0003_reserved_brand_scopes` (`@genpm-dev`, `@genpm-com`, `@genpmhq` reservados, ADR-015) y `0004_source_status`
+(repo desaparecido o recreado, security §3.3). Todas aditivas: columnas con default o tablas nuevas, sin reescribir datos.
+
+### ADR-022 · Revocación de claves en el cliente, re-firma y modo solo lectura — ✅ Decidida (D6-S-08, 2026-10-03)
+
+Al preparar el runbook de rotación se vio que el cliente no aplicaba la lista de revocación (security §4.3). Decisiones:
+- **Revocación en el cliente (INV-8):** `plan`, `info`, `audit` y `mcp add` descargan `GET /v1/keys` y aceptan la lista solo
+  con firma válida de la clave raíz. La caché local es **monótona** (unión de todas las listas válidas vistas): un registry
+  comprometido no puede deshacer una revocación omitiendo la lista o sirviendo una antigua.
+- **Re-firma:** el cron horario re-firma por lotes las versiones no firmadas con la clave activa, así que se puede revocar la
+  clave anterior sin romper instalaciones. En el cliente, mismo commit + firma nueva verificada ⇒ `genpm add` solo actualiza
+  `sg` en el lock (`plan.resign`), sin tocar archivos.
+- **Modo solo lectura:** `READ_ONLY=1` en el Worker rechaza toda escritura con el nuevo `E_READ_ONLY` (503); leer e instalar
+  siguen funcionando. Herramienta de contención de security §9.
+- Toca INV-8: tests en `core/src/revocation.test.ts`, `core/test/install.test.ts` y `registry/test/{resign,read-only}.test.ts`.
+  **Requiere la revisión de seguridad de ADR-023** antes del lanzamiento. Procedimiento: [runbook.md](runbook.md).
+
+### ADR-023 · Fundador en solitario: revisión de seguridad sin segunda persona y `main` sin protección — ✅ Decidida (fundador, 2026-10-03)
+
+**Contexto:** el fundador trabaja solo y no contratará GitHub Team de momento. La regla «revisión de dos personas» para cambios
+que toquen los invariantes (AGENTS.md, security §10) no se puede cumplir, y un repo privado en el plan Free no permite proteger `main`.
+
+**Decisión:** hasta que haya una segunda persona con permisos de escritura, la revisión de dos personas se sustituye por:
+1. **Puertas automáticas en verde:** CI (lint, typecheck, tests en macOS/Linux/Windows), Semgrep, gitleaks y OSV-Scanner. Ningún release con una en rojo.
+2. **Revisión independiente asistida por IA** (`/code-review` de Claude Code u otra herramienta equivalente) sobre el diff que toque un invariante, con sus hallazgos resueltos o justificados por escrito en el PR.
+3. **Autorrevisión diferida:** el fundador revisa el diff con la checklist de security §10 al menos 24 h después de escribirlo, y lo deja anotado en la tarea.
+4. **Auditoría externa** antes de v1.0 (`V03-06`) que cubra todo lo aprobado por esta vía.
+
+Sin GitHub Team, `main` no tiene protección: el CI se ejecuta en cada push y su estado en rojo bloquea cualquier release (`release.yml`
+repite build y tests), pero nada impide técnicamente un push directo. Se revisará al abrir el código (los repos públicos sí permiten
+proteger ramas en el plan Free) o al incorporar a otra persona, momento en que se recupera la revisión de dos personas.
+
+### ADR-024 · Marco legal: España y UE — ✅ Decidida (fundador, 2026-10-03)
+
+GenPM lo presta el fundador como persona física con domicilio en España. Consecuencias implementadas en `apps/web/src/content/legal/`:
+- **Ley española y versión vinculante en español** (es, en y pt-BR publicados; el resto de idiomas muestra el inglés). Consumidores: juzgados de su domicilio.
+- **Aviso legal** (LSSI-CE art. 10) y **punto único de contacto** (DSA arts. 11-12): hello@genpm.net. Los datos del titular viven en `owner.json` y `pnpm --filter @genpm/web deploy` falla si falta alguno (`scripts/check-legal.mjs`).
+- **Privacidad** (RGPD art. 13 + LOPDGDD): tabla de datos/finalidad/base/plazo, encargados (Cloudflare, Piensa), GitHub como responsable independiente, transferencias vía Data Privacy Framework + CCT, derechos ante la AEPD, edad mínima 14 años. Primera capa informativa junto a cada formulario y al login.
+- **Cookies** (LSSI art. 22.2, guía AEPD): solo cookies técnicas y preferencias elegidas por el usuario ⇒ exentas de consentimiento y **sin banner**. Regla: cualquier cookie o almacenamiento no esencial (analítica de terceros, píxeles, embeds) exige antes un banner con rechazo tan fácil como aceptar y actualizar la política. La web no carga recursos de terceros salvo Turnstile en formularios (CSP `img-src 'self'`).
+- **Moderación (DSA arts. 14-18):** la Política de paquetes describe normas, detección, medidas, notificación sin cuenta, exposición de motivos y recurso. Como microempresa, GenPM está exento de las obligaciones de plataformas en línea de la sección 3 (art. 19), pero ofrece recurso igualmente.
+- La Ley de Accesibilidad (Directiva 2019/882) exime a microempresas de servicios; aun así la web cumple WCAG 2.1 AA (Lighthouse 100).
+- **Pendiente humano:** revisión de un abogado antes del lanzamiento con tráfico de pago (patrocinios) y valorar publicar un domicilio profesional en lugar del personal.
+
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

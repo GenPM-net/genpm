@@ -140,7 +140,7 @@ color de marca Graft Lime → **tinta** (`#0B0D11`) · Space Grotesk + Inter →
 
 ### 8.1 Logo
 
-**"Prompt-g"**: wordmark `genpm` en minúsculas, JetBrains Mono ExtraBold (tracking −5 %), seguido de un **caret de bloque** `▍` en `code` (`#5AA300`).
+**"Prompt-g"**: wordmark `genpm` en minúsculas, JetBrains Mono ExtraBold (tracking −5 %), seguido de un **caret de bloque** `▍` en `code` (`#549800`).
 El caret evoca la terminal y lo *generativo* (el cursor que escribe código). Isotipo: `g▍` en blanco sobre un cuadrado de tinta (radio 22 %).
 
 | Versión | Uso |
@@ -171,9 +171,9 @@ no sombras, no cambiar la fuente ni el color del caret. En prosa se escribe **Ge
 **Las tres C (color semántico de producto)**
 | Capa | Señal (gráficos) | Texto sobre blanco | Superficie oscura | Uso |
 |---|---|---|---|---|
-| **Code** — Graft Green | `code` `#5AA300` (3.2:1) | `code-ink` `#3B7300` (5.6:1) | `#C4F54A` | Caret del logo, capa Code, éxito |
+| **Code** — Graft Green | `code` `#549800` (3.2:1) | `code-ink` `#3B7300` (5.6:1) | `#C4F54A` | Caret del logo, capa Code, éxito |
 | **Context** — Signal Violet | `context` `#5B4BDB` (5.6:1) | `#5B4BDB` | `#8B7CFF` | Reglas IA, pestaña "AI Rules", SHA |
-| **Connections** — MCP Cyan | `mcp` `#0A7F90` (4.7:1) | `#0A7F90` | `#38D5E8` | MCP, integraciones |
+| **Connections** — MCP Cyan | `mcp` `#087584` (4.7:1) | `#087584` | `#38D5E8` | MCP, integraciones |
 
 **Estado**
 | Token | Light | Oscuro | Uso |
@@ -184,7 +184,7 @@ no sombras, no cambiar la fuente ni el color del caret. En prosa se escribe **Ge
 
 Reglas:
 - **Proporción por pantalla:** paper ~86 % · wash ~4 % · ink ~7 % · capas ≤ 3 %. Si las capas superan el 3 %, la pantalla está sobrecargada.
-- `code` (`#5AA300`) nunca como texto: usar `code-ink`. El color de capa va en un marcador (cuadro, nodo, borde); el texto sigue en tinta.
+- `code` (`#549800`) nunca como texto: usar `code-ink`. El color de capa va en un marcador (cuadro, nodo, borde); el texto sigue en tinta.
 - Botón primario: fondo `ink`, texto `paper`. No hay botones de color.
 - Patrocinado: borde y etiqueta `warning`; nunca verde (no debe confundirse con lo oficial/verificado).
 
@@ -258,7 +258,7 @@ No usamos fotos de stock. Imágenes = terminal, diffs, árboles de archivos y di
 
 ## 11. Badges
 
-Formato shields (`/v1/badge/@core/auth.svg`): izquierda `genpm` sobre `ink`, derecha versión sobre `code` (`#5AA300`) con texto `ink`.
+Formato shields (`/v1/badge/@core/auth.svg`): izquierda `genpm` sobre `ink`, derecha versión sobre `code` (`#549800`) con texto `ink`.
 Variantes: `installs` (sobre `wash`), `mcp` (`mcp` con texto blanco), `verified` (`code` con ✓).
 
 ## 12. Checklist de activos (para el Día 5–6)
