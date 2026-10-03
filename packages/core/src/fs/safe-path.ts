@@ -47,13 +47,18 @@ export async function safePath(root: string, rel: string): Promise<string> {
     if (isLast && !st.isDirectory() && !st.isFile()) throw fail('E_PATH_UNSAFE', { path: rel, reason: 'special_file' });
     // Defensa en profundidad (montajes, firmlinks): el lstat anterior ya rechaza los enlaces simbólicos.
     /* v8 ignore next */
-    if (!isInside(realRoot, await realpath(current))) throw fail('E_PATH_UNSAFE', { path: rel, reason: 'outside_root' });
+    if (!isInside(realRoot, await realpath(current)))
+      throw fail('E_PATH_UNSAFE', { path: rel, reason: 'outside_root' });
   }
   return target;
 }
 
 /** Igual que `safePath` pero también rechaza destinos dentro de `.git/`, `node_modules/` o `.genpm/`. */
-export async function safeDestPath(root: string, rel: string, reserved = ['.git', 'node_modules', '.genpm']): Promise<string> {
+export async function safeDestPath(
+  root: string,
+  rel: string,
+  reserved = ['.git', 'node_modules', '.genpm'],
+): Promise<string> {
   const first = rel.split('/')[0]!.toLowerCase();
   if (reserved.includes(first)) throw fail('E_PATH_UNSAFE', { path: rel, reason: 'reserved_dir' });
   return safePath(root, rel);

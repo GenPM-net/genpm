@@ -109,7 +109,10 @@ export async function isEmptyDir(p: string): Promise<boolean> {
 
 export type Detection = { root: string; clients: Client[]; packageManager: PackageManager | null };
 
-export async function detect(cwd: string, opts: { clients?: readonly string[]; home?: string } = {}): Promise<Detection> {
+export async function detect(
+  cwd: string,
+  opts: { clients?: readonly string[]; home?: string } = {},
+): Promise<Detection> {
   const root = await findRoot(cwd, opts.home);
   return { root, clients: await detectClients(root, opts.clients), packageManager: await detectPackageManager(root) };
 }

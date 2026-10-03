@@ -104,7 +104,22 @@ describe('safePath · security §8.2 corpus', () => {
 describe('safePath · properties (fast-check)', () => {
   it('never returns a path outside the root', async () => {
     const seg = fc.oneof(
-      fc.constantFrom('..', '.', '', '~', 'C:', '\\', '%2e%2e', 'src', 'lib', 'to-root', 'linked-out', 'é', 'e\u0301', 'CON'),
+      fc.constantFrom(
+        '..',
+        '.',
+        '',
+        '~',
+        'C:',
+        '\\',
+        '%2e%2e',
+        'src',
+        'lib',
+        'to-root',
+        'linked-out',
+        'é',
+        'e\u0301',
+        'CON',
+      ),
       fc.stringMatching(/^[a-z]{1,6}$/),
     );
     await fc.assert(
@@ -126,10 +141,14 @@ describe('safePath · properties (fast-check)', () => {
 
   it('rejects arbitrary unicode containing control or bidi characters', async () => {
     await fc.assert(
-      fc.asyncProperty(fc.string({ minLength: 1, maxLength: 20, unit: 'grapheme' }), fc.constantFrom('\u0007', '\u202e', '\u200b', '\u{e0041}'), async (s, bad) => {
-        const r = await code(safePath(root, `src/${s}${bad}`));
-        expect(r).not.toBeNull();
-      }),
+      fc.asyncProperty(
+        fc.string({ minLength: 1, maxLength: 20, unit: 'grapheme' }),
+        fc.constantFrom('\u0007', '\u202e', '\u200b', '\u{e0041}'),
+        async (s, bad) => {
+          const r = await code(safePath(root, `src/${s}${bad}`));
+          expect(r).not.toBeNull();
+        },
+      ),
       { numRuns: 200 },
     );
   });

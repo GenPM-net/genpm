@@ -73,7 +73,11 @@ describe('detect', () => {
     await writeFile(join(dir, 'package.json'), '{}');
     await writeFile(join(dir, 'package-lock.json'), '{}');
     await mkdir(join(dir, '.claude'));
-    expect(await detect(dir, { home: dir })).toEqual({ root: dir, clients: ['agents', 'claude'], packageManager: 'npm' });
+    expect(await detect(dir, { home: dir })).toEqual({
+      root: dir,
+      clients: ['agents', 'claude'],
+      packageManager: 'npm',
+    });
   });
   it('checks empty dirs', async () => {
     expect(await isEmptyDir(join(dir, 'nope'))).toBe(true);
@@ -86,11 +90,21 @@ describe('detect', () => {
 
 describe('.genpmrc', () => {
   it('parses INI with scoped registries', () => {
-    const rc = parseRc('# c\nregistry=https://r.example\n@acme:registry=https://acme.genpm.net\nclients=cursor, claude\nlang=es\nnoise\n; x');
-    expect(rc).toEqual({ registry: 'https://r.example', scopes: { acme: 'https://acme.genpm.net' }, clients: ['cursor', 'claude'], lang: 'es' });
+    const rc = parseRc(
+      '# c\nregistry=https://r.example\n@acme:registry=https://acme.genpm.net\nclients=cursor, claude\nlang=es\nnoise\n; x',
+    );
+    expect(rc).toEqual({
+      registry: 'https://r.example',
+      scopes: { acme: 'https://acme.genpm.net' },
+      clients: ['cursor', 'claude'],
+      lang: 'es',
+    });
   });
   it('merges layers and routes by scope', async () => {
-    const rc = mergeRc(parseRc('registry=https://user\nlang=en'), parseRc('@acme:registry=https://acme/\nclients=agents'));
+    const rc = mergeRc(
+      parseRc('registry=https://user\nlang=en'),
+      parseRc('@acme:registry=https://acme/\nclients=agents'),
+    );
     expect(registryFor('@acme/x', rc)).toBe('https://acme');
     expect(registryFor('@core/x', rc)).toBe('https://user');
     expect(registryFor('@core/x', rc, 'http://localhost:8787/')).toBe('http://localhost:8787');

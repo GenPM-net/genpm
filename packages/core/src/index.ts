@@ -1,0 +1,26 @@
+// @genpm/core — API pública que consumen el CLI y el servidor MCP (cli-mcp-spec §0).
+export * from './apply.js';
+export * from './author.js';
+export * from './busy.js';
+export * from './config.js';
+export * from './credentials.js';
+export * from './detect.js';
+export * from './doctor.js';
+export * from './errors.js';
+export { gitAtLeast, gitVersion } from './fetch/git.js';
+export * from './fetch/index.js';
+export * from './fs/io.js';
+export * from './fs/safe-path.js';
+export * from './inject/blocks.js';
+export * from './inject/context.js';
+export * from './inject/env.js';
+export * from './inject/mcp.js';
+export * from './inject/npm.js';
+export * from './keys.js';
+export * from './lock.js';
+export * from './mcp-ops.js';
+export * from './ops.js';
+export * from './plan.js';
+export * from './registry-client.js';
+export * from './revocation.js';
+export * from './version.js';
