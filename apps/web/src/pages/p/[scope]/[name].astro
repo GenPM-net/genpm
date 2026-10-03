@@ -1,0 +1,203 @@
+---
+// Página de paquete (web-ui-spec §5.3): tabs Overview, AI Rules, Files, MCP, Versions, Dependencies, Security +
+// panel de instalación (CLI | MCP prompt | Manual). Estados: deprecated, yanked, quarantined, source unavailable.
+import CommandBlock from '../../../components/CommandBlock.astro';
+import Ico from '../../../components/Ico.astro';
+import LayerBadges from '../../../components/LayerBadges.astro';
+import ReportDialog from '../../../components/ReportDialog.astro';
+import Base from '../../../layouts/Base.astro';
+import { ago, bytes, compact, shortSha, sparkline } from '../../../lib/format.js';
+import { highlight, langFor } from '../../../lib/highlight.js';
+import { href } from '../../../lib/i18n.js';
+import { renderMarkdown } from '../../../lib/markdown.js';
+import { loadPackage } from '../../../lib/package.js';
+
+const { scope, name: short } = Astro.params;
+const { t, locale, session } = Astro.locals;
+if (!scope?.startsWith('@') || !short) return Astro.rewrite('/404');
+const name = `${scope}/${short}`;
+const view = await loadPackage(name, Astro.url.searchParams.get('v'), locale);
+if (view === null) {
+  Astro.response.status = 404;
+  return Astro.rewrite('/404');
+}
+const quarantined = view === 'quarantined';
+const v = quarantined ? null : view;
+const m = v?.manifest;
+const p = v?.pkg;
+const scan = p?.security.scanStatus ?? 'pending';
+const scanLabel =
+  { passed: 'pkg.scanPassed', flagged: 'pkg.scanFlagged', failed: 'pkg.scanFailed', pending: 'pkg.scanPending' }[
+    scan
+  ] ?? 'pkg.scanPending';
+const blobBase = m
+  ? `https://github.com/${m.repo.replace('https://github.com/', '')}/blob/${m.commit}/${m.include === '.' ? '' : `${m.include}/`}`
+  : '';
+const rawBase = m
+  ? `https://raw.githubusercontent.com/${m.repo.replace('https://github.com/', '')}/${m.commit}/${m.include === '.' ? '' : `${m.include}/`}`
+  : '';
+const readmeHtml =
+  typeof v?.readme === 'string' ? renderMarkdown(v.readme, { baseUrl: blobBase, rawBaseUrl: rawBase }) : null;
+const rulesHtml =
+  typeof v?.rules === 'string' ? renderMarkdown(v.rules, { baseUrl: blobBase, rawBaseUrl: rawBase }) : null;
+const files = v?.tree ?? [];
+const totalBytes = files.reduce((n, f) => n + f.size, 0);
+const deps = Object.entries(m?.genpmDependencies ?? {});
+const npm = Object.entries(m?.npmDependencies ?? {});
+const selectedYanked = v?.selected?.yanked;
+const lastGood = v?.versions.find((x) => !x.yanked && x.scanStatus === 'passed');
+const latestPath = `/p/${name}`;
+const fileParam = Astro.url.searchParams.get('file');
+const shownFile = fileParam && files.some((f) => f.path === fileParam) ? fileParam : null;
+let fileHtml: string | null = null;
+if (m && shownFile) {
+  const { rawFile } = await import('../../../lib/github.js');
+  const content = await rawFile(m.repo, m.commit, `${m.include === '.' ? '' : `${m.include}/`}${shownFile}`, 300_000);
+  fileHtml = typeof content === 'string' ? highlight(content, langFor(shownFile), { lines: true }) : null;
+}
+const jsonLd = m && {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareSourceCode',
+  name: m.name,
+  description: m.summary,
+  codeRepository: m.repo,
+  version: m.version,
+  license: m.license,
+  programmingLanguage: 'TypeScript',
+  url: `https://genpm.net/p/${m.name}`,
+};
+Astro.response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+const badgeMd = `[![genpm](https://api.genpm.net/v1/badge/${name}.svg)](https://genpm.net/p/${name})`;
+---
+<Base title={name} description={m?.summary ?? undefined} canonical={latestPath} jsonLd={jsonLd || undefined} stale={v?.stale}>
+  <div class="wrap">
+    {quarantined || !m || !p ? (
+      <div class="phead"><h1>{name}</h1><div class="banner" style="--c:var(--danger)"><b>{t.t('web.pkg.quarantined')}</b><span>{t.t('web.pkg.quarantinedText')}</span></div></div>
+    ) : (
+      <>
+        <div class="pk-head">
+          <div class="crumb"><a href={href(locale, '/search')}>{t.t('web.pkg.packages')}</a>{p.category && <> / <a href={href(locale, `/search?k=${p.category}`)}>{p.category}</a></>}</div>
+          <div class="pk-title">
+            <h1><span><a href={href(locale, `/${scope}`)}>{scope}</a> /</span> {short}</h1>
+            <details class="lang vsel"><summary class="badge" aria-label={t.t('web.pkg.selectVersion')}>{m.version} ▾</summary><ul>{v.versions.map((x) => <li><a href={`${href(locale, latestPath)}?v=${x.v}`} aria-current={x.v === m.version ? 'true' : undefined}>{x.v}{x.yanked && <em>{t.t('web.pkg.yanked')}</em>}</a></li>)}</ul></details>
+            {p.publisher?.verified && <span class="badge ver"><Ico name="shield" />{t.t('web.common.verified')}</span>}
+            <span class="badge">{m.license}</span>
+            <div class="act"><button class="btn sm ghost" type="button" data-report>{t.t('web.pkg.report')}</button><a class="btn sm" href={m.repo} rel="noopener"><Ico name="gh" style="width:15px;height:15px" />{t.t('web.pkg.github')}</a></div>
+          </div>
+          <p>{m.summary}</p>
+          <div class="row" style="gap:6px"><LayerBadges files={files.length} tokens={v.rulesTokens} mcp={v.mcp.map((x) => x.n)} /><span class:list={['badge', { ok: scan === 'passed' }]} style={scan === 'passed' ? undefined : 'color:var(--warn)'}>{t.t(`web.${scanLabel}` as 'web.pkg.scanPassed')}</span></div>
+          {Astro.url.searchParams.get('reported') && <div class="banner" style="--c:var(--code-ink);margin-top:16px"><b>✔</b><span>{t.t('web.report.thanks', { id: Astro.url.searchParams.get('reported') ?? '' })}</span></div>}
+          {p.flags.deprecated && <div class="banner" style="--c:var(--warn);margin-top:16px"><b>{t.t('web.pkg.deprecated')}</b><span>{p.flags.deprecationMessage}</span></div>}
+          {selectedYanked && <div class="banner" style="--c:var(--danger);margin-top:16px"><b>{t.t('web.pkg.yanked')}</b><span>{t.t('web.pkg.yankedBanner', { reason: v.selected?.yankReason ?? '' })} {lastGood && <a href={`${href(locale, latestPath)}?v=${lastGood.v}`}>{t.t('web.pkg.latestGood', { version: lastGood.v })}</a>}</span></div>}
+          {p.sourceStatus === 'unavailable' && <div class="banner" style="--c:var(--warn);margin-top:16px"><b>{t.t('web.pkg.unavailable')}</b><span>{t.t('web.pkg.unavailableText')}</span></div>}
+        </div>
+        <div class="pk-body">
+          <div class="pk-main" data-tabs="hash">
+            <div class="pk-tabs" role="tablist" aria-label={t.t('web.pkg.tabs')}>
+              <button role="tab" type="button" aria-selected={shownFile ? 'false' : 'true'} data-tab="overview" tabindex={shownFile ? -1 : 0}>{t.t('web.pkg.overview')}</button>
+              <button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="rules" style="--c:var(--context)"><i></i>{t.t('web.pkg.rules')}</button>
+              <button role="tab" type="button" aria-selected={shownFile ? 'true' : 'false'} tabindex={shownFile ? 0 : -1} data-tab="files" style="--c:var(--code)"><i></i>{t.t('web.pkg.files')} <em>{files.length}</em></button>
+              <button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="mcp" style="--c:var(--mcp)"><i></i>MCP <em>{v.mcp.length}</em></button>
+              <button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="versions">{t.t('web.pkg.versions')} <em>{v.versions.length}</em></button>
+              <button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="dependencies">{t.t('web.pkg.dependencies')}</button>
+              <button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="security">{t.t('web.pkg.security')}</button>
+            </div>
+
+            <div class="pk-panel" data-panel="overview" hidden={!!shownFile}>
+              <h2 class="h3">{t.t('web.pkg.install')}</h2>
+              {!selectedYanked && <CommandBlock command={`npx genpm add ${name}${m.version !== p.distTags.latest ? `@${m.version}` : ''}`} pkg={name} />}
+              <h2 class="h3">{t.t('web.pkg.whatYouGet')}</h2>
+              <ul class="dots">
+                <li>{t.t('web.pkg.getSource', { dest: m.dest, files: files.length })}{totalBytes > 0 && ` (${bytes(locale, totalBytes)})`}</li>
+                <li>{t.t('web.pkg.getRules', { dest: m.dest })}</li>
+                {m.env.length > 0 && <li>{t.t('web.pkg.getEnv', { vars: m.env.join(', ') })}</li>}
+                {deps.length > 0 && <li>{t.t('web.pkg.getDeps', { deps: deps.map(([d]) => d).join(', ') })}</li>}
+              </ul>
+              <h2 class="h3">{t.t('web.pkg.readme')}</h2>
+              {readmeHtml ? <div class="md" set:html={readmeHtml} /> : <p class="hint">{v.readme === undefined ? t.t('web.common.sourceUnavailableTab') : t.t('web.pkg.noReadme')}</p>}
+            </div>
+
+            <div class="pk-panel" data-panel="rules" hidden>
+              <div class="row" style="gap:6px"><span class="badge ctx"><i></i>{v.rulesTokens != null ? t.t('web.common.tokens', { count: compact(locale, v.rulesTokens) }) : '—'}</span><span class="badge">→ {m.dest}/AGENTS.md</span><span class="badge">→ .cursor/rules/genpm-{name.slice(1).replace('/', '-')}.mdc</span></div>
+              <p>{t.t('web.pkg.rulesIntro', { dest: m.dest })}</p>
+              {p.security.findings.filter((f) => f.path === m.context).map((f) => <div class="finding">{f.rule} · {f.detail}{f.line && ` (L${f.line})`}</div>)}
+              {rulesHtml ? (
+                <div data-tabs>
+                  <div class="seg" role="tablist"><button role="tab" type="button" aria-selected="true" data-tab="r">{t.t('web.pkg.rulesRendered')}</button><button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="raw">{t.t('web.pkg.rulesRaw')}</button></div>
+                  <div data-panel="r" class="md" set:html={rulesHtml} />
+                  <div data-panel="raw" hidden set:html={highlight(v.rules as string, 'markdown')} />
+                </div>
+              ) : <p class="hint">{v.rules === undefined ? t.t('web.common.sourceUnavailableTab') : t.t('web.pkg.noRules')}</p>}
+            </div>
+
+            <div class="pk-panel" data-panel="files" hidden={!shownFile}>
+              <p>{t.t('web.pkg.filesIntro')} <button type="button" class="sha" data-copysha={m.commit}><Ico name="commit" />{shortSha(m.commit)}</button></p>
+              {v.tree === undefined ? <p class="hint">{t.t('web.common.sourceUnavailableTab')}</p> : (
+                <>
+                  <nav class="tree" aria-label={t.t('web.pkg.files')}>
+                    <div class="dir"><span>{m.dest}/</span><span>{bytes(locale, totalBytes)}</span></div>
+                    {files.slice(0, 400).map((f) => <a href={`${href(locale, latestPath)}?${new URLSearchParams({ ...(m.version !== p.distTags.latest ? { v: m.version } : {}), file: f.path })}#files`} aria-current={f.path === shownFile ? 'true' : undefined}><span>&nbsp;&nbsp;{f.path}</span><span>{bytes(locale, f.size)}</span></a>)}
+                  </nav>
+                  {shownFile && <div class="term viewer"><div class="bar"><span>{m.dest}/{shownFile}</span><span>{t.t('web.pkg.readOnly')} · {shortSha(m.commit)}</span></div>{fileHtml ? <Fragment set:html={fileHtml} /> : <p class="hint" style="padding:14px">{t.t('web.common.sourceUnavailableTab')}</p>}</div>}
+                </>
+              )}
+            </div>
+
+            <div class="pk-panel" data-panel="mcp" hidden>
+              {v.mcp.length === 0 ? <p>{t.t('web.pkg.mcpNone')}</p> : (
+                <>
+                  {v.mcp.map((s) => <dl class="dl"><div><dt>{t.t('web.pkg.mcpServer')}</dt><dd class="mono"><b>{s.n}</b></dd></div><div><dt>{t.t('web.pkg.mcpCommand')}</dt><dd class="mono" style="white-space:nowrap;overflow-x:auto">{s.command}</dd></div>{s.env.length > 0 && <div><dt>{t.t('web.pkg.mcpEnv')}</dt><dd class="mono">{s.env.join(' ')}</dd></div>}</dl>)}
+                  <div class="banner" style="--c:var(--mcp)"><b>{t.t('web.pkg.mcpConsent')}</b><span>{t.t('web.pkg.mcpConsentText', { name })}</span></div>
+                </>
+              )}
+            </div>
+
+            <div class="pk-panel" data-panel="versions" hidden>
+              <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.version')}</th><th>{t.t('web.pkg.commit')}</th><th>{t.t('web.pkg.published')}</th><th>{t.t('web.pkg.scan')}</th></tr></thead><tbody>
+                {v.versions.map((x) => <tr class={x.yanked ? 'y' : undefined}><td><a href={`${href(locale, latestPath)}?v=${x.v}`}>{x.v}</a></td><td><span class="sha">{shortSha(x.c)}</span></td><td>{ago(locale, x.publishedAt)}</td><td style={`color:${x.yanked ? 'var(--danger)' : x.scanStatus === 'passed' ? 'var(--code-ink)' : 'var(--warn)'}`}>{x.yanked ? `✖ ${t.t('web.pkg.yanked')}${x.yankReason ? ` · ${x.yankReason}` : ''}` : `${x.scanStatus === 'passed' ? '✔' : '▲'} ${t.t(`common.scan.${x.scanStatus}` as 'common.scan.passed')}`}</td></tr>)}
+              </tbody></table></div>
+            </div>
+
+            <div class="pk-panel" data-panel="dependencies" hidden>
+              <dl class="dl">
+                <div><dt>{t.t('web.pkg.genpmDeps')}</dt><dd>{deps.length ? deps.map(([d, r]) => <a href={href(locale, `/p/${d}`)} style="margin-right:12px">{d} {r}</a>) : <span style="color:var(--ink-3)">{t.t('web.common.none')}</span>}</dd></div>
+                <div><dt>{t.t('web.pkg.npmDeps')}</dt><dd class="mono">{npm.length ? npm.map(([d, r]) => <a href={`https://www.npmjs.com/package/${d}`} rel="nofollow noopener" style="margin-right:12px">{d} {r}</a>) : <span style="color:var(--ink-3)">{t.t('web.common.none')}</span>}</dd></div>
+                <div><dt>{t.t('web.pkg.proposed')}</dt><dd>{t.t('web.pkg.proposedText')}</dd></div>
+              </dl>
+            </div>
+
+            <div class="pk-panel" data-panel="security" hidden>
+              <dl class="dl">
+                <div><dt>{t.t('web.pkg.secScan')}</dt><dd style={scan === 'passed' ? 'color:var(--code-ink)' : 'color:var(--warn)'}>{t.t(`web.${scanLabel}` as 'web.pkg.scanPassed')} · {t.t('web.pkg.findings', { count: p.security.findings.length })}</dd></div>
+                <div><dt>{t.t('web.pkg.secCommit')}</dt><dd class="mono">{t.t('web.pkg.secCommitText', { ref: m.ref, sha: m.commit })}</dd></div>
+                <div><dt>{t.t('web.pkg.secScripts')}</dt><dd>{t.t('web.pkg.secScriptsText')}</dd></div>
+                <div><dt>{t.t('web.pkg.secLicense')}</dt><dd>{m.license}</dd></div>
+                <div><dt>{t.t('web.pkg.secReport')}</dt><dd>{t.t('web.pkg.secReportText')} <button type="button" style="border-bottom:1px solid var(--line-2)" data-report>{t.t('web.pkg.secReportLink')}</button></dd></div>
+              </dl>
+              {p.security.findings.map((f) => <div class="finding">{f.severity} · {f.rule}{f.path && ` · ${f.path}`} · {f.detail}</div>)}
+            </div>
+          </div>
+
+          <aside class="side" data-tabs aria-label={t.t('web.pkg.installPanel')}>
+            <div class="seg" role="tablist" aria-label={t.t('web.pkg.installPanel')}><button role="tab" type="button" aria-selected="true" data-tab="cli">{t.t('web.pkg.cli')}</button><button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="prompt">{t.t('web.pkg.prompt')}</button><button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="man">{t.t('web.pkg.manual')}</button></div>
+            <div data-panel="cli" style="display:grid;gap:10px"><div class="runner" role="group" aria-label={t.t('web.pkg.runner')}><button type="button" aria-pressed="true" data-run="npx">npx</button><button type="button" aria-pressed="false" data-run="pnpm dlx">pnpm dlx</button><button type="button" aria-pressed="false" data-run="bunx">bunx</button></div><CommandBlock command={`npx genpm add ${name}`} pkg={name} /></div>
+            <div data-panel="prompt" hidden><div class="term"><div class="bar"><span>{t.t('web.pkg.pasteAgent')}</span><button class="cp" type="button" data-copy="pk-prompt" data-event="copy_install" data-pkgname={name}>{t.t('web.common.copy')}</button></div><pre id="pk-prompt" style="white-space:pre-wrap">{t.t('web.pkg.promptText', { name })}</pre></div></div>
+            <div data-panel="man" hidden><div class="term"><div class="bar"><span>{t.t('web.pkg.withoutCli')}</span><button class="cp" type="button" data-copy="pk-man">{t.t('web.common.copy')}</button></div><pre id="pk-man" style="white-space:pre-wrap">{`git init tmp && cd tmp\ngit fetch --depth 1 ${m.repo} ${m.commit}\ngit checkout FETCH_HEAD\n# copy ${m.include === '.' ? '.' : m.include} into ${m.dest}`}</pre></div></div>
+            <dl class="kv">
+              <dt>{t.t('web.pkg.injects')}</dt><dd>{m.dest}</dd>
+              <dt>{t.t('web.pkg.commit')}</dt><dd><button type="button" class="sha" data-copysha={m.commit}><Ico name="commit" />{shortSha(m.commit)}</button></dd>
+              <dt>{t.t('web.pkg.tag')}</dt><dd>{m.ref}</dd>
+              {deps.length > 0 && <><dt>{t.t('web.pkg.requires')}</dt><dd>{deps.map(([d, r]) => <a href={href(locale, `/p/${d}`)}>{d} {r}</a>)}</dd></>}
+              {npm.length > 0 && <><dt>npm</dt><dd>{npm.map(([d, r]) => <span>{d} {r}</span>)}</dd></>}
+              {m.env.length > 0 && <><dt>{t.t('web.pkg.env')}</dt><dd>{m.env.join(' ')}</dd></>}
+              <dt>{t.t('web.pkg.installs')}</dt><dd><Fragment set:html={sparkline(p.stats.weekly.length ? p.stats.weekly : [0, p.stats.installs30d])} /><span class="tnum">{t.t('web.common.perMonth', { count: compact(locale, p.stats.installs30d) })}</span></dd>
+              <dt>{t.t('web.pkg.published')}</dt><dd>{t.t('web.pkg.publishedBy', { when: ago(locale, v.selected?.publishedAt ?? p.updatedAt), by: p.publisher?.handle ?? '' })}</dd>
+            </dl>
+            <div class="term"><div class="bar"><span>{t.t('web.pkg.badge')}</span><button class="cp" type="button" data-copy="pk-badge">{t.t('web.common.copy')}</button></div><pre id="pk-badge" style="white-space:pre-wrap;word-break:break-all">{badgeMd}</pre></div>
+          </aside>
+        </div>
+      </>
+    )}
+  </div>
+  {v && m && <ReportDialog name={name} version={m.version} versions={v.versions.map((x) => x.v)} loggedIn={!!session} />}
+</Base>

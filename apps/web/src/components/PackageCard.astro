@@ -1,0 +1,18 @@
+---
+import { compact } from '../lib/format.js';
+import { href } from '../lib/i18n.js';
+import type { SearchRow } from '../lib/registry.js';
+import Ico from './Ico.astro';
+import LayerBadges from './LayerBadges.astro';
+
+interface Props {
+  p: SearchRow;
+}
+const { p } = Astro.props;
+const { t, locale } = Astro.locals;
+---
+<a class="pcard" href={href(locale, `/p/${p.name}`)}>
+  <div class="nm"><b>{p.name}</b><span class="v">{p.version}</span><span class="r">{p.publisher.verified && <span class="vmark"><Ico name="shield" />{t.t('web.common.verified')}</span>}</span></div>
+  <p>{p.summary}</p>
+  <div class="ft"><div class="row"><LayerBadges short mcp={p.hasMcp ? ['mcp'] : []} /></div><span class="inst tnum">{t.t('web.common.perMonth', { count: compact(locale, p.installs30d) })}</span></div>
+</a>

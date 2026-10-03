@@ -1,0 +1,11 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "types": ["@cloudflare/workers-types"],
+    "noUncheckedIndexedAccess": true
+  },
+  "include": [".astro/types.d.ts", "src", "test"],
+  "exclude": ["dist"]
+}

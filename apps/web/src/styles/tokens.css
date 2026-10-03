@@ -1,0 +1,72 @@
+/* Generado por scripts/brand/gen-tokens.mjs desde docs/design/tokens.json. No editar a mano. */
+
+:root {
+  --color-paper: #FFFFFF;
+  --color-wash: #F6F7F9;
+  --color-line: #E6E8EC;
+  --color-line-2: #CDD2D9;
+  --color-ink: #0B0D11;
+  --color-ink-2: #4A505C;
+  --color-ink-3: #6A7180;
+  --color-code: #549800;
+  --color-code-ink: #3B7300;
+  --color-context: #5B4BDB;
+  --color-mcp: #087584;
+  --color-warning: #A15F00;
+  --color-danger: #C62828;
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --max-width: 1200px;
+  --gutter: 24px;
+  --gutter-sm: 16px;
+  --header: 56px;
+  --radius-control: 4px;
+  --radius-iso: 22%;
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --text-display: 64px;
+  --text-display--line-height: 0.98;
+  --text-h1: 40px;
+  --text-h1--line-height: 1.02;
+  --text-h2: 30px;
+  --text-h2--line-height: 1.05;
+  --text-h3: 17px;
+  --text-h3--line-height: 1.3;
+  --text-body: 15px;
+  --text-body--line-height: 1.55;
+  --text-small: 13px;
+  --text-small--line-height: 1.5;
+  --text-mono: 12.5px;
+  --text-mono--line-height: 1.75;
+  --text-label: 11px;
+  --text-label--line-height: 1.4;
+  --text-wordmark: undefined;
+  --text-wordmark--line-height: 1.5;
+}
+
+:root[data-theme="dark"] {
+  --color-paper: #0B0D11;
+  --color-wash: #14171C;
+  --color-line: #2A2E36;
+  --color-line-2: #2A2E36;
+  --color-ink: #EDEEF0;
+  --color-ink-2: #A3A9B6;
+  --color-ink-3: #8C93A0;
+  --color-code: #C4F54A;
+  --color-code-ink: #C4F54A;
+  --color-context: #8B7CFF;
+  --color-mcp: #38D5E8;
+  --color-warning: #F5B83D;
+  --color-danger: #FF6B6B;
+}
+

@@ -1,0 +1,17 @@
+---
+// Las tres C con texto además de color (accesibilidad).
+interface Props {
+  files?: number | null;
+  tokens?: number | null;
+  mcp?: string[];
+  short?: boolean;
+}
+const { files, tokens, mcp = [], short } = Astro.props;
+const t = Astro.locals.t;
+const loc = t.locale;
+const tok =
+  tokens == null ? null : new Intl.NumberFormat(loc, { notation: 'compact', maximumFractionDigits: 1 }).format(tokens);
+---
+<span class="badge code"><i></i>{t.t('common.layers.code')}{!short && files != null && <em>{t.t('web.common.files', { count: files })}</em>}</span>
+<span class="badge ctx"><i></i>{short ? (tok ?? t.t('common.layers.context')) : t.t('common.layers.context')}{!short && tok && <em>{t.t('web.common.tokens', { count: tok })}</em>}</span>
+{mcp.length > 0 && <span class="badge mcp"><i></i>{!short && <>MCP <em>{mcp.join(', ')}</em></>}{short && mcp.join(', ')}</span>}

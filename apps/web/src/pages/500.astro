@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/i18n.js';
+
+const { t, locale } = Astro.locals;
+---
+<Base title={t.t('web.errors.serverTitle')} noindex>
+  <div class="wrap"><div class="phead" style="padding-block:96px">
+    <span class="k">500</span><h1>{t.t('web.errors.serverTitle')}</h1><p>{t.t('web.errors.serverText')}</p>
+    <div class="row" style="margin-top:24px"><a class="btn primary" href={href(locale, '/')}>{t.t('web.errors.home')}</a></div>
+  </div></div>
+</Base>

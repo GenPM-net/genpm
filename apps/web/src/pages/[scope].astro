@@ -1,0 +1,38 @@
+---
+// Publisher /@scope (web-ui-spec §5.4): cabecera del dueño, verificado, totales y grid de paquetes.
+import Ico from '../components/Ico.astro';
+import PackageCard from '../components/PackageCard.astro';
+import Base from '../layouts/Base.astro';
+import { compact } from '../lib/format.js';
+import { registryGet, type SearchRow } from '../lib/registry.js';
+
+const { scope } = Astro.params;
+const { t, locale } = Astro.locals;
+if (!scope?.startsWith('@')) return Astro.rewrite('/404');
+const res = await registryGet<{
+  scope: string;
+  reserved: boolean;
+  gitOwner: string;
+  publisher: { handle: string; displayName: string | null; avatarUrl: string | null; verified: boolean } | null;
+  packages: SearchRow[];
+  totals: { packages: number; installs30d: number };
+}>(`/v1/scopes/${scope}`, locale);
+if (!res.data) return Astro.rewrite('/404');
+const d = res.data;
+Astro.response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+---
+<Base title={d.scope} stale={res.stale}>
+  <div class="wrap">
+    <div class="phead">
+      <h1>{d.scope}</h1>
+      <div class="row" style="gap:8px">
+        {d.publisher?.verified && <span class="badge ver"><Ico name="shield" />{t.t('web.common.verified')}</span>}
+        {d.reserved && <span class="badge">{t.t('web.publisher.reserved')}</span>}
+        <a class="badge" href={`https://github.com/${d.gitOwner}`} rel="noopener"><Ico name="gh" style="width:13px;height:13px" />{d.gitOwner}</a>
+        <span class="badge">{t.t('web.publisher.packages', { count: d.totals.packages })}</span>
+        <span class="badge">{t.t('web.publisher.installs', { count: compact(locale, d.totals.installs30d) })}</span>
+      </div>
+    </div>
+    <div class="cards" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));margin-bottom:64px">{d.packages.map((p) => <PackageCard p={p} />)}</div>
+  </div>
+</Base>

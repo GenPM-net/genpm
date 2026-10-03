@@ -1,0 +1,33 @@
+---
+import owner from '../content/legal/owner.json';
+import Base from '../layouts/Base.astro';
+import { urlPrefix } from '../lib/i18n.js';
+import { renderMarkdown } from '../lib/markdown.js';
+
+interface Props {
+  doc: 'terms' | 'privacy' | 'policy' | 'cookies' | 'legal';
+}
+const { t, locale } = Astro.locals;
+const files = import.meta.glob('../content/legal/*/*.md', { query: '?raw', import: 'default', eager: true }) as Record<
+  string,
+  string
+>;
+const pick = (loc: string) => files[`../content/legal/${loc}/${Astro.props.doc}.md`];
+const raw = pick(locale) ?? pick(locale.split('-')[0]!) ?? pick('en')!;
+const m = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/)!;
+const meta = Object.fromEntries(
+  m[1]!.split('\n').map((l) => [l.slice(0, l.indexOf(':')).trim(), l.slice(l.indexOf(':') + 1).trim()]),
+);
+// Datos del titular (owner.json): un dato vacío se muestra como [campo] y bloquea el despliegue a producción.
+const body = m[2]!.replace(/\{\{(\w+)\}\}/g, (_, k: string) => (owner as Record<string, string>)[k] || `[${k}]`);
+// Enlaces internos al idioma actual: /privacy → /es/privacy.
+const html = renderMarkdown(body, { trusted: true }).replace(/href="\/(?!\/)/g, `href="${urlPrefix(locale)}/`);
+Astro.response.headers.set('Cache-Control', 'public, max-age=86400');
+---
+<Base title={meta['title']} canonical={`/${Astro.props.doc}`}>
+  <div class="wrap"><article class="dbody md" style="max-width:760px;padding-block:48px">
+    <h1>{meta['title']}</h1>
+    <p class="hint">{t.t('web.legal.updated', { date: new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(meta['updated']!)) })}{locale !== 'es' && ` · ${t.t('web.legal.binding')}`}</p>
+    <Fragment set:html={html} />
+  </article></div>
+</Base>

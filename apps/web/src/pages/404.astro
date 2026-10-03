@@ -1,0 +1,23 @@
+---
+// 404 con búsqueda sugerida por la ruta pedida (web-ui-spec §7).
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/i18n.js';
+
+const { t, locale, path } = Astro.locals;
+const guess = decodeURIComponent(path.split('/').filter(Boolean).pop() ?? '')
+  .replace(/[^a-z0-9@/-]/gi, ' ')
+  .trim()
+  .slice(0, 60);
+Astro.response.status = 404;
+---
+<Base title={t.t('web.errors.notFoundTitle')} noindex>
+  <div class="wrap"><div class="phead" style="padding-block:96px">
+    <span class="k">404</span>
+    <h1>{t.t('web.errors.notFoundTitle')}</h1>
+    <p>{t.t('web.errors.notFoundText')}</p>
+    <div class="row" style="margin-top:24px">
+      {guess && <a class="btn primary" href={`${href(locale, '/search')}?q=${encodeURIComponent(guess)}`}>{t.t('web.errors.searchFor', { query: guess })}</a>}
+      <a class="btn" href={href(locale, '/')}>{t.t('web.errors.home')}</a>
+    </div>
+  </div></div>
+</Base>

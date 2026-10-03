@@ -1,0 +1,28 @@
+---
+// Formulario de lead (sponsors/enterprise) con honeypot; se envía por POST a /lead (proxy a /v1/leads).
+import { env } from 'cloudflare:workers';
+import owner from '../content/legal/owner.json';
+import { href } from '../lib/i18n.js';
+
+interface Props {
+  kind: 'sponsor' | 'enterprise';
+  fields: Array<{ name: string; label: string; textarea?: boolean }>;
+  submit: string;
+  sent?: string | null;
+}
+const { kind, fields, submit, sent } = Astro.props;
+const { t, locale } = Astro.locals;
+---
+{sent ? <div class="banner" style="--c:var(--code-ink)"><b>✔</b><span>{sent}</span></div> : (
+  <form method="post" action={href(locale, '/lead')} class="builder" style="grid-template-columns:1fr;max-width:560px">
+    <input type="hidden" name="kind" value={kind} />
+    <label class="sr" aria-hidden="true">website<input name="website" tabindex="-1" autocomplete="off" /></label>
+    <label class="field">{t.t('web.sponsors.email')}<input name="email" type="email" required maxlength="254" autocomplete="email" /></label>
+    <label class="field">{t.t('web.sponsors.company')}<input name="company" maxlength="120" autocomplete="organization" /></label>
+    {fields.map((f) => <label class="field">{f.label}{f.textarea ? <textarea name={f.name} rows="4" maxlength="500" style="border:1px solid var(--line-2);border-radius:var(--r);padding:8px"></textarea> : <input name={f.name} maxlength="120" />}</label>)}
+{env.TURNSTILE_SITE_KEY && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+    {env.TURNSTILE_SITE_KEY && <div class="cf-turnstile" data-sitekey={env.TURNSTILE_SITE_KEY} data-theme="light"></div>}
+    <p class="hint" style="font-size:12.5px;max-width:60ch">{t.t('web.legal.formNotice', { owner: owner.name || 'GenPM' })} <a href={href(locale, '/privacy')} style="text-decoration:underline">{t.t('web.legal.privacyLink')}</a></p>
+    <button class="btn primary" type="submit">{submit}</button>
+  </form>
+)}

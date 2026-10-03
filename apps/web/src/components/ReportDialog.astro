@@ -1,0 +1,37 @@
+---
+// Reportar paquete (web-ui-spec §5.12): modal con login, motivo, versión y detalles → POST /report (proxy a /v1/reports).
+import { href } from '../lib/i18n.js';
+
+interface Props {
+  name: string;
+  version: string;
+  versions: string[];
+  loggedIn: boolean;
+}
+const { name, version, versions, loggedIn } = Astro.props;
+const { t, locale } = Astro.locals;
+const reasons = ['malware', 'prompt_injection', 'spam', 'typosquat', 'license', 'other'] as const;
+---
+<dialog class="modal" id="report" aria-labelledby="report-title">
+  {loggedIn ? (
+    <form method="post" action={href(locale, '/report')}>
+      <h2 id="report-title" style="font-size:20px">{t.t('web.report.title', { name })}</h2>
+      <input type="hidden" name="name" value={name} />
+      <label class="field">{t.t('web.report.reason')}<select class="sel" name="reason" required>{reasons.map((r) => <option value={r}>{t.raw(`web.report.${r}`)}</option>)}</select></label>
+      <label class="field">{t.t('web.report.version')}<select class="sel" name="version">{versions.map((v) => <option value={v} selected={v === version}>{v}</option>)}</select></label>
+      <label class="field">{t.t('web.report.details')}<textarea name="details" rows="4" maxlength="2000" style="border:1px solid var(--line-2);border-radius:var(--r);padding:8px"></textarea></label>
+      <p class="hint" style="font-size:12.5px;max-width:60ch">{t.t('web.legal.reportNotice')} <a href={href(locale, '/privacy')} style="text-decoration:underline">{t.t('web.legal.privacyLink')}</a></p>
+      <div class="row"><button class="btn primary" type="submit">{t.t('web.report.send')}</button><button class="btn ghost" type="button" data-close>{t.t('web.report.cancel')}</button></div>
+    </form>
+  ) : (
+    <form method="dialog"><h2 id="report-title" style="font-size:20px">{t.t('web.report.title', { name })}</h2><p>{t.t('web.report.loginFirst')}</p><div class="row"><a class="btn primary" href={`${href(locale, '/login')}?next=${encodeURIComponent(`/p/${name}`)}`}>{t.t('web.login.cta')}</a><button class="btn ghost" type="submit">{t.t('web.report.cancel')}</button></div></form>
+  )}
+</dialog>
+<script>
+  const d = document.getElementById('report') as HTMLDialogElement | null;
+  document.addEventListener('click', (e) => {
+    const el = e.target as HTMLElement;
+    if (el.closest('[data-report]')) d?.showModal();
+    if (el.closest('[data-close]')) d?.close();
+  });
+</script>

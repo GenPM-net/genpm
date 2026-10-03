@@ -1,0 +1,42 @@
+---
+// /dashboard (web-ui-spec §5.9): mis paquetes y actividad reciente.
+import Base from '../layouts/Base.astro';
+import { requireSession } from '../lib/auth.js';
+import { ago, compact } from '../lib/format.js';
+import { href } from '../lib/i18n.js';
+import { registryFetch } from '../lib/registry.js';
+
+const gate = requireSession(Astro);
+if (gate) return gate;
+const { t, locale, session } = Astro.locals;
+const [pk, act] = await Promise.all([
+  registryFetch('/v1/me/packages', { token: session!.token, locale }).then((r) =>
+    r.ok ? r.json() : { packages: [] },
+  ) as Promise<{
+    packages: Array<{ name: string; version: string | null; installs30d: number; scan: string | null; status: string }>;
+  }>,
+  registryFetch('/v1/me/activity', { token: session!.token, locale }).then((r) =>
+    r.ok ? r.json() : { activity: [] },
+  ) as Promise<{
+    activity: Array<{ action: string; target: string; metadata: Record<string, unknown> | null; at: string }>;
+  }>,
+]);
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+---
+<Base title={t.t('web.dashboard.title')} noindex>
+  <div class="wrap">
+    <div class="phead"><h1>{t.t('web.dashboard.title')}</h1><div class="row"><a class="btn sm" href={href(locale, '/settings/tokens')}>{t.t('web.nav.tokens')}</a><form method="post" action="/logout"><button class="btn sm ghost" type="submit">{t.t('web.nav.signOut')}</button></form></div></div>
+    <section class="sec"><div class="sec-h"><h2>{t.t('web.dashboard.myPackages')}</h2></div>
+      {pk.packages.length === 0 ? (
+        <div class="empty"><p>{t.t('web.dashboard.empty')}</p><a class="btn primary" href={href(locale, '/publish')}>{t.t('web.dashboard.emptyCta')}</a></div>
+      ) : (
+        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.pkg.version')}</th><th>{t.t('web.pkg.scan')}</th><th>{t.t('web.pkg.installs')}</th></tr></thead><tbody>
+          {pk.packages.map((p) => <tr><td><a href={href(locale, `/p/${p.name}`)}>{p.name}</a></td><td>{p.version ?? '—'}</td><td>{p.scan ?? '—'}</td><td class="tnum">{compact(locale, p.installs30d)}</td></tr>)}
+        </tbody></table></div>
+      )}
+    </section>
+    <section class="sec"><div class="sec-h"><h2>{t.t('web.dashboard.activity')}</h2></div>
+      <ul class="checklist">{act.activity.map((a) => <li><code>{a.action}</code> {a.metadata && typeof a.metadata['n'] === 'string' ? `${a.metadata['n']}@${a.metadata['v'] ?? ''}` : ''} · {ago(locale, a.at)}</li>)}</ul>
+    </section>
+  </div>
+</Base>

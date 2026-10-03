@@ -1,0 +1,21 @@
+---
+// /security: invariantes, cómo reportar y enlace a advisories y security.txt (security §9, web-ui-spec §3).
+import Ico from '../components/Ico.astro';
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/i18n.js';
+
+const { t, locale } = Astro.locals;
+const inv = ['inv1', 'inv2', 'inv3', 'inv4', 'inv5', 'inv6', 'inv7', 'inv8', 'inv9', 'inv10'] as const;
+Astro.response.headers.set('Cache-Control', 'public, max-age=3600');
+---
+<Base title={t.t('web.footer.security')} description={t.t('web.security.lede')}>
+  <div class="wrap">
+    <div class="phead"><span class="eyebrow" style="justify-self:start"><Ico name="shield" style="width:13px;height:13px" />{t.t('web.footer.security')}</span><h1>{t.t('web.security.title')}</h1><p>{t.t('web.security.lede')}</p></div>
+    <section class="sec"><div class="sec-h"><h2>{t.t('web.security.invariants')}</h2></div>
+      <ol class="checklist">{inv.map((k, i) => <li><code>INV-{i + 1}</code> {t.raw(`web.security.${k}`)}</li>)}</ol>
+    </section>
+    <section class="sec" id="report"><div class="sec-h"><div><h2>{t.t('web.security.reportTitle')}</h2><p>{t.t('web.security.reportText')}</p></div></div>
+      <div class="row"><a class="btn primary" href="mailto:hello@genpm.net?subject=%5BSECURITY%5D">hello@genpm.net · [SECURITY]</a><a class="btn" href="/.well-known/security.txt">security.txt</a><a class="btn" href={href(locale, '/security/advisories')}>{t.t('web.security.advisories')}</a></div>
+    </section>
+  </div>
+</Base>

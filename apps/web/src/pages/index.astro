@@ -1,0 +1,112 @@
+---
+// Home (web-ui-spec §5.1): hero CLI|MCP, tres capas, featured + trending, cómo funciona, MCP por cliente, seguridad, CTA.
+import ClientsBlock from '../components/ClientsBlock.astro';
+import CommandBlock from '../components/CommandBlock.astro';
+import Ico from '../components/Ico.astro';
+import PackageCard from '../components/PackageCard.astro';
+import Base from '../layouts/Base.astro';
+import { compact, sparkline } from '../lib/format.js';
+import { href } from '../lib/i18n.js';
+import { registryGet, type SearchRow, type Stats } from '../lib/registry.js';
+
+const { t, locale } = Astro.locals;
+const [feat, stats] = await Promise.all([
+  registryGet<{ featured: SearchRow[]; trending: SearchRow[] }>('/v1/featured', locale),
+  registryGet<Stats>('/v1/stats', locale),
+]);
+const featured = feat.data?.featured.slice(0, 3) ?? [];
+const trending = feat.data?.trending.slice(0, 5) ?? [];
+const s = stats.data ?? { packages: 0, publishers: 0, installs30d: 0, installsTotal: 0, withMcp: 0 };
+Astro.response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'GenPM',
+  url: 'https://genpm.net',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://genpm.net/search?q={q}',
+    'query-input': 'required name=q',
+  },
+};
+---
+<Base stale={feat.stale} packages={s.packages} jsonLd={jsonLd}>
+  <div class="wrap"><section class="hero">
+    <div style="min-width:0">
+      <span class="eyebrow"><i></i>{t.t('web.home.eyebrow')}</span>
+      <h1 class="h1">{t.t('web.home.title')}<span class="caret blink" aria-hidden="true"></span></h1>
+      <p class="lede">{t.t('web.home.lede')}</p>
+      <div class="cta" data-tabs>
+        <div class="top2"><div class="seg" role="tablist" aria-label={t.t('web.home.installMethod')}><button role="tab" type="button" aria-selected="true" data-tab="cli">CLI</button><button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="mcp">MCP</button></div><span class="hint">{t.t('web.home.noGlobal')}</span></div>
+        <div data-panel="cli"><CommandBlock command="npx genpm add @core/auth" pkg="@core/auth" /></div>
+        <div data-panel="mcp" hidden><CommandBlock command="claude mcp add genpm -- npx -y @genpm/mcp" event="mcp_setup_copy" /><p class="hint" style="margin-top:10px">{t.t('web.home.thenAsk')} <code>{t.t('web.home.askExample')}</code></p></div>
+        <button class="hint" type="button" data-open-pal style="justify-self:start;display:inline-flex;gap:8px;align-items:center;margin-top:4px"><Ico name="search" style="width:14px;height:14px" />{t.t('web.home.searchCta', { count: s.packages })} <span class="kbd">⌘K</span></button>
+      </div>
+      <div class="trust"><span><Ico name="commit" />{t.t('web.home.trustSha')}</span><span><Ico name="ban" />{t.t('web.home.trustScripts')}</span><span><Ico name="shield" />{t.t('web.home.trustScan')}</span></div>
+    </div>
+    <div class="term" aria-hidden="true"><div class="bar"><span>your-app — zsh</span><span>1.8s</span></div><pre><span class="t-code">◆</span> <span class="t-b">genpm add</span> @core/billing
+
+  <span class="t-mut">Resolved</span>
+  ├─ <span class="t-b">@core/billing</span> <span class="t-mut">1.2.0</span> <span class="t-ctx">9f2c4e1</span>
+  │  → src/lib/billing
+  ├─ <span class="t-b">@core/auth</span>    <span class="t-mut">1.2.0</span> <span class="t-ctx">1b9d3a0</span>
+  │  → src/lib/auth
+  └─ <span class="t-b">@core/db</span>      <span class="t-mut">1.0.3</span> <span class="t-ctx">77ac0d2</span>
+     <span class="t-mut">{t.t('web.home.termInstalled')}</span>
+
+  <span class="t-code">Code</span>   47 files · 112 KB
+  <span class="t-ctx">Rules</span>  ~1.4k tokens · scan passed
+  <span class="t-mcp">MCP</span>    stripe <span class="t-mut">{t.t('web.home.termAsks')}</span>
+
+<span class="t-mut">◇</span> {t.t('web.home.termConfirm', { count: 2, files: 47, size: '112 KB' })} <span class="t-code">✓</span>
+<span class="t-code">✔</span> {t.t('web.home.termInjected', { count: 2, seconds: 1.8 })}</pre></div>
+  </section></div>
+
+  <section class="wrap sec">
+    <div class="sec-h"><div><div class="k">{t.t('web.home.layersKicker')}</div><h2>{t.t('web.home.layersTitle')}</h2><p>{t.t('web.home.layersText')}</p></div></div>
+    <div class="graft"><svg viewBox="0 0 880 290" role="img" aria-label={t.t('web.home.graftLabel')}>
+      <rect x="20" y="20" width="270" height="250" rx="4" fill="var(--paper)" stroke="var(--line-2)"/><text x="40" y="52" class="g-h">@core/billing</text><text x="40" y="72" class="g-m">1.2.0 · github.com/genpm-net/billing</text><line x1="20" y1="90" x2="290" y2="90" stroke="var(--line)"/>
+      <rect x="40" y="120" width="8" height="8" fill="var(--code)"/><text x="58" y="128" class="g-t">{t.t('common.layers.code')}</text>
+      <rect x="40" y="180" width="8" height="8" fill="var(--context)"/><text x="58" y="188" class="g-t">{t.t('common.layers.context')}</text>
+      <rect x="40" y="240" width="8" height="8" fill="var(--mcp)"/><text x="58" y="248" class="g-t">{t.t('common.layers.connections')}</text>
+      <path d="M290 124 H420 M460 124 H590" stroke="var(--code)" fill="none"/><path d="M290 184 H420 M460 184 H590" stroke="var(--context)" fill="none"/><path d="M290 244 H420 M460 244 H520" stroke="var(--mcp)" fill="none"/><path d="M520 244 H590" stroke="var(--mcp)" fill="none" stroke-dasharray="3 4"/>
+      <rect x="420" y="100" width="40" height="170" rx="2" fill="var(--ink)"/><text x="440" y="88" class="g-t" text-anchor="middle" style="fill:var(--context)">9f2c4e1</text>
+      <circle cx="290" cy="124" r="4" fill="var(--code)"/><circle cx="590" cy="124" r="4" fill="var(--code)"/><circle cx="290" cy="184" r="4" fill="var(--context)"/><circle cx="590" cy="184" r="4" fill="var(--context)"/><circle cx="290" cy="244" r="4" fill="var(--mcp)"/><circle cx="590" cy="244" r="4" fill="var(--paper)" stroke="var(--mcp)"/>
+      <rect x="590" y="20" width="270" height="250" rx="4" fill="var(--paper)" stroke="var(--line-2)"/><text x="610" y="52" class="g-h">your-app/</text><text x="610" y="72" class="g-m">genpm.lock</text><line x1="590" y1="90" x2="860" y2="90" stroke="var(--line)"/>
+      <text x="610" y="128" class="g-t">src/lib/billing/</text><text x="610" y="188" class="g-t">src/lib/billing/AGENTS.md</text><text x="610" y="248" class="g-t">.mcp.json</text>
+    </svg></div>
+    <div class="cols3"><div style="--c:var(--code)"><h3><i></i>{t.t('web.home.codeTitle')}</h3><p>{t.t('web.home.codeText')}</p></div><div style="--c:var(--context)"><h3><i></i>{t.t('web.home.contextTitle')}</h3><p>{t.t('web.home.contextText')}</p></div><div style="--c:var(--mcp)"><h3><i></i>{t.t('web.home.connectionsTitle')}</h3><p>{t.t('web.home.connectionsText')}</p></div></div>
+  </section>
+
+  <section class="wrap sec"><div class="feat">
+    <div style="min-width:0"><div class="sec-h"><div><div class="k">{t.t('web.home.featuredKicker')}</div><h2>{t.t('web.home.featuredTitle')}</h2></div><a class="btn sm" href={href(locale, '/search')}>{t.t('web.common.browseAll')} <Ico name="arrow" style="width:14px;height:14px" /></a></div>
+      {featured.length ? <div class="cards">{featured.map((p) => <PackageCard p={p} />)}</div> : <p class="hint">{t.t('web.home.empty')}</p>}
+    </div>
+    <div style="min-width:0"><div class="sec-h"><div><div class="k">{t.t('web.home.trendingKicker')}</div><h2>{t.t('web.home.trendingTitle')}</h2></div></div>
+      <ol class="trend">{trending.map((p, i) => <li><span class="n">{i + 1}</span><a href={href(locale, `/p/${p.name}`)}>{p.name}</a><Fragment set:html={sparkline([1, 2, 3, 2, 4, 5, 6].map((x) => x * (p.installs30d || 1)), 64, 18)} /><span class="d tnum">{compact(locale, p.installs30d)}</span></li>)}</ol>
+    </div>
+  </div></section>
+
+  <section class="wrap sec"><div class="sec-h"><div><div class="k">{t.t('web.home.howKicker')}</div><h2>{t.t('web.home.howTitle')}</h2></div></div>
+    <div class="cols3">
+      <div><span class="no">1</span><h3>{t.t('web.home.step1')}</h3><p>{t.t('web.home.step1Text')}</p><code class="chip">genpm search stripe</code></div>
+      <div><span class="no">2</span><h3>{t.t('web.home.step2')}</h3><p>{t.t('web.home.step2Text')}</p><code class="chip">genpm info @core/billing</code></div>
+      <div><span class="no">3</span><h3>{t.t('web.home.step3')}</h3><p>{t.t('web.home.step3Text')}</p><code class="chip">genpm add @core/billing</code></div>
+    </div>
+  </section>
+
+  <section class="wrap sec"><div class="sec-h"><div><div class="k">{t.t('web.home.aiKicker')}</div><h2>{t.t('web.home.aiTitle')}</h2><p>{t.t('web.home.aiText')}</p></div><a class="btn sm" href={href(locale, '/mcp')}>{t.t('web.home.allClients')} <Ico name="arrow" style="width:14px;height:14px" /></a></div><ClientsBlock /></section>
+
+  <section class="wrap sec"><div class="sec-h"><div><div class="k">{t.t('web.home.secKicker')}</div><h2>{t.t('web.home.secTitle')}</h2></div></div>
+    <div class="cols3">
+      <div><h3><Ico name="commit" style="color:var(--context)" />{t.t('web.home.secSha')}</h3><p>{t.t('web.home.secShaText')}</p></div>
+      <div><h3><Ico name="ban" />{t.t('web.home.secScripts')}</h3><p>{t.t('web.home.secScriptsText')}</p></div>
+      <div><h3><Ico name="shield" style="color:var(--code-ink)" />{t.t('web.home.secScan')}</h3><p>{t.t('web.home.secScanText')}</p></div>
+    </div>
+  </section>
+
+  <section class="wrap sec"><div class="pub">
+    <div><div class="k">{t.t('web.home.pubKicker')}</div><h2 style="margin-top:10px">{t.t('web.home.pubTitle')}</h2><p>{t.t('web.home.pubText')}</p><div class="row" style="margin-top:28px"><a class="btn primary lg" href={href(locale, '/publish')}>{t.t('web.home.pubCta')}</a><a class="btn ghost lg" href={href(locale, '/docs')}>{t.t('web.common.readDocs')}</a></div></div>
+    <div class="stats"><div><b class="tnum">{compact(locale, s.packages)}</b><span class="k">{t.t('web.home.statPackages')}</span></div><div><b class="tnum">{compact(locale, s.installsTotal)}</b><span class="k">{t.t('web.home.statInstalls')}</span></div><div><b class="tnum">{compact(locale, s.publishers)}</b><span class="k">{t.t('web.home.statPublishers')}</span></div></div>
+  </div></section>
+</Base>

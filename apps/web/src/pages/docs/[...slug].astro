@@ -1,0 +1,40 @@
+---
+// /docs/* (web-ui-spec §5.5): navegación por secciones, "en esta página", copiar como Markdown y versión .md.
+import Base from '../../layouts/Base.astro';
+import { docPage, docPages } from '../../lib/docs.js';
+import { href } from '../../lib/i18n.js';
+import { renderMarkdown } from '../../lib/markdown.js';
+
+const { t, locale } = Astro.locals;
+const slug = Astro.params.slug ?? 'quickstart';
+const page = docPage(locale, slug, t);
+if (!page) return Astro.rewrite('/404');
+const pages = docPages(locale, t);
+const sections = [...new Set(pages.map((p) => p.section))];
+const headings: Array<{ depth: number; text: string; id: string }> = [];
+const html = renderMarkdown(page.body, { trusted: true, headings });
+const idx = pages.findIndex((p) => p.slug === page.slug);
+const prev = pages[idx - 1];
+const next = pages[idx + 1];
+Astro.response.headers.set('Cache-Control', 'public, max-age=3600');
+---
+<Base title={page.title} nav="docs" canonical={`/docs/${page.slug}`}>
+  <div class="wrap"><div class="docs">
+    <nav class="dnav" aria-label={t.t('web.docs.title')}>
+      {sections.map((s) => (
+        <div><div class="k" style="margin-bottom:8px;padding-left:10px">{s}</div><ul>{pages.filter((p) => p.section === s).map((p) => <li><a href={href(locale, `/docs/${p.slug}`)} aria-current={p.slug === page.slug ? 'page' : undefined}>{p.title}</a></li>)}</ul></div>
+      ))}
+    </nav>
+    <article class="dbody md">
+      <div class="crumb">{t.t('web.docs.title')} / {page.section}</div>
+      {!page.translated && <div class="banner" style="--c:var(--warn)"><b>!</b><span>{t.t('web.docs.notTranslated')}</span></div>}
+      <h1>{page.title}</h1>
+      <Fragment set:html={html} />
+      <div class="dfoot">
+        <a class="hint" href={href(locale, `/docs/${page.slug}.md`)}>{t.t('web.docs.copyMd')}</a>
+        <span class="row">{prev && <a class="btn sm" href={href(locale, `/docs/${prev.slug}`)}>← {prev.title}</a>}{next && <a class="btn sm" href={href(locale, `/docs/${next.slug}`)}>{next.title} →</a>}</span>
+      </div>
+    </article>
+    <aside class="dtoc"><div class="k" style="margin-bottom:6px">{t.t('web.docs.onThisPage')}</div>{headings.filter((h) => h.depth === 2).map((h) => <a href={`#${h.id}`}>{h.text}</a>)}</aside>
+  </div></div>
+</Base>

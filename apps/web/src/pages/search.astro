@@ -1,0 +1,91 @@
+---
+// Búsqueda (web-ui-spec §5.2): estado en la URL (q, k, mcp, sort), SSR para SEO, patrocinado etiquetado y separado.
+import CommandBlock from '../components/CommandBlock.astro';
+import Ico from '../components/Ico.astro';
+import LayerBadges from '../components/LayerBadges.astro';
+import Base from '../layouts/Base.astro';
+import { compact } from '../lib/format.js';
+import { href } from '../lib/i18n.js';
+import { registryGet, type SearchResponse } from '../lib/registry.js';
+
+const { t, locale } = Astro.locals;
+const url = Astro.url;
+const q = (url.searchParams.get('q') ?? '').slice(0, 100);
+const k = (url.searchParams.get('k') ?? '').toLowerCase().replace(/[^a-z0-9-]/g, '');
+const mcp = url.searchParams.get('mcp') === '1';
+const sortParam = url.searchParams.get('sort');
+const sort = sortParam === 'installs' || sortParam === 'recent' ? sortParam : 'relevance';
+const cursor = url.searchParams.get('cursor') ?? '';
+const p = new URLSearchParams({ sort, limit: '20', sponsored: '1' });
+if (q) p.set('q', q);
+if (k) p.set('k', k);
+if (mcp) p.set('mcp', '1');
+if (cursor) p.set('cursor', cursor);
+const res = await registryGet<SearchResponse>(`/v1/search?${p}`, locale);
+const data = res.data ?? { results: [], sponsored: null, next: null, total: 0 };
+const keywords = [...new Set(data.results.flatMap((r) => r.keywords))].slice(0, 12);
+const nextUrl = data.next
+  ? `${href(locale, '/search')}?${new URLSearchParams({ ...(q ? { q } : {}), ...(k ? { k } : {}), ...(mcp ? { mcp: '1' } : {}), sort, cursor: data.next })}`
+  : null;
+Astro.response.headers.set('Cache-Control', 'public, max-age=30, stale-while-revalidate=300');
+---
+<Base title={q ? `${q} · ${t.t('web.search.title')}` : t.t('web.search.title')} stale={res.stale} nav="search" packages={data.total} canonical={q ? `/search?q=${encodeURIComponent(q)}` : '/search'}>
+  <div class="wrap">
+    <div class="phead" style="padding-bottom:24px">
+      <h1>{t.t('web.search.title')}</h1>
+      <form class="hsearch" style="display:flex;max-width:560px;height:44px" action={href(locale, '/search')} method="get" role="search">
+        <Ico name="search" /><input name="q" type="search" placeholder={t.t('web.search.placeholder')} value={q} autocomplete="off" aria-label={t.t('web.nav.searchLabel')} />
+        {mcp && <input type="hidden" name="mcp" value="1" />}{k && <input type="hidden" name="k" value={k} />}
+      </form>
+    </div>
+    <div class="srch">
+      <aside class="filters" aria-label={t.t('web.search.filters')}>
+        <form method="get" action={href(locale, '/search')} id="ff">
+          <input type="hidden" name="q" value={q} />
+          <fieldset><legend class="k">{t.t('web.search.layers')}</legend><label><input type="checkbox" name="mcp" value="1" checked={mcp} />{t.t('web.search.hasMcp')}</label></fieldset>
+          <fieldset><legend class="k">{t.t('web.search.keyword')}</legend>
+            <label><input type="radio" name="k" value="" checked={!k} />—</label>
+            {keywords.map((kw) => <label><input type="radio" name="k" value={kw} checked={k === kw} />{kw}</label>)}
+          </fieldset>
+          <input type="hidden" name="sort" value={sort} />
+          <noscript><button class="btn sm" type="submit">{t.t('web.search.apply')}</button></noscript>
+        </form>
+      </aside>
+      <div class="results" id="results">
+        <div class="rbar">
+          <span class="q">{q && <b>"{q}" · </b>}{t.t('web.search.results', { count: data.total })}</span>
+          <form method="get" action={href(locale, '/search')}>
+            <input type="hidden" name="q" value={q} />{mcp && <input type="hidden" name="mcp" value="1" />}{k && <input type="hidden" name="k" value={k} />}
+            <label class="hint">{t.t('web.search.sort')} <select class="sel" name="sort" data-autosubmit>
+              <option value="relevance" selected={sort === 'relevance'}>{t.t('web.search.relevance')}</option>
+              <option value="installs" selected={sort === 'installs'}>{t.t('web.search.installs')}</option>
+              <option value="recent" selected={sort === 'recent'}>{t.t('web.search.recent')}</option>
+            </select></label>
+          </form>
+        </div>
+        {data.sponsored && (
+          <a class="ritem sp" href={href(locale, `/p/${data.sponsored.name}`)} data-sponsored={data.sponsored.campaignId}>
+            <div class="nm"><span class="spons">{t.t('web.common.sponsored')}</span><b>{data.sponsored.name}</b><span class="v">{data.sponsored.version}</span></div><p>{data.sponsored.summary}</p>
+          </a>
+        )}
+        {data.results.length === 0 ? (
+          <div class="empty"><h3>{t.t('web.search.emptyTitle', { query: q })}</h3><p style="color:var(--ink-2)">{t.t('web.search.emptyText')}</p><a class="btn primary" href={href(locale, '/publish')}>{t.t('web.search.publishOne')}</a></div>
+        ) : (
+          data.results.map((r) => (
+            <div class="ritem">
+              <div class="nm"><a href={href(locale, `/p/${r.name}`)}><b>{r.name}</b></a><span class="v">{r.version}</span>{r.publisher.verified && <span class="vmark"><Ico name="shield" />{t.t('web.common.verified')}</span>}</div>
+              <p>{r.summary}</p>
+              <div class="meta"><div class="row" style="gap:6px"><LayerBadges short mcp={r.hasMcp ? ['mcp'] : []} /><span class="kw">{r.keywords.slice(0, 3).join(' · ')}</span></div><span class="inst tnum">{t.t('web.common.perMonth', { count: compact(locale, r.installs30d) })}</span></div>
+              <CommandBlock command={`npx genpm add ${r.name}`} small pkg={r.name} />
+            </div>
+          ))
+        )}
+        {nextUrl && <a class="btn" href={nextUrl} style="margin-top:16px">{t.t('web.common.loadMore')}</a>}
+      </div>
+    </div>
+  </div>
+  <script>
+    for (const s of document.querySelectorAll('select[data-autosubmit]')) s.addEventListener('change', () => s.closest('form')?.submit());
+    document.getElementById('ff')?.addEventListener('change', (e) => (e.currentTarget as HTMLFormElement).submit());
+  </script>
+</Base>

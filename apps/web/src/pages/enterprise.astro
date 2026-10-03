@@ -1,0 +1,16 @@
+---
+import LeadForm from '../components/LeadForm.astro';
+import Base from '../layouts/Base.astro';
+
+const { t } = Astro.locals;
+const sent = Astro.url.searchParams.get('sent') ? t.t('web.sponsors.sent') : null;
+---
+<Base title={t.t('web.enterprise.title')} description={t.t('web.enterprise.lede')}>
+  <div class="wrap">
+    <div class="phead"><h1>{t.t('web.enterprise.title')}</h1><p>{t.t('web.enterprise.lede')}</p></div>
+    <section class="sec"><div class="cols3">
+      <div><ul class="dots"><li>{t.t('web.enterprise.f1')}</li><li>{t.t('web.enterprise.f2')}</li><li>{t.t('web.enterprise.f3')}</li><li>{t.t('web.enterprise.f4')}</li></ul></div>
+      <div style="grid-column:span 2"><h2 class="h3">{t.t('web.enterprise.waitlist')}</h2><LeadForm kind="enterprise" fields={[{ name: 'size', label: t.t('web.enterprise.size') }, { name: 'ide', label: t.t('web.enterprise.ide') }]} submit={t.t('web.enterprise.join')} sent={sent} /></div>
+    </div></section>
+  </div>
+</Base>

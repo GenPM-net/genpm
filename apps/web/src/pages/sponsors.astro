@@ -1,0 +1,17 @@
+---
+import LeadForm from '../components/LeadForm.astro';
+import Base from '../layouts/Base.astro';
+
+const { t } = Astro.locals;
+const sent = Astro.url.searchParams.get('sent') ? t.t('web.sponsors.sent') : null;
+---
+<Base title={t.t('web.sponsors.title')} description={t.t('web.sponsors.lede')}>
+  <div class="wrap">
+    <div class="phead"><span class="spons" style="justify-self:start">{t.t('web.common.sponsored')}</span><h1>{t.t('web.sponsors.title')}</h1><p>{t.t('web.sponsors.lede')}</p></div>
+    <section class="sec"><div class="cols3">
+      <div><h2 class="h3">{t.t('web.sponsors.what')}</h2><ul class="dots"><li>{t.t('web.sponsors.w1')}</li><li>{t.t('web.sponsors.w2')}</li><li>{t.t('web.sponsors.w3')}</li><li>{t.t('web.sponsors.w4')}</li></ul></div>
+      <div><h2 class="h3">{t.t('web.sponsors.rules')}</h2><ul class="dots"><li>{t.t('web.sponsors.r1')}</li><li>{t.t('web.sponsors.r2')}</li><li>{t.t('web.sponsors.r3')}</li></ul></div>
+      <div><h2 class="h3">{t.t('web.sponsors.form')}</h2><LeadForm kind="sponsor" fields={[{ name: 'message', label: t.t('web.sponsors.message'), textarea: true }]} submit={t.t('web.sponsors.send')} sent={sent} /></div>
+    </div></section>
+  </div>
+</Base>

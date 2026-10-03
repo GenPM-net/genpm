@@ -1,0 +1,13 @@
+---
+// Comando + copiar (aria-live, evento copy_install). El botón funciona con el script global de Base.astro.
+interface Props {
+  command: string;
+  small?: boolean;
+  pkg?: string;
+  event?: string;
+}
+const { command, small, pkg, event = 'copy_install' } = Astro.props;
+const t = Astro.locals.t;
+const id = `c${Math.random().toString(36).slice(2, 9)}`;
+---
+<div class:list={['cmd', { sm: small }]}><span class="p">$</span><code id={id} data-pkg={pkg}>{command}</code><button class="cp" type="button" data-copy={id} data-event={event} data-pkgname={pkg}>{t.t('web.common.copy')}</button></div>

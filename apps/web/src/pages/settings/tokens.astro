@@ -1,0 +1,69 @@
+---
+// /settings/tokens (web-ui-spec §5.10): crear (se muestra una vez), listar por prefijo y revocar. Formularios POST
+// (Astro verifica el Origin: protección CSRF).
+import Base from '../../layouts/Base.astro';
+import { requireSession } from '../../lib/auth.js';
+import { ago } from '../../lib/format.js';
+import { registryFetch } from '../../lib/registry.js';
+
+const gate = requireSession(Astro);
+if (gate) return gate;
+const { t, locale, session } = Astro.locals;
+let created: { token: string; expiresAt: string } | null = null;
+let error: string | null = null;
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  if (form.get('action') === 'revoke') {
+    await registryFetch(`/v1/tokens/${String(form.get('id'))}`, { method: 'DELETE', token: session!.token });
+  } else {
+    const scopes = form.getAll('scopes').map(String);
+    const res = await registryFetch('/v1/tokens', {
+      method: 'POST',
+      token: session!.token,
+      body: {
+        name: String(form.get('name') ?? '').slice(0, 64),
+        scopes: scopes.length ? scopes : ['read'],
+        days: Number(form.get('days') ?? 30),
+      },
+    });
+    if (res.ok) created = (await res.json()) as { token: string; expiresAt: string };
+    else error = ((await res.json().catch(() => ({}))) as { title?: string }).title ?? 'Error';
+  }
+}
+const list = (await registryFetch('/v1/tokens', { token: session!.token, locale }).then((r) =>
+  r.ok ? r.json() : { tokens: [] },
+)) as {
+  tokens: Array<{
+    id: string;
+    name: string;
+    prefix: string;
+    scopes: string[];
+    expiresAt: string | null;
+    lastUsedAt: string | null;
+  }>;
+};
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+---
+<Base title={t.t('web.tokens.title')} noindex>
+  <div class="wrap">
+    <div class="phead"><h1>{t.t('web.tokens.title')}</h1><p>{t.t('web.tokens.lede')}</p></div>
+    {created && <div class="banner" style="--c:var(--code-ink)"><b>✔</b><span>{t.t('web.tokens.showOnce')}<div class="cmd sm" style="margin-top:8px"><code id="newtok">{created.token}</code><button class="cp" type="button" data-copy="newtok">{t.t('web.common.copy')}</button></div></span></div>}
+    {error && <div class="banner" style="--c:var(--danger)"><b>!</b><span>{error}</span></div>}
+    <form method="post" class="builder" style="grid-template-columns:1fr;max-width:560px;margin-top:24px">
+      <label class="field">{t.t('web.tokens.name')}<input name="name" required maxlength="64" /></label>
+      <fieldset class="field"><legend>{t.t('web.tokens.scopes')}</legend><label class="check"><input type="checkbox" name="scopes" value="read" checked /> read</label><label class="check"><input type="checkbox" name="scopes" value="publish" /> publish</label></fieldset>
+      <label class="field">{t.t('web.tokens.expiry')}<select class="sel" name="days">{[30, 90, 365].map((d) => <option value={d}>{t.t('web.tokens.days', { count: d })}</option>)}</select></label>
+      <button class="btn primary" type="submit">{t.t('web.tokens.create')}</button>
+    </form>
+    <section class="sec">
+      {list.tokens.length === 0 ? <p class="hint">{t.t('web.tokens.empty')}</p> : (
+        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.tokens.name')}</th><th>{t.t('web.tokens.scopes')}</th><th>{t.t('web.tokens.lastUsed')}</th><th>{t.t('web.tokens.expires')}</th><th></th></tr></thead><tbody>
+          {list.tokens.map((k) => <tr><td>{k.name} <code>{k.prefix}…</code></td><td>{k.scopes.join(', ')}</td><td>{k.lastUsedAt ? ago(locale, k.lastUsedAt) : t.t('web.tokens.never')}</td><td>{k.expiresAt ? ago(locale, k.expiresAt) : t.t('web.tokens.never')}</td><td><form method="post" data-confirm={t.t('web.tokens.revokeConfirm', { name: k.name })}><input type="hidden" name="action" value="revoke" /><input type="hidden" name="id" value={k.id} /><button class="btn sm ghost" type="submit">{t.t('web.tokens.revoke')}</button></form></td></tr>)}
+        </tbody></table></div>
+      )}
+    </section>
+  </div>
+  <script>
+    document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((f) => f.addEventListener('submit', (e) => { if (!confirm(f.dataset.confirm)) e.preventDefault(); }));
+  </script>
+</Base>

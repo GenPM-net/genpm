@@ -1,0 +1,151 @@
+---
+// Layout global (web-ui-spec §4): header sticky con búsqueda, nav, idioma y tema; footer; skip link y landmarks.
+import { isBeta, LOCALES, negotiateAcceptLanguage } from '@genpm/i18n';
+import '../styles/global.css';
+import Ico from '../components/Ico.astro';
+import Icons from '../components/Icons.astro';
+import SearchPalette from '../components/islands/SearchPalette.tsx';
+import { href } from '../lib/i18n.js';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Ruta canónica sin idioma (por defecto la actual). */
+  canonical?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>;
+  stale?: boolean;
+  nav?: 'docs' | 'mcp' | 'publish' | 'search';
+  packages?: number;
+}
+const { title, description, canonical, ogImage, noindex, jsonLd, stale, nav, packages = 0 } = Astro.props;
+const { t, locale, path, session } = Astro.locals;
+const site = 'https://genpm.net';
+const pagePath = canonical ?? path;
+const fullTitle = title ? `${title} — ${t.t('web.meta.suffix')}` : t.t('web.meta.title');
+const desc = description ?? t.t('web.meta.description');
+const langName = (l: string) => t.raw(`common.languages.${l}`);
+const suggested = negotiateAcceptLanguage(Astro.request.headers.get('accept-language'));
+const showSuggest = suggested !== locale && locale === 'en' && suggested !== 'en';
+const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
+---
+<!doctype html>
+<html lang={locale} dir="ltr" data-theme="light" data-copied={t.t('web.common.copied')} data-copiedtoast={t.t('web.common.copiedToast')} data-shacopied={t.t('web.common.shaCopied')} data-copyfail={t.t('web.common.copyFail')}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={`${site}${href(locale, pagePath)}`} />
+    {LOCALES.map((l) => <link rel="alternate" hreflang={l} href={`${site}${href(l, pagePath)}`} />)}
+    <link rel="alternate" hreflang="x-default" href={`${site}${pagePath}`} />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+    {fontsCjk && <link rel="stylesheet" href={`/fonts/noto-${locale.toLowerCase()}.css`} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="GenPM" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={`${site}${href(locale, pagePath)}`} />
+    <meta property="og:image" content={ogImage ?? `${site}/og/home.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#FFFFFF" />
+    <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />}
+    <script>
+      // Tema: claro por defecto; respeta la elección guardada (web-ui-spec §4). Se ejecuta antes del primer pintado.
+      try {
+        if (localStorage.getItem('genpm-theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <Icons />
+    <a class="skip" href="#main">{t.t('web.nav.skip')}</a>
+    {showSuggest && (
+      <div class="langbar" data-langbar hidden>
+        <div class="wrap"><span>{t.t('web.nav.suggestLang', { language: langName(suggested) })}</span><a class="btn sm" href={href(suggested, path)} lang={suggested}>{t.t('web.nav.switch')}</a><button class="btn sm ghost" type="button" data-dismiss-lang>{t.t('web.nav.dismiss')}</button></div>
+      </div>
+    )}
+    <header class="hdr">
+      <div class="wrap">
+        <a class="logo" href={href(locale, '/')} aria-label={t.t('web.nav.home')}>genpm<span class="caret"></span></a>
+        <form class="hsearch" action={href(locale, '/search')} method="get" role="search">
+          <Ico name="search" style="width:15px;height:15px" />
+          <input name="q" type="search" placeholder={t.t('web.nav.searchPlaceholder', { count: packages })} aria-label={t.t('web.nav.searchLabel')} autocomplete="off" data-open-pal-input />
+          <span class="kbd">⌘K</span>
+        </form>
+        <nav class="hnav" aria-label={t.t('web.nav.main')}>
+          <a href={href(locale, '/docs')} aria-current={nav === 'docs' ? 'page' : undefined}>{t.t('web.nav.docs')}</a>
+          <a href={href(locale, '/mcp')} aria-current={nav === 'mcp' ? 'page' : undefined}>{t.t('web.nav.mcp')}</a>
+          <a href={href(locale, '/publish')} aria-current={nav === 'publish' ? 'page' : undefined}>{t.t('web.nav.publish')}</a>
+        </nav>
+        <details class="lang">
+          <summary aria-label={t.t('web.nav.language')}><Ico name="globe" style="width:15px;height:15px" />{locale.split('-')[0]!.toUpperCase()}</summary>
+          <ul>
+            {LOCALES.map((l) => (
+              <li><a href={href(l, path)} lang={l} hreflang={l} aria-current={l === locale ? 'true' : undefined}>{langName(l)}{isBeta(l) && <em>{t.t('web.nav.beta')}</em>}</a></li>
+            ))}
+          </ul>
+        </details>
+        <button class="btn sm ghost theme" type="button" data-theme-toggle aria-label={t.t('web.nav.theme')}><Ico name="moon" style="width:15px;height:15px" /></button>
+        {session ? (
+          <a class="btn sm signin" href={href(locale, '/dashboard')}>{session.handle}</a>
+        ) : (
+          <a class="btn sm signin" href={href(locale, '/login')}><Ico name="gh" style="width:15px;height:15px" />{t.t('web.nav.signIn')}</a>
+        )}
+        <div class="hmob">
+          <button type="button" data-open-pal aria-label={t.t('web.nav.searchLabel')}><Ico name="search" /></button>
+          <button type="button" data-menu aria-label={t.t('web.nav.menu')} aria-expanded="false" aria-controls="sheet"><Ico name="menu" /></button>
+        </div>
+      </div>
+      <div class="sheet" id="sheet" hidden>
+        <div class="wrap">
+          <a href={href(locale, '/search')}>{t.t('web.search.title')}</a>
+          <a href={href(locale, '/docs')}>{t.t('web.nav.docs')}</a>
+          <a href={href(locale, '/mcp')}>{t.t('web.nav.mcp')}</a>
+          <a href={href(locale, '/publish')}>{t.t('web.nav.publish')}</a>
+          <a href={href(locale, session ? '/dashboard' : '/login')}>{session ? session.handle : t.t('web.nav.signIn')}</a>
+        </div>
+      </div>
+    </header>
+    {stale && <div class="wrap" style="padding-top:12px"><div class="banner" style="--c:var(--warn)"><b>!</b><span>{t.t('web.common.cachedData')}</span></div></div>}
+    {isBeta(locale) && <div class="betabar">{t.t('common.betaTranslation')}</div>}
+    <main id="main" tabindex="-1"><slot /></main>
+    <footer class="wrap foot">
+      <div class="cols">
+        <div><a class="logo" href={href(locale, '/')}>genpm<span class="caret"></span></a><p style="font-size:14px;color:var(--ink-3);margin-top:12px;max-width:30ch">{t.t('web.footer.tagline')}</p></div>
+        <div><h2>{t.t('web.footer.product')}</h2><ul><li><a href={href(locale, '/docs')}>{t.t('web.nav.docs')}</a></li><li><a href={href(locale, '/mcp')}>{t.t('web.nav.mcp')}</a></li><li><a href={href(locale, '/publish')}>{t.t('web.nav.publish')}</a></li><li><a href={href(locale, '/search')}>{t.t('web.footer.browse')}</a></li></ul></div>
+        <div><h2>{t.t('web.footer.company')}</h2><ul><li><a href={href(locale, '/sponsors')}>{t.t('web.footer.sponsors')}</a></li><li><a href={href(locale, '/enterprise')}>{t.t('web.footer.enterprise')}</a></li><li><a href={href(locale, '/security')}>{t.t('web.footer.security')}</a></li><li><a href={href(locale, '/security/advisories')}>{t.t('web.footer.advisories')}</a></li></ul></div>
+        <div><h2>{t.t('web.footer.community')}</h2><ul><li><a href="https://github.com/genpm-net/genpm" rel="noopener">GitHub</a></li><li><a href="/llms.txt">llms.txt</a></li></ul></div>
+        <div><h2>{t.t('web.footer.legal')}</h2><ul><li><a href={href(locale, '/terms')}>{t.t('web.footer.terms')}</a></li><li><a href={href(locale, '/privacy')}>{t.t('web.footer.privacy')}</a></li><li><a href={href(locale, '/policy')}>{t.t('web.footer.policy')}</a></li><li><a href={href(locale, '/cookies')}>{t.t('web.footer.cookies')}</a></li><li><a href={href(locale, '/legal')}>{t.t('web.footer.legalNotice')}</a></li><li><a href={`${href(locale, '/security')}#report`}>{t.t('web.footer.report')}</a></li></ul></div>
+      </div>
+      <div class="base"><span>© 2026 GenPM · {t.t('web.footer.beta')}</span><span class="status"><i></i>{t.t('web.footer.status')}</span></div>
+    </footer>
+    <SearchPalette
+      client:idle
+      locale={locale}
+      prefix={href(locale, '')}
+      labels={{
+        label: t.t('web.palette.label'),
+        placeholder: t.t('web.palette.placeholder'),
+        move: t.t('web.palette.move'),
+        open: t.t('web.palette.open'),
+        copy: t.t('web.palette.copy'),
+        none: t.t('web.palette.none', { query: '{query}' }),
+        publish: t.t('web.palette.publish'),
+        copied: t.t('web.common.installCopied'),
+      }}
+    />
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden><i></i><span></span></div>
+    <script>
+      import { initSite } from '../lib/client.js';
+      initSite();
+    </script>
+  </body>
+</html>

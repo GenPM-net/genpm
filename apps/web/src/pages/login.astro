@@ -1,0 +1,22 @@
+---
+// /login (web-ui-spec §5.8): un solo botón "Continue with GitHub" con los permisos y el porqué.
+import Ico from '../components/Ico.astro';
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/i18n.js';
+
+const { t, locale } = Astro.locals;
+const next = Astro.url.searchParams.get('next') ?? '/dashboard';
+const error = Astro.url.searchParams.get('error');
+---
+<Base title={t.t('web.nav.signIn')} noindex>
+  <div class="wrap"><div class="login">
+    <a class="logo" href={href(locale, '/')} style="font-size:28px">genpm<span class="caret"></span></a>
+    <h1>{t.t('web.login.title')}</h1>
+    <p style="color:var(--ink-2)">{t.t('web.login.text')}</p>
+    {error && <div class="banner" style="--c:var(--danger)"><b>!</b><span>{error === 'config' ? t.t('web.login.notConfigured') : t.t('web.login.failed')}</span></div>}
+    <a class="btn primary lg" href={`/auth/github?next=${encodeURIComponent(next.startsWith('/') ? next : '/dashboard')}&lang=${locale}`}><Ico name="gh" />{t.t('web.login.cta')}</a>
+    <div class="perm"><div><code>read:user</code><span>{t.t('web.login.readUser')}</span></div><div><code>read:org</code><span>{t.t('web.login.readOrg')}</span></div></div>
+    <p class="hint">{t.t('web.login.noWrite')}</p>
+    <p class="hint" style="font-size:12.5px">{t.t('web.legal.loginNotice')} <a href={href(locale, '/terms')} style="text-decoration:underline">{t.t('web.legal.termsLink')}</a> · <a href={href(locale, '/privacy')} style="text-decoration:underline">{t.t('web.legal.privacyLink')}</a></p>
+  </div></div>
+</Base>

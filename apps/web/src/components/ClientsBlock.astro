@@ -1,0 +1,58 @@
+---
+// Config MCP por cliente (cli-mcp-spec §B.7), con bloques copiables y deeplinks donde el cliente los admite.
+const t = Astro.locals.t;
+const server = { command: 'npx', args: ['-y', '@genpm/mcp'] };
+const cursorLink = `cursor://anysphere.cursor-deeplink/mcp/install?name=genpm&config=${btoa(JSON.stringify(server))}`;
+const vscodeLink = `vscode:mcp/install?${encodeURIComponent(JSON.stringify({ name: 'genpm', ...server }))}`;
+const clients = [
+  { id: 'claude', name: 'Claude Code', file: 'CLI', kind: 'cmd', body: 'claude mcp add genpm -- npx -y @genpm/mcp' },
+  {
+    id: 'cursor',
+    name: 'Cursor',
+    file: '.cursor/mcp.json',
+    body: '{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }',
+    link: cursorLink,
+  },
+  {
+    id: 'vscode',
+    name: 'VS Code',
+    file: '.vscode/mcp.json',
+    body: '{ "servers": { "genpm": { "type": "stdio", "command": "npx", "args": ["-y", "@genpm/mcp"] } } }',
+    link: vscodeLink,
+  },
+  {
+    id: 'windsurf',
+    name: 'Windsurf',
+    file: 'mcp_config.json',
+    path: '~/.codeium/windsurf/mcp_config.json',
+    body: '{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }',
+  },
+  {
+    id: 'codex',
+    name: 'Codex',
+    file: 'config.toml',
+    path: '~/.codex/config.toml',
+    body: '[mcp_servers.genpm]\ncommand = "npx"\nargs = ["-y", "@genpm/mcp"]',
+  },
+];
+const setup = 'npx genpm mcp setup';
+---
+<div class="clients" data-tabs>
+  <div role="tablist" aria-label={t.t('web.clients.label')}>
+    {clients.map((c, i) => <button role="tab" type="button" aria-selected={i === 0 ? 'true' : 'false'} tabindex={i ? -1 : 0} data-tab={c.id}>{c.name} <code>{c.file}</code></button>)}
+  </div>
+  <div class="pn">
+    {clients.map((c, i) => (
+      <div data-panel={c.id} hidden={i !== 0}>
+        {c.kind === 'cmd' ? (
+          <div class="cmd"><span class="p">$</span><code id={`mcp-${c.id}`}>{c.body}</code><button class="cp" type="button" data-copy={`mcp-${c.id}`} data-event="mcp_setup_copy" data-pkgname={c.id}>{t.t('web.common.copy')}</button></div>
+        ) : (
+          <div class="term"><div class="bar"><span>{c.path ?? c.file}</span><button class="cp" type="button" data-copy={`mcp-${c.id}`} data-event="mcp_setup_copy" data-pkgname={c.id}>{t.t('web.common.copy')}</button></div><pre id={`mcp-${c.id}`}>{c.body}</pre></div>
+        )}
+        {c.link && <a class="btn sm" style="margin-top:10px" href={c.link}>{t.t('web.clients.deeplink', { client: c.name })}</a>}
+      </div>
+    ))}
+    <p set:html={t.t('web.clients.orSetup', { command: `<code>${setup}</code>` })} />
+    <div class="prompts"><span class="k" style="margin-bottom:4px">{t.t('web.clients.thenAsk')}</span><div>{t.t('web.clients.p1')}</div><div>{t.t('web.clients.p2')}</div><div>{t.t('web.clients.p3')}</div></div>
+  </div>
+</div>

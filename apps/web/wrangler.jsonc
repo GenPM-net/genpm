@@ -1,0 +1,32 @@
+// genpm-web · Astro SSR en Cloudflare Workers (web-ui-spec). Lee el registry por Service Binding (latencia ~0).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "genpm-web",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-08-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "assets": { "binding": "ASSETS", "directory": "./dist" },
+  "vars": {
+    "ENVIRONMENT": "production",
+    "SITE_ORIGIN": "https://genpm.net",
+    "REGISTRY_URL": "https://api.genpm.net"
+  },
+  "services": [{ "binding": "REGISTRY", "service": "genpm-registry" }],
+  "analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "genpm_web_events" }],
+  "routes": [{ "pattern": "genpm.net", "custom_domain": true }],
+  "env": {
+    "staging": {
+      "name": "genpm-web-staging",
+      "vars": {
+        "ENVIRONMENT": "staging",
+        "SITE_ORIGIN": "https://staging.genpm.net",
+        "REGISTRY_URL": "https://api.staging.genpm.net"
+      },
+      "services": [{ "binding": "REGISTRY", "service": "genpm-registry-staging" }],
+      "analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "genpm_web_events_staging" }],
+      "routes": [{ "pattern": "staging.genpm.net", "custom_domain": true }]
+    }
+  }
+  // Secretos: GITHUB_OAUTH_CLIENT_ID, GITHUB_OAUTH_CLIENT_SECRET, SESSION_PEPPER, TURNSTILE_SECRET_KEY
+}
