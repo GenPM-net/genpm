@@ -5,3 +5,6 @@ CREATE TABLE registry_meta (
   value       TEXT NOT NULL CHECK (json_valid(value)),
   updated_at  INTEGER NOT NULL
 );
+
+-- Firma Ed25519 (`sg`) calculada una sola vez al publicar: resolve la sirve sin volver a firmar (INV-8).
+ALTER TABLE package_versions ADD COLUMN signature TEXT;

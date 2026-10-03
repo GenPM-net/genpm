@@ -87,7 +87,9 @@ export class Repo {
   async packagesByNames(names: readonly string[]): Promise<PackageRow[]> {
     if (names.length === 0) return [];
     const { results } = await this.db
-      .prepare(`SELECT p.* FROM packages p WHERE p.registry_id = ?1 AND ${PUBLIC} AND p.full_name IN (SELECT value FROM json_each(?2))`)
+      .prepare(
+        `SELECT p.* FROM packages p WHERE p.registry_id = ?1 AND ${PUBLIC} AND p.full_name IN (SELECT value FROM json_each(?2))`,
+      )
       .bind(this.rid, JSON.stringify(names))
       .all<PackageRow>();
     return results;
@@ -110,7 +112,9 @@ export class Repo {
 
   async distTags(packageId: string): Promise<Record<string, string>> {
     const { results } = await this.db
-      .prepare('SELECT d.tag, v.version FROM dist_tags d JOIN package_versions v ON v.id = d.version_id WHERE d.package_id = ?1')
+      .prepare(
+        'SELECT d.tag, v.version FROM dist_tags d JOIN package_versions v ON v.id = d.version_id WHERE d.package_id = ?1',
+      )
       .bind(packageId)
       .all<{ tag: string; version: string }>();
     return Object.fromEntries(results.map((r) => [r.tag, r.version]));
@@ -197,7 +201,10 @@ export class Repo {
     };
   }
 
-  async sponsoredSlot(keywords: readonly string[], now: number): Promise<{ full_name: string; latest_version: string; summary: string | null; campaign_id: string } | null> {
+  async sponsoredSlot(
+    keywords: readonly string[],
+    now: number,
+  ): Promise<{ full_name: string; latest_version: string; summary: string | null; campaign_id: string } | null> {
     return this.db
       .prepare(
         `SELECT p.full_name, p.latest_version, p.summary, s.id AS campaign_id
@@ -236,7 +243,13 @@ export class Repo {
     return results;
   }
 
-  async stats(): Promise<{ packages: number; publishers: number; installs30d: number; installsTotal: number; withMcp: number }> {
+  async stats(): Promise<{
+    packages: number;
+    publishers: number;
+    installs30d: number;
+    installsTotal: number;
+    withMcp: number;
+  }> {
     const row = await this.db
       .prepare(
         `SELECT count(*) AS packages, count(DISTINCT p.owner_id) AS publishers, coalesce(sum(p.installs_30d), 0) AS installs30d,
@@ -248,7 +261,9 @@ export class Repo {
     return row ?? { packages: 0, publishers: 0, installs30d: 0, installsTotal: 0, withMcp: 0 };
   }
 
-  async scope(name: string): Promise<{ id: string; name: string; owner_id: string; git_owner: string; is_reserved: number } | null> {
+  async scope(
+    name: string,
+  ): Promise<{ id: string; name: string; owner_id: string; git_owner: string; is_reserved: number } | null> {
     return this.db
       .prepare('SELECT id, name, owner_id, git_owner, is_reserved FROM scopes WHERE registry_id = ?1 AND name = ?2')
       .bind(this.rid, name)
@@ -267,7 +282,17 @@ export class Repo {
   }
 
   async advisoriesFor(packageIds: readonly string[]): Promise<
-    Array<{ public_id: string; package_id: string; affected_range: string; patched_version: string | null; severity: string; cve: string | null; title: string; description: string; published_at: number }>
+    Array<{
+      public_id: string;
+      package_id: string;
+      affected_range: string;
+      patched_version: string | null;
+      severity: string;
+      cve: string | null;
+      title: string;
+      description: string;
+      published_at: number;
+    }>
   > {
     if (!packageIds.length) return [];
     const { results } = await this.db

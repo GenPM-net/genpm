@@ -32,14 +32,21 @@ describe('problem+json', () => {
     expect(((await res.json()) as { code: string }).code).toBe('E_PAYLOAD_TOO_LARGE');
   });
   it('rejects an invalid tenant header and unknown tenants with 404', async () => {
-    expect((await SELF.fetch('https://api.genpm.net/v1/x', { headers: { 'genpm-registry': 'BAD!' } })).status).toBe(400);
-    expect((await SELF.fetch('https://api.genpm.net/v1/x', { headers: { 'genpm-registry': 'acme' } })).status).toBe(404);
+    expect((await SELF.fetch('https://api.genpm.net/v1/x', { headers: { 'genpm-registry': 'BAD!' } })).status).toBe(
+      400,
+    );
+    expect((await SELF.fetch('https://api.genpm.net/v1/x', { headers: { 'genpm-registry': 'acme' } })).status).toBe(
+      404,
+    );
   });
   it('answers CORS preflight: * for reads, web origin for writes', async () => {
     const pub = await SELF.fetch('https://api.genpm.net/v1/search', { method: 'OPTIONS' });
     expect(pub.headers.get('access-control-allow-origin')).toBe('*');
     expect(pub.headers.get('access-control-allow-methods')).not.toContain('POST');
-    const web = await SELF.fetch('https://api.genpm.net/v1/tokens', { method: 'OPTIONS', headers: { origin: 'https://genpm.net' } });
+    const web = await SELF.fetch('https://api.genpm.net/v1/tokens', {
+      method: 'OPTIONS',
+      headers: { origin: 'https://genpm.net' },
+    });
     expect(web.headers.get('access-control-allow-origin')).toBe('https://genpm.net');
     expect(web.headers.get('access-control-allow-credentials')).toBe('true');
   });

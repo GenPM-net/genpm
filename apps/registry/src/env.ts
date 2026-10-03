@@ -11,6 +11,8 @@ export type Env = {
   RL_PUBLISH?: RateLimit;
   RL_EXCHANGE?: RateLimit;
   ENVIRONMENT: 'development' | 'test' | 'staging' | 'production';
+  /** `1` = modo solo lectura por incidente (runbook §3). */
+  READ_ONLY?: string;
   WEB_ORIGIN: string;
   /** Pepper del HMAC de tokens (security §5). */
   TOKEN_PEPPER?: string;
@@ -26,6 +28,9 @@ export type Env = {
   GITHUB_OAUTH_CLIENT_SECRET?: string;
   /** Solo tests: base del API de GitHub (por defecto https://api.github.com). */
   GITHUB_API_BASE?: string;
+  /** Rollup de Analytics Engine vía SQL API (cron horario). */
+  CF_ACCOUNT_ID?: string;
+  CF_AE_TOKEN?: string;
   GITHUB_RAW_BASE?: string;
 };
 

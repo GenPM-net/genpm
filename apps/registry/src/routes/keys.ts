@@ -6,7 +6,9 @@ export const keys = new Hono<AppEnv>().get('/', async (c) => {
   const { results } = await c.env.DB.prepare(
     "SELECT id, public_key, status, created_at, revoked_at FROM signing_keys WHERE status != 'retired' ORDER BY created_at",
   ).all<{ id: string; public_key: string; status: string; created_at: number; revoked_at: number | null }>();
-  const revocation = await c.env.DB.prepare("SELECT value FROM registry_meta WHERE key = 'revocation_list'").first<{ value: string }>();
+  const revocation = await c.env.DB.prepare("SELECT value FROM registry_meta WHERE key = 'revocation_list'").first<{
+    value: string;
+  }>();
   c.header('Cache-Control', 'public, max-age=300, stale-while-revalidate=3600');
   return c.json({
     alg: 'Ed25519',

@@ -20,6 +20,8 @@ export function problem(c: Context<AppEnv>, err: GenpmError): Response {
     detail: typeof params['detail'] === 'string' ? params['detail'] : text.message,
     fix: text.fix,
     requestId: c.get('requestId'),
+    // Valores de interpolación (nombres, rutas): permiten a los clientes re-localizar el mensaje.
+    params,
     ...rest,
   };
   const headers: Record<string, string> = {

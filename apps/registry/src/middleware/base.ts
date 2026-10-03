@@ -40,7 +40,8 @@ export const cors: MiddlewareHandler<AppEnv> = async (c, next) => {
     const headers: Record<string, string> = {
       'Access-Control-Allow-Origin': allowWrite ? c.env.WEB_ORIGIN : '*',
       'Access-Control-Allow-Methods': allowWrite ? 'GET, HEAD, POST, DELETE, OPTIONS' : 'GET, HEAD, OPTIONS',
-      'Access-Control-Allow-Headers': 'Accept, Accept-Language, Content-Type, Authorization, genpm-registry, If-None-Match',
+      'Access-Control-Allow-Headers':
+        'Accept, Accept-Language, Content-Type, Authorization, genpm-registry, If-None-Match',
       'Access-Control-Max-Age': '86400',
     };
     if (allowWrite) {
