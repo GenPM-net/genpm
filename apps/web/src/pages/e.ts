@@ -10,6 +10,7 @@ const EVENTS = new Set([
   'sponsored_impression',
   'sponsored_click',
   'mcp_setup_copy',
+  'install_cli_copy',
   'publish_cta',
 ]);
 

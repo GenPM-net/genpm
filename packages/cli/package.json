@@ -29,6 +29,7 @@
   "homepage": "https://genpm.net",
   "scripts": {
     "build": "tsdown --config-loader native",
+    "build:bin": "node scripts/build-binaries.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "cold-start": "node scripts/cold-start.mjs"

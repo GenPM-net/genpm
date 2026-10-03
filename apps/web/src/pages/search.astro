@@ -76,7 +76,7 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=30, stale-while-rev
               <div class="nm"><a href={href(locale, `/p/${r.name}`)}><b>{r.name}</b></a><span class="v">{r.version}</span>{r.publisher.verified && <span class="vmark"><Ico name="shield" />{t.t('web.common.verified')}</span>}</div>
               <p>{r.summary}</p>
               <div class="meta"><div class="row" style="gap:6px"><LayerBadges short mcp={r.hasMcp ? ['mcp'] : []} /><span class="kw">{r.keywords.slice(0, 3).join(' · ')}</span></div><span class="inst tnum">{t.t('web.common.perMonth', { count: compact(locale, r.installs30d) })}</span></div>
-              <CommandBlock command={`npx genpm add ${r.name}`} small pkg={r.name} />
+              <CommandBlock command={`genpm add ${r.name}`} small pkg={r.name} />
             </div>
           ))
         )}

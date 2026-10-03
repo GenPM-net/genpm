@@ -230,4 +230,29 @@ describe('other commands', () => {
     const s2 = await cli('mcp', 'setup', '--client', 'claude', '--scope', 'user', '--json');
     expect(JSON.parse(s2.stdout).results[0].command).toBe('claude mcp add genpm -- npx -y @genpm/mcp');
   });
+  it('upgrade --check reports a newer release; upgrading an npm/npx install points to its package manager', async () => {
+    const regFetch = globalThis.fetch;
+    globalThis.fetch = (async (input: string | URL, init?: RequestInit) =>
+      String(input) === 'https://github.com/genpm-net/genpm/releases/latest'
+        ? new Response(null, { status: 302, headers: { location: '/genpm-net/genpm/releases/tag/v99.0.0' } })
+        : regFetch(input, init)) as typeof fetch;
+    try {
+      const c = await cli('upgrade', '--check', '--json');
+      expect(JSON.parse(c.stdout)).toMatchObject({
+        ok: true,
+        latest: '99.0.0',
+        upToDate: false,
+        method: expect.stringMatching(/^(npm|npx)$/),
+      });
+      expect((await cli('upgrade', '--check')).stdout).toMatch(/genpm 99\.0\.0 is available .*Run genpm upgrade/);
+      const u = await cli('upgrade', '--json');
+      expect(u.code).toBe(8);
+      expect(JSON.parse(u.stdout).error).toMatchObject({
+        code: 'E_UPGRADE_UNSUPPORTED',
+        fix: expect.stringContaining('genpm@latest'),
+      });
+    } finally {
+      globalThis.fetch = regFetch;
+    }
+  });
 });

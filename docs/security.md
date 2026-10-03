@@ -158,7 +158,7 @@ Objetivo: **SLSA Build Level 3** para `genpm` y `@genpm/mcp`.
 | Dependencias | Presupuesto: ≤ 10 dependencias de runtime en el CLI; lockfile congelado (`pnpm install --frozen-lockfile`); `onlyBuiltDependencies: []` (ninguna dependencia ejecuta scripts al instalar); Renovate con `minimumReleaseAge: 7 days`; OSV-Scanner + Socket en cada PR |
 | CI | Actions fijadas por SHA, `permissions:` mínimos por job, `harden-runner` (egress allowlist), sin `pull_request_target` con checkout de código externo |
 | Repo | Protección de `main`, revisión obligatoria (CODEOWNERS), commits y tags firmados, secret scanning con *push protection* |
-| Artefactos | SBOM CycloneDX y checksums en cada release; builds reproducibles verificados en CI |
+| Artefactos | SBOM CycloneDX y checksums en cada release; builds reproducibles verificados en CI. Binarios nativos (ADR-025): compilados en GitHub Actions desde el mismo bundle que npm, con `SHA256SUMS` y *attestation* de procedencia (Sigstore, `gh attestation verify`); instaladores y `genpm upgrade` verifican el SHA-256 antes de instalar y nunca piden `sudo` |
 | Cuentas del equipo | Llaves hardware (FIDO2) en GitHub, npm, Cloudflare y registrador del dominio; *registrar lock* en `genpm.net`; DNSSEC |
 | Accesos | Principio de mínimo privilegio; tokens de API de Cloudflare con alcance por recurso; revisión trimestral de accesos |
 

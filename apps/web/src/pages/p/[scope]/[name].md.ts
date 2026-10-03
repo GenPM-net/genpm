@@ -24,7 +24,7 @@ export const GET: APIRoute = async ({ params }) => {
     summary,
     '',
     '```bash',
-    `npx genpm add ${root.n}`,
+    `genpm add ${root.n}`,
     '```',
     '',
     '## Manifest',

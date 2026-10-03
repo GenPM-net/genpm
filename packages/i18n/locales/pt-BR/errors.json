@@ -167,6 +167,18 @@
     "message": "O GenPM precisa do Node.js 20.11 ou posterior (encontrado {version}).",
     "fix": "Atualize o Node.js."
   },
+  "E_UPGRADE_UNSUPPORTED": {
+    "message": "Esta cópia do GenPM foi instalada com {via}: genpm upgrade só atualiza o binário independente.",
+    "fix": "Atualize-a com {command} ou instale o binário em genpm.net/docs/install."
+  },
+  "E_UPGRADE_PERMISSION": {
+    "message": "Não é possível substituir {path}: permissão negada.",
+    "fix": "Execute genpm upgrade com o usuário dono desse arquivo ou reinstale com o script de genpm.net/docs/install."
+  },
+  "E_UPGRADE_INTEGRITY": {
+    "message": "O {asset} baixado não corresponde ao checksum SHA-256 publicado.",
+    "fix": "Nada foi alterado. Tente novamente mais tarde; se acontecer de novo, avise em hello@genpm.net com o assunto [SECURITY]."
+  },
   "E_NOT_A_PROJECT": {
     "message": "Nenhum projeto encontrado em {path}.",
     "fix": "Execute o comando dentro de um projeto (com package.json ou .git) ou passe --cwd <dir>."

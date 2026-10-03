@@ -3,19 +3,35 @@ title: Quickstart
 section: Getting started
 order: 1
 ---
-Add your first module in about a minute. You need **Node 20.11+** and **git 2.25+** (without git, GenPM falls back to GitHub tarballs).
+Add your first module in about a minute. You only need **git 2.25+** (without it, GenPM falls back to GitHub tarballs).
 
-## 1. Add a package
+## 1. Install genpm
+
+macOS and Linux:
+
+```bash
+curl -fsSL https://genpm.net/install.sh | sh
+```
+
+Windows (PowerShell):
+
+```powershell
+irm https://genpm.net/install.ps1 | iex
+```
+
+It is a single binary, no Node.js needed. Other options (npm, a specific version, mirrors) are in [Install](/docs/install).
+
+## 2. Add a package
 
 Run this in the root of your project. GenPM shows the full plan and asks before writing anything.
 
 ```bash
-npx genpm add @core/auth
+genpm add @core/auth
 ```
 
 GenPM resolves `@core/auth` and its dependency `@core/db`, verifies the registry signature of each manifest, downloads the exact commit and scans it locally before showing you the plan.
 
-## 2. See what changed
+## 3. See what changed
 
 ```bash
 git status
@@ -26,7 +42,7 @@ git status
 - `genpm.lock` pins every package to a 40-character commit SHA.
 - `.env.example` lists the variables to configure (names only, never values).
 
-## 3. Let your AI take over
+## 4. Let your AI take over
 
 Open your agent and ask it to wire the module in. It reads the module rules and follows their **Integration** section:
 

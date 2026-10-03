@@ -7,6 +7,7 @@ import PackageCard from '../components/PackageCard.astro';
 import Base from '../layouts/Base.astro';
 import { compact, sparkline } from '../lib/format.js';
 import { href } from '../lib/i18n.js';
+import { INSTALL_COMMANDS } from '../lib/installers.js';
 import { registryGet, type SearchRow, type Stats } from '../lib/registry.js';
 
 const { t, locale } = Astro.locals;
@@ -37,8 +38,14 @@ const jsonLd = {
       <h1 class="h1">{t.t('web.home.title')}<span class="caret blink" aria-hidden="true"></span></h1>
       <p class="lede">{t.t('web.home.lede')}</p>
       <div class="cta" data-tabs>
-        <div class="top2"><div class="seg" role="tablist" aria-label={t.t('web.home.installMethod')}><button role="tab" type="button" aria-selected="true" data-tab="cli">CLI</button><button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="mcp">MCP</button></div><span class="hint">{t.t('web.home.noGlobal')}</span></div>
-        <div data-panel="cli"><CommandBlock command="npx genpm add @core/auth" pkg="@core/auth" /></div>
+        <div class="top2"><div class="seg" role="tablist" aria-label={t.t('web.home.installMethod')}><button role="tab" type="button" aria-selected="true" data-tab="cli">CLI</button><button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="mcp">MCP</button></div><span class="hint">{t.t('web.home.noNode')}</span></div>
+        <div data-panel="cli" data-os-box style="display:grid;gap:10px">
+          <div class="runner" role="group" aria-label={t.t('web.home.os')}><button type="button" aria-pressed="true" data-os="unix">macOS · Linux</button><button type="button" aria-pressed="false" data-os="windows">Windows</button></div>
+          <div data-os-panel="unix"><CommandBlock command={INSTALL_COMMANDS.unix} event="install_cli_copy" /></div>
+          <div data-os-panel="windows" hidden><CommandBlock command={INSTALL_COMMANDS.windows} event="install_cli_copy" /></div>
+          <CommandBlock command="genpm add @core/auth" pkg="@core/auth" />
+          <a class="hint" href={href(locale, '/docs/install')}>{t.t('web.home.installMore')}</a>
+        </div>
         <div data-panel="mcp" hidden><CommandBlock command="claude mcp add genpm -- npx -y @genpm/mcp" event="mcp_setup_copy" /><p class="hint" style="margin-top:10px">{t.t('web.home.thenAsk')} <code>{t.t('web.home.askExample')}</code></p></div>
         <button class="hint" type="button" data-open-pal style="justify-self:start;display:inline-flex;gap:8px;align-items:center;margin-top:4px"><Ico name="search" style="width:14px;height:14px" />{t.t('web.home.searchCta', { count: s.packages })} <span class="kbd">⌘K</span></button>
       </div>

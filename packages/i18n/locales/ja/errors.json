@@ -167,6 +167,18 @@
     "message": "GenPM には Node.js 20.11 以降が必要です（検出: {version}）。",
     "fix": "Node.js を更新してください。"
   },
+  "E_UPGRADE_UNSUPPORTED": {
+    "message": "この GenPM は {via} でインストールされています。genpm upgrade が更新できるのはスタンドアロンバイナリのみです。",
+    "fix": "{command} で更新するか、genpm.net/docs/install からバイナリをインストールしてください。"
+  },
+  "E_UPGRADE_PERMISSION": {
+    "message": "{path} を置き換えられません: アクセスが拒否されました。",
+    "fix": "そのファイルの所有ユーザーで genpm upgrade を実行するか、genpm.net/docs/install のスクリプトで再インストールしてください。"
+  },
+  "E_UPGRADE_INTEGRITY": {
+    "message": "ダウンロードした {asset} が公開されている SHA-256 チェックサムと一致しません。",
+    "fix": "何も変更されていません。後で再試行し、再発する場合は件名 [SECURITY] で hello@genpm.net に報告してください。"
+  },
   "E_NOT_A_PROJECT": {
     "message": "{path} にプロジェクトが見つかりません。",
     "fix": "プロジェクト（package.json または .git があるもの）の中で実行するか、--cwd <dir> を指定してください。"

@@ -12,8 +12,13 @@ Code you own · Context your AI understands · MCP connections, ready.</p>
 GenPM injects complete modules — **source code + AI rules + MCP servers** — into your project from immutable Git commits. No opaque `node_modules`: the code lands in `src/`, versioned with yours, and your AI agent can read, change and extend it because every module ships the rules that explain how.
 
 ```bash
-npx genpm add @core/auth
+curl -fsSL https://genpm.net/install.sh | sh     # macOS / Linux
+irm https://genpm.net/install.ps1 | iex          # Windows (PowerShell)
+
+genpm add @core/auth
 ```
+
+One native binary, no Node.js needed (`genpm upgrade` keeps it current). Prefer npm? `npm i -g genpm` or `npx genpm …` work too. More options: [genpm.net/docs/install](https://genpm.net/docs/install).
 
 - **Code** lands in `src/lib/auth`, not in `node_modules`. You see it in your diff and you own it.
 - **Context**: an `AGENTS.md` per module (plus Cursor, Copilot, Windsurf and Claude Code rule files), loaded only when your agent works in that folder.
@@ -34,9 +39,9 @@ What you reviewed is what gets installed. Every package is pinned to a 40-charac
 ## Publish a package
 
 ```bash
-npx genpm init && npx genpm validate
+genpm init && genpm validate
 git tag v1.0.0 && git push --tags
-npx genpm publish
+genpm publish
 ```
 
 Your code stays on GitHub; the registry stores metadata only. Guide: [genpm.net/docs/publishing](https://genpm.net/docs/publishing).
@@ -57,7 +62,7 @@ docs/         design and specs (Spanish)
 tasks/        MVP plan and task board
 ```
 
-Requirements to develop: Node 22.12+ (tsdown and Astro), pnpm 10, git 2.25+. The published `genpm` and `@genpm/mcp` run on Node 20.11+ (CI tests them on Node 20 and 22).
+Requirements to develop: Node 22.12+ (tsdown and Astro), pnpm 10, git 2.25+. The published `genpm` and `@genpm/mcp` run on Node 20.11+ (CI tests them on Node 20 and 22); the native `genpm` binaries are built with Bun (`pnpm --filter genpm build:bin`, ADR-025).
 
 ```bash
 pnpm install

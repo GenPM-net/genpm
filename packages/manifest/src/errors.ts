@@ -54,6 +54,9 @@ export const ERRORS = {
   E_FORBIDDEN_SCOPE: { http: 403, exit: 7 },
   E_GIT_MISSING: { http: 500, exit: 8 },
   E_NODE_VERSION: { http: 500, exit: 8 },
+  E_UPGRADE_UNSUPPORTED: { http: 400, exit: 8 },
+  E_UPGRADE_PERMISSION: { http: 500, exit: 8 },
+  E_UPGRADE_INTEGRITY: { http: 422, exit: 6 },
   E_NOT_A_PROJECT: { http: 400, exit: 8 },
 } as const satisfies Record<string, ErrorDef>;
 

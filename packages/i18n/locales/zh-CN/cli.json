@@ -20,7 +20,8 @@
     "mcpSetup": "在你的 AI 客户端中注册 GenPM 的 MCP 服务器",
     "mcpAdd": "写入已安装包声明的 MCP 服务器",
     "mcpRemove": "移除已安装包声明的 MCP 服务器",
-    "cache": "显示或清理下载缓存"
+    "cache": "显示或清理下载缓存",
+    "upgrade": "将独立的 genpm 二进制文件更新到最新版本"
   },
   "arg": {
     "cwd": "工作目录",
@@ -57,7 +58,9 @@
     "client": "claude | cursor | vscode | windsurf | codex",
     "scope": "project | user",
     "workflow": "同时创建在 v* 标签上发布的 GitHub Actions 工作流",
-    "action": "dir | clean"
+    "action": "dir | clean",
+    "check": "仅检查是否有更新的版本",
+    "targetVersion": "要安装的版本（默认：最新）"
   },
   "label": {
     "resolved": "已解析",
@@ -172,5 +175,11 @@
     "integration": "按照 {file} 中的“Integration”操作",
     "npm": "运行 {command}",
     "mcp": "稍后启用 MCP：genpm mcp add {names}"
+  },
+  "upgrade": {
+    "upToDate": "genpm {version} 已是最新版本。",
+    "available": "genpm {latest} 已发布（当前为 {current}）。运行 genpm upgrade 进行安装。",
+    "downloading": "正在下载 genpm {version}（{asset}）…",
+    "done": "genpm 已更新：{from} → {to}（校验和已验证）"
   }
 }

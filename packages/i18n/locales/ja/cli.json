@@ -20,7 +20,8 @@
     "mcpSetup": "GenPM の MCP サーバーを AI クライアントに登録する",
     "mcpAdd": "インストール済みパッケージが宣言する MCP サーバーを書き込む",
     "mcpRemove": "インストール済みパッケージが宣言する MCP サーバーを削除する",
-    "cache": "ダウンロードキャッシュを表示または削除する"
+    "cache": "ダウンロードキャッシュを表示または削除する",
+    "upgrade": "スタンドアロンの genpm バイナリを最新リリースに更新します"
   },
   "arg": {
     "cwd": "作業ディレクトリ",
@@ -57,7 +58,9 @@
     "client": "claude | cursor | vscode | windsurf | codex",
     "scope": "project | user",
     "workflow": "v* タグで公開する GitHub Actions ワークフローも作成する",
-    "action": "dir | clean"
+    "action": "dir | clean",
+    "check": "新しいバージョンがあるかどうかだけを確認します",
+    "targetVersion": "インストールするバージョン（既定: 最新）"
   },
   "label": {
     "resolved": "解決済み",
@@ -172,5 +175,11 @@
     "integration": "{file} の「Integration」に従ってください",
     "npm": "{command} を実行してください",
     "mcp": "MCP は後から有効化できます: genpm mcp add {names}"
+  },
+  "upgrade": {
+    "upToDate": "genpm {version} はすでに最新バージョンです。",
+    "available": "genpm {latest} が利用可能です（現在 {current}）。genpm upgrade でインストールできます。",
+    "downloading": "genpm {version}（{asset}）をダウンロードしています…",
+    "done": "genpm を更新しました: {from} → {to}（チェックサム検証済み）"
   }
 }

@@ -73,11 +73,34 @@ Si CLI y MCP intentan escribir a la vez ⇒ `E_BUSY`.
 
 ## A.1 Instalación y uso
 
+Opción principal: **binario nativo** (ADR-025), sin Node.js. Los comandos empiezan directamente por `genpm`.
+
 ```bash
-npx genpm add @core/auth          # sin instalación global
-npm i -g genpm                    # o global
+curl -fsSL https://genpm.net/install.sh | sh        # macOS y Linux
+irm https://genpm.net/install.ps1 | iex             # Windows (PowerShell)
+genpm add @core/auth
 ```
-Requisitos: Node ≥ 20.11; `git` ≥ 2.25 recomendado (sin git se usa el fallback tarball, solo GitHub).
+
+Alternativas con Node ≥ 20.11 (mismo CLI, mismo bundle):
+
+```bash
+npm i -g genpm                    # global
+npx genpm add @core/auth          # puntual, sin instalación (CI)
+```
+
+| Plataforma | Binarios (GitHub Releases) |
+|---|---|
+| macOS | `genpm-darwin-arm64`, `genpm-darwin-x64` |
+| Linux | `genpm-linux-{x64,arm64}`, `genpm-linux-{x64,arm64}-musl` |
+| Windows | `genpm-windows-x64.exe`, `genpm-windows-arm64.exe` |
+
+Los instaladores (`scripts/install/install.{sh,ps1}`, servidos en `genpm.net/install.*`) detectan SO, arquitectura,
+Rosetta y musl; verifican el SHA-256 contra `SHA256SUMS` del release; instalan en `~/.genpm/bin` sin `sudo` y añaden esa
+carpeta al `PATH` (perfil del shell o `PATH` de usuario en Windows). Variables: `GENPM_VERSION`, `GENPM_INSTALL_DIR`,
+`GENPM_NO_MODIFY_PATH=1`, `GENPM_DOWNLOAD_URL` (mirrors). Documentación de usuario: `genpm.net/docs/install`.
+
+Requisitos: ninguno con el binario (Node ≥ 20.11 con npm/npx); `git` ≥ 2.25 recomendado (sin git se usa el fallback
+tarball, solo GitHub).
 
 ## A.2 Opciones globales
 
@@ -108,9 +131,9 @@ En modo no interactivo (no TTY o `--json`) cualquier prompt sin respuesta por fl
 | 3 | No encontrado | `E_NOT_FOUND`, `E_NO_MATCHING_VERSION` |
 | 4 | Conflicto | `E_DEST_CONFLICT`, `E_RANGE_UNSATISFIED`, `E_ALREADY_INSTALLED`, `E_DRIFT`, `E_BUSY`, `E_PLAN_STALE` |
 | 5 | Red / upstream | `E_NETWORK`, `E_UPSTREAM_GIT`, `E_RATE_LIMITED`, `E_READ_ONLY` |
-| 6 | Seguridad / integridad | `E_INTEGRITY`, `E_SIGNATURE`, `E_PATH_UNSAFE`, `E_AUTORUN_FILE`, `E_SCAN_FAILED`, `E_INSECURE_PERMS`, `E_QUARANTINED`, `E_REF_MUTABLE`, `E_ADVISORY` |
+| 6 | Seguridad / integridad | `E_INTEGRITY`, `E_SIGNATURE`, `E_PATH_UNSAFE`, `E_AUTORUN_FILE`, `E_SCAN_FAILED`, `E_INSECURE_PERMS`, `E_QUARANTINED`, `E_REF_MUTABLE`, `E_ADVISORY`, `E_UPGRADE_INTEGRITY` |
 | 7 | Autenticación / permisos | `E_AUTH`, `E_FORBIDDEN_SCOPE` |
-| 8 | Entorno | `E_GIT_MISSING`, `E_NODE_VERSION`, `E_NOT_A_PROJECT` |
+| 8 | Entorno | `E_GIT_MISSING`, `E_NODE_VERSION`, `E_NOT_A_PROJECT`, `E_UPGRADE_UNSUPPORTED`, `E_UPGRADE_PERMISSION` |
 
 ## A.4 Gramática de specs
 
@@ -253,9 +276,20 @@ Escribe/borra la config MCP declarada por un paquete instalado (consentimiento d
 
 ### `genpm doctor` ✅
 
-Comprueba: versión de Node, `git` disponible y versión, raíz del proyecto, clientes IA detectados, alcance al registry (latencia), estado de login, coherencia de `genpm.lock` vs disco (dirs inexistentes, `.genpm/files` huérfanos). Cada check: `✔`/`▲`/`✖` + `fix`.
+Comprueba: runtime (binario nativo y su plataforma, o versión de Node), `git` disponible y versión, raíz del proyecto, clientes IA detectados, alcance al registry (latencia), estado de login, coherencia de `genpm.lock` vs disco (dirs inexistentes, `.genpm/files` huérfanos). Cada check: `✔`/`▲`/`✖` + `fix`.
 
 ### `genpm cache dir|clean` P2
+
+### `genpm upgrade [version] [--check]` ✅
+
+Actualiza el binario nativo (ADR-025). `latest` se lee de la redirección de `github.com/genpm-net/genpm/releases/latest`
+(sin gastar cuota de la API). Descarga `SHA256SUMS` y el binario de su plataforma (grabada en compilación), verifica el
+SHA-256 y reemplaza el ejecutable con `rename` atómico en su directorio; en Windows renombra el `.exe` en uso a `.old`
+(se borra en el siguiente arranque). Checksum distinto ⇒ `E_UPGRADE_INTEGRITY` sin tocar nada; sin permiso de escritura ⇒
+`E_UPGRADE_PERMISSION`. Con versión explícita permite volver atrás. `--check` solo informa (también desde npm/npx).
+Instalado con npm/npx ⇒ `E_UPGRADE_UNSUPPORTED` con el comando de su gestor en `fix`. `--json` ⇒
+`{ok, current, latest, upToDate, method}` o `{ok, from, to, path, sha256}`. No hay comprobaciones automáticas en
+segundo plano: GenPM solo contacta con GitHub cuando se ejecuta este comando.
 
 ## A.6 Comandos — autor
 

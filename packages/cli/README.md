@@ -8,7 +8,14 @@
 npx genpm add @core/auth
 ```
 
-No global install needed. Requires Node 20.11+ (git 2.25+ recommended; without it GenPM falls back to GitHub tarballs).
+Or install it globally with `npm i -g genpm` and run `genpm add @core/auth`. Requires Node 20.11+ (git 2.25+ recommended; without it GenPM falls back to GitHub tarballs).
+
+**Without Node.js:** install the native binary for macOS, Linux or Windows and update it with `genpm upgrade`.
+
+```bash
+curl -fsSL https://genpm.net/install.sh | sh     # macOS / Linux
+irm https://genpm.net/install.ps1 | iex          # Windows (PowerShell)
+```
 
 ## Commands
 
@@ -23,6 +30,7 @@ No global install needed. Requires Node 20.11+ (git 2.25+ recommended; without i
 | `genpm audit` | Integrity, signatures, advisories and yanked versions. |
 | `genpm doctor` | Check your environment and project. |
 | `genpm mcp setup` | Register the GenPM MCP server in your AI client. |
+| `genpm upgrade` | Update the native binary (`--check` to only look). |
 | `genpm init` · `validate` · `publish` · `yank` | Author a package. |
 
 Global flags: `--json` (single-line JSON, English), `--yes`, `--lang <locale>`, `--cwd <dir>`, `--registry <url>`, `--verbose`, `--quiet`. Output is available in English, Spanish, Portuguese (Brazil), French, German, Japanese, Simplified Chinese and Korean.

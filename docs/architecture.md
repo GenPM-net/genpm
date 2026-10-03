@@ -336,6 +336,7 @@ Formato completo en [manifest-spec §6](manifest-spec.md#6-genpmlock-proyecto-co
 | Validación | zod (compartido) | TypeBox, valibot | Un esquema para API, CLI, MCP y web; genera JSON Schema |
 | CLI args / prompts | citty + @clack/prompts | commander, inquirer | Ligeros, ESM, UX moderna |
 | Build CLI/MCP | tsdown (o tsup) | tsc puro | Bundle único, arranque rápido con `npx` |
+| Binario nativo del CLI | `bun build --compile` sobre el bundle de tsdown | Node SEA, pkg, deno compile | Compilación cruzada de las 8 plataformas desde un runner, ESM y chunks dinámicos de i18n sin cambios (ADR-025) |
 | MCP | `@modelcontextprotocol/sdk` stdio | Python SDK | Mismo lenguaje que core |
 | Web | Astro SSR en Cloudflare + Tailwind | Next.js en Vercel | SEO de páginas de paquete, islas, mismo proveedor que el API (Service Binding) |
 | Docs web | Starlight (dentro de Astro) | Docusaurus | Mismo stack, markdown de `/docs` reutilizable |

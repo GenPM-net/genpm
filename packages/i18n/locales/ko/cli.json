@@ -20,7 +20,8 @@
     "mcpSetup": "AI 클라이언트에 GenPM MCP 서버 등록",
     "mcpAdd": "설치된 패키지가 선언한 MCP 서버 기록",
     "mcpRemove": "설치된 패키지가 선언한 MCP 서버 제거",
-    "cache": "다운로드 캐시 표시 또는 정리"
+    "cache": "다운로드 캐시 표시 또는 정리",
+    "upgrade": "독립 실행형 genpm 바이너리를 최신 릴리스로 업데이트합니다"
   },
   "arg": {
     "cwd": "작업 디렉터리",
@@ -57,7 +58,9 @@
     "client": "claude | cursor | vscode | windsurf | codex",
     "scope": "project | user",
     "workflow": "v* 태그에서 게시하는 GitHub Actions 워크플로도 생성",
-    "action": "dir | clean"
+    "action": "dir | clean",
+    "check": "새 버전이 있는지 확인만 합니다",
+    "targetVersion": "설치할 버전(기본값: 최신)"
   },
   "label": {
     "resolved": "확인됨",
@@ -172,5 +175,11 @@
     "integration": "{file}의 \"Integration\"을 따르세요",
     "npm": "{command}을(를) 실행하세요",
     "mcp": "나중에 MCP 활성화: genpm mcp add {names}"
+  },
+  "upgrade": {
+    "upToDate": "genpm {version}은(는) 이미 최신 버전입니다.",
+    "available": "genpm {latest}을(를) 사용할 수 있습니다(현재 {current}). genpm upgrade를 실행해 설치하세요.",
+    "downloading": "genpm {version}({asset})을(를) 다운로드하는 중…",
+    "done": "genpm 업데이트 완료: {from} → {to}(체크섬 확인됨)"
   }
 }

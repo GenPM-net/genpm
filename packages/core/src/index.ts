@@ -23,4 +23,5 @@ export * from './ops.js';
 export * from './plan.js';
 export * from './registry-client.js';
 export * from './revocation.js';
+export * from './self-update.js';
 export * from './version.js';

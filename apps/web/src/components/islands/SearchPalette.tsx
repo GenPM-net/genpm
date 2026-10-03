@@ -82,7 +82,7 @@ export default function SearchPalette(props: { locale: string; prefix: string; l
     } else if (e.key === 'Enter' && rows[idx]) {
       e.preventDefault();
       if (e.metaKey || e.ctrlKey) {
-        await navigator.clipboard?.writeText(`npx genpm add ${rows[idx].n}`).catch(() => undefined);
+        await navigator.clipboard?.writeText(`genpm add ${rows[idx].n}`).catch(() => undefined);
         setOpen(false);
       } else go(rows[idx]);
     }

@@ -8,6 +8,7 @@ import html from 'shiki/langs/html.mjs';
 import javascript from 'shiki/langs/javascript.mjs';
 import json from 'shiki/langs/json.mjs';
 import markdown from 'shiki/langs/markdown.mjs';
+import powershell from 'shiki/langs/powershell.mjs';
 import sql from 'shiki/langs/sql.mjs';
 import toml from 'shiki/langs/toml.mjs';
 import tsx from 'shiki/langs/tsx.mjs';
@@ -20,7 +21,7 @@ let hl: ReturnType<typeof createHighlighterCoreSync> | null = null;
 function highlighter() {
   hl ??= createHighlighterCoreSync({
     themes: [theme],
-    langs: [bash, css, html, javascript, json, markdown, sql, toml, tsx, typescript, yaml],
+    langs: [bash, css, html, javascript, json, markdown, powershell, sql, toml, tsx, typescript, yaml],
     engine: createJavaScriptRegexEngine(),
   });
   return hl;
@@ -41,6 +42,9 @@ const EXT: Record<string, string> = {
   bash: 'bash',
   zsh: 'bash',
   shell: 'bash',
+  ps1: 'powershell',
+  powershell: 'powershell',
+  pwsh: 'powershell',
   sql: 'sql',
   yml: 'yaml',
   yaml: 'yaml',

@@ -20,7 +20,8 @@
     "mcpSetup": "Den GenPM-MCP-Server in deinem KI-Client registrieren",
     "mcpAdd": "Die von einem installierten Paket deklarierten MCP-Server schreiben",
     "mcpRemove": "Die von einem installierten Paket deklarierten MCP-Server entfernen",
-    "cache": "Den Download-Cache anzeigen oder leeren"
+    "cache": "Den Download-Cache anzeigen oder leeren",
+    "upgrade": "Aktualisiert das eigenständige genpm-Binary auf die neueste Version"
   },
   "arg": {
     "cwd": "Arbeitsverzeichnis",
@@ -57,7 +58,9 @@
     "client": "claude | cursor | vscode | windsurf | codex",
     "scope": "project | user",
     "workflow": "Zusätzlich einen GitHub-Actions-Workflow anlegen, der bei v*-Tags veröffentlicht",
-    "action": "dir | clean"
+    "action": "dir | clean",
+    "check": "Prüft nur, ob es eine neuere Version gibt",
+    "targetVersion": "Zu installierende Version (Standard: neueste)"
   },
   "label": {
     "resolved": "Aufgelöst",
@@ -172,5 +175,11 @@
     "integration": "Folge „Integration“ in {file}",
     "npm": "Führe {command} aus",
     "mcp": "MCP später aktivieren: genpm mcp add {names}"
+  },
+  "upgrade": {
+    "upToDate": "genpm {version} ist bereits die neueste Version.",
+    "available": "genpm {latest} ist verfügbar (du hast {current}). Führe genpm upgrade aus, um es zu installieren.",
+    "downloading": "Lade genpm {version} herunter ({asset})…",
+    "done": "genpm aktualisiert: {from} → {to} (Prüfsumme verifiziert)"
   }
 }

@@ -20,7 +20,8 @@
     "mcpSetup": "Enregistrer le serveur MCP de GenPM dans votre client IA",
     "mcpAdd": "Écrire les serveurs MCP déclarés par un paquet installé",
     "mcpRemove": "Supprimer les serveurs MCP déclarés par un paquet installé",
-    "cache": "Afficher ou vider le cache de téléchargement"
+    "cache": "Afficher ou vider le cache de téléchargement",
+    "upgrade": "Met à jour le binaire autonome genpm vers la dernière version"
   },
   "arg": {
     "cwd": "Répertoire de travail",
@@ -57,7 +58,9 @@
     "client": "claude | cursor | vscode | windsurf | codex",
     "scope": "project | user",
     "workflow": "Créer aussi un workflow GitHub Actions qui publie sur les tags v*",
-    "action": "dir | clean"
+    "action": "dir | clean",
+    "check": "Vérifie seulement s’il existe une version plus récente",
+    "targetVersion": "Version à installer (par défaut : la dernière)"
   },
   "label": {
     "resolved": "Résolu",
@@ -172,5 +175,11 @@
     "integration": "Suivez « Integration » dans {file}",
     "npm": "Exécutez {command}",
     "mcp": "Activez MCP plus tard : genpm mcp add {names}"
+  },
+  "upgrade": {
+    "upToDate": "genpm {version} est déjà la dernière version.",
+    "available": "genpm {latest} est disponible (vous avez {current}). Lancez genpm upgrade pour l’installer.",
+    "downloading": "Téléchargement de genpm {version} ({asset})…",
+    "done": "genpm mis à jour : {from} → {to} (somme de contrôle vérifiée)"
   }
 }

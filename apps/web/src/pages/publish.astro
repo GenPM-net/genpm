@@ -30,10 +30,10 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=3600');
   <div class="wrap">
     <div class="phead"><span class="eyebrow" style="justify-self:start"><i></i>{t.t('web.publish.eyebrow')}</span><h1>{t.t('web.publish.title')}</h1><p>{t.t('web.publish.lede')}</p></div>
     <div class="steps4">
-      <div><span class="no">1</span><h2 class="h3">{t.t('web.publish.s1')}</h2><p>{t.t('web.publish.s1Text')}</p><code class="chip">npx genpm init</code></div>
+      <div><span class="no">1</span><h2 class="h3">{t.t('web.publish.s1')}</h2><p>{t.t('web.publish.s1Text')}</p><code class="chip">genpm init</code></div>
       <div><span class="no">2</span><h2 class="h3">{t.t('web.publish.s2')}</h2><p>{t.t('web.publish.s2Text')}</p><code class="chip">AGENTS.md</code></div>
       <div><span class="no">3</span><h2 class="h3">{t.t('web.publish.s3')}</h2><p>{t.t('web.publish.s3Text')}</p><code class="chip">git tag v1.0.0 && git push --tags</code></div>
-      <div><span class="no">4</span><h2 class="h3">{t.t('web.publish.s4')}</h2><p>{t.t('web.publish.s4Text')}</p><code class="chip">npx genpm publish</code></div>
+      <div><span class="no">4</span><h2 class="h3">{t.t('web.publish.s4')}</h2><p>{t.t('web.publish.s4Text')}</p><code class="chip">genpm publish</code></div>
     </div>
     <section class="sec" style="margin-top:56px"><div class="sec-h"><div><div class="k">{t.t('web.publish.builderKicker')}</div><h2>{t.t('web.publish.builderTitle')}</h2><p>{t.t('web.publish.builderText')}</p></div></div>
       <ManifestBuilder client:load labels={labels as never} />

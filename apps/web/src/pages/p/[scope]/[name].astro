@@ -105,7 +105,7 @@ const badgeMd = `[![genpm](https://api.genpm.net/v1/badge/${name}.svg)](https://
 
             <div class="pk-panel" data-panel="overview" hidden={!!shownFile}>
               <h2 class="h3">{t.t('web.pkg.install')}</h2>
-              {!selectedYanked && <CommandBlock command={`npx genpm add ${name}${m.version !== p.distTags.latest ? `@${m.version}` : ''}`} pkg={name} />}
+              {!selectedYanked && <CommandBlock command={`genpm add ${name}${m.version !== p.distTags.latest ? `@${m.version}` : ''}`} pkg={name} />}
               <h2 class="h3">{t.t('web.pkg.whatYouGet')}</h2>
               <ul class="dots">
                 <li>{t.t('web.pkg.getSource', { dest: m.dest, files: files.length })}{totalBytes > 0 && ` (${bytes(locale, totalBytes)})`}</li>
@@ -180,7 +180,7 @@ const badgeMd = `[![genpm](https://api.genpm.net/v1/badge/${name}.svg)](https://
 
           <aside class="side" data-tabs aria-label={t.t('web.pkg.installPanel')}>
             <div class="seg" role="tablist" aria-label={t.t('web.pkg.installPanel')}><button role="tab" type="button" aria-selected="true" data-tab="cli">{t.t('web.pkg.cli')}</button><button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="prompt">{t.t('web.pkg.prompt')}</button><button role="tab" type="button" aria-selected="false" tabindex="-1" data-tab="man">{t.t('web.pkg.manual')}</button></div>
-            <div data-panel="cli" style="display:grid;gap:10px"><div class="runner" role="group" aria-label={t.t('web.pkg.runner')}><button type="button" aria-pressed="true" data-run="npx">npx</button><button type="button" aria-pressed="false" data-run="pnpm dlx">pnpm dlx</button><button type="button" aria-pressed="false" data-run="bunx">bunx</button></div><CommandBlock command={`npx genpm add ${name}`} pkg={name} /></div>
+            <div data-panel="cli" style="display:grid;gap:10px"><div class="runner" role="group" aria-label={t.t('web.pkg.runner')}><button type="button" aria-pressed="true" data-run="">genpm</button><button type="button" aria-pressed="false" data-run="npx">npx</button><button type="button" aria-pressed="false" data-run="pnpm dlx">pnpm dlx</button><button type="button" aria-pressed="false" data-run="bunx">bunx</button></div><CommandBlock command={`genpm add ${name}`} pkg={name} /></div>
             <div data-panel="prompt" hidden><div class="term"><div class="bar"><span>{t.t('web.pkg.pasteAgent')}</span><button class="cp" type="button" data-copy="pk-prompt" data-event="copy_install" data-pkgname={name}>{t.t('web.common.copy')}</button></div><pre id="pk-prompt" style="white-space:pre-wrap">{t.t('web.pkg.promptText', { name })}</pre></div></div>
             <div data-panel="man" hidden><div class="term"><div class="bar"><span>{t.t('web.pkg.withoutCli')}</span><button class="cp" type="button" data-copy="pk-man">{t.t('web.common.copy')}</button></div><pre id="pk-man" style="white-space:pre-wrap">{`git init tmp && cd tmp\ngit fetch --depth 1 ${m.repo} ${m.commit}\ngit checkout FETCH_HEAD\n# copy ${m.include === '.' ? '.' : m.include} into ${m.dest}`}</pre></div></div>
             <dl class="kv">

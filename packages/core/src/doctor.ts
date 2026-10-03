@@ -8,6 +8,7 @@ import { gitAtLeast, gitVersion } from './fetch/git.js';
 import { exists } from './fs/io.js';
 import { integrityOf, readFilesIndex, readLock } from './lock.js';
 import { RegistryClient } from './registry-client.js';
+import { binaryTarget } from './self-update.js';
 
 export type Check = { id: string; status: 'ok' | 'warn' | 'fail'; detail: string; fix?: string };
 
@@ -20,15 +21,18 @@ export async function doctor(opts: {
 }): Promise<Check[]> {
   const checks: Check[] = [];
   const [major, minor] = process.versions.node.split('.').map(Number) as [number, number];
+  const target = binaryTarget();
   checks.push(
-    major > 20 || (major === 20 && minor >= 11)
-      ? { id: 'node', status: 'ok', detail: `Node.js ${process.versions.node}` }
-      : {
-          id: 'node',
-          status: 'fail',
-          detail: `Node.js ${process.versions.node}`,
-          fix: 'Install Node.js 20.11 or later.',
-        },
+    target
+      ? { id: 'runtime', status: 'ok', detail: `standalone binary (${target})` }
+      : major > 20 || (major === 20 && minor >= 11)
+        ? { id: 'node', status: 'ok', detail: `Node.js ${process.versions.node}` }
+        : {
+            id: 'node',
+            status: 'fail',
+            detail: `Node.js ${process.versions.node}`,
+            fix: 'Install Node.js 20.11 or later.',
+          },
   );
   const gv = await gitVersion();
   checks.push(

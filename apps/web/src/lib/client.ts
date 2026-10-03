@@ -70,6 +70,14 @@ function wireTabs(root: ParentNode) {
   });
 }
 
+/** Instalador del binario según el sistema (portada y /docs/install): macOS/Linux por defecto, Windows si se detecta. */
+function selectOs(box: Element | null, os: string) {
+  if (!box) return;
+  for (const b of box.querySelectorAll('[data-os]'))
+    b.setAttribute('aria-pressed', String((b as HTMLElement).dataset.os === os));
+  for (const p of box.querySelectorAll<HTMLElement>('[data-os-panel]')) p.hidden = p.dataset.osPanel !== os;
+}
+
 export function initSite() {
   const root = document.documentElement;
   document.addEventListener('click', (e) => {
@@ -89,8 +97,10 @@ export function initSite() {
       for (const x of run.parentElement?.querySelectorAll('[data-run]') ?? [])
         x.setAttribute('aria-pressed', x === run ? 'true' : 'false');
       const code = document.querySelector<HTMLElement>('code[data-pkg]');
-      if (code) code.textContent = `${run.dataset.run} genpm add ${code.dataset.pkg}`;
+      if (code) code.textContent = [run.dataset.run, 'genpm add', code.dataset.pkg].filter(Boolean).join(' ');
     }
+    const os = el.closest<HTMLElement>('[data-os]');
+    if (os) selectOs(os.closest('[data-os-box]'), os.dataset.os!);
     if (el.closest('[data-menu]')) {
       const sheet = document.getElementById('sheet')!;
       sheet.hidden = !sheet.hidden;
@@ -114,6 +124,8 @@ export function initSite() {
       }
     }
   });
+  if (/Windows/.test(navigator.userAgent))
+    for (const box of document.querySelectorAll('[data-os-box]')) selectOs(box, 'windows');
   const bar = document.querySelector<HTMLElement>('[data-langbar]');
   if (bar) {
     try {

@@ -267,6 +267,46 @@ GenPM lo presta el fundador como persona física con domicilio en España. Conse
 - La Ley de Accesibilidad (Directiva 2019/882) exime a microempresas de servicios; aun así la web cumple WCAG 2.1 AA (Lighthouse 100).
 - **Pendiente humano:** revisión de un abogado antes del lanzamiento con tráfico de pago (patrocinios) y valorar publicar un domicilio profesional en lugar del personal.
 
+### ADR-025 · Binario nativo como forma principal de instalar el CLI — ✅ Decidida (fundador, 2026-10-03)
+
+**Contexto:** hasta ahora la vía principal era `npx genpm …`: exige Node ≥ 20.11, añade el arranque de npx a cada comando
+y obliga a escribir `npx` delante. El fundador pidió que los comandos empiecen directamente por `genpm` en Windows, macOS y Linux.
+
+**Decisión:** la forma principal de instalar es un **binario nativo** por plataforma, con instalador de una línea:
+`curl -fsSL https://genpm.net/install.sh | sh` y `irm https://genpm.net/install.ps1 | iex`. `npm i -g genpm` y `npx genpm`
+siguen funcionando como alternativas (mismo bundle) y `npx` queda para usos puntuales y CI.
+- **Compilación:** `bun build --compile` sobre el bundle de tsdown (`dist/bin.mjs`, el mismo que se publica en npm), en
+  `packages/cli/scripts/build-binaries.mjs`. 8 binarios: macOS arm64/x64, Linux x64/arm64 glibc y musl, Windows x64/arm64
+  (x64 en variante *baseline*, sin AVX2). `--define __GENPM_BINARY_TARGET__` graba la plataforma en cada binario.
+- **Distribución:** GitHub Releases con `SHA256SUMS` y *attestation* de procedencia (Sigstore) desde `release.yml`, en el
+  mismo tag `v*` que npm. Antes de publicar, cada binario pasa un smoke real (`test/binary.test.ts`: firma Ed25519, git,
+  escritura, i18n) y los instaladores se prueban en su sistema (incluido Windows PowerShell 5.1).
+- **Instaladores:** fuente única en `scripts/install/`, servida por la web como texto plano. Detectan SO, arquitectura,
+  Rosetta y musl, verifican el SHA-256, instalan en `~/.genpm/bin` sin `sudo` y añaden la carpeta al `PATH` (desactivable).
+- **Actualización:** `genpm upgrade [version] [--check]` en `core/self-update.ts` (cli-mcp-spec §A.5). Solo contacta con
+  GitHub cuando el usuario lo ejecuta: sin avisos de versión en segundo plano (privacidad, §7 de security).
+
+**Alternativas descartadas:** Node SEA (exige CommonJS o un solo archivo sin `import()` dinámico —rompe los chunks de
+idioma—, un runner por plataforma y re-firmar en macOS); `pkg` (abandonado); `deno compile` (otro runtime con más
+diferencias con Node que Bun); solo `npm i -g` (sigue exigiendo Node).
+
+**Seguridad:**
+- El binario se escribe fuera del proyecto, así que INV-3 no se aplica a `upgrade`: el único archivo que toca es el propio
+  ejecutable, en su directorio, con `rename` atómico; nada descargado se ejecuta salvo el binario recién verificado (por el
+  instalador, para comprobar que arranca). No toca ningún otro invariante.
+- `SHA256SUMS` viene del mismo release que el binario: garantiza integridad (descarga corrupta o manipulada en tránsito),
+  no autenticidad frente a una cuenta de GitHub comprometida. La autenticidad la da la *attestation*, verificable con
+  `gh attestation verify`. Pendiente: firma de código (Apple Developer ID + notarización, Authenticode) para quitar avisos
+  de Gatekeeper/SmartScreen al descargar los binarios desde el navegador (con `curl`/`irm` no aparecen).
+- Los instaladores muestran sus mensajes solo en inglés: se ejecutan antes de que genpm y sus catálogos existan en la
+  máquina (excepción a la regla de i18n, igual que `--json`).
+
+**Consecuencias:** los releases solo se pueden descargar con el repo público (como la provenance de npm, ADR-016); hasta
+entonces el job de release compila y prueba en cada push a `main` pero no publica. Los runners ARM gratuitos de Linux y
+Windows solo existen en repos públicos: mientras tanto se prueban x64 y Apple silicon. Bun pasa a ser herramienta de build
+(fijada en `release.yml`), no dependencia del repo. El servidor MCP sigue necesitando Node (`npx -y @genpm/mcp`); un
+`genpm mcp serve` dentro del binario queda como mejora futura.
+
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

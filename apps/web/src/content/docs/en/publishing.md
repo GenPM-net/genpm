@@ -6,11 +6,11 @@ order: 20
 Your code stays on GitHub; the registry stores the manifest and the commit it points to.
 
 ```bash
-npx genpm init          # creates genpm.json, AGENTS.md and .genpmignore
-npx genpm validate      # same scanner as the registry
+genpm init          # creates genpm.json, AGENTS.md and .genpmignore
+genpm validate      # same scanner as the registry
 git tag v1.0.0 && git push --tags
-npx genpm login
-npx genpm publish
+genpm login
+genpm publish
 ```
 
 `publish` checks that the working tree is clean and that the tag on `origin` points to the same commit as yours (`E_REF_NOT_PUSHED`). The registry then reads `genpm.json` **from GitHub** at that commit — never from your machine — validates it, scans the tree, signs the resolved manifest and lists the package.
@@ -20,7 +20,7 @@ Versions are immutable: `(name, version)` can never be published twice, even aft
 Try it first without publishing anything:
 
 ```bash
-npx genpm publish --dry-run
+genpm publish --dry-run
 ```
 
 ## What the registry checks
@@ -41,7 +41,7 @@ Publish a package that lives in a subdirectory with `--manifest packages/billing
 ## Withdrawing a version
 
 ```bash
-npx genpm yank @acme/billing@1.2.0 --reason "breaks webhooks on Stripe API 2026-09"
+genpm yank @acme/billing@1.2.0 --reason "breaks webhooks on Stripe API 2026-09"
 ```
 
 A yanked version stays immutable and verifiable for the projects that already use it, but new installs skip it and the web shows the reason.

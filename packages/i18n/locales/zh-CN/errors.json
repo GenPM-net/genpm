@@ -167,6 +167,18 @@
     "message": "GenPM 需要 Node.js 20.11 或更高版本（当前为 {version}）。",
     "fix": "请更新 Node.js。"
   },
+  "E_UPGRADE_UNSUPPORTED": {
+    "message": "此 GenPM 副本是通过 {via} 安装的：genpm upgrade 只能更新独立二进制文件。",
+    "fix": "请使用 {command} 更新，或从 genpm.net/docs/install 安装二进制文件。"
+  },
+  "E_UPGRADE_PERMISSION": {
+    "message": "无法替换 {path}：权限被拒绝。",
+    "fix": "请以该文件所有者的身份运行 genpm upgrade，或使用 genpm.net/docs/install 中的脚本重新安装。"
+  },
+  "E_UPGRADE_INTEGRITY": {
+    "message": "下载的 {asset} 与其发布的 SHA-256 校验和不一致。",
+    "fix": "未做任何更改。请稍后重试；如果再次发生，请发送邮件至 hello@genpm.net，主题为 [SECURITY]。"
+  },
   "E_NOT_A_PROJECT": {
     "message": "在 {path} 中未找到项目。",
     "fix": "请在项目内（包含 package.json 或 .git）运行该命令，或传入 --cwd <dir>。"

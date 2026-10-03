@@ -8,7 +8,7 @@ El servidor MCP de GenPM (`@genpm/mcp`) le da a tu agente el mismo motor que el 
 Lo más rápido es dejar que GenPM escriba la config de los clientes que detecta en tu proyecto:
 
 ```bash
-npx genpm mcp setup
+genpm mcp setup
 ```
 
 Muestra el cambio exacto y pregunta antes de escribir. Usa `--client` y `--scope` para elegir uno, o configúralo a mano como se indica abajo.
@@ -42,8 +42,8 @@ Proyecto: `.cursor/mcp.json`. Usuario: `~/.cursor/mcp.json`.
 ```
 
 ```bash
-npx genpm mcp setup --client cursor                # proyecto
-npx genpm mcp setup --client cursor --scope user   # usuario
+genpm mcp setup --client cursor                # proyecto
+genpm mcp setup --client cursor --scope user   # usuario
 ```
 
 ## VS Code (GitHub Copilot)
@@ -77,7 +77,7 @@ Solo usuario: `~/.codeium/windsurf/mcp_config.json`.
 ```
 
 ```bash
-npx genpm mcp setup --client windsurf
+genpm mcp setup --client windsurf
 ```
 
 ## Codex
@@ -91,7 +91,7 @@ args = ["-y", "@genpm/mcp"]
 ```
 
 ```bash
-npx genpm mcp setup --client codex
+genpm mcp setup --client codex
 ```
 
 ## Herramientas

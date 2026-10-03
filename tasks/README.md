@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-03. No editar a mano. -->
 
-**58 %** completado · 148/254 tareas · 541h estimadas pendientes
+**57 %** completado · 148/258 tareas · 563h estimadas pendientes
 
-TODO 58 · DOING 4 · DONE 147 · BLOCKED 44 · CUT 1
+TODO 61 · DOING 5 · DONE 147 · BLOCKED 44 · CUT 1
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -87,7 +87,7 @@ TODO 58 · DOING 4 · DONE 147 · BLOCKED 44 · CUT 1
 | [Día 7 · Lanzamiento](07-dia-7-lanzamiento.md) | `░░░░░░░░░░░░` 0 % | 0/11 | 18.5h |
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓░░░░░░` 52 % | 22/42 | 10h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 16/17 | 2h |
-| [Post-MVP](10-post-mvp.md) | `░░░░░░░░░░░░` 0 % | 0/27 | 462h |
+| [Post-MVP](10-post-mvp.md) | `░░░░░░░░░░░░` 0 % | 0/31 | 484h |
 
 **En curso**
 
@@ -95,6 +95,7 @@ TODO 58 · DOING 4 · DONE 147 · BLOCKED 44 · CUT 1
 - `D0-05` Crear la org de GitHub GenPM-net con 2FA obligatorio · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-10` Cuenta Cloudflare Workers Paid con llaves FIDO2 · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-12` Generar claves de firma Ed25519 (k1 activa, k2 siguiente) y clave raíz de revocación guardada offline · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
+- `V011-02` Binario nativo de genpm para macOS, Linux y Windows con instaladores de una línea y genpm upgrade (ADR-025) · B · 8h ([10-post-mvp.md](10-post-mvp.md))
 
 **Bloqueadas**
 

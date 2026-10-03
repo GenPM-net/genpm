@@ -22,6 +22,7 @@ export interface MessageParams {
   "cli.desc.mcpAdd": undefined;
   "cli.desc.mcpRemove": undefined;
   "cli.desc.cache": undefined;
+  "cli.desc.upgrade": undefined;
   "cli.arg.cwd": undefined;
   "cli.arg.registry": undefined;
   "cli.arg.json": undefined;
@@ -57,6 +58,8 @@ export interface MessageParams {
   "cli.arg.scope": undefined;
   "cli.arg.workflow": undefined;
   "cli.arg.action": undefined;
+  "cli.arg.check": undefined;
+  "cli.arg.targetVersion": undefined;
   "cli.label.resolved": undefined;
   "cli.label.dependency": undefined;
   "cli.label.skip": undefined;
@@ -135,6 +138,10 @@ export interface MessageParams {
   "cli.next.integration": { file: string | number };
   "cli.next.npm": { command: string | number };
   "cli.next.mcp": { names: string | number };
+  "cli.upgrade.upToDate": { version: string | number };
+  "cli.upgrade.available": { latest: string | number; current: string | number };
+  "cli.upgrade.downloading": { version: string | number; asset: string | number };
+  "cli.upgrade.done": { from: string | number; to: string | number };
   "common.product.tagline": undefined;
   "common.layers.code": undefined;
   "common.layers.context": undefined;
@@ -238,6 +245,12 @@ export interface MessageParams {
   "errors.E_GIT_MISSING.fix": undefined;
   "errors.E_NODE_VERSION.message": { version: string | number };
   "errors.E_NODE_VERSION.fix": undefined;
+  "errors.E_UPGRADE_UNSUPPORTED.message": { via: string | number };
+  "errors.E_UPGRADE_UNSUPPORTED.fix": { command: string | number };
+  "errors.E_UPGRADE_PERMISSION.message": { path: string | number };
+  "errors.E_UPGRADE_PERMISSION.fix": undefined;
+  "errors.E_UPGRADE_INTEGRITY.message": { asset: string | number };
+  "errors.E_UPGRADE_INTEGRITY.fix": undefined;
   "errors.E_NOT_A_PROJECT.message": { path: string | number };
   "errors.E_NOT_A_PROJECT.fix": undefined;
   "web.meta.title": undefined;
@@ -306,7 +319,9 @@ export interface MessageParams {
   "web.home.title": undefined;
   "web.home.lede": undefined;
   "web.home.installMethod": undefined;
-  "web.home.noGlobal": undefined;
+  "web.home.noNode": undefined;
+  "web.home.os": undefined;
+  "web.home.installMore": undefined;
   "web.home.thenAsk": undefined;
   "web.home.askExample": undefined;
   "web.home.searchCta": { count: number };

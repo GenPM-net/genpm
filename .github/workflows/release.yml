@@ -1,7 +1,9 @@
-# Publicación en npm con provenance (security §6, D5-B-05 / D6-P-06). Actions fijadas por SHA.
-# - En cada push a main: dry-run de `npm publish --provenance` de genpm y @genpm/mcp (comprueba bundle, files y firma OIDC).
-# - Con un tag v*: publicación real (requiere el secreto NPM_TOKEN de la org @genpm y repo público: npm solo genera
-#   provenance desde repos públicos, así que este workflow se activa tras la apertura del código, D6-P-07 / ADR-016).
+# Publicación en npm con provenance (security §6, D5-B-05 / D6-P-06) y binarios nativos (ADR-025). Actions fijadas por SHA.
+# - En cada push a main: dry-run de `npm publish --provenance` de genpm y @genpm/mcp (comprueba bundle, files y firma OIDC)
+#   y compilación + smoke de los binarios nativos y de los instaladores en macOS, Linux y Windows.
+# - Con un tag v*: publicación real en npm y GitHub Release con los binarios, SHA256SUMS y attestation de procedencia
+#   (requiere el secreto NPM_TOKEN de la org @genpm y repo público: npm solo genera provenance, y los instaladores solo
+#   pueden descargar releases, desde repos públicos; se activa tras la apertura del código, D6-P-07 / ADR-016).
 name: release
 
 on:
@@ -51,3 +53,128 @@ jobs:
         run: for t in dist-pack/*.tgz; do npm publish "$t" --provenance --access public; done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # Binarios nativos (ADR-025): Bun compila de forma cruzada las 8 plataformas desde un solo runner, a partir del mismo
+  # bundle de tsdown que se publica en npm.
+  binaries:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter genpm... build
+      - name: Versión del tag = versión del CLI
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: test "v$(node -p "require('./packages/cli/package.json').version")" = "$GITHUB_REF_NAME"
+      - run: pnpm --filter genpm build:bin
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: genpm-binaries
+          path: packages/cli/dist-bin/
+          if-no-files-found: error
+          retention-days: 7
+
+  # Cada binario se ejecuta en su sistema real: smoke del CLI (firma Ed25519, git, escritura, i18n) e instalador.
+  binaries-smoke:
+    needs: binaries
+    name: smoke (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        # Los runners ARM de Linux y Windows solo son gratuitos en repos públicos: mientras el repo sea privado se prueban
+        # x64 y Apple silicon (los binarios ARM se compilan igual).
+        include: >-
+          ${{ fromJSON(github.event.repository.private
+          && '[{"os":"ubuntu-latest","target":"linux-x64"},{"os":"macos-latest","target":"darwin-arm64"},{"os":"windows-latest","target":"windows-x64.exe"}]'
+          || '[{"os":"ubuntu-latest","target":"linux-x64"},{"os":"ubuntu-24.04-arm","target":"linux-arm64"},{"os":"macos-latest","target":"darwin-arm64"},{"os":"windows-latest","target":"windows-x64.exe"},{"os":"windows-11-arm","target":"windows-arm64.exe"}]') }}
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: genpm-binaries
+          path: dist-bin
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter genpm... build
+      - name: Smoke del binario
+        shell: bash
+        run: |
+          chmod +x "dist-bin/genpm-${{ matrix.target }}"
+          GENPM_BINARY="$PWD/dist-bin/genpm-${{ matrix.target }}" pnpm --filter genpm exec vitest run test/binary.test.ts
+      - name: install.sh
+        if: ${{ runner.os != 'Windows' }}
+        run: |
+          GENPM_DOWNLOAD_URL="$PWD/dist-bin" GENPM_NO_MODIFY_PATH=1 sh scripts/install/install.sh
+          "$HOME/.genpm/bin/genpm" doctor --json | grep -q '"id":"runtime"'
+      # Windows PowerShell 5.1 (el que trae Windows) y PowerShell 7.
+      - name: install.ps1 (Windows PowerShell 5.1)
+        if: ${{ runner.os == 'Windows' }}
+        shell: powershell
+        run: |
+          $env:GENPM_DOWNLOAD_URL = "$PWD\dist-bin"
+          Get-Content scripts/install/install.ps1 -Raw | Invoke-Expression
+          genpm --version
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+      - name: install.ps1 (PowerShell 7, reinstalación sobre un genpm.exe existente)
+        if: ${{ runner.os == 'Windows' }}
+        shell: pwsh
+        run: |
+          $env:GENPM_DOWNLOAD_URL = "$PWD\dist-bin"
+          Get-Content scripts/install/install.ps1 -Raw | Invoke-Expression
+          & "$HOME\.genpm\bin\genpm.exe" doctor --json | Select-String '"id":"runtime"'
+          if (-not $?) { exit 1 }
+
+  github-release:
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    needs: [npm, binaries-smoke]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # crear el release
+      id-token: write # attestation (Sigstore) vía OIDC
+      attestations: write
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: genpm-binaries
+          path: dist-bin
+      - name: Verificar SHA256SUMS
+        working-directory: dist-bin
+        run: sha256sum --check --strict SHA256SUMS
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: dist-bin/genpm-*
+      - name: Publicar el release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release create "$GITHUB_REF_NAME" dist-bin/* --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes
+          --title "genpm ${GITHUB_REF_NAME#v}"
