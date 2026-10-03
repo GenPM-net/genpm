@@ -174,7 +174,7 @@ describe('apply() · D2-G-02', () => {
     await apply(await plan(input({ specs: ['@core/db'] })), { allowMcp: false, installNpmDeps: false, by: 'cli' });
     const p = await plan(input());
     expect(p.packages.find((x) => x.n === '@core/db')?.action).toBe('skip');
-    expect(reg.requests.at(-1)).toContain('installed=%40core%2Fdb%401.0.3');
+    expect(reg.requests.filter((u) => u.includes('/resolve')).at(-1)).toContain('installed=%40core%2Fdb%401.0.3');
   });
 
   it('reports conflicts instead of overwriting user code; --force backs up first', async () => {

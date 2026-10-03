@@ -1,7 +1,7 @@
 // Cron Triggers (api-spec §8):
 //   0 * * * *   rollup Analytics Engine → install_stats_daily; installs_30d e installs_total.
 //   15 3 * * *  popularity_score, patrocinios por fecha, auditoría tag → SHA y repos inaccesibles (security §3.3).
-//   0 4 * * 0   re-sync de membresías de GitHub con synced_at > 7 días.
+//   0 4 * * SUN   re-sync de membresías de GitHub con synced_at > 7 días.
 //   0 * * * *   además: re-firma por lotes las versiones cuya firma no es de la clave activa (rotación, runbook §2).
 
 import type { Env } from '../env.js';
@@ -206,5 +206,5 @@ export async function runCron(cron: string, env: Env): Promise<void> {
     await recomputePopularity(env);
     await syncSponsorships(env);
     await auditTags(env);
-  } else if (cron === '0 4 * * 0') await resyncMemberships(env);
+  } else if (cron === '0 4 * * SUN') await resyncMemberships(env);
 }

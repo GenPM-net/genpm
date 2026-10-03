@@ -26,21 +26,28 @@
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
 - [ ] `D0-07` **BLOCKED** GitHub App de solo lectura para el registry (lectura de repos en publish) · F · 0.5h · deps: D0-05
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
-- [ ] `D0-08` **DOING** Repo GenPM-net/genpm con protección de main y 5 repos vacíos para las semillas · F · 0.5h · deps: D0-05
+- [x] `D0-08` **DONE** Repo GenPM-net/genpm con protección de main y 5 repos vacíos para las semillas · F · 0.5h · deps: D0-05
   - Decisión ADR-016: repo **privado** hasta el lanzamiento. Para proteger `main` en privado hace falta el plan Team de GitHub; semillas privadas hasta `D6-P-07`.
-  - ✅ `GenPM-net/genpm` creado (privado) y con el código subido el 2026-10-03. Pendiente: plan Team + protección de `main`, y los 5 repos vacíos de las semillas.
+  - ✅ `GenPM-net/genpm` creado (privado) y con el código subido el 2026-10-03.
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
+  - ✅ 2026-10-03: repos privados `GenPM-net/{db,auth,billing,email,ai}` creados con su subtree y tag `v1.0.0`. Sin plan Team: `main` sin protección según ADR-023.
+
 - [ ] `D0-09` **BLOCKED** Org de npm @genpm con 2FA, placeholder genpm@0.0.0 y trusted publishing para el monorepo · F · 1h · deps: D0-08
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
 
 ## Cloudflare y claves
 
-- [ ] `D0-10` **BLOCKED** Cuenta Cloudflare Workers Paid con llaves FIDO2 · F · 0.5h · deps: —
+- [ ] `D0-10` **DOING** Cuenta Cloudflare Workers Paid con llaves FIDO2 · F · 0.5h · deps: —
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
-- [ ] `D0-11` **BLOCKED** Crear D1 genpm-registry y genpm-registry-staging, dataset de Analytics Engine y Queue de escaneo · F · 0.5h · deps: D0-10
+  - ✅ 2026-10-03: cuenta `f88afb06…` con wrangler; staging funciona en el plan gratuito (D1, Queues, Rate Limiting, Analytics Engine). Pendiente fundador: Workers Paid antes del lanzamiento (límites de CPU/peticiones) y llaves FIDO2.
+
+- [x] `D0-11` **DONE** Crear D1 genpm-registry y genpm-registry-staging, dataset de Analytics Engine y Queue de escaneo · F · 0.5h · deps: D0-10
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
-- [ ] `D0-12` **BLOCKED** Generar claves de firma Ed25519 (k1 activa, k2 siguiente) y clave raíz de revocación guardada offline · F · 1h · deps: —
-  - Bloqueo: las claves de producción las genera el fundador offline. Script listo: `node scripts/gen-signing-keys.mjs` (ver D2-A-08).
+  - ✅ 2026-10-03: D1 `genpm-registry` (`fd31f31d…`) y `genpm-registry-staging` (`b715994c…`) con las 4 migraciones; colas `genpm-scan` y `genpm-scan-staging`; datasets de Analytics Engine se crean al primer write.
+
+- [ ] `D0-12` **DOING** Generar claves de firma Ed25519 (k1 activa, k2 siguiente) y clave raíz de revocación guardada offline · F · 1h · deps: —
+  - ✅ 2026-10-03: k1/k2/root generadas en `~/genpm-keys-2026-10-03/`, públicas fijadas en `packages/core/src/keys.ts` y registradas en la D1 de producción; staging usa su propia clave `s1`. Pendiente fundador: mover `root.private` offline y borrarla del disco.
+
 - [ ] `D0-13` **BLOCKED** Gestor de secretos del equipo con todos los secretos; ningún .env commiteado · F · 0.5h · deps: D0-12
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
 

@@ -17,7 +17,7 @@
     {
       "binding": "DB",
       "database_name": "genpm-registry",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "fd31f31d-abc6-4784-921a-931e61e7f2ca",
       "migrations_dir": "migrations"
     }
   ],
@@ -33,21 +33,21 @@
     { "name": "RL_PUBLISH", "namespace_id": "1003", "simple": { "limit": 10, "period": 60 } },
     { "name": "RL_EXCHANGE", "namespace_id": "1004", "simple": { "limit": 10, "period": 60 } }
   ],
-  "triggers": { "crons": ["0 * * * *", "15 3 * * *", "0 4 * * 0"] },
+  "triggers": { "crons": ["0 * * * *", "15 3 * * *", "0 4 * * SUN"] },
   "routes": [{ "pattern": "api.genpm.net", "custom_domain": true }],
   "env": {
     "staging": {
       "name": "genpm-registry-staging",
       "vars": {
         "ENVIRONMENT": "staging",
-        "WEB_ORIGIN": "https://staging.genpm.net",
-        "SIGNING_KEY_ID": "k1"
+        "WEB_ORIGIN": "https://genpm-web-staging.yohangelr.workers.dev",
+        "SIGNING_KEY_ID": "s1"
       },
       "d1_databases": [
         {
           "binding": "DB",
           "database_name": "genpm-registry-staging",
-          "database_id": "00000000-0000-0000-0000-000000000001",
+          "database_id": "b715994c-6127-4e91-ae5b-ef49c9ba6234",
           "migrations_dir": "migrations"
         }
       ],
@@ -62,8 +62,11 @@
         { "name": "RL_PUBLISH", "namespace_id": "2003", "simple": { "limit": 10, "period": 60 } },
         { "name": "RL_EXCHANGE", "namespace_id": "2004", "simple": { "limit": 10, "period": 60 } }
       ],
-      "triggers": { "crons": ["0 * * * *", "15 3 * * *", "0 4 * * 0"] },
-      "routes": [{ "pattern": "api.staging.genpm.net", "custom_domain": true }]
+      "triggers": { "crons": ["0 * * * *", "15 3 * * *", "0 4 * * SUN"] },
+      // Mientras genpm.net no esté en Cloudflare (DNS en Piensa), staging vive en workers.dev. Al mover la zona:
+      // "routes": [{ "pattern": "api.staging.genpm.net", "custom_domain": true }] y WEB_ORIGIN → staging.genpm.net.
+      "workers_dev": true,
+      "routes": []
     }
   }
 }

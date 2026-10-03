@@ -71,13 +71,13 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-03. No editar a mano. -->
 
-**57 %** completado · 146/254 tareas · 542h estimadas pendientes
+**58 %** completado · 148/254 tareas · 541h estimadas pendientes
 
-TODO 58 · DOING 3 · DONE 145 · BLOCKED 47 · CUT 1
+TODO 58 · DOING 4 · DONE 147 · BLOCKED 44 · CUT 1
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
-| [Día 0 · Preparación](00-dia-0-preparacion.md) | `▓░░░░░░░░░░░` 6 % | 1/16 | 12h |
+| [Día 0 · Preparación](00-dia-0-preparacion.md) | `▓▓░░░░░░░░░░` 19 % | 3/16 | 11h |
 | [Día 1 · Cimientos](01-dia-1-cimientos.md) | `▓▓▓▓▓▓▓▓▓▓░░` 81 % | 17/21 | 4h |
 | [Día 2 · Registry y motor de fetch](02-dia-2-registry-fetch.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 90 % | 19/21 | 1h |
 | [Día 3 · CLI y contexto](03-dia-3-cli-contexto.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 95 % | 21/22 | 1h |
@@ -93,7 +93,8 @@ TODO 58 · DOING 3 · DONE 145 · BLOCKED 47 · CUT 1
 
 - `D0-01` Registrar genpm.net, activar registrar lock y DNSSEC (DNS en Cloudflare) · F · 2h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-05` Crear la org de GitHub GenPM-net con 2FA obligatorio · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
-- `D0-08` Repo GenPM-net/genpm con protección de main y 5 repos vacíos para las semillas · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
+- `D0-10` Cuenta Cloudflare Workers Paid con llaves FIDO2 · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
+- `D0-12` Generar claves de firma Ed25519 (k1 activa, k2 siguiente) y clave raíz de revocación guardada offline · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 
 **Bloqueadas**
 
@@ -103,9 +104,6 @@ TODO 58 · DOING 3 · DONE 145 · BLOCKED 47 · CUT 1
 - `D0-06` OAuth App de GitHub con Device Flow (login del CLI y de la web) · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-07` GitHub App de solo lectura para el registry (lectura de repos en publish) · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-09` Org de npm @genpm con 2FA, placeholder genpm@0.0.0 y trusted publishing para el monorepo · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
-- `D0-10` Cuenta Cloudflare Workers Paid con llaves FIDO2 · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
-- `D0-11` Crear D1 genpm-registry y genpm-registry-staging, dataset de Analytics Engine y Queue de escaneo · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
-- `D0-12` Generar claves de firma Ed25519 (k1 activa, k2 siguiente) y clave raíz de revocación guardada offline · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-13` Gestor de secretos del equipo con todos los secretos; ningún .env commiteado · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-14` Contratar revisor nativo de pt-BR para el Día 6 y buscar revisores de nivel 2 (ja, zh-CN, ko, fr, de) · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-G-01` M0: todas las cuentas con 2FA/FIDO2 y accesos repartidos al equipo · T · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))

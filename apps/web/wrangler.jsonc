@@ -20,12 +20,14 @@
       "name": "genpm-web-staging",
       "vars": {
         "ENVIRONMENT": "staging",
-        "SITE_ORIGIN": "https://staging.genpm.net",
-        "REGISTRY_URL": "https://api.staging.genpm.net"
+        "SITE_ORIGIN": "https://genpm-web-staging.yohangelr.workers.dev",
+        "REGISTRY_URL": "https://genpm-registry-staging.yohangelr.workers.dev"
       },
       "services": [{ "binding": "REGISTRY", "service": "genpm-registry-staging" }],
       "analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "genpm_web_events_staging" }],
-      "routes": [{ "pattern": "staging.genpm.net", "custom_domain": true }]
+      // Temporal en workers.dev hasta mover la zona genpm.net a Cloudflare (luego: custom_domain staging.genpm.net).
+      "workers_dev": true,
+      "routes": []
     }
   }
   // Secretos: GITHUB_OAUTH_CLIENT_ID, GITHUB_OAUTH_CLIENT_SECRET, SESSION_PEPPER, TURNSTILE_SECRET_KEY

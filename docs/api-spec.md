@@ -665,7 +665,7 @@ El catálogo vive en `@genpm/manifest/errors` y lo reutilizan CLI y MCP (mismo `
 |---|---|
 | `0 * * * *` | Rollup Analytics Engine → `install_stats_daily`; actualizar `installs_30d`, `installs_total`. |
 | `15 3 * * *` | Recalcular `popularity_score`; activar/desactivar `sponsorships` por fecha y sincronizar `packages.is_sponsored`; auditoría de tags (tag→SHA ≠ `commit_sha` ⇒ `audit_log` + alerta); marcar repos inaccesibles. |
-| `0 4 * * 0` | Re-sync de membresías de GitHub con `synced_at` > 7 días (vía GitHub App). |
+| `0 4 * * SUN` | Re-sync de membresías de GitHub con `synced_at` > 7 días (vía GitHub App). |
 
 ## 9. Bindings (`wrangler.jsonc`)
 
@@ -681,7 +681,7 @@ El catálogo vive en `@genpm/manifest/errors` y lo reutilizan CLI y MCP (mismo `
     { "name": "RL_PUBLIC", "namespace_id": "1001", "simple": { "limit": 300, "period": 60 } },
     { "name": "RL_AUTH",   "namespace_id": "1002", "simple": { "limit": 1200, "period": 60 } }
   ],
-  "triggers": { "crons": ["0 * * * *", "15 3 * * *", "0 4 * * 0"] },
+  "triggers": { "crons": ["0 * * * *", "15 3 * * *", "0 4 * * SUN"] },
   "routes": [{ "pattern": "api.genpm.net", "custom_domain": true }]
   // secretos (wrangler secret put): GITHUB_APP_ID, GITHUB_APP_PRIVATE_KEY, GITHUB_OAUTH_CLIENT_ID, GITHUB_OAUTH_CLIENT_SECRET, TOKEN_PEPPER
 }
