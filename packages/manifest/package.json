@@ -1,0 +1,39 @@
+{
+  "name": "@genpm/manifest",
+  "version": "0.1.0",
+  "description": "GenPM manifest format: zod schemas, validators, canonical form and error catalog (no I/O)",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./errors": {
+      "types": "./dist/errors.d.ts",
+      "default": "./dist/errors.js"
+    },
+    "./schema/v1/genpm.json": "./schema/v1/genpm.json",
+    "./fixtures/golden.json": "./fixtures/golden.json"
+  },
+  "files": [
+    "dist",
+    "schema"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run && node scripts/gen-json-schema.mjs --check",
+    "schema": "node scripts/gen-json-schema.mjs"
+  },
+  "dependencies": {
+    "semver": "^7.8.5",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@genpm/tsconfig": "workspace:*",
+    "@types/semver": "^7.8.0",
+    "ajv": "^8.20.0"
+  }
+}

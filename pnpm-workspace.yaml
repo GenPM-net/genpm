@@ -1,3 +1,6 @@
 packages:
   - "apps/*"
   - "packages/*"
+
+# security §6: ninguna dependencia ejecuta scripts al instalar
+onlyBuiltDependencies: []

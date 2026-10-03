@@ -1,0 +1,107 @@
+{
+  "$comment": "Términos no traducibles y traducciones aprobadas (i18n §5). check.mjs falla si un término doNotTranslate desaparece de una traducción que lo tenía en inglés.",
+  "doNotTranslate": [
+    "GenPM",
+    "genpm",
+    "genpm.json",
+    "genpm.lock",
+    "AGENTS.md",
+    "MCP",
+    "SHA",
+    ".genpmignore",
+    ".env.example",
+    "--dest",
+    "--force",
+    "--keep-code",
+    "--json",
+    "--lang",
+    "GENPM_TOKEN",
+    "GENPM_REGISTRY"
+  ],
+  "terms": {
+    "Code": {
+      "es": "Código",
+      "pt-BR": "Código",
+      "fr": "Code",
+      "de": "Code",
+      "ja": "コード",
+      "zh-CN": "代码",
+      "ko": "코드"
+    },
+    "Context": {
+      "es": "Contexto",
+      "pt-BR": "Contexto",
+      "fr": "Contexte",
+      "de": "Kontext",
+      "ja": "コンテキスト",
+      "zh-CN": "上下文",
+      "ko": "컨텍스트"
+    },
+    "Connections": {
+      "es": "Conexiones",
+      "pt-BR": "Conexões",
+      "fr": "Connexions",
+      "de": "Verbindungen",
+      "ja": "コネクション",
+      "zh-CN": "连接",
+      "ko": "커넥션"
+    },
+    "package": {
+      "es": "paquete",
+      "pt-BR": "pacote",
+      "fr": "paquet",
+      "de": "Paket",
+      "ja": "パッケージ",
+      "zh-CN": "包",
+      "ko": "패키지"
+    },
+    "inject": {
+      "es": "inyectar",
+      "pt-BR": "injetar",
+      "fr": "injecter",
+      "de": "einbinden",
+      "ja": "組み込む",
+      "zh-CN": "注入",
+      "ko": "주입"
+    },
+    "Sponsored": {
+      "es": "Patrocinado",
+      "pt-BR": "Patrocinado",
+      "fr": "Sponsorisé",
+      "de": "Gesponsert",
+      "ja": "スポンサー",
+      "zh-CN": "赞助",
+      "ko": "스폰서"
+    }
+  },
+  "synonyms": {
+    "payments": ["pagos", "pagamentos", "paiements", "zahlungen", "決済", "支付", "결제"],
+    "auth": [
+      "autenticacion",
+      "autenticación",
+      "autenticação",
+      "authentification",
+      "authentifizierung",
+      "認証",
+      "认证",
+      "인증",
+      "login"
+    ],
+    "billing": [
+      "facturacion",
+      "facturación",
+      "cobranca",
+      "cobrança",
+      "facturation",
+      "abrechnung",
+      "課金",
+      "计费",
+      "결제",
+      "subscriptions",
+      "suscripciones",
+      "assinaturas"
+    ],
+    "email": ["correo", "e-mail", "メール", "邮件", "이메일"],
+    "db": ["database", "base de datos", "banco de dados", "datenbank", "データベース", "数据库", "데이터베이스"]
+  }
+}

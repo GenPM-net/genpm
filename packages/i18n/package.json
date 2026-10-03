@@ -1,0 +1,36 @@
+{
+  "name": "@genpm/i18n",
+  "version": "0.1.0",
+  "description": "GenPM translation catalogs (ICU MessageFormat), locale negotiation and Intl formatting (no I/O)",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./locales/*": "./locales/*"
+  },
+  "files": [
+    "dist",
+    "locales",
+    "glossary.json"
+  ],
+  "scripts": {
+    "build": "node scripts/gen.mjs && tsc -p tsconfig.build.json",
+    "gen": "node scripts/gen.mjs",
+    "check": "node scripts/check.mjs",
+    "pseudo": "node scripts/pseudo.mjs",
+    "lint:literals": "node scripts/lint-literals.mjs",
+    "typecheck": "node scripts/gen.mjs && tsc --noEmit",
+    "test": "vitest run && node scripts/check.mjs"
+  },
+  "dependencies": {
+    "intl-messageformat": "^12.1.0"
+  },
+  "devDependencies": {
+    "@formatjs/icu-messageformat-parser": "^3.5.0",
+    "@genpm/tsconfig": "workspace:*"
+  }
+}

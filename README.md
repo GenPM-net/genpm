@@ -21,7 +21,7 @@ Fase de diseño — MVP de 7 días. **Todavía no hay código de implementación
 genpm/
 ├── apps/
 │   ├── registry/      # API Edge: Cloudflare Workers + Hono + D1 (solo metadatos)
-│   └── web/           # genpm.com: Astro SSR en Cloudflare (búsqueda, páginas de paquete, docs)
+│   └── web/           # genpm.net: Astro SSR en Cloudflare (búsqueda, páginas de paquete, docs)
 ├── packages/
 │   ├── manifest/      # @genpm/manifest — esquema zod, tipos, JSON Schema, semver helpers (sin I/O)
 │   ├── core/          # @genpm/core — resolver, fetcher Git, injector, lockfile, contexto, MCP config
@@ -33,6 +33,6 @@ genpm/
 └── docs/              # documentación técnica oficial
 ```
 
-Seguridad: [docs/security.md](docs/security.md) · Idiomas: en, es, pt-BR, fr, de, ja, zh-CN, ko ([docs/i18n.md](docs/i18n.md)) · Web: [genpm.com](https://genpm.com)
+Seguridad: [docs/security.md](docs/security.md) · Idiomas: en, es, pt-BR, fr, de, ja, zh-CN, ko ([docs/i18n.md](docs/i18n.md)) · Web: [genpm.net](https://genpm.net)
 
 Stack: TypeScript estricto · pnpm workspaces + Turborepo · Biome · Vitest · Hono · Cloudflare Workers/D1 · Astro.

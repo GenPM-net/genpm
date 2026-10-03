@@ -1,0 +1,23 @@
+{
+  "name": "@genpm/core",
+  "version": "0.1.0",
+  "description": "GenPM engine shared by the CLI and the MCP server: resolve, fetch, plan, apply, inject, lock",
+  "license": "MIT",
+  "type": "module",
+  "engines": { "node": ">=20.11" },
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@genpm/i18n": "workspace:*",
+    "@genpm/manifest": "workspace:*",
+    "ignore": "^7.0.0"
+  },
+  "devDependencies": { "@genpm/tsconfig": "workspace:*", "@types/node": "^22.0.0" }
+}

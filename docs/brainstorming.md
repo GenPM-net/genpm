@@ -165,21 +165,43 @@ con plazos. El riesgo residual se documenta explícitamente. Especificación com
 
 | Activo | Decisión | Estado verificado el 2026-10-02 |
 |---|---|---|
-| Dominio principal | **genpm.com** (web), `api.genpm.com`, `mcp.genpm.com` | ⚠️ **Registrado desde 2020** (registrador NameBright / TurnCommerce, vence 2027-01-23). No es un registro normal: es una compra en el mercado secundario. Confirmar precio y transferencia antes de pagar. |
-| Dominio defensivo | `genpm.dev` → redirección 301 a genpm.com | Libre (RDAP 404) — comprar a la vez |
-| GitHub | Org **`genpmhq`** | `genpm` **está ocupado** (cuenta personal vacía, creada en 2023, sin repos). `genpmhq` libre. Opcional: reclamar `genpm` vía la política de cuentas inactivas de GitHub (sin garantía) |
+| Dominio principal | **genpm.net** (web), `api.genpm.net`, `mcp.genpm.net` | **Comprado por el fundador el 2026-10-03** (registro normal). Elegido ese mismo día; antes se evaluó genpm.com, descartado porque está registrado desde 2020 y solo se vende de segunda mano |
+| Dominios defensivos | `genpm.dev` → redirección 301 a genpm.net (libre); genpm.com solo si algún día baja de precio | Comprar genpm.dev junto con genpm.net |
+| GitHub | Org **`GenPM-net`** (login `genpm-net`, URL `github.com/GenPM-net`) | ✅ Creada por el fundador el 2026-10-03. `genpm` sigue ocupado por una cuenta inactiva (opcional: reclamarlo vía la política de cuentas inactivas de GitHub) |
 | npm | Org **`@genpm`** + paquete `genpm` | Paquete `genpm` libre; org no verificable sin cuenta — crearla en el Día 0 |
-| Redes | `@genpm` en X, Discord, YouTube, LinkedIn; fallback `genpmhq` | Verificar al registrarse |
+| Redes | `@genpm` en X, Discord, YouTube, LinkedIn; fallback `genpmnet` / `genpm-net` | Verificar al registrarse |
 | Scope oficial del registry | `@core` (como el brief); `@genpm` **reservado** | Obligatorio: sin la reserva, el dueño de la cuenta `genpm` de GitHub podría reclamar `@genpm` (ADR-006) |
+
+### ADR-016 · Repositorio privado hasta el lanzamiento — ✅ Decidida (fundador, 2026-10-03)
+
+**Decisión:** `GenPM-net/genpm` se crea **privado** para que la idea no se vea antes del lanzamiento.
+
+**Consecuencias en el plan Free de GitHub** (los repos privados pierden protecciones gratuitas):
+| Protección | Repo privado Free | Mitigación |
+|---|---|---|
+| Protección de `main` / rulesets | ❌ | Plan **Team** (~$4/usuario/mes) — recomendado desde el Día 1 (security §6 exige revisión obligatoria) |
+| Secret scanning + push protection | ❌ (add-on de pago) | gitleaks en CI y en pre-commit (`D1-A-03`), igual que en el resto de repos |
+| CodeQL | ❌ (add-on de pago) | Semgrep + OSV-Scanner en CI (`D1-A-03`) |
+| GitHub Actions | ✅ con cuota (2 000 min/mes Free, 3 000 Team) | Suficiente para el sprint; vigilar la matriz de 3 SO |
+
+**Qué se abre en el lanzamiento (Día 6, tarea `D6-P-07`):**
+- **Obligatorio público:** los 5 repos semilla (`GenPM-net/db`, `auth`…): GenPM instala desde repos Git que el usuario pueda leer.
+- **Recomendado público:** `cli`, `mcp`, `core`, `manifest`, `i18n`. Un desarrollador no ejecutará un CLI cerrado que escribe en su repo, y la promesa "verificable por cualquiera" ([security §0](security.md#0-sobre-100--de-seguridad)) exige poder auditarlo.
+- **Puede quedarse privado:** `apps/registry` y `apps/web`. Son el foso del negocio (SaaS, ranking, patrocinios); el API es público, su código no tiene por qué serlo.
+- Si se separa, el monorepo privado publica los paquetes cliente en un repo público espejo (`GenPM-net/genpm-cli`) con historial limpio.
+
+**Protección real contra el "robo":** el código privado retrasa a un copiador, no lo detiene (la idea se verá el día del lanzamiento).
+Lo que de verdad protege es la marca registrada "GenPM" (`D0-03`), el dominio y las cuentas (ya tuyas), los scopes oficiales y, sobre todo,
+llegar primero y tener la comunidad y los paquetes (efecto de red del registry).
 
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
-El fundador fijó Q1 (multi-idioma) y Q2 (genpm.com, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.
+El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.
 
 | # | Pregunta | Decisión |
 |---|---|---|
 | Q1 | Idioma del producto | **Multi-idioma** (ADR-013). Docs internas de ingeniería (esta carpeta) en español. |
-| Q2 | Dominio y handles | **genpm.com** + "genpm en todo" (ADR-015) |
+| Q2 | Dominio y handles | **genpm.net** (decidido 2026-10-03) + "genpm en todo" (ADR-015) |
 | Q3 | Stack de las semillas | TypeScript + Drizzle, agnóstico de framework, adaptadores Hono y Next |
 | Q4 | Equipo del sprint | Se asume **2 personas + agentes IA**; con 1 persona aplica el plan de 10 días ([roadmap §7](roadmap-mvp.md#7-plan-de-recorte-en-este-orden)) |
 | Q5 | Mirror R2 | v0.3 ("Verified Archive") |
@@ -188,7 +210,7 @@ El fundador fijó Q1 (multi-idioma) y Q2 (genpm.com, "genpm en todo") y delegó 
 | Q8 | Scope oficial | `@core`; reservar `@genpm` y la lista de [security §3.2](security.md#32-revisión-humana-y-confianza) |
 | Q9 | Telemetría | Anónima, opt-out (`DO_NOT_TRACK=1`) |
 
-Acciones que **solo el fundador** puede hacer (crear cuentas y pagar): comprar `genpm.com` y `genpm.dev`, crear org `genpmhq` en GitHub, org `@genpm` en npm,
+Acciones que **solo el fundador** puede hacer (crear cuentas y pagar): comprar `genpm.net` y `genpm.dev`, crear org `GenPM-net` en GitHub (✅ hecho), org `@genpm` en npm,
 cuenta Cloudflare Workers Paid, handles en redes, y activar llaves FIDO2 + *registrar lock* en todas ellas ([security §6](security.md#6-cadena-de-suministro-de-genpm)).
 
 ## 3. Competencia e inspiración (honestidad estratégica)

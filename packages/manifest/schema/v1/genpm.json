@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://genpm.net/schema/v1/genpm.json",
+  "title": "GenPM package manifest (source)",
+  "type": "object",
+  "required": [
+    "n",
+    "v",
+    "d"
+  ],
+  "additionalProperties": false,
+  "patternProperties": {
+    "^_": {}
+  },
+  "properties": {
+    "$": {
+      "description": "Schema version",
+      "const": 1
+    },
+    "n": {
+      "description": "name",
+      "type": "string",
+      "pattern": "^@[a-z0-9][a-z0-9-]{0,38}\\/[a-z0-9][a-z0-9-]{0,63}$"
+    },
+    "v": {
+      "description": "version (SemVer)",
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "s": {
+      "description": "summary (string or BCP 47 locale map that must include 'en')",
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2})?$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "required": [
+            "en"
+          ],
+          "maxProperties": 12
+        }
+      ]
+    },
+    "r": {
+      "description": "Git repository URL",
+      "type": "string",
+      "maxLength": 300,
+      "pattern": "^https:\\/\\/[a-z0-9.-]+(?::\\d+)?\\/[A-Za-z0-9._~/-]+$",
+      "format": "uri"
+    },
+    "t": {
+      "description": "Git tag or 40-hex commit SHA (never a branch)",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "d": {
+      "description": "install dir, relative POSIX path",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "i": {
+      "description": "repo subdirectory to inject",
+      "type": "string",
+      "default": "."
+    },
+    "x": {
+      "description": "AI rules file, relative to i",
+      "type": "string",
+      "default": "AGENTS.md"
+    },
+    "l": {
+      "description": "SPDX license expression",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "k": {
+      "description": "keywords",
+      "maxItems": 10,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]{2,32}$"
+      },
+      "uniqueItems": true
+    },
+    "g": {
+      "description": "GenPM dependencies: { \"<name>\": \"<semver range>\" }",
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^@[a-z0-9][a-z0-9-]{0,38}\\/[a-z0-9][a-z0-9-]{0,63}$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "maxProperties": 10
+    },
+    "p": {
+      "description": "npm dependencies proposed to the user",
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 214
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "maxProperties": 30
+    },
+    "e": {
+      "description": "required environment variable names (never values)",
+      "maxItems": 30,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+      },
+      "uniqueItems": true
+    },
+    "m": {
+      "description": "MCP servers required by the module",
+      "maxItems": 5,
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 214,
+            "pattern": "^(@[a-z0-9][a-z0-9._-]*\\/)?[a-z0-9][a-z0-9._-]*$",
+            "description": "npm package run via npx"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "n": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]{1,32}$"
+              },
+              "c": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              "a": {
+                "maxItems": 32,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 512
+                }
+              },
+              "u": {
+                "type": "string",
+                "maxLength": 512,
+                "pattern": "^https:\\/\\/"
+              },
+              "e": {
+                "maxItems": 30,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                }
+              }
+            },
+            "required": [
+              "n"
+            ],
+            "additionalProperties": false,
+            "oneOf": [
+              {
+                "required": [
+                  "c"
+                ]
+              },
+              {
+                "required": [
+                  "u"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "not": {
+    "required": [
+      "c"
+    ]
+  }
+}

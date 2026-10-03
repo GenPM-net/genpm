@@ -1,6 +1,7 @@
 # GenPM — Guía de marca
 
-> Estado: **v0.1** · Fecha: 2026-10-02 · Alcance: nombre, posicionamiento, mensajes, voz, identidad visual, CLI y lanzamiento.
+> Estado: **v0.2** · Fecha: 2026-10-02 · Alcance: nombre, posicionamiento, mensajes, voz, identidad visual, CLI y lanzamiento.
+> v0.2: identidad visual "Anclado" (light-first, sin sombras, color solo con significado). Referencia visual: [design/genpm-identidad.html](design/genpm-identidad.html) · tokens: [design/tokens.json](design/tokens.json).
 > Pendiente legal: búsqueda de marca registrada "GenPM" (USPTO, EUIPO, INPI Brasil, SAPI Venezuela, IMPI México) antes de invertir en la marca.
 > Idiomas: la marca vive en 8 idiomas ([i18n](i18n.md)); el nombre **genpm** nunca se traduce ni se adapta.
 
@@ -28,11 +29,11 @@
 - **"genpm en todo"** (ADR-015): un solo nombre en todos los canales.
   | Canal | Handle |
   |---|---|
-  | Web | **genpm.com** (+ `genpm.dev` → redirección) |
+  | Web | **genpm.net** (+ `genpm.dev` → redirección) |
   | npm | `genpm` (CLI) y org `@genpm` |
-  | GitHub | `genpmhq` (`genpm` está ocupado por una cuenta inactiva; intentar recuperarlo) |
-  | X / Discord / YouTube / LinkedIn | `@genpm` (fallback `genpmhq`) |
-  | Email | `hello@`, `security@`, `sponsors@` `genpm.com` |
+  | GitHub | `GenPM-net` (✅ creada; `genpm` está ocupado por una cuenta inactiva) |
+  | X / Discord / YouTube / LinkedIn | `@genpm` (fallback `genpmnet` / `genpm-net`) |
+  | Email | `hello@`, `security@`, `sponsors@` `genpm.net` |
 - A los paquetes se les llama **packages** (en ES: "paquetes"). Evitar metáforas propias ("genes", "blueprints") en superficies técnicas: suman fricción. La metáfora del injerto vive solo en la narrativa y el visual.
 
 ## 3. Posicionamiento
@@ -124,67 +125,101 @@ Seguridad en el mensaje: decimos **"Seguro por diseño, verificable por cualquie
 
 ## 8. Identidad visual
 
+> **Concepto: "Anclado".** Un paquete GenPM es confiable porque está anclado a un commit: lo que revisaste es lo que se instala.
+> La identidad aplica la misma regla a la forma: cada elemento se apoya en una retícula de líneas de 1 px, nada flota y el color solo
+> aparece cuando lleva información. Referencia visual completa: [design/genpm-identidad.html](design/genpm-identidad.html).
+
+**Principios**
+1. **Línea, no sombra.** La profundidad se dibuja con bordes de 1 px y espacio. Cero sombras, cero degradados.
+2. **El color es dato.** La marca es tinta sobre blanco. Verde, violeta y cian existen solo para las tres capas; ámbar y rojo, solo para estados.
+3. **El comando es la imagen.** Sin fotos ni ilustraciones decorativas: comandos, árboles de archivos, SHAs y diagramas de injerto reales.
+4. **Un solo elemento vivo.** El caret `▍` es lo único que se anima solo (hero de la home). Todo lo demás se mueve como respuesta a una acción.
+
+**Cambios frente a v0.1:** fondo dark-first → **blanco** (oscuro solo en CLI, terminal, IDE y modo oscuro opcional de la web) ·
+color de marca Graft Lime → **tinta** (`#0B0D11`) · Space Grotesk + Inter → **Instrument Sans** · icono de Context `brain` → `file-text`.
+
 ### 8.1 Logo
 
-**Dirección recomendada para el MVP — "Prompt-g"**: wordmark `genpm` en minúsculas, JetBrains Mono ExtraBold, seguido de un **caret de bloque** `▍`
-en Graft Lime. El caret evoca la terminal y lo *generativo* (el cursor que escribe). Isotipo: `g▍` dentro de un cuadrado redondeado (radio 22 %).
-Funciona a 16 px (favicon) y en monocromo.
+**"Prompt-g"**: wordmark `genpm` en minúsculas, JetBrains Mono ExtraBold (tracking −5 %), seguido de un **caret de bloque** `▍` en `code` (`#5AA300`).
+El caret evoca la terminal y lo *generativo* (el cursor que escribe código). Isotipo: `g▍` en blanco sobre un cuadrado de tinta (radio 22 %).
 
-**Dirección alternativa (v1) — "Graft"**: dos rectángulos redondeados desplazados (tu proyecto y el módulo) unidos por un nodo circular: el injerto.
-Más ilustrativa; requiere diseñador.
+| Versión | Uso |
+|---|---|
+| Wordmark tinta sobre blanco | Principal: web, docs, README, presentaciones |
+| Wordmark blanco sobre tinta | Terminal, avatar, eventos |
+| Isotipo `g▍` | App icon, favicon (a 16 px se omite el caret: solo `g`) |
+| Monocromo | Caret en tinta o en blanco; único caso en que el caret no es verde |
 
-Reglas: área de respeto = altura de la `g`; tamaño mínimo 16 px (isotipo) / 72 px de ancho (wordmark); no rotar, no degradados, no sombras,
-no cambiar el color del caret salvo versión monocroma.
+Reglas: área de respeto = altura de la `g`; mínimo 16 px (isotipo) / 72 px de ancho (wordmark); no mayúsculas, no rotar, no degradados,
+no sombras, no cambiar la fuente ni el color del caret. En prosa se escribe **GenPM**; en comandos, URLs y paquetes, `genpm`.
 
 ### 8.2 Color
 
-Dark-first (nuestro público vive en terminales y editores oscuros). Contrastes WCAG medidos contra los fondos indicados.
+**Light-first.** El fondo es blanco puro. Neutros con un ligero sesgo frío (nunca gris puro). Contrastes WCAG medidos sobre `paper`.
 
 **Neutros**
 | Token | Hex | Uso |
 |---|---|---|
-| `ink-950` | `#0A0B0D` | Fondo dark |
-| `ink-900` | `#111317` | Superficies (cards, code blocks) dark / texto principal light (17.3:1 sobre paper) |
-| `ink-800` | `#1A1D23` | Superficie elevada dark |
-| `ink-600` | `#3A3F4A` | Bordes dark |
-| `ink-500` | `#5A606C` | Texto secundario light (5.9:1) |
-| `ink-300` | `#A3A9B6` | Texto secundario dark (8.4:1) |
-| `ink-100` | `#EDEEF0` | Texto principal dark (17.0:1) |
-| `paper` | `#F7F7F2` | Fondo light |
+| `paper` | `#FFFFFF` | Fondo único |
+| `wash` | `#F6F7F9` | Bloques de código, hover, nivel 2 |
+| `line` | `#E6E8EC` | Borde nivel 1: secciones, tarjetas, tablas |
+| `line-2` | `#CDD2D9` | Borde nivel 2: controles (inputs, botones, comandos) |
+| `ink-3` | `#6A7180` | Metadatos, etiquetas (4.9:1) |
+| `ink-2` | `#4A505C` | Texto secundario (8.2:1) |
+| `ink` | `#0B0D11` | Marca, texto principal, CTA primario (19.4:1) |
 
 **Las tres C (color semántico de producto)**
-| Capa | Token dark (sobre `ink-950`) | Token light (sobre `paper`) | Uso |
-|---|---|---|---|
-| **Code** — Graft Lime (color de marca) | `lime-400` `#C4F54A` (15.5:1) | `lime-700` `#4A7300` (5.2:1) | Primario, CTAs, caret del logo, éxito en CLI, todo lo relativo a código |
-| **Context** — Signal Violet | `violet-400` `#8B7CFF` (6.0:1) | `violet-700` `#5B4BDB` (5.6:1) | Reglas IA, pestaña "AI Rules", badges de contexto |
-| **Connections** — MCP Cyan | `cyan-400` `#38D5E8` (11.1:1) | `cyan-700` `#0E7C8C` (4.6:1) | MCP, integraciones, badge "mcp" |
+| Capa | Señal (gráficos) | Texto sobre blanco | Superficie oscura | Uso |
+|---|---|---|---|---|
+| **Code** — Graft Green | `code` `#5AA300` (3.2:1) | `code-ink` `#3B7300` (5.6:1) | `#C4F54A` | Caret del logo, capa Code, éxito |
+| **Context** — Signal Violet | `context` `#5B4BDB` (5.6:1) | `#5B4BDB` | `#8B7CFF` | Reglas IA, pestaña "AI Rules", SHA |
+| **Connections** — MCP Cyan | `mcp` `#0A7F90` (4.7:1) | `#0A7F90` | `#38D5E8` | MCP, integraciones |
 
 **Estado**
-| Token | Dark | Light | Uso |
+| Token | Light | Oscuro | Uso |
 |---|---|---|---|
-| `warning` | `#F5B83D` (11.1:1) | `#9A6400` (4.7:1) | Avisos, drift |
-| `danger` | `#FF6B6B` (7.1:1) | `#C92A2A` (5.1:1) | Errores, escaneo `flagged`, yanked |
-| `success` | = lime | = lime-700 | — |
+| `success` | = `code-ink` | = `#C4F54A` | Escaneo superado, verificado |
+| `warning` | `#A15F00` | `#F5B83D` | Drift, deprecated, **Sponsored** |
+| `danger` | `#C62828` | `#FF6B6B` | Errores, `flagged`, `yanked`, cuarentena |
 
-Regla: **Graft Lime nunca como color de texto sobre fondos claros** (1.18:1) — usar `lime-700`. Botón primario: fondo lime, texto `ink-950`.
-Patrocinado: borde `warning` + etiqueta "Sponsored"; nunca lime (no debe confundirse con lo oficial/verificado).
+Reglas:
+- **Proporción por pantalla:** paper ~86 % · wash ~4 % · ink ~7 % · capas ≤ 3 %. Si las capas superan el 3 %, la pantalla está sobrecargada.
+- `code` (`#5AA300`) nunca como texto: usar `code-ink`. El color de capa va en un marcador (cuadro, nodo, borde); el texto sigue en tinta.
+- Botón primario: fondo `ink`, texto `paper`. No hay botones de color.
+- Patrocinado: borde y etiqueta `warning`; nunca verde (no debe confundirse con lo oficial/verificado).
 
 ### 8.3 Tipografía
 
 | Rol | Fuente | Pesos | Notas |
 |---|---|---|---|
-| Display (titulares) | **Space Grotesk** | 500, 700 | Tracking −2 % en tamaños > 40 px |
-| UI y texto | **Inter** | 400, 500, 600 | `font-feature-settings: "cv11","ss01"` |
-| Código, comandos, wordmark | **JetBrains Mono** | 400, 700, 800 | Ligaduras desactivadas en comandos copiables |
+| Display y UI | **Instrument Sans** (variable, ejes `wght` y `wdth`) | 400, 500, 600 | Titulares: 600, `wdth` 86–88, tracking −3.5 %. UI: `wdth` 100 |
+| Código, datos, wordmark, etiquetas | **JetBrains Mono** | 400, 500, 700, 800 | Ligaduras desactivadas. Etiquetas en mayúscula con +8 % de tracking |
 
-Todas OFL, disponibles en Google Fonts (self-host en producción). Para `ja`, `zh-CN` y `ko`: Noto Sans JP / SC / KR como fuente de texto (Space Grotesk e Inter no cubren CJK). Escala (rem): 0.75 · 0.875 · 1 · 1.125 · 1.25 · 1.5 · 2 · 2.75 · 3.75.
+Ambas OFL, en Google Fonts (self-host en producción). Para `ja`, `zh-CN` y `ko`: Noto Sans JP / SC / KR como fuente de texto (Instrument Sans no cubre CJK).
 
-### 8.4 Iconografía, grafismos y motion
+| Token | Tamaño / interlineado | Peso |
+|---|---|---|
+| `display` | 64 / 0.98 | 600 · wdth 86 |
+| `h1` | 40 / 1.02 | 600 · wdth 88 |
+| `h2` | 30 / 1.05 | 600 · wdth 88 |
+| `h3` | 17 / 1.3 | 600 |
+| `body` | 15 / 1.55 | 400 |
+| `small` | 13 / 1.5 | 400 |
+| `mono` | 12.5 / 1.75 | 400 · 700 |
+| `label` | 11 / mayúsculas +8 % | 500 mono |
 
-- Iconos: **Lucide** (trazo 1.5 px, esquinas redondeadas). Iconos de capa: `code-2` (Code), `brain` (Context), `plug` (Connections), `shield-check` (verificado), `git-commit` (SHA).
-- Grafismo: rejilla de puntos sutil + "líneas de injerto" (conectores ortogonales con nodos) para diagramas e ilustraciones de la home.
-- Bloques de terminal como elemento visual protagonista (no capturas: HTML real, copiable).
-- Motion: 150–250 ms, `ease-out`; el caret parpadea (1 s, `steps(1)`) solo en el hero; respetar `prefers-reduced-motion`.
+Cifras siempre con `tabular-nums`. Números grandes abreviados con un decimal en tarjetas: `1.2M`, `12.4k`.
+
+### 8.4 Retícula, elevación, iconografía y motion
+
+- **Retícula:** base 4 px; espaciado 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96; 12 columnas, máx. 1200 px, gutter 24 px (16 px en móvil).
+- **Elevación:** nivel 0 = papel · nivel 1 = borde `line` · nivel 2 = borde `line-2` + `wash`. **No existe nivel 3: cero sombras.**
+- **Rejilla colapsada:** grupos de tarjetas, pasos y estadísticas comparten bordes en lugar de separarse con huecos.
+- **Radio:** 4 px en controles y chips · 0 en secciones · 22 % solo en el isotipo.
+- **Iconos:** Lucide, trazo 1.5 px; el color sigue a su capa. `code-2` (Code), `file-text` (Context), `plug` (Connections), `shield-check` (verificado), `git-commit` (SHA).
+- **Grafismo:** "líneas de injerto": conectores ortogonales de 1 px con nodos en los extremos, que siempre pasan por el bloque de tinta del SHA. Es el único grafismo.
+- **Terminal:** bloques de terminal en HTML real y copiable. En la web van sobre `wash`; en superficies oscuras usan los valores de "Superficie oscura".
+- **Motion:** 150–200 ms, `ease-out`; el caret parpadea (1 s, `steps(1)`) solo en el hero; respetar `prefers-reduced-motion`.
 
 ### 8.5 Fotografía e imagen
 No usamos fotos de stock. Imágenes = terminal, diffs, árboles de archivos y diagramas propios. OG images generadas por paquete (nombre, versión, resumen, badges de las 3 C).
@@ -223,14 +258,14 @@ No usamos fotos de stock. Imágenes = terminal, diffs, árboles de archivos y di
 
 ## 11. Badges
 
-Formato shields (`/v1/badge/@core/auth.svg`): izquierda `genpm` sobre `ink-900`, derecha versión sobre `lime-400` con texto `ink-950`.
-Variantes: `installs`, `mcp` (cyan), `verified` (lime con ✓).
+Formato shields (`/v1/badge/@core/auth.svg`): izquierda `genpm` sobre `ink`, derecha versión sobre `code` (`#5AA300`) con texto `ink`.
+Variantes: `installs` (sobre `wash`), `mcp` (`mcp` con texto blanco), `verified` (`code` con ✓).
 
 ## 12. Checklist de activos (para el Día 5–6)
 
 - [ ] Wordmark e isotipo SVG (dark, light, mono) + favicon (`.ico` 32/16, `apple-touch-icon` 180, `icon.svg`)
 - [ ] Plantilla OG 1200×630 (home + por paquete, generada en el edge)
-- [ ] Avatar de redes (isotipo sobre `ink-950`)
+- [ ] Avatar de redes (isotipo `g▍` blanco sobre `ink`)
 - [ ] Hero del README (SVG animado de terminal o GIF ≤ 2 MB)
 - [ ] Badges SVG
 - [ ] Tokens de diseño exportados (`tokens.css` / preset Tailwind) — fuente única para web, badges y OG

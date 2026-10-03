@@ -114,7 +114,7 @@ Las reglas IA (`x`) se recomiendan en inglés (menos tokens, cualquier colaborad
 ### 5.3 Manifiesto resuelto (respuesta del API y entrada de lockfile)
 
 ```json
-{"$":1,"n":"@core/billing","v":"1.2.0","s":{"en":"Stripe subscriptions: checkout, portal and idempotent webhooks with Drizzle","es":"Suscripciones Stripe: checkout, portal y webhooks idempotentes con Drizzle","pt-BR":"Assinaturas Stripe: checkout, portal e webhooks idempotentes com Drizzle"},"r":"https://github.com/genpmhq/billing","t":"v1.2.0","c":"9f2c4e1b7a3d5f60e8c2b1a4d7e9f0c3b5a6d8e1","d":"src/lib/billing","i":".","x":"AGENTS.md","l":"MIT","k":["billing","stripe","subscriptions","webhooks"],"g":{"@core/db":"^1.0.0","@core/auth":"^1.1.0"},"p":{"stripe":"^17.0.0"},"e":["STRIPE_SECRET_KEY","STRIPE_WEBHOOK_SECRET"],"m":[{"n":"stripe","c":"npx","a":["-y","@stripe/mcp","--tools=all"],"e":["STRIPE_SECRET_KEY"]}]}
+{"$":1,"n":"@core/billing","v":"1.2.0","s":{"en":"Stripe subscriptions: checkout, portal and idempotent webhooks with Drizzle","es":"Suscripciones Stripe: checkout, portal y webhooks idempotentes con Drizzle","pt-BR":"Assinaturas Stripe: checkout, portal e webhooks idempotentes com Drizzle"},"r":"https://github.com/genpm-net/billing","t":"v1.2.0","c":"9f2c4e1b7a3d5f60e8c2b1a4d7e9f0c3b5a6d8e1","d":"src/lib/billing","i":".","x":"AGENTS.md","l":"MIT","k":["billing","stripe","subscriptions","webhooks"],"g":{"@core/db":"^1.0.0","@core/auth":"^1.1.0"},"p":{"stripe":"^17.0.0"},"e":["STRIPE_SECRET_KEY","STRIPE_WEBHOOK_SECRET"],"m":[{"n":"stripe","c":"npx","a":["-y","@stripe/mcp","--tools=all"],"e":["STRIPE_SECRET_KEY"]}]}
 ```
 
 ### 5.4 Paquete dentro de un monorepo
@@ -143,8 +143,8 @@ Objetivos: legible por LLMs, diffs limpios en Git (**un paquete por línea**), s
 ```json
 {"$":1,
 "p":{
-"@core/auth":{"v":"1.2.0","r":"https://github.com/genpmhq/auth","t":"v1.2.0","c":"1b9d…e7a0","d":"src/lib/auth","x":"AGENTS.md","h":"sha256-Qm9v…","sg":"k1:MEUCIQ…","m":0,"by":"cli"},
-"@core/db":{"v":"1.0.3","r":"https://github.com/genpmhq/db","t":"v1.0.3","c":"77ac…02f1","d":"src/lib/db","x":"AGENTS.md","h":"sha256-ZGJm…","sg":"k1:MEQCIB…","m":1,"by":"mcp"}
+"@core/auth":{"v":"1.2.0","r":"https://github.com/genpm-net/auth","t":"v1.2.0","c":"1b9d…e7a0","d":"src/lib/auth","x":"AGENTS.md","h":"sha256-Qm9v…","sg":"k1:MEUCIQ…","m":0,"by":"cli"},
+"@core/db":{"v":"1.0.3","r":"https://github.com/genpm-net/db","t":"v1.0.3","c":"77ac…02f1","d":"src/lib/db","x":"AGENTS.md","h":"sha256-ZGJm…","sg":"k1:MEQCIB…","m":1,"by":"mcp"}
 }}
 ```
 (SHAs abreviados aquí por legibilidad; en el archivo real son completos.)
@@ -165,8 +165,8 @@ Formato del serializador: primera línea `{"$":1,`, segunda `"p":{`, una línea 
 
 Formato INI estilo npm; se commitea (sin secretos):
 ```ini
-registry=https://api.genpm.com
-@acme:registry=https://acme.genpm.com
+registry=https://api.genpm.net
+@acme:registry=https://acme.genpm.net
 clients=cursor,claude
 ```
 Tokens: solo en `~/.genpm/auth.json` (usuario), indexados por URL de registry.
@@ -223,13 +223,13 @@ Fragmento normativo que el servidor MCP envía en `instructions` y que los autor
 
 ## 9. JSON Schema (fuente) — Draft 2020-12
 
-Se publica en `https://genpm.com/schema/v1/genpm.json` y se registra en SchemaStore para el patrón de archivo `genpm.json`
+Se publica en `https://genpm.net/schema/v1/genpm.json` y se registra en SchemaStore para el patrón de archivo `genpm.json`
 (autocompletado sin necesidad de clave `$schema`). Generado desde zod; este es el contrato:
 
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://genpm.com/schema/v1/genpm.json",
+  "$id": "https://genpm.net/schema/v1/genpm.json",
   "title": "GenPM package manifest (source)",
   "type": "object",
   "required": ["n", "v", "d"],

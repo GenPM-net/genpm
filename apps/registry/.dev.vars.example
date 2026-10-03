@@ -1,0 +1,10 @@
+# Copia a .dev.vars para `wrangler dev` (nunca se commitea .dev.vars).
+ENVIRONMENT=development
+TOKEN_PEPPER=dev-pepper-change-me
+IP_SALT=dev-salt
+# JSON {"k1":"<pkcs8 Ed25519 en base64url>"}; genera uno con: node ../../scripts/gen-signing-keys.mjs --dev
+SIGNING_KEYS=
+# Token de GitHub de solo lectura para desarrollo (en producción se usa la GitHub App)
+GITHUB_TOKEN=
+GITHUB_OAUTH_CLIENT_ID=
+GITHUB_OAUTH_CLIENT_SECRET=

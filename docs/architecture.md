@@ -16,7 +16,7 @@ GenPM es un gestor de paquetes para el desarrollo asistido por IA. Un **paquete 
 | **Connections** | Servidores MCP que el módulo necesita (`m`) | `.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json` (con consentimiento) |
 
 El sistema tiene cuatro piezas: un **registry de metadatos en el edge** (no guarda archivos), un **motor compartido** (`@genpm/core`),
-y dos fachadas sobre ese motor: el **CLI** y el **servidor MCP**. Una **web** (genpm.com) sirve descubrimiento y documentación.
+y dos fachadas sobre ese motor: el **CLI** y el **servidor MCP**. Una **web** (genpm.net) sirve descubrimiento y documentación.
 
 ## 2. Glosario
 
@@ -57,7 +57,7 @@ flowchart LR
   CORE -->|escribe| PROJ[(Proyecto del usuario<br/>src/ · genpm.lock · AGENTS.md · mcp.json)]
   author([Autor de paquetes]) -->|git tag + genpm publish| CLI
   REG -->|resuelve tag → SHA, lee genpm.json| GIT
-  web([Visitante]) --> WEB[genpm.com<br/>Astro SSR]
+  web([Visitante]) --> WEB[genpm.net<br/>Astro SSR]
   WEB -->|Service Binding| REG
 ```
 
@@ -369,7 +369,7 @@ Formato completo en [manifest-spec §6](manifest-spec.md#6-genpmlock-proyecto-co
 | MVP | `reg_public`, `visibility='public'`, roles básicos | — |
 | Teams (v1) | Registros privados *shared*: nuevas filas en `registries`; tablas `teams`, `team_members`, `package_grants`; `visibility IN ('internal','private')` | No — tablas y filas aditivas |
 | Enterprise | Tenancy dedicada: D1 por cliente con el mismo esquema, servido por Workers for Platforms; SSO (SAML/OIDC), SCIM → `memberships.source` | No — se copian filas por `registry_id`; IDs globales no colisionan |
-| Routing en clientes | `.genpmrc`: `@acme:registry=https://acme.genpm.com` + token por registry (como npm) | No — diseñado desde el día 1 en core |
+| Routing en clientes | `.genpmrc`: `@acme:registry=https://acme.genpm.net` + token por registry (como npm) | No — diseñado desde el día 1 en core |
 
 Lo que **sí** sería destructivo en SQLite (requiere reconstruir tablas) y por eso se fija ahora: tipo de PK, restricciones `UNIQUE`/`CHECK`
 y la semántica de propiedad. Por eso: PK `TEXT` ULID, unicidad `(registry_id, full_name)`, `owner_id` polimórfico usuario/org vía `accounts`.

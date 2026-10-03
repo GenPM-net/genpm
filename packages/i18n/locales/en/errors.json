@@ -1,0 +1,152 @@
+{
+  "E_INTERNAL": {
+    "message": "Something went wrong inside GenPM.",
+    "fix": "Retry with --verbose and report the issue with its requestId if it persists."
+  },
+  "E_BAD_REQUEST": { "message": "The request is invalid: {detail}", "fix": "Check the parameters and try again." },
+  "E_USAGE": { "message": "Invalid usage: {detail}", "fix": "Run genpm --help to see the available options." },
+  "E_CONFIRM_REQUIRED": {
+    "message": "Confirmation needed: {question}",
+    "fix": "Run in an interactive terminal, or pass {flag} to confirm."
+  },
+  "E_PAYLOAD_TOO_LARGE": { "message": "The request body is too large.", "fix": "Send at most 16 KB." },
+  "E_NOT_FOUND": {
+    "message": "{name} was not found.",
+    "fix": "Check the spelling or search with genpm search <query>."
+  },
+  "E_NO_MATCHING_VERSION": {
+    "message": "No version of {name} matches {range}.",
+    "fix": "Run genpm info {name} to see the published versions."
+  },
+  "E_DEST_CONFLICT": {
+    "message": "{path} exists and is not empty.",
+    "fix": "Use --dest <dir> or --force (backs up first)."
+  },
+  "E_RANGE_UNSATISFIED": {
+    "message": "No version satisfies all ranges: {detail}",
+    "fix": "Install a compatible version of the conflicting package first, or pin a different version."
+  },
+  "E_ALREADY_INSTALLED": {
+    "message": "{name} {version} is already installed.",
+    "fix": "Nothing to do. Use genpm list to see installed packages."
+  },
+  "E_VERSION_EXISTS": {
+    "message": "{name}@{version} has already been published.",
+    "fix": "Versions are immutable: bump the version in genpm.json and create a new tag."
+  },
+  "E_DRIFT": {
+    "message": "{name} has local changes in {count, plural, one {# file} other {# files}}.",
+    "fix": "Use --keep-code to keep your code, or --force to delete it anyway."
+  },
+  "E_REQUIRED_BY": { "message": "{name} is required by {dependents}.", "fix": "Remove the dependent packages first." },
+  "E_BUSY": {
+    "message": "Another GenPM process is modifying this project.",
+    "fix": "Wait for it to finish. If none is running, delete .genpm/.lock."
+  },
+  "E_PLAN_STALE": {
+    "message": "The project changed since the plan was computed.",
+    "fix": "Compute the plan again (dry run) and confirm it."
+  },
+  "E_NETWORK": {
+    "message": "Could not reach {host}.",
+    "fix": "Check your connection, proxy or GENPM_REGISTRY, then retry."
+  },
+  "E_UPSTREAM_GIT": {
+    "message": "The Git host failed: {detail}",
+    "fix": "Check that the repository is reachable with your Git credentials, then retry."
+  },
+  "E_RATE_LIMITED": {
+    "message": "Too many requests.",
+    "fix": "Wait {seconds, plural, one {# second} other {# seconds}} and retry."
+  },
+  "E_INTEGRITY": {
+    "message": "Integrity check failed for {name}: {detail}",
+    "fix": "Do not use this package. Report it with genpm.net/report if it persists."
+  },
+  "E_SIGNATURE": {
+    "message": "The registry signature of {name} is invalid.",
+    "fix": "Do not install it. Update GenPM (new signing keys) and report it if it persists."
+  },
+  "E_PATH_UNSAFE": {
+    "message": "Unsafe path {path} ({reason}).",
+    "fix": "Use a relative path inside the project, without .., absolute paths or reserved folders."
+  },
+  "E_AUTORUN_FILE": {
+    "message": "{name} contains files that run automatically: {files}.",
+    "fix": "These files are never installed. Ask the author to remove them, or use --allow-autorun only for verified publishers."
+  },
+  "E_SCAN_FAILED": {
+    "message": "The security scan rejected {name}: {detail}",
+    "fix": "Fix the findings listed by genpm validate and publish a new version."
+  },
+  "E_INSECURE_PERMS": { "message": "{path} is readable by other users.", "fix": "Run chmod 600 {path}." },
+  "E_QUARANTINED": {
+    "message": "{name} is under security review.",
+    "fix": "Try again later or choose another package. Reviews take less than 24 business hours."
+  },
+  "E_REF_MUTABLE": {
+    "message": "{ref} is not an immutable reference.",
+    "fix": "Use a Git tag or a full 40-character commit SHA, never a branch."
+  },
+  "E_ADVISORY": {
+    "message": "{name} {version} has a {severity} security advisory.",
+    "fix": "Update to {patched} or later."
+  },
+  "E_TOO_LARGE": {
+    "message": "{name} exceeds the size limit: {detail}",
+    "fix": "Exclude files with .genpmignore, or raise the limit with --max-size if the package is legitimate."
+  },
+  "E_MANIFEST_INVALID": {
+    "message": "genpm.json is invalid.",
+    "fix": "Fix the fields listed in the details. Run genpm validate for a full report."
+  },
+  "E_LOCK_INVALID": {
+    "message": "genpm.lock is invalid or corrupted.",
+    "fix": "Restore it from Git; never edit genpm.lock by hand."
+  },
+  "E_NAME_MISMATCH": {
+    "message": "The manifest name {actual} does not match {expected}.",
+    "fix": "Publish with the name declared in genpm.json."
+  },
+  "E_REF_NOT_FOUND": {
+    "message": "{ref} does not exist in {repo}.",
+    "fix": "Create and push the tag: git tag {ref} && git push --tags."
+  },
+  "E_REF_NOT_PUSHED": {
+    "message": "{ref} is not on the remote or points to another commit.",
+    "fix": "Push the tag with git push origin {ref}."
+  },
+  "E_REPO_NOT_ALLOWED": {
+    "message": "{repo} is not owned by the scope @{scope}.",
+    "fix": "Publish from a repository of the GitHub owner linked to the scope."
+  },
+  "E_REPO_CHANGED": {
+    "message": "The repository behind {name} changed (possible repojacking).",
+    "fix": "Contact security@genpm.net to transfer the package."
+  },
+  "E_CONTEXT_MISSING": {
+    "message": "The AI rules file {path} does not exist.",
+    "fix": "Create {path} (genpm init generates a template) or set x in genpm.json."
+  },
+  "E_CONTEXT_TOO_LARGE": {
+    "message": "The AI rules file {path} is larger than 16 KB.",
+    "fix": "Shorten it: keep the rules focused on purpose, map, integration, conventions and don'ts."
+  },
+  "E_AUTH": {
+    "message": "You are not logged in, or your token is invalid or expired.",
+    "fix": "Run genpm login (or set GENPM_TOKEN in CI)."
+  },
+  "E_FORBIDDEN_SCOPE": {
+    "message": "You cannot publish to @{scope}.",
+    "fix": "Ask an owner of @{scope} for publish rights, or use your own scope."
+  },
+  "E_GIT_MISSING": {
+    "message": "Git is not installed or is older than 2.25.",
+    "fix": "Install Git 2.25 or later, then retry."
+  },
+  "E_NODE_VERSION": { "message": "GenPM needs Node.js 20.11 or later (found {version}).", "fix": "Update Node.js." },
+  "E_NOT_A_PROJECT": {
+    "message": "No project found in {path}.",
+    "fix": "Run the command inside a project (with package.json or .git), or pass --cwd <dir>."
+  }
+}

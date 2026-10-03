@@ -2,7 +2,7 @@
 
 > Estado: **v1 (MVP)** · Fecha: 2026-10-02
 > Runtime: Cloudflare Workers + Hono · Datos: D1 (SQLite) + FTS5 · Eventos: Analytics Engine
-> Base URL producción: `https://api.genpm.com` (ADR-015 en [brainstorming](brainstorming.md)) · Seguridad: [security.md](security.md) · Idiomas: [i18n.md](i18n.md)
+> Base URL producción: `https://api.genpm.net` (ADR-015 en [brainstorming](brainstorming.md)) · Seguridad: [security.md](security.md) · Idiomas: [i18n.md](i18n.md)
 
 ---
 
@@ -19,10 +19,10 @@
 | IDs | ULID con prefijo: `acc_`, `org_`(=`acc_` kind org), `reg_`, `scp_`, `pkg_`, `ver_`, `tok_`, `spn_`, `aud_`. |
 | Tiempos | Enteros epoch **ms** en BD; ISO-8601 UTC en respuestas largas; epoch segundos en compactas. |
 | Request ID | Header `genpm-request-id` en toda respuesta (también dentro del problem+json). |
-| CORS | `GET` públicos: `Access-Control-Allow-Origin: *`. Escrituras: solo `https://genpm.com`. |
+| CORS | `GET` públicos: `Access-Control-Allow-Origin: *`. Escrituras: solo `https://genpm.net`. |
 | Idioma | `Accept-Language` (o `?lang=`) localiza `title`/`detail` de errores y elige el idioma de `summary`; respuesta con `Content-Language` y `Vary: Accept-Language`. Códigos, claves y `type` nunca se traducen ([i18n](i18n.md)). |
 | Firma | Toda respuesta que contiene un manifiesto resuelto incluye `genpm-signature: keyid=<id>,sig=<base64url>` (Ed25519 sobre la forma canónica) y el campo `sg` en forma compacta ([security §4.3](security.md#43-firma-de-manifiestos-inv-8)). |
-| Tenancy | Header opcional `genpm-registry: <slug>` (default `public`). En producción multi-tenant se deriva del host (`acme.genpm.com`). |
+| Tenancy | Header opcional `genpm-registry: <slug>` (default `public`). En producción multi-tenant se deriva del host (`acme.genpm.net`). |
 
 ## 2. Caché y rendimiento
 
@@ -105,7 +105,7 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 {
   "results": [{
     "name": "@core/auth", "version": "1.2.0", "summary": "…", "keywords": ["auth","oauth"],
-    "installs30d": 1520, "hasMcp": false, "publisher": {"handle":"genpmhq","verified":true},
+    "installs30d": 1520, "hasMcp": false, "publisher": {"handle":"genpm-net","verified":true},
     "license": "MIT", "updatedAt": "2026-10-01T18:22:00Z", "score": 12.4
   }],
   "sponsored": {"name":"@acme/observability","version":"2.1.0","summary":"…","label":"Sponsored","campaignId":"spn_01J…"},
@@ -133,8 +133,8 @@ Algoritmo de resolución de `deps`:
 
 **200 (compacta):**
 ```json
-{"root":{"$":1,"n":"@core/auth","v":"1.2.0","r":"https://github.com/genpmhq/auth","t":"v1.2.0","c":"1b9d…","d":"src/lib/auth","i":".","x":"AGENTS.md","l":"MIT","g":{"@core/db":"^1.0.0"},"p":{"arctic":"^3.0.0"},"e":["AUTH_SECRET"]},
- "deps":[{"$":1,"n":"@core/db","v":"1.0.3","r":"https://github.com/genpmhq/db","t":"v1.0.3","c":"77ac…","d":"src/lib/db","i":".","x":"AGENTS.md","l":"MIT","p":{"drizzle-orm":"^0.44.0"},"e":["DATABASE_URL"]}],
+{"root":{"$":1,"n":"@core/auth","v":"1.2.0","r":"https://github.com/genpm-net/auth","t":"v1.2.0","c":"1b9d…","d":"src/lib/auth","i":".","x":"AGENTS.md","l":"MIT","g":{"@core/db":"^1.0.0"},"p":{"arctic":"^3.0.0"},"e":["AUTH_SECRET"]},
+ "deps":[{"$":1,"n":"@core/db","v":"1.0.3","r":"https://github.com/genpm-net/db","t":"v1.0.3","c":"77ac…","d":"src/lib/db","i":".","x":"AGENTS.md","l":"MIT","p":{"drizzle-orm":"^0.44.0"},"e":["DATABASE_URL"]}],
  "w":[{"code":"W_DEPRECATED","n":"@core/db","msg":"use @core/db@2"}],
  "scan":{"@core/auth":"passed","@core/db":"passed"}}
 ```
@@ -146,9 +146,9 @@ Respuesta larga (la compacta omite `readme`):
 ```json
 {
   "id": "pkg_01JA…", "name": "@core/auth", "summary": "…", "visibility": "public",
-  "repo": "https://github.com/genpmhq/auth", "homepage": null, "license": "MIT",
+  "repo": "https://github.com/genpm-net/auth", "homepage": null, "license": "MIT",
   "keywords": ["auth","oauth"], "category": "auth",
-  "publisher": {"handle":"genpmhq","kind":"org","verified":true,"avatarUrl":"…"},
+  "publisher": {"handle":"genpm-net","kind":"org","verified":true,"avatarUrl":"…"},
   "distTags": {"latest":"1.2.0","next":"2.0.0-beta.1"},
   "latest": { "...": "manifiesto resuelto en forma larga" },
   "flags": {"featured": true, "sponsored": false, "deprecated": false, "deprecationMessage": null},
@@ -169,7 +169,7 @@ Exacta: manifiesto resuelto (+ `yanked`, `publishedBy`, `publishedAt`).
 
 Request:
 ```json
-{ "name": "@core/auth", "version": "1.2.0", "repo": "https://github.com/genpmhq/auth", "ref": "v1.2.0", "manifestPath": "genpm.json", "distTag": "latest" }
+{ "name": "@core/auth", "version": "1.2.0", "repo": "https://github.com/genpm-net/auth", "ref": "v1.2.0", "manifestPath": "genpm.json", "distTag": "latest" }
 ```
 Validación servidor (en orden; cualquier fallo aborta sin escribir):
 
@@ -192,7 +192,7 @@ GitHub se consulta con un token de instalación de la **GitHub App de GenPM** (s
 
 **201:**
 ```json
-{"manifest":{"$":1,"n":"@core/auth","v":"1.2.0","…":"…"},"scan":{"status":"passed","findings":[]},"warnings":[],"url":"https://genpm.com/p/@core/auth"}
+{"manifest":{"$":1,"n":"@core/auth","v":"1.2.0","…":"…"},"scan":{"status":"passed","findings":[]},"warnings":[],"url":"https://genpm.net/p/@core/auth"}
 ```
 Si `scan.status = flagged` ⇒ la versión se crea con `status='quarantined'`, no se vuelve `latest` y `resolve` devuelve `451` hasta revisión.
 
@@ -209,7 +209,7 @@ Request `{ "githubToken": "gho_…" }` (obtenido por el CLI con device flow).
 4. Crear `api_tokens` con `scopes=["read","publish"]`, `expires_at = now + 90 días`, `name = "cli@<hostname>"`.
 5. **No** se persiste el token de GitHub.
 
-**200** `{ "token": "gpm_…", "expiresAt": "…", "account": {"handle":"yohangel","orgs":["genpmhq"]} }` (el token en claro solo se devuelve aquí, una vez).
+**200** `{ "token": "gpm_…", "expiresAt": "…", "account": {"handle":"yohangel","orgs":["genpm-net"]} }` (el token en claro solo se devuelve aquí, una vez).
 
 ### 4.8 Tokens
 
@@ -538,6 +538,25 @@ CREATE INDEX idx_audit_registry_time ON audit_log(registry_id, created_at);
 -- Seed obligatorio
 INSERT INTO registries (id, slug, owner_id, plan, is_public, isolation, created_at)
 VALUES ('reg_public', 'public', NULL, 'free', 1, 'shared', unixepoch() * 1000);
+
+-- Cuenta de sistema dueña de los scopes oficiales y reservados (sin github_id: nadie puede iniciar sesión como ella)
+INSERT INTO accounts (id, kind, handle, display_name, is_verified, is_staff, status, created_at, updated_at)
+VALUES ('acc_system', 'org', 'genpm-system', 'GenPM', 1, 1, 'active', unixepoch() * 1000, unixepoch() * 1000);
+
+-- Scopes reservados (security §3.2). `core` publica desde la org genpm-net; el resto queda bloqueado.
+-- Sin estas filas, ADR-006 permitiría al dueño de la cuenta `genpm` de GitHub reclamar `@genpm`.
+INSERT INTO scopes (id, registry_id, name, owner_id, git_host, git_owner, is_reserved, created_at) VALUES
+  ('scp_core',     'reg_public', 'core',     'acc_system', 'github.com', 'genpm-net', 1, unixepoch() * 1000),
+  ('scp_genpm',    'reg_public', 'genpm',    'acc_system', 'github.com', 'genpm-net', 1, unixepoch() * 1000),
+  ('scp_genpm_net','reg_public', 'genpm-net', 'acc_system', 'github.com', 'genpm-net', 1, unixepoch() * 1000),
+  ('scp_official', 'reg_public', 'official', 'acc_system', 'github.com', 'genpm-net', 1, unixepoch() * 1000),
+  ('scp_admin',    'reg_public', 'admin',    'acc_system', 'github.com', 'genpm-net', 1, unixepoch() * 1000),
+  ('scp_security', 'reg_public', 'security', 'acc_system', 'github.com', 'genpm-net', 1, unixepoch() * 1000),
+  ('scp_registry', 'reg_public', 'registry', 'acc_system', 'github.com', 'genpm-net', 1, unixepoch() * 1000),
+  ('scp_npm',      'reg_public', 'npm',      'acc_system', 'github.com', 'genpm-net', 1, unixepoch() * 1000),
+  ('scp_github',   'reg_public', 'github',   'acc_system', 'github.com', 'genpm-net', 1, unixepoch() * 1000);
+-- Las marcas (top 500 empresas tech) van en migraciones de datos posteriores (0002_reserved_brands.sql).
+-- Regla de publish: is_reserved = 1 ⇒ solo cuentas con rol en acc_system (staff) pueden publicar o transferir el scope.
 ```
 
 ### 5.4 Migración futura `000N_rbac.sql` (puramente aditiva — referencia, NO en el MVP)
@@ -614,7 +633,7 @@ ORDER BY random() LIMIT 1;
 
 ```json
 {
-  "type": "https://genpm.com/errors/E_RANGE_UNSATISFIED",
+  "type": "https://genpm.net/errors/E_RANGE_UNSATISFIED",
   "title": "No version satisfies all ranges",
   "status": 409,
   "code": "E_RANGE_UNSATISFIED",
@@ -662,7 +681,7 @@ El catálogo vive en `@genpm/manifest/errors` y lo reutilizan CLI y MCP (mismo `
     { "name": "RL_AUTH",   "namespace_id": "1002", "simple": { "limit": 1200, "period": 60 } }
   ],
   "triggers": { "crons": ["0 * * * *", "15 3 * * *", "0 4 * * 0"] },
-  "routes": [{ "pattern": "api.genpm.com", "custom_domain": true }]
+  "routes": [{ "pattern": "api.genpm.net", "custom_domain": true }]
   // secretos (wrangler secret put): GITHUB_APP_ID, GITHUB_APP_PRIVATE_KEY, GITHUB_OAUTH_CLIENT_ID, GITHUB_OAUTH_CLIENT_SECRET, TOKEN_PEPPER
 }
 ```

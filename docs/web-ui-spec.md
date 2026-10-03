@@ -1,4 +1,4 @@
-# genpm.com — Especificación de la interfaz web
+# genpm.net — Especificación de la interfaz web
 
 > Estado: **v0.1 (MVP)** · Fecha: 2026-10-02
 > Stack: Astro SSR (adapter Cloudflare) + Tailwind (preset generado desde los tokens de [branding](branding.md)) + islas Preact donde haya interactividad.
@@ -20,7 +20,7 @@
 
 1. **Command-first.** El comando de instalación es el elemento más visible de cada página relevante; siempre copiable con un clic.
 2. **Transparencia radical.** Código, reglas IA, MCP, SHA y escaneo visibles sin login. Es nuestra ventaja de confianza frente a node_modules.
-3. **Las tres C en todas partes.** Badges y colores Code (lime) · Context (violet) · Connections (cyan) consistentes con CLI y badges.
+3. **Las tres C en todas partes.** Badges y colores Code (verde) · Context (violet) · Connections (cyan) consistentes con CLI y badges.
 4. **Legible por agentes.** Cada página tiene su versión Markdown (`.md`) y el sitio tiene `llms.txt`.
 5. **Rápida por defecto.** SSR + caché edge; JS solo donde aporta (búsqueda, copiar, tabs, gráficos).
 6. **Honesta con la publicidad.** Patrocinados siempre etiquetados y separados (ADR-010).
@@ -63,7 +63,7 @@
 ```
 - `⌘K` / `Ctrl+K` / `/` abren la paleta de búsqueda (instantánea, debounce 150 ms, 5 resultados, `Enter` → paquete, `⌘Enter` → copia el comando de instalación).
 - Selector de idioma `🌐` (8 idiomas, nombre de cada idioma en su propia lengua: English, Español, Português (Brasil), Français, Deutsch, 日本語, 简体中文, 한국어); los de nivel 2 marcados *beta*. Mantiene la ruta actual al cambiar (`/p/@core/auth` → `/es/p/@core/auth`).
-- Toggle de tema (dark por defecto, respeta `prefers-color-scheme`, persiste en `localStorage`).
+- Toggle de tema (**claro por defecto**, oscuro opcional; respeta la elección guardada en `localStorage`).
 - Logueado: avatar → Dashboard, Tokens, Sign out.
 - Móvil (< 768 px): logo + icono de búsqueda + menú hamburguesa (sheet lateral).
 
@@ -88,7 +88,7 @@
 │                                                                      │
 │  ▸ Terminal animado: add → árbol de archivos → "✔ Injected"          │
 ├──────────────────────────────────────────────────────────────────────┤
-│  CODE (lime)          CONTEXT (violet)        CONNECTIONS (cyan)      │
+│  CODE (verde)         CONTEXT (violet)        CONNECTIONS (cyan)      │
 │  Código en tu src/    Reglas con alcance      MCP declarados          │
 ├──────────────────────────────────────────────────────────────────────┤
 │  Featured (@core/*)            │  Trending this week                  │
@@ -153,7 +153,7 @@
 │                                              │ npm  stripe ^17           │
 │                                              │ Env  STRIPE_SECRET_KEY …  │
 │                                              │ Installs ▁▂▃▅▇ 890/30d    │
-│                                              │ Repo  github.com/genpmhq/… │
+│                                              │ Repo  github.com/genpm-net/… │
 │                                              │ Published 2d ago · GenPM  │
 │                                              │ [badge markdown ⧉]        │
 └──────────────────────────────────────────────┴───────────────────────────┘
@@ -164,7 +164,7 @@
 |---|---|---|
 | **Overview** | README renderizado | GitHub raw @ SHA, caché inmutable por SHA |
 | **AI Rules** (violet) | `x` completo renderizado + vista "raw", nº de tokens, hallazgos del escáner resaltados en línea, explicación de dónde se instalará (AGENTS.md, .cursor/rules…) | `contextPreview` / GitHub raw @ SHA |
-| **Files** (lime) | Árbol **exacto** de lo que se inyectará (aplicando `i` y `.genpmignore`), con tamaños; clic → visor de archivo con resaltado | GitHub `git/trees/<sha>?recursive=1` + raw, caché por SHA |
+| **Files** (verde) | Árbol **exacto** de lo que se inyectará (aplicando `i` y `.genpmignore`), con tamaños; clic → visor de archivo con resaltado | GitHub `git/trees/<sha>?recursive=1` + raw, caché por SHA |
 | **MCP** (cyan) | Cada servidor: nombre, comando completo, env requeridas, enlace a su fuente; aviso "solo se añade con tu consentimiento" | manifiesto `m` |
 | **Versions** | Tabla: versión, tag, SHA, fecha, publisher, escaneo, `yanked` (tachado + motivo) | `/versions` |
 | **Dependencies** | `g` (enlaces a paquetes GenPM), `p` (enlaces a npm), "Used by" (v0.2) | manifiesto |
@@ -233,7 +233,7 @@ Modal desde la página de paquete: motivo (malware, prompt injection, spam, typo
 | `CommandBlock` | Comando + botón copiar + selector de runner | Feedback "Copied" 1.5 s; `aria-live="polite"`; evento analytics `copy_install` |
 | `PackageCard` | Nombre, versión, resumen, `LayerBadges`, keywords, instalaciones, comando corto | Variante `compact` (paleta ⌘K) y `sponsored` |
 | `LayerBadges` | Code / Context (+ tokens) / MCP (+ nombres) | Colores de las 3 C; texto, no solo color |
-| `VerifiedBadge` · `SponsoredLabel` · `ScanPill` | Estados de confianza | Sponsored usa borde amber, nunca lime |
+| `VerifiedBadge` · `SponsoredLabel` · `ScanPill` | Estados de confianza | Sponsored usa borde amber, nunca verde |
 | `ShaChip` | SHA corto + copiar SHA completo + tooltip con tag | Fuente mono, violet |
 | `FileTree` + `CodeViewer` | Árbol navegable con teclado + visor con Shiki | Shiki en build/edge, sin JS cliente para resaltar |
 | `MarkdownRenderer` | README y reglas | **Contenido no confiable**: sanitizado (sin HTML crudo, sin `<script>`, imágenes proxied, enlaces `rel="nofollow ugc noopener"`) |
@@ -260,7 +260,7 @@ Modal desde la página de paquete: motivo (malware, prompt injection, spam, typo
 
 **Responsive:** breakpoints Tailwind `sm 640 · md 768 · lg 1024 · xl 1280`. Página de paquete: sidebar de instalación pasa *arriba* del contenido en < 1024 px (el comando siempre visible sin scroll). Ancho máx. de contenido 1200 px; gutter 16 px en móvil; sin scroll horizontal (bloques de código con scroll propio).
 
-**Accesibilidad (WCAG 2.2 AA):** contraste verificado en [branding §8.2](branding.md#82-color); foco visible (anillo 2 px lime en dark / lime-700 en light); todo operable por teclado (tabs, árbol, paleta); `prefers-reduced-motion` desactiva el terminal animado; los badges de capa llevan texto además de color; landmarks y `skip to content`.
+**Accesibilidad (WCAG 2.2 AA):** contraste verificado en [branding §8.2](branding.md#82-color); foco visible (anillo 2 px `code-ink` en claro / `#C4F54A` en oscuro); todo operable por teclado (tabs, árbol, paleta); `prefers-reduced-motion` desactiva el terminal animado; los badges de capa llevan texto además de color; landmarks y `skip to content`.
 
 **Rendimiento (presupuestos):** LCP < 1.5 s (4G), CLS < 0.05, INP < 200 ms, JS cliente < 50 KB gzip en página de paquete y < 30 KB en home; fuentes self-hosted con `font-display: swap` y subset latino; Lighthouse ≥ 95.
 
@@ -272,7 +272,7 @@ Modal desde la página de paquete: motivo (malware, prompt injection, spam, typo
 
 **i18n:** 8 idiomas desde el lanzamiento (nivel 1 `en`, `es`, `pt-BR`; nivel 2 beta `fr`, `de`, `ja`, `zh-CN`, `ko`) con Astro i18n routing, `hreflang`, fuentes CJK por ruta, propiedades CSS lógicas (preparado para RTL) y banner de sugerencia según `Accept-Language` (sin redirección automática). Detalle: [i18n §4.4](i18n.md#44-web).
 
-**Theming:** tokens CSS en `:root` (light) y `[data-theme="dark"]` / `prefers-color-scheme` (dark por defecto); un único preset Tailwind generado desde `tokens.json` compartido con badges y OG images.
+**Theming:** tokens CSS en `:root` (light, **por defecto**) y `[data-theme="dark"]` (opcional); sin sombras: la elevación es solo borde ([branding §8.4](branding.md#84-retícula-elevación-iconografía-y-motion)); un único preset Tailwind generado desde `tokens.json` compartido con badges y OG images.
 
 ## 9. Flujos clave
 

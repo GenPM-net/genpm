@@ -139,7 +139,7 @@ Como la telemetría es anónima, **no sabemos quién instaló una versión vulne
 | AuthN | Tokens `gpm_` con checksum, HMAC-SHA256 con *pepper* en reposo, comparación en tiempo constante; sesiones web en cookies `__Host-` HttpOnly/Secure/SameSite=Lax con rotación al login |
 | AuthZ | Comprobación de permisos en un middleware único por recurso (`can(actor, action, resource)`); recursos inaccesibles devuelven `404`, no `403` (no revelar existencia) |
 | CSRF | Token sincronizado en formularios web autenticados + verificación de `Origin` |
-| CORS | `*` solo en GET públicos sin credenciales; escrituras solo desde `https://genpm.com` |
+| CORS | `*` solo en GET públicos sin credenciales; escrituras solo desde `https://genpm.net` |
 | SSRF | El Worker solo hace `fetch` a `api.github.com`, `raw.githubusercontent.com` y `codeload.github.com`, con `redirect: "manual"` |
 | ReDoS | Todas las regex revisadas como lineales (herramienta `recheck` en CI); límite de longitud previo a cualquier regex |
 | DoS | Rate limiting por IP/token (api-spec §3), WAF de Cloudflare, caché agresiva, colas para trabajo pesado |
@@ -159,7 +159,7 @@ Objetivo: **SLSA Build Level 3** para `genpm` y `@genpm/mcp`.
 | CI | Actions fijadas por SHA, `permissions:` mínimos por job, `harden-runner` (egress allowlist), sin `pull_request_target` con checkout de código externo |
 | Repo | Protección de `main`, revisión obligatoria (CODEOWNERS), commits y tags firmados, secret scanning con *push protection* |
 | Artefactos | SBOM CycloneDX y checksums en cada release; builds reproducibles verificados en CI |
-| Cuentas del equipo | Llaves hardware (FIDO2) en GitHub, npm, Cloudflare y registrador del dominio; *registrar lock* en `genpm.com`; DNSSEC |
+| Cuentas del equipo | Llaves hardware (FIDO2) en GitHub, npm, Cloudflare y registrador del dominio; *registrar lock* en `genpm.net`; DNSSEC |
 | Accesos | Principio de mínimo privilegio; tokens de API de Cloudflare con alcance por recurso; revisión trimestral de accesos |
 
 ## 7. Privacidad y cumplimiento
@@ -208,7 +208,7 @@ Suite que crea dos registries con datos espejo y verifica que cada endpoint, con
 Herramientas de contención: cuarentena de versión/paquete/scope (`451` inmediato tras purga de caché), revocación masiva de tokens de una cuenta, suspensión de cuenta, lista de revocación de claves de firma, modo solo-lectura del registry.
 Post-mortem público sin culpables para toda severidad alta o crítica.
 
-**Canal de reporte:** `security@genpm.com` (clave PGP publicada), GitHub Private Vulnerability Reporting en todos los repos, `https://genpm.com/.well-known/security.txt`. Respuesta inicial ≤ 48 h. Safe harbor para investigadores de buena fe.
+**Canal de reporte:** `security@genpm.net` (clave PGP publicada), GitHub Private Vulnerability Reporting en todos los repos, `https://genpm.net/.well-known/security.txt`. Respuesta inicial ≤ 48 h. Safe harbor para investigadores de buena fe.
 
 ## 10. Puertas de seguridad del lanzamiento (Día 6)
 

@@ -1,0 +1,5 @@
+{
+  "extends": "@genpm/tsconfig/base.json",
+  "compilerOptions": { "outDir": "dist", "rootDir": ".", "noEmit": true, "types": [], "lib": ["ES2023", "DOM"] },
+  "include": ["src", "test", "scripts"]
+}

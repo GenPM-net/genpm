@@ -1,0 +1,54 @@
+# Reglas propias de Semgrep (security §5 y §2). Cada regla protege un invariante.
+rules:
+  - id: no-shell-true
+    message: INV-2 — never spawn a process with a shell. Use execFile/spawn with an args array.
+    severity: ERROR
+    languages: [typescript, javascript]
+    pattern-either:
+      - pattern: '$CP.spawn(..., {..., shell: true, ...})'
+      - pattern: '$CP.spawnSync(..., {..., shell: true, ...})'
+      - pattern: '$CP.execFile(..., {..., shell: true, ...})'
+      - pattern: '$CP.exec(...)'
+      - pattern: '$CP.execSync(...)'
+      - pattern: 'spawn(..., {..., shell: true, ...})'
+      - pattern: 'exec(...)'
+      - pattern: 'execSync(...)'
+    paths:
+      include: [/packages/core/src, /packages/cli/src, /packages/mcp/src]
+      exclude: ['*.test.ts']
+
+  - id: d1-prepare-no-template
+    message: SQL must use prepared statements with bind(); template strings in prepare() are forbidden (security §5).
+    severity: ERROR
+    languages: [typescript]
+    pattern-either:
+      - pattern: '$DB.prepare(`...${$X}...`)'
+      - pattern: '$DB.prepare($A + $B)'
+    paths:
+      include: [/apps/registry/src]
+
+  - id: no-dotenv-read
+    message: INV-6 — GenPM never reads .env values. Only .env.example names are written.
+    severity: ERROR
+    languages: [typescript]
+    patterns:
+      - pattern-either:
+          - pattern: readFile($P, ...)
+          - pattern: readFileSync($P, ...)
+          - pattern: readTextOrNull($P)
+      - metavariable-regex:
+          metavariable: $P
+          regex: '.*\.env(?!\.example).*'
+    paths:
+      include: [/packages/core/src, /packages/cli/src, /packages/mcp/src]
+
+  - id: write-outside-safe-path
+    message: INV-3 — every write path must come from safePath()/safeDestPath() (core/fs/safe-path.ts).
+    severity: WARNING
+    languages: [typescript]
+    pattern-either:
+      - pattern: 'fs.writeFileSync(...)'
+      - pattern: 'writeFileSync(...)'
+    paths:
+      include: [/packages/core/src]
+      exclude: ['*.test.ts']

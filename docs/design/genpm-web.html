@@ -1,0 +1,877 @@
+<title>genpm.net</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=JetBrains+Mono:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: sitio de producto en 12 columnas (máx. 1200), rejilla colapsada de bordes de 1 px, cero sombras. Tokens = docs/design/tokens.json */
+:root{
+  --paper:#FFFFFF; --wash:#F6F7F9; --line:#E6E8EC; --line-2:#CDD2D9;
+  --ink:#0B0D11; --ink-2:#4A505C; --ink-3:#6A7180;
+  --code:#5AA300; --code-ink:#3B7300; --context:#5B4BDB; --mcp:#0A7F90;
+  --warn:#A15F00; --danger:#C62828; --hit:#FFF4DC;
+  --f-sans:"Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --r:4px; --max:1200px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+::selection{background:var(--ink);color:var(--paper)}
+a{color:inherit;text-decoration:none}
+code,kbd,pre,.mono{font-family:var(--f-mono);font-variant-ligatures:none}
+h1,h2,h3,h4{margin:0;font-weight:600;text-wrap:balance}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--code-ink);outline-offset:2px;border-radius:2px}
+.tnum{font-variant-numeric:tabular-nums}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:24px}
+@media (max-width:640px){.wrap{padding-inline:16px}}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:var(--paper);padding:6px 10px;border-radius:var(--r);z-index:99}
+.skip:focus{left:8px}
+
+.caret{display:inline-block;width:.42em;height:.78em;background:var(--code);margin-left:.06em;vertical-align:-.04em}
+.blink{animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.blink{animation:none}}
+
+.ico{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ——— Header ——— */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--paper);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:20px;height:56px}
+.logo{font-family:var(--f-mono);font-weight:800;font-size:18px;letter-spacing:-.04em;white-space:nowrap}
+.hsearch{flex:1;max-width:380px;display:flex;align-items:center;gap:8px;height:34px;border:1px solid var(--line-2);border-radius:var(--r);padding:0 8px 0 10px;color:var(--ink-3);background:var(--paper)}
+.hsearch:focus-within{border-color:var(--ink)}
+.hsearch input{flex:1;min-width:0;border:0;outline:0;background:none;font-size:13.5px;color:var(--ink)}
+.hsearch input::placeholder{color:var(--ink-3)}
+.kbd{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);border:1px solid var(--line-2);border-radius:3px;padding:1px 5px;line-height:1.4;white-space:nowrap}
+.hnav{display:flex;gap:2px;margin-left:auto}
+.hnav a{font-size:14px;color:var(--ink-2);padding:6px 10px;border-radius:var(--r)}
+.hnav a:hover,.hnav a[aria-current="page"]{color:var(--ink);background:var(--wash)}
+.hmob{display:none;margin-left:auto;gap:4px}
+.hmob button{width:36px;height:36px;display:grid;place-items:center;border-radius:var(--r)}
+.hmob button:hover{background:var(--wash)}
+@media (max-width:820px){.hsearch,.hnav,.hdr .signin{display:none}.hmob{display:flex}}
+.sheet{border-bottom:1px solid var(--line);background:var(--paper)}
+.sheet .wrap{display:grid;padding-block:8px 16px}
+.sheet a{padding:12px 0;border-bottom:1px solid var(--line);font-size:16px}
+.sheet a:last-child{border-bottom:0}
+
+/* ——— Botones y piezas ——— */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 14px;border-radius:var(--r);font-size:14px;font-weight:500;border:1px solid var(--line-2);background:var(--paper);color:var(--ink);white-space:nowrap;transition:background .15s ease-out,border-color .15s ease-out}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn.primary:hover{background:#262A33}
+.btn.ghost{border-color:transparent;color:var(--ink-2)}
+.btn.ghost:hover{background:var(--wash);color:var(--ink)}
+.btn.sm{height:32px;padding:0 12px;font-size:13.5px}
+.btn.lg{height:44px;padding:0 18px;font-size:15px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+.cmd{display:flex;align-items:stretch;border:1px solid var(--line-2);border-radius:var(--r);background:var(--paper);font-family:var(--f-mono);font-size:14px;height:46px;min-width:0}
+.cmd .p{color:var(--ink-3);padding-left:14px;display:flex;align-items:center;user-select:none}
+.cmd code{flex:1;display:flex;align-items:center;padding:0 12px 0 10px;white-space:nowrap;overflow-x:auto;min-width:0;scrollbar-width:none}
+.cmd code::-webkit-scrollbar{display:none}
+/* El contenido largo hace scroll dentro de su caja y nunca ensancha la columna */
+.cmd code,.term pre,.md pre,.out pre,.tree,.scroll,.graft{contain:inline-size}
+.cta,.clients .pn,.side,.pk-panel,.dbody,.ritem,.phead{grid-template-columns:minmax(0,1fr)}
+.cp{border-left:1px solid var(--line-2);padding:0 14px;font-family:var(--f-mono);font-size:12px;color:var(--ink-2);min-width:78px}
+.cp:hover{background:var(--wash);color:var(--ink)}
+.cp.ok{color:var(--code-ink)}
+.cmd.sm{height:38px;font-size:12.5px}
+.cmd.sm .cp{min-width:64px;padding:0 10px}
+
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border:1px solid var(--line-2);border-radius:var(--r);font-family:var(--f-mono);font-size:11.5px;white-space:nowrap}
+.badge i{width:7px;height:7px;border-radius:1px;background:var(--c,var(--ink));display:block}
+.badge.code{--c:var(--code)}.badge.ctx{--c:var(--context)}.badge.mcp{--c:var(--mcp)}
+.badge em{font-style:normal;color:var(--ink-3)}
+.badge.ok{color:var(--code-ink)}
+.badge.ver{color:var(--code-ink)}
+.badge.ver .ico{width:13px;height:13px}
+.spons{display:inline-flex;align-items:center;height:20px;padding:0 6px;border:1px solid var(--warn);color:var(--warn);border-radius:2px;font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.sha{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:12.5px;color:var(--context);border:1px solid var(--line-2);border-radius:var(--r);height:24px;padding:0 8px;white-space:nowrap}
+.sha:hover{border-color:var(--context)}
+.sha .ico{width:13px;height:13px}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:var(--r);padding:2px;gap:2px}
+.seg button{height:28px;padding:0 12px;white-space:nowrap;font-family:var(--f-mono);font-size:12px;color:var(--ink-2);border-radius:2px}
+.seg button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.k{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+.banner{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:12px 14px;border:1px solid var(--c);border-left-width:3px;font-size:13.5px;border-radius:var(--r);color:var(--ink-2)}
+.banner b{color:var(--c);font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding-top:2px}
+
+.term{border:1px solid var(--line);border-radius:var(--r);background:var(--wash);font-family:var(--f-mono);font-size:12.5px;line-height:1.75;min-width:0}
+.term .bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 14px;border-bottom:1px solid var(--line);font-size:11px;color:var(--ink-3)}
+.term .bar .cp{border:0;min-width:0;padding:0;font-size:11px}
+.term pre{margin:0;padding:14px 16px;overflow-x:auto}
+.t-mut{color:var(--ink-3)}.t-code{color:var(--code-ink)}.t-ctx{color:var(--context)}.t-mcp{color:var(--mcp)}.t-b{font-weight:700}
+
+/* ——— Secciones ——— */
+.sec{border-top:1px solid var(--line);padding-block:72px}
+.sec-h{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.sec-h h2{font-size:clamp(26px,3vw,32px);letter-spacing:-.03em;line-height:1.05;font-variation-settings:"wdth" 88;margin-top:10px}
+.sec-h p{color:var(--ink-2);max-width:52ch;margin-top:10px}
+@media (max-width:640px){.sec{padding-block:48px}}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;padding-block:80px 72px;align-items:start}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);padding:4px 8px}
+.eyebrow i{width:6px;height:6px;background:var(--c,var(--code));display:block}
+.h1{font-size:clamp(42px,6.4vw,72px);line-height:.96;letter-spacing:-.045em;margin-block:22px 20px;font-variation-settings:"wdth" 86;font-weight:600}
+.lede{font-size:18px;color:var(--ink-2);max-width:44ch}
+.cta{display:grid;gap:12px;margin-top:36px;max-width:500px}
+.cta .top2{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.hint{font-size:12.5px;color:var(--ink-3)}
+.hint code{color:var(--ink-2)}
+.trust{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:28px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3)}
+.trust span{display:inline-flex;gap:6px;align-items:center}
+.trust .ico{width:14px;height:14px}
+@media (max-width:900px){.hero{grid-template-columns:1fr;gap:36px;padding-block:48px}}
+
+/* Diagrama de injerto */
+.graft{border:1px solid var(--line);overflow-x:auto}
+.graft svg{display:block;width:100%;min-width:660px;height:auto}
+.g-t{font-family:var(--f-mono);font-size:12px;fill:var(--ink)}
+.g-m{font-family:var(--f-mono);font-size:11px;fill:var(--ink-3)}
+.g-h{font-family:var(--f-mono);font-size:13px;font-weight:700;fill:var(--ink)}
+.cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line)}
+.cols3>div{padding:24px;display:grid;gap:10px;align-content:start;min-width:0}
+.cols3>div+div{border-left:1px solid var(--line)}
+.cols3 h3{font-size:17px;display:flex;gap:10px;align-items:center}
+.cols3 h3 i{width:8px;height:8px;background:var(--c);display:block}
+.cols3 p{font-size:14px;color:var(--ink-2)}
+.cols3 .no{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+.cols3 code.chip{font-size:12px;background:var(--wash);border:1px solid var(--line);border-radius:3px;padding:3px 7px;justify-self:start;max-width:100%;overflow-x:auto;white-space:nowrap}
+.graft+.cols3{border-top:0}
+@media (max-width:760px){.cols3{grid-template-columns:minmax(0,1fr)}.cols3>div+div{border-left:0;border-top:1px solid var(--line)}}
+
+/* Tarjetas de paquete */
+.feat{display:grid;grid-template-columns:2fr 1fr;gap:40px}
+.cards{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.pcard{padding:20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;gap:10px;align-content:start;min-width:0;transition:background .15s ease-out}
+.pcard:hover{background:var(--wash)}
+.pcard .nm{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.pcard .nm b{font-family:var(--f-mono);font-size:14px;font-weight:700}
+.pcard .nm .v{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+.pcard .nm .r{margin-left:auto}
+.vmark{display:inline-flex;align-items:center;gap:4px;font-family:var(--f-mono);font-size:11px;color:var(--code-ink)}
+.vmark .ico{width:13px;height:13px}
+.pcard p{font-size:14px;color:var(--ink-2)}
+.pcard .ft{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.pcard .ft .row{gap:6px}
+.inst{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3)}
+.pcard.sp{outline:1px solid var(--warn);outline-offset:-1px}
+.trend li{display:grid;grid-template-columns:20px 1fr 64px 52px;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-family:var(--f-mono);font-size:12.5px}
+.trend li:first-child{border-top:1px solid var(--line)}
+.trend li a:hover{text-decoration:underline;text-underline-offset:3px}
+.trend .n{color:var(--ink-3)}
+.trend .d{color:var(--code-ink);text-align:right}
+.trend svg{width:64px;height:18px;display:block}
+@media (max-width:900px){.feat{grid-template-columns:1fr}}
+@media (max-width:600px){.cards{grid-template-columns:1fr}}
+
+/* MCP clients */
+.clients{display:grid;grid-template-columns:230px minmax(0,1fr);border:1px solid var(--line)}
+.clients [role=tablist]{display:grid;align-content:start;border-right:1px solid var(--line);min-width:0}
+.clients [role=tab]{text-align:left;padding:13px 16px;font-size:14px;color:var(--ink-2);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:8px;align-items:center}
+.clients [role=tab]:hover{background:var(--wash)}
+.clients [role=tab][aria-selected="true"]{color:var(--ink);font-weight:600;box-shadow:inset 2px 0 0 var(--ink)}
+.clients [role=tab] code{font-size:10.5px;color:var(--ink-3);font-weight:400}
+.clients .pn{padding:22px 24px;display:grid;gap:16px;align-content:start;min-width:0}
+.clients .pn p{font-size:14px;color:var(--ink-2)}
+.prompts{display:grid;gap:8px}
+.prompts div{font-size:14px;border-left:2px solid var(--context);padding:4px 0 4px 12px}
+@media (max-width:760px){.clients{grid-template-columns:minmax(0,1fr)}.clients [role=tablist]{grid-auto-flow:column;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}.clients [role=tab]{border-bottom:0;border-right:1px solid var(--line);white-space:nowrap}.clients [role=tab] code{display:none}.clients [role=tab][aria-selected="true"]{box-shadow:inset 0 -2px 0 var(--ink)}}
+
+.pub{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+.pub h2{font-size:clamp(30px,4vw,44px);letter-spacing:-.035em;line-height:1.02;font-variation-settings:"wdth" 86}
+.pub p{color:var(--ink-2);margin-top:14px;max-width:46ch}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line)}
+.stats>div{padding:20px;min-width:0}
+.stats>div+div{border-left:1px solid var(--line)}
+.stats b{display:block;font-size:32px;letter-spacing:-.03em;font-weight:600;font-variant-numeric:tabular-nums}
+@media (max-width:760px){.pub{grid-template-columns:1fr;gap:28px}}
+
+/* Footer */
+.foot{border-top:1px solid var(--line);padding-block:48px 28px;display:grid;gap:36px}
+.foot .cols{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:24px}
+.foot h4{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:500;margin-bottom:12px}
+.foot ul{display:grid;gap:8px}
+.foot li a{font-size:14px;color:var(--ink-2)}
+.foot li a:hover{color:var(--ink)}
+.foot .base{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:20px}
+.status{display:inline-flex;align-items:center;gap:6px}
+.status i{width:7px;height:7px;border-radius:50%;background:var(--code);display:block}
+@media (max-width:760px){.foot .cols{grid-template-columns:1fr 1fr}.foot .cols>div:first-child{grid-column:1/-1}}
+
+/* Página: cabecera simple */
+.phead{padding-block:48px 32px;display:grid;gap:12px}
+.phead h1{font-size:clamp(32px,4.5vw,48px);letter-spacing:-.04em;line-height:1;font-variation-settings:"wdth" 86}
+.phead p{color:var(--ink-2);font-size:17px;max-width:58ch}
+
+/* Búsqueda */
+.srch{display:grid;grid-template-columns:220px 1fr;border-top:1px solid var(--line)}
+.filters{padding:24px 24px 24px 0;border-right:1px solid var(--line);display:grid;gap:24px;align-content:start}
+.filters fieldset{border:0;margin:0;padding:0;display:grid;gap:8px}
+.filters legend{margin-bottom:8px}
+.filters label{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink-2);cursor:pointer}
+.filters label span.c{margin-left:auto;font-family:var(--f-mono);font-size:11px;color:var(--ink-3)}
+.filters input{accent-color:var(--ink);width:15px;height:15px;margin:0}
+.results{min-width:0;padding:24px 0 24px 32px;display:grid;gap:0;align-content:start}
+.rbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:16px}
+.rbar .q{font-size:15px}
+.rbar .q b{font-family:var(--f-mono)}
+.sel{height:32px;border:1px solid var(--line-2);border-radius:var(--r);padding:0 8px;background:var(--paper);font-size:13px}
+.ritem{display:grid;gap:10px;padding:20px;border:1px solid var(--line);margin-top:-1px;min-width:0;transition:background .15s ease-out}
+.ritem:hover{background:var(--wash)}
+.ritem.sp{border-color:var(--warn);position:relative;z-index:1}
+.ritem .nm{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.ritem .nm b{font-family:var(--f-mono);font-size:15px}
+.ritem .nm .v{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+.ritem p{color:var(--ink-2);font-size:14px}
+.ritem .meta{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;justify-content:space-between}
+.ritem .kw{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3)}
+.ritem .cmd{max-width:460px}
+.empty{border:1px dashed var(--line-2);padding:40px 24px;display:grid;gap:14px;justify-items:start}
+.empty h3{font-size:20px}
+.ffab{display:none}
+@media (max-width:820px){.srch{grid-template-columns:1fr}.filters{border-right:0;padding:16px 0;border-bottom:1px solid var(--line);grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}.results{padding:16px 0}}
+
+/* Paquete */
+.pk-head{padding-block:40px 28px;display:grid;gap:14px}
+.crumb{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+.crumb a:hover{color:var(--ink)}
+.pk-title{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pk-title h1{font-family:var(--f-mono);font-size:clamp(24px,3.4vw,32px);letter-spacing:-.035em;font-weight:700}
+.pk-title h1 span{color:var(--ink-3);font-weight:400}
+.pk-title .act{margin-left:auto;display:flex;gap:8px}
+.pk-head>p{font-size:17px;color:var(--ink-2);max-width:62ch}
+.pk-body{display:grid;grid-template-columns:minmax(0,1fr) 360px;border-top:1px solid var(--line)}
+.pk-main{min-width:0;border-right:1px solid var(--line)}
+.pk-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--line);scrollbar-width:none}
+.pk-tabs [role=tab]{padding:15px 16px;font-size:14px;color:var(--ink-2);white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.pk-tabs [role=tab]:first-child{padding-left:0}
+.pk-tabs [role=tab]:hover{color:var(--ink)}
+.pk-tabs [role=tab][aria-selected="true"]{color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--c,var(--ink))}
+.pk-tabs [role=tab] i{width:7px;height:7px;background:var(--c);display:block}
+.pk-tabs [role=tab] em{font-style:normal;font-family:var(--f-mono);font-size:11px;color:var(--ink-3);font-weight:400}
+.pk-panel{padding:28px 32px 48px 0;display:grid;gap:18px;align-content:start;min-width:0}
+.pk-panel h2{font-size:22px;letter-spacing:-.02em}
+.pk-panel h3{font-size:16px;margin-top:8px}
+.pk-panel p,.pk-panel li{font-size:14.5px;color:var(--ink-2);max-width:66ch}
+.pk-panel ul.dots{display:grid;gap:6px}
+.pk-panel ul.dots li::before{content:"›  ";font-family:var(--f-mono);color:var(--ink-3)}
+.pk-panel code{font-size:.9em}
+.md{font-family:var(--f-mono);font-size:12.5px;line-height:1.8;border:1px solid var(--line);border-radius:var(--r);overflow-x:auto}
+.md pre{margin:0;padding:16px 18px}
+.md .h{font-weight:700}
+.tree{font-family:var(--f-mono);font-size:12.5px;border:1px solid var(--line);border-radius:var(--r);overflow-x:auto}
+.tree button{display:grid;grid-template-columns:1fr auto;gap:16px;padding:8px 16px;border-bottom:1px solid var(--line);white-space:nowrap;width:100%;text-align:left}
+.tree button:hover{background:var(--wash)}
+.tree button[aria-current="true"]{background:var(--wash);box-shadow:inset 2px 0 0 var(--code)}
+.tree>*:last-child{border-bottom:0}
+.tree span:last-child{color:var(--ink-3)}
+.tree .dir{font-weight:700;padding:8px 16px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto}
+.viewer pre{margin:0;padding:14px 16px;overflow-x:auto;font-size:12.5px;line-height:1.75}
+.viewer .ln{color:var(--line-2);user-select:none;display:inline-block;width:2.4em}
+.kw1{color:var(--context)}.str{color:var(--code-ink)}.cm{color:var(--ink-3)}
+.dl{border:1px solid var(--line);border-radius:var(--r);display:grid;margin:0}
+.dl>div{padding:14px 16px;display:grid;grid-template-columns:120px 1fr;gap:12px;border-bottom:1px solid var(--line);font-size:14px}
+.dl>div:last-child{border-bottom:0}
+.dl dt{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);padding-top:2px}
+.dl dd{margin:0;min-width:0;overflow-x:auto;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+table.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+table.tbl th{font-family:var(--f-mono);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);text-align:left;padding:0 12px 10px 0;border-bottom:1px solid var(--line-2);white-space:nowrap}
+table.tbl td{padding:12px 12px 12px 0;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+table.tbl td:first-child{font-family:var(--f-mono)}
+table.tbl tr.y td{color:var(--ink-3)}
+table.tbl tr.y td:first-child{text-decoration:line-through}
+.scroll{overflow-x:auto;min-width:0}
+.side{padding:28px 0 40px 28px;display:grid;gap:18px;align-content:start;min-width:0}
+.side .seg{display:flex}
+.side .seg button{flex:1;padding:0 6px}
+.runner{display:flex;gap:6px;font-family:var(--f-mono);font-size:11.5px}
+.runner button{padding:3px 8px;border-radius:3px;color:var(--ink-3);border:1px solid transparent}
+.runner button[aria-pressed="true"]{color:var(--ink);border-color:var(--line-2)}
+.kv{margin:0;display:grid;grid-template-columns:92px minmax(0,1fr);border-top:1px solid var(--line)}
+.kv dt,.kv dd{padding:11px 0;border-bottom:1px solid var(--line);min-width:0}
+.kv dt{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;padding-top:13px}
+.kv dd{margin:0;font-family:var(--f-mono);font-size:12.5px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;word-break:break-all}
+.kv dd a{border-bottom:1px solid var(--line-2)}
+.kv dd a:hover{border-color:var(--ink)}
+@media (max-width:1024px){.pk-body{grid-template-columns:1fr}.pk-main{border-right:0;order:2}.side{order:1;padding:24px 0;border-bottom:1px solid var(--line)}.pk-panel{padding-right:0}}
+@media (max-width:640px){.pk-title .act{margin-left:0}.dl>div{grid-template-columns:1fr;gap:4px}}
+
+/* Docs */
+.docs{display:grid;grid-template-columns:220px minmax(0,1fr) 200px;gap:0;border-top:1px solid var(--line)}
+.dnav{padding:28px 24px 28px 0;border-right:1px solid var(--line);display:grid;gap:20px;align-content:start}
+.dnav ul{display:grid;gap:2px}
+.dnav a{display:block;font-size:14px;color:var(--ink-2);padding:5px 10px;border-radius:var(--r)}
+.dnav a:hover{background:var(--wash);color:var(--ink)}
+.dnav a[aria-current="page"]{color:var(--ink);font-weight:600;box-shadow:inset 2px 0 0 var(--ink);border-radius:0}
+.dbody{padding:36px 40px 72px;display:grid;gap:20px;align-content:start;min-width:0}
+.dbody h1{font-size:40px;letter-spacing:-.04em;line-height:1.02;font-variation-settings:"wdth" 86}
+.dbody h2{font-size:22px;letter-spacing:-.02em;margin-top:16px;display:flex;gap:12px;align-items:baseline}
+.dbody h2 span{font-family:var(--f-mono);font-size:12px;color:var(--ink-3);font-weight:400}
+.dbody p{color:var(--ink-2);max-width:66ch}
+.dbody .lead{font-size:17px}
+.dtoc{padding:36px 0 36px 24px;border-left:1px solid var(--line);display:grid;gap:8px;align-content:start;font-size:13px}
+.dtoc a{color:var(--ink-2)}
+.dtoc a:hover{color:var(--ink)}
+.dfoot{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:20px;margin-top:20px;flex-wrap:wrap}
+@media (max-width:1024px){.docs{grid-template-columns:200px minmax(0,1fr)}.dtoc{display:none}}
+@media (max-width:760px){.docs{grid-template-columns:1fr}.dnav{border-right:0;border-bottom:1px solid var(--line);padding:16px 0;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}.dbody{padding:28px 0 56px}}
+
+/* Publish builder */
+.steps4{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line)}
+.steps4>div{padding:22px;display:grid;gap:10px;align-content:start;min-width:0}
+.steps4>div+div{border-left:1px solid var(--line)}
+.steps4 .no{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+.steps4 h3{font-size:16px}
+.steps4 p{font-size:13.5px;color:var(--ink-2)}
+.steps4 code.chip{font-size:12px;background:var(--wash);border:1px solid var(--line);border-radius:3px;padding:3px 7px;justify-self:start;max-width:100%;overflow-x:auto;white-space:nowrap}
+@media (max-width:900px){.steps4{grid-template-columns:1fr 1fr}.steps4>div:nth-child(3){border-left:0}.steps4>div:nth-child(n+3){border-top:1px solid var(--line)}}
+@media (max-width:560px){.steps4{grid-template-columns:1fr}.steps4>div+div{border-left:0;border-top:1px solid var(--line)}}
+.builder{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line)}
+.builder form{padding:24px;display:grid;gap:16px;border-right:1px solid var(--line);min-width:0}
+.field{display:grid;gap:6px}
+.field label{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2)}
+.field label em{font-style:normal;color:var(--ink-3)}
+.field input,.field textarea{height:36px;border:1px solid var(--line-2);border-radius:var(--r);padding:0 10px;font-size:14px;background:var(--paper);width:100%;min-width:0}
+.field textarea{height:auto;padding:8px 10px;resize:vertical;font-family:var(--f-mono);font-size:12.5px}
+.field input.mono{font-family:var(--f-mono);font-size:13px}
+.field input:focus,.field textarea:focus{outline:0;border-color:var(--ink)}
+.field input[aria-invalid="true"]{border-color:var(--danger)}
+.field .err{font-family:var(--f-mono);font-size:11.5px;color:var(--danger)}
+.field .err:empty{display:none}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--ink-2)}
+.check input{accent-color:var(--ink);width:15px;height:15px;margin:0}
+.out{display:grid;grid-template-rows:auto 1fr auto;min-width:0;background:var(--wash)}
+.out .bar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3)}
+.out pre{margin:0;padding:16px 18px;font-size:12.5px;line-height:1.75;overflow:auto;min-height:280px}
+.out .vbar{border-top:1px solid var(--line);padding:12px 16px;font-family:var(--f-mono);font-size:12px}
+.jk{color:var(--context)}.js{color:var(--code-ink)}.jn{color:var(--mcp)}
+@media (max-width:860px){.builder{grid-template-columns:minmax(0,1fr)}.builder form{border-right:0;border-bottom:1px solid var(--line)}}
+.checklist{display:grid;gap:0;border-top:1px solid var(--line)}
+.checklist li{display:grid;grid-template-columns:24px 1fr;gap:8px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-2)}
+.checklist li::before{content:"◇";font-family:var(--f-mono);color:var(--ink-3)}
+
+/* Login */
+.login{max-width:420px;margin-inline:auto;padding-block:96px;display:grid;gap:20px}
+.login h1{font-size:32px;letter-spacing:-.035em;font-variation-settings:"wdth" 88}
+.login .perm{border:1px solid var(--line);border-radius:var(--r)}
+.login .perm div{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--ink-2)}
+.login .perm div:last-child{border-bottom:0}
+.login .perm code{color:var(--ink);font-size:12px}
+
+/* Paleta ⌘K */
+.scrim{position:fixed;inset:0;z-index:50;background:rgba(255,255,255,.82);display:flex;justify-content:center;align-items:flex-start;padding:max(12vh,env(safe-area-inset-top,0px)) 16px 16px}
+.pal{width:100%;max-width:620px;background:var(--paper);border:1px solid var(--ink);border-radius:6px;overflow:hidden}
+.pal .in{display:flex;align-items:center;gap:10px;padding:0 14px;height:52px;border-bottom:1px solid var(--line)}
+.pal .in input{flex:1;border:0;outline:0;font-size:16px;background:none;min-width:0}
+.pal ul{max-height:360px;overflow:auto}
+.pal li a{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.pal li a b{font-family:var(--f-mono);font-size:13.5px}
+.pal li a span{font-size:13px;color:var(--ink-2);grid-column:1}
+.pal li a .bd{grid-row:1/3;grid-column:2;display:flex;gap:4px;align-items:center}
+.pal li[aria-selected="true"] a{background:var(--wash);box-shadow:inset 2px 0 0 var(--ink)}
+.pal .ft{display:flex;gap:16px;padding:10px 14px;font-family:var(--f-mono);font-size:11px;color:var(--ink-3);flex-wrap:wrap}
+.pal .none{padding:20px 14px;font-size:14px;color:var(--ink-2)}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;background:var(--ink);color:var(--paper);font-family:var(--f-mono);font-size:12.5px;padding:10px 14px;border-radius:var(--r);display:flex;gap:8px;align-items:center;max-width:calc(100% - 32px)}
+.toast i{width:7px;height:7px;background:var(--code);display:block;flex:none}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></symbol>
+    <symbol id="i-context" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-commit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M3 12h6"/><path d="M15 12h6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></symbol>
+    <symbol id="i-gh" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip" href="#view">Skip to content</a>
+<header class="hdr">
+  <div class="wrap">
+    <a class="logo" href="#home" aria-label="genpm home">genpm<span class="caret"></span></a>
+    <label class="hsearch" for="hq"><svg class="ico" style="width:15px;height:15px"><use href="#i-search"/></svg><input id="hq" type="search" placeholder="Search 128 packages…" autocomplete="off"><span class="kbd">⌘K</span></label>
+    <nav class="hnav" aria-label="Main"><a href="#docs" data-nav="docs">Docs</a><a href="#mcp" data-nav="mcp">MCP</a><a href="#publish" data-nav="publish">Publish</a></nav>
+    <a class="btn sm signin" href="#login"><svg class="ico" style="width:15px;height:15px"><use href="#i-gh"/></svg>Sign in</a>
+    <div class="hmob"><button id="mSearch" aria-label="Search"><svg class="ico"><use href="#i-search"/></svg></button><button id="mMenu" aria-label="Menu" aria-expanded="false"><svg class="ico"><use href="#i-menu"/></svg></button></div>
+  </div>
+  <div class="sheet" id="sheet" hidden><div class="wrap"><a href="#search">Search</a><a href="#docs">Docs</a><a href="#mcp">MCP</a><a href="#publish">Publish</a><a href="#login">Sign in with GitHub</a></div></div>
+</header>
+
+<main id="view" tabindex="-1"></main>
+
+<footer class="wrap foot">
+  <div class="cols">
+    <div><a class="logo" href="#home">genpm<span class="caret"></span></a><p style="font-size:14px;color:var(--ink-3);margin-top:12px;max-width:30ch">Install architectures, not dependencies.</p></div>
+    <div><h4>Product</h4><ul><li><a href="#docs">Docs</a></li><li><a href="#mcp">MCP</a></li><li><a href="#publish">Publish</a></li><li><a href="#search">Browse</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="#home">Sponsors</a></li><li><a href="#home">Enterprise</a></li><li><a href="#home">Blog</a></li></ul></div>
+    <div><h4>Community</h4><ul><li><a href="#home">GitHub</a></li><li><a href="#home">Discord</a></li><li><a href="#home">X</a></li></ul></div>
+    <div><h4>Legal</h4><ul><li><a href="#home">Terms</a></li><li><a href="#home">Privacy</a></li><li><a href="#home">Package policy</a></li><li><a href="#home">Report abuse</a></li></ul></div>
+  </div>
+  <div class="base"><span>© 2026 GenPM · llms.txt · Prototype with sample data</span><span class="status"><i></i>All systems normal</span></div>
+</footer>
+
+<div id="pal-root"></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden><i></i><span></span></div>
+
+<script>
+(function(){
+/* ——————————————— Datos (paquetes semilla + ejemplos de comunidad) ——————————————— */
+var P=[
+ {n:'@core/auth',v:'1.2.0',c:'1b9d3a0',cat:'auth',s:'Sessions and OAuth (GitHub, Google) with Drizzle. Middleware for Hono and Next.js.',d:'src/lib/auth',l:'MIT',k:['auth','oauth','sessions','github'],g:{'@core/db':'^1.0.0'},p:{'arctic':'^3.0.0','@oslojs/crypto':'^1.0.0','@oslojs/encoding':'^1.0.0'},e:['AUTH_SECRET','GITHUB_CLIENT_ID','GITHUB_CLIENT_SECRET'],m:[],tok:'0.9k',files:18,size:'64 KB',inst:1520,delta:'+12%',tr:[60,62,61,65,66,64,70,71,73,72,76,80],ver:true,pub:'5 days ago',by:'GenPM',
+  rules:['# @core/auth','','## Integración','- Protect routes with requireUser (Hono) or getUser() (Next).','- Sessions are cookie-based. Never put session tokens in localStorage.','- OAuth callbacks live at /auth/callback/:provider.','','## Datos','- Tables: users, sessions, oauth_accounts in schema/auth.ts.','- Store only hashed session tokens.','','## No hacer','- Do not add roles here. Authorization is out of scope.','- Do not log tokens, codes or cookies.'],
+  tree:['index.ts|0.9 KB','session.ts|4.1 KB','oauth/github.ts|2.6 KB','oauth/google.ts|2.7 KB','middleware/hono.ts|1.4 KB','middleware/next.ts|1.6 KB','schema/auth.ts|2.2 KB','cookies.ts|1.3 KB']},
+ {n:'@core/billing',v:'1.2.0',c:'9f2c4e1',cat:'billing',s:'Stripe subscriptions: checkout, portal and idempotent webhooks with Drizzle.',d:'src/lib/billing',l:'MIT',k:['billing','stripe','subscriptions','webhooks'],g:{'@core/db':'^1.0.0','@core/auth':'^1.1.0'},p:{'stripe':'^17.0.0'},e:['STRIPE_SECRET_KEY','STRIPE_WEBHOOK_SECRET'],m:[{n:'stripe',cmd:'npx -y @stripe/mcp --tools=all',e:['STRIPE_SECRET_KEY'],why:'Lets your agent read real products and prices while it integrates billing.'}],tok:'1.1k',files:23,size:'112 KB',inst:890,delta:'+32%',tr:[12,14,13,18,22,21,27,31,36,41,47,58],ver:true,pub:'2 days ago',by:'GenPM',yank:{v:'1.1.1',c:'0d7a913',why:'skipped webhook signature check'},
+  rules:['# @core/billing','','## Integración','- Mount the webhook at POST /api/billing/webhook.','- Verify the Stripe signature before parsing the body.','- Gate features with hasEntitlement(user, feature).','  Never read the subscriptions table directly.','','## Datos','- Tables live in schema/billing.ts. Do not edit','  tables owned by @core/auth or @core/db.','','## No hacer','- Do not store card data or raw PaymentMethods.','- Do not hardcode price IDs; read STRIPE_PRICE_* from env.'],
+  tree:['index.ts|1.1 KB','checkout.ts|3.8 KB','portal.ts|1.6 KB','webhooks.ts|6.2 KB','entitlements.ts|2.4 KB','schema/billing.ts|3.0 KB','adapters/hono.ts|1.9 KB','adapters/next.ts|2.1 KB']},
+ {n:'@core/db',v:'1.0.3',c:'77ac0d2',cat:'database',s:'Postgres client factory, per-module schemas, ULIDs and transactions with Drizzle.',d:'src/lib/db',l:'MIT',k:['database','drizzle','postgres','migrations'],g:{},p:{'drizzle-orm':'^0.36.0','postgres':'^3.4.0'},e:['DATABASE_URL'],m:[],tok:'0.7k',files:11,size:'28 KB',inst:2140,delta:'+6%',tr:[70,71,70,72,73,72,74,73,75,74,76,77],ver:true,pub:'3 weeks ago',by:'GenPM',
+  rules:['# @core/db','','## Integración','- Import the client from src/lib/db, never create a second pool.','- Each module adds its tables in schema/<module>.ts.','- Wrap multi-table writes in withTransaction().','','## Datos','- IDs are ULIDs. Timestamps: createdAt, updatedAt.','','## No hacer','- Do not edit another module’s schema file.','- Do not run migrations at app start.'],
+  tree:['index.ts|1.2 KB','client.ts|2.0 KB','transaction.ts|1.1 KB','ids.ts|0.6 KB','schema/index.ts|0.4 KB','drizzle.config.ts|0.5 KB']},
+ {n:'@core/email',v:'1.0.1',c:'3e5f1a9',cat:'email',s:'Typed React Email templates over Resend or SMTP, with a console mode for development.',d:'src/lib/email',l:'MIT',k:['email','resend','react-email','smtp'],g:{},p:{'resend':'^4.0.0','@react-email/components':'^0.0.30'},e:['RESEND_API_KEY','EMAIL_FROM'],m:[],tok:'0.6k',files:14,size:'41 KB',inst:640,delta:'+9%',tr:[30,31,33,32,34,33,35,36,35,37,38,40],ver:true,pub:'1 week ago',by:'GenPM',
+  rules:['# @core/email','','## Integración','- Send with sendEmail(template, props). Props are typed per template.','- New templates go in templates/ and are registered in index.ts.','','## No hacer','- Do not call the provider SDK directly from routes.','- Do not put user content in subject lines without escaping.'],
+  tree:['index.ts|1.4 KB','send.ts|2.2 KB','providers/resend.ts|1.3 KB','providers/smtp.ts|1.9 KB','templates/welcome.tsx|2.4 KB','templates/magic-link.tsx|2.1 KB','templates/receipt.tsx|3.0 KB']},
+ {n:'@core/ai',v:'0.9.0',c:'a7d41b8',cat:'ai',s:'Streaming chat endpoint, versioned prompts, tool-calling scaffold and usage logging.',d:'src/lib/ai',l:'MIT',k:['ai','llm','chat','streaming'],g:{'@core/db':'^1.0.0'},p:{'ai':'^4.0.0'},e:['AI_PROVIDER_API_KEY','AI_MODEL'],m:[],tok:'1.3k',files:19,size:'58 KB',inst:1130,delta:'+27%',tr:[20,22,21,25,24,29,31,33,38,40,44,52],ver:true,pub:'4 days ago',by:'GenPM',
+  rules:['# @core/ai','','## Integración','- The model comes from AI_MODEL. Never hardcode a model id.','- Prompts live in prompts/ with a version suffix (summarize.v2.ts).','- Every call goes through logUsage() so cost is tracked.','','## No hacer','- Do not stream raw provider errors to the client.','- Do not put secrets or user PII in system prompts.'],
+  tree:['index.ts|1.0 KB','chat.ts|4.4 KB','tools.ts|3.1 KB','usage.ts|2.0 KB','prompts/summarize.v2.ts|1.2 KB','schema/ai.ts|1.6 KB']},
+ {n:'@lena/rate-limit',v:'1.3.0',c:'4b8e21d',cat:'infra',s:'Sliding-window rate limiting for Hono and Next.js, backed by Postgres.',d:'src/lib/rate-limit',l:'MIT',k:['rate-limit','security','hono'],g:{'@core/db':'^1.0.0'},p:{},e:[],m:[],tok:'0.4k',files:7,size:'14 KB',inst:410,delta:'+18%',tr:[10,11,12,12,14,15,15,17,18,19,21,22],ver:false,pub:'6 days ago',by:'lena',
+  rules:['# @lena/rate-limit','','## Integración','- Wrap handlers with limit({ key, window, max }).','- Use the user id as key when available, else the IP.'],tree:['index.ts|2.8 KB','store.ts|3.4 KB','schema/rate-limit.ts|0.9 KB']},
+ {n:'@orbit/uploads',v:'1.1.0',c:'8d3a6f2',cat:'infra',s:'S3-compatible uploads with signed URLs and image variants.',d:'src/lib/uploads',l:'Apache-2.0',k:['uploads','s3','storage','images'],g:{},p:{'@aws-sdk/client-s3':'^3.0.0'},e:['S3_ENDPOINT','S3_BUCKET','S3_ACCESS_KEY_ID','S3_SECRET_ACCESS_KEY'],m:[],tok:'0.8k',files:12,size:'33 KB',inst:330,delta:'+4%',tr:[25,26,25,27,26,28,27,29,28,29,30,30],ver:false,pub:'2 weeks ago',by:'orbit',
+  rules:['# @orbit/uploads','','## Integración','- Generate upload URLs server-side with signUpload().','- Never expose S3 credentials to the client.'],tree:['index.ts|1.5 KB','sign.ts|2.6 KB','variants.ts|3.9 KB']},
+ {n:'@northwind/jobs',v:'0.6.2',c:'e1f0b3c',cat:'infra',s:'Background jobs on Postgres with retries, cron and a status route.',d:'src/lib/jobs',l:'MIT',k:['jobs','queue','cron','postgres'],g:{'@core/db':'^1.0.0'},p:{},e:[],m:[],tok:'0.9k',files:15,size:'39 KB',inst:260,delta:'+11%',tr:[14,15,15,16,17,16,18,19,19,20,21,22],ver:false,pub:'3 days ago',by:'northwind',
+  rules:['# @northwind/jobs','','## Integración','- Define jobs with defineJob(name, handler). Handlers must be idempotent.','- Enqueue with enqueue(name, payload, { runAt }).'],tree:['index.ts|1.2 KB','worker.ts|4.6 KB','cron.ts|2.2 KB','schema/jobs.ts|1.4 KB']},
+ {n:'@acme/clerk-kit',v:'0.4.1',c:'c2e90f4',cat:'auth',s:'Clerk wrapper with org-aware middleware.',d:'src/lib/clerk',l:'MIT',k:['auth','clerk','organizations'],g:{},p:{'@clerk/backend':'^1.0.0'},e:['CLERK_SECRET_KEY'],m:[],tok:'0.5k',files:6,size:'12 KB',inst:120,delta:'+3%',tr:[8,8,9,8,9,9,10,9,10,10,10,11],ver:false,pub:'1 month ago',by:'acme',
+  rules:['# @acme/clerk-kit','','## Integración','- Use requireOrg() on routes scoped to an organization.'],tree:['index.ts|1.0 KB','middleware.ts|2.4 KB']}
+];
+var SPON={n:'@vendor/obs',v:'2.1.0',s:'Tracing and logs in one command.',tok:'0.4k',inst:310};
+P.forEach(function(p){p.slug='p-'+p.n.replace('@','').replace('/','-')});
+var BY={};P.forEach(function(p){BY[p.slug]=p});
+var CATS=['auth','billing','database','email','ai','infra'];
+
+/* ——————————————— Utilidades ——————————————— */
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function fmt(n){return n>=1000?(n/1000).toFixed(1).replace(/\.0$/,'')+'k':String(n)}
+function ico(id,st){return '<svg class="ico"'+(st?' style="'+st+'"':'')+'><use href="#i-'+id+'"/></svg>'}
+var uid=0;function nid(){return 'x'+(++uid)}
+function cmd(text,cls){var id=nid();return '<div class="cmd'+(cls?' '+cls:'')+'"><span class="p">$</span><code id="'+id+'">'+esc(text)+'</code><button class="cp" data-copy="'+id+'">Copy</button></div>'}
+function badges(p,short){
+  var h='<span class="badge code"><i></i>Code'+(short?'':' <em>'+p.files+' files</em>')+'</span><span class="badge ctx"><i></i>'+(short?p.tok:'Context <em>~'+p.tok+' tokens</em>')+'</span>';
+  if(p.m&&p.m.length)h+='<span class="badge mcp"><i></i>'+(short?'':'MCP <em>')+p.m.map(function(x){return x.n}).join(', ')+(short?'':'</em>')+'</span>';
+  return h;
+}
+function vmark(p){return p.ver?'<span class="vmark">'+ico('shield')+'verified</span>':''}
+function card(p){
+  return '<a class="pcard" href="#'+p.slug+'"><div class="nm"><b>'+p.n+'</b><span class="v">'+p.v+'</span><span class="r">'+vmark(p)+'</span></div><p>'+esc(p.s)+'</p><div class="ft"><div class="row">'+badges(p,true)+'</div><span class="inst tnum">'+fmt(p.inst)+' / 30d</span></div></a>';
+}
+function sponCard(){return '<a class="pcard sp" href="#search"><div class="nm"><b>'+SPON.n+'</b><span class="v">'+SPON.v+'</span><span class="r"><span class="spons">Sponsored</span></span></div><p>'+SPON.s+'</p><div class="ft"><div class="row"><span class="badge code"><i></i>Code</span><span class="badge ctx"><i></i>'+SPON.tok+'</span></div><span class="inst tnum">'+fmt(SPON.inst)+' / 30d</span></div></a>'}
+function spark(data,w,h){
+  var max=Math.max.apply(null,data),min=Math.min.apply(null,data),n=data.length;
+  var pts=data.map(function(v,i){return [((i/(n-1))*(w-4)+2).toFixed(1),(h-2-((v-min)/((max-min)||1))*(h-4)).toFixed(1)]});
+  var line=pts.map(function(p){return p.join(',')}).join(' ');
+  var area='M'+pts.map(function(p){return p.join(' ')}).join(' L')+' L'+pts[n-1][0]+' '+h+' L'+pts[0][0]+' '+h+'Z';
+  return '<svg viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" aria-hidden="true"><path d="'+area+'" fill="var(--wash)"/><polyline points="'+line+'" fill="none" stroke="var(--ink)" stroke-width="1.2"/><circle cx="'+pts[n-1][0]+'" cy="'+pts[n-1][1]+'" r="2" fill="var(--code)"/></svg>';
+}
+var toastT;
+function toast(msg){var t=document.getElementById('toast');t.querySelector('span').textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true},1800)}
+function copyText(t,btn,label){
+  function ok(){if(btn){var o=btn.dataset.l||btn.textContent;btn.dataset.l=o;btn.textContent='Copied';btn.classList.add('ok');setTimeout(function(){btn.textContent=o;btn.classList.remove('ok')},1500)}toast(label||'Copied to clipboard')}
+  function fail(el){toast('Select the text and press ⌘C')}
+  try{navigator.clipboard.writeText(t).then(ok,fail)}catch(e){fail()}
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-copy]');if(!b)return;e.preventDefault();
+  var el=document.getElementById(b.dataset.copy);if(el)copyText(el.textContent,b);
+});
+function wireTabs(root){
+  root.querySelectorAll('[data-tabs]').forEach(function(box){
+    var tabs=Array.prototype.filter.call(box.querySelectorAll('[role=tab]'),function(t){return t.closest('[data-tabs]')===box});
+    function sel(tab){
+      tabs.forEach(function(t){t.setAttribute('aria-selected',t===tab?'true':'false');t.tabIndex=t===tab?0:-1});
+      box.querySelectorAll('[data-panel]').forEach(function(p){if(p.closest('[data-tabs]')===box)p.hidden=p.dataset.panel!==tab.dataset.tab});
+    }
+    tabs.forEach(function(tab,i){
+      tab.addEventListener('click',function(){sel(tab)});
+      tab.addEventListener('keydown',function(e){var d=e.key==='ArrowRight'||e.key==='ArrowDown'?1:e.key==='ArrowLeft'||e.key==='ArrowUp'?-1:0;if(!d)return;e.preventDefault();var n=tabs[(i+d+tabs.length)%tabs.length];n.focus();sel(n)});
+    });
+  });
+}
+
+/* ——————————————— Vistas ——————————————— */
+var CLIENTS=[
+ {id:'claude',name:'Claude Code',file:'CLI',kind:'cmd',body:'claude mcp add genpm -- npx -y @genpm/mcp'},
+ {id:'cursor',name:'Cursor',file:'.cursor/mcp.json',body:'{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }'},
+ {id:'vscode',name:'VS Code',file:'.vscode/mcp.json',body:'{ "servers": { "genpm": { "type": "stdio", "command": "npx", "args": ["-y", "@genpm/mcp"] } } }'},
+ {id:'windsurf',name:'Windsurf',file:'mcp_config.json',path:'~/.codeium/windsurf/mcp_config.json',body:'{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }'},
+ {id:'codex',name:'Codex',file:'config.toml',path:'~/.codex/config.toml',body:'[mcp_servers.genpm]\ncommand = "npx"\nargs = ["-y", "@genpm/mcp"]'}
+];
+function clientsBlock(){
+  var t='',p='';
+  CLIENTS.forEach(function(c,i){
+    t+='<button role="tab" aria-selected="'+(i===0)+'" tabindex="'+(i?-1:0)+'" data-tab="'+c.id+'">'+c.name+' <code>'+c.file+'</code></button>';
+    var id=nid();
+    p+='<div data-panel="'+c.id+'"'+(i?' hidden':'')+'>'+(c.kind==='cmd'?'<div class="cmd"><span class="p">$</span><code id="'+id+'">'+esc(c.body)+'</code><button class="cp" data-copy="'+id+'">Copy</button></div>':'<div class="term"><div class="bar"><span>'+(c.path||c.file)+'</span><button class="cp" data-copy="'+id+'">Copy</button></div><pre id="'+id+'">'+esc(c.body)+'</pre></div>')+'</div>';
+  });
+  return '<div class="clients" data-tabs><div role="tablist" aria-label="Client">'+t+'</div><div class="pn">'+p+
+    '<p>Or run <code>npx genpm mcp setup</code> and GenPM writes the config for every client it detects.</p>'+
+    '<div class="prompts"><span class="k" style="margin-bottom:4px">Then ask</span><div>Add GitHub login to this project with genpm.</div><div>Find a billing module with Stripe and show me its rules before installing.</div><div>Which genpm packages in this repo are outdated?</div></div></div></div>';
+}
+
+function vHome(){
+  var featured=['p-core-auth','p-core-billing','p-core-ai'].map(function(s){return card(BY[s])}).join('')+sponCard();
+  var trend=P.slice().sort(function(a,b){return parseInt(b.delta)-parseInt(a.delta)}).slice(0,5).map(function(p,i){
+    return '<li><span class="n">'+(i+1)+'</span><a href="#'+p.slug+'">'+p.n+'</a>'+spark(p.tr,64,18)+'<span class="d tnum">'+p.delta+'</span></li>'}).join('');
+  return ''+
+  '<div class="wrap"><section class="hero">'+
+   '<div style="min-width:0">'+
+    '<span class="eyebrow"><i></i>Code · Context · Connections</span>'+
+    '<h1 class="h1">Install architectures, not dependencies.<span class="caret blink" aria-hidden="true"></span></h1>'+
+    '<p class="lede">Source code, AI rules and MCP servers, injected into your repo and pinned to a commit. Your AI already knows how to use it.</p>'+
+    '<div class="cta" data-tabs><div class="top2"><div class="seg" role="tablist" aria-label="Install method"><button role="tab" aria-selected="true" data-tab="cli">CLI</button><button role="tab" aria-selected="false" tabindex="-1" data-tab="mcp">MCP</button></div><span class="hint">No global install</span></div>'+
+     '<div data-panel="cli">'+cmd('npx genpm add @core/auth')+'</div>'+
+     '<div data-panel="mcp" hidden>'+cmd('claude mcp add genpm -- npx -y @genpm/mcp')+'<p class="hint" style="margin-top:10px">Then ask your agent: <code>Add GitHub login to this project with genpm</code></p></div>'+
+     '<button class="hint" data-open-pal style="justify-self:start;display:inline-flex;gap:8px;align-items:center;margin-top:4px">'+ico('search','width:14px;height:14px')+'Search 128 packages <span class="kbd">⌘K</span></button>'+
+    '</div>'+
+    '<div class="trust"><span>'+ico('commit')+'SHA-verified</span><span>'+ico('ban')+'Zero install scripts</span><span>'+ico('shield')+'Rules scanned</span></div>'+
+   '</div>'+
+   '<div class="term"><div class="bar"><span>your-app — zsh</span><span>1.8s</span></div><pre>'+
+'<span class="t-code">◆</span> <span class="t-b">genpm add</span> @core/billing\n\n'+
+'  <span class="t-mut">Resolved</span>\n'+
+'  ├─ <span class="t-b">@core/billing</span> <span class="t-mut">1.2.0</span> <span class="t-ctx">9f2c4e1</span>\n'+
+'  │  → src/lib/billing\n'+
+'  ├─ <span class="t-b">@core/auth</span>    <span class="t-mut">1.2.0</span> <span class="t-ctx">1b9d3a0</span>\n'+
+'  │  → src/lib/auth\n'+
+'  └─ <span class="t-b">@core/db</span>      <span class="t-mut">1.0.3</span> <span class="t-ctx">77ac0d2</span>\n'+
+'     <span class="t-mut">already installed</span>\n\n'+
+'  <span class="t-code">Code</span>   47 files · 112 KB\n'+
+'  <span class="t-ctx">Rules</span>  ~1.4k tokens · scan passed\n'+
+'  <span class="t-mcp">MCP</span>    stripe <span class="t-mut">(asks first)</span>\n\n'+
+'<span class="t-mut">◇</span> Inject 2 packages? <span class="t-code">Yes</span>\n'+
+'<span class="t-code">✔</span> Injected 2 packages in 1.8s\n'+
+'  <span class="t-mut">›</span> Set STRIPE_SECRET_KEY in .env</pre></div>'+
+  '</section></div>'+
+
+  '<section class="wrap sec"><div class="sec-h"><div><div class="k">What gets injected</div><h2>Three layers. One commit.</h2><p>Every package carries its code, the rules your AI needs to use it, and the MCP servers it talks to. All three pass through the same SHA check.</p></div></div>'+
+   '<div class="graft"><svg viewBox="0 0 880 290" role="img" aria-label="The three layers of @core/billing pass through SHA verification and land in your project">'+
+    '<rect x="20" y="20" width="270" height="250" rx="4" fill="var(--paper)" stroke="var(--line-2)"/><text x="40" y="52" class="g-h">@core/billing</text><text x="40" y="72" class="g-m">1.2.0 · github.com/genpm-net/billing</text><line x1="20" y1="90" x2="290" y2="90" stroke="var(--line)"/>'+
+    '<rect x="40" y="120" width="8" height="8" fill="var(--code)"/><text x="58" y="128" class="g-t">Code</text><text x="270" y="128" class="g-m" text-anchor="end">23 files</text>'+
+    '<rect x="40" y="180" width="8" height="8" fill="var(--context)"/><text x="58" y="188" class="g-t">Context</text><text x="270" y="188" class="g-m" text-anchor="end">~1.1k tok</text>'+
+    '<rect x="40" y="240" width="8" height="8" fill="var(--mcp)"/><text x="58" y="248" class="g-t">Connections</text><text x="270" y="248" class="g-m" text-anchor="end">stripe</text>'+
+    '<path d="M290 124 H420 M460 124 H590" stroke="var(--code)" fill="none"/><path d="M290 184 H420 M460 184 H590" stroke="var(--context)" fill="none"/><path d="M290 244 H420 M460 244 H520" stroke="var(--mcp)" fill="none"/><path d="M520 244 H590" stroke="var(--mcp)" fill="none" stroke-dasharray="3 4"/>'+
+    '<rect x="420" y="100" width="40" height="170" rx="2" fill="var(--ink)"/><text x="440" y="70" class="g-m" text-anchor="middle">verify</text><text x="440" y="88" class="g-t" text-anchor="middle" style="fill:var(--context)">9f2c4e1</text>'+
+    '<circle cx="290" cy="124" r="4" fill="var(--code)"/><circle cx="590" cy="124" r="4" fill="var(--code)"/><circle cx="290" cy="184" r="4" fill="var(--context)"/><circle cx="590" cy="184" r="4" fill="var(--context)"/><circle cx="290" cy="244" r="4" fill="var(--mcp)"/><circle cx="590" cy="244" r="4" fill="var(--paper)" stroke="var(--mcp)"/><text x="555" y="236" class="g-m" text-anchor="middle">consent</text>'+
+    '<rect x="590" y="20" width="270" height="250" rx="4" fill="var(--paper)" stroke="var(--line-2)"/><text x="610" y="52" class="g-h">your-app/</text><text x="610" y="72" class="g-m">genpm.lock updated</text><line x1="590" y1="90" x2="860" y2="90" stroke="var(--line)"/>'+
+    '<text x="610" y="128" class="g-t">src/lib/billing/</text><text x="610" y="188" class="g-t">src/lib/billing/AGENTS.md</text><text x="610" y="248" class="g-t">.mcp.json</text>'+
+   '</svg></div>'+
+   '<div class="cols3"><div style="--c:var(--code)"><h3><i></i>Code you own</h3><p>Lands in <code>src/</code>, not in node_modules. You see it in your diff, edit it and commit it.</p></div><div style="--c:var(--context)"><h3><i></i>Context your AI gets</h3><p>An <code>AGENTS.md</code> per module, loaded only when your agent works in that folder.</p></div><div style="--c:var(--mcp)"><h3><i></i>Connections, ready</h3><p>The MCP servers a module needs, declared in its manifest. Added only with your consent.</p></div></div>'+
+  '</section>'+
+
+  '<section class="wrap sec"><div class="feat"><div style="min-width:0"><div class="sec-h"><div><div class="k">Featured</div><h2>Start with @core</h2></div><a class="btn sm" href="#search">Browse all '+ico('arrow','width:14px;height:14px')+'</a></div><div class="cards">'+featured+'</div></div>'+
+   '<div style="min-width:0"><div class="sec-h"><div><div class="k">Trending this week</div><h2>Installs</h2></div></div><ol class="trend">'+trend+'</ol></div></div></section>'+
+
+  '<section class="wrap sec"><div class="sec-h"><div><div class="k">How it works</div><h2>Search. Inspect. Inject.</h2></div></div><div class="cols3">'+
+   '<div><span class="no">1</span><h3>Search</h3><p>Find a module by need, from the web, the CLI or your AI.</p><code class="chip">genpm search stripe</code></div>'+
+   '<div><span class="no">2</span><h3>Inspect</h3><p>Read the exact files, the AI rules and the commit before anything touches your repo.</p><code class="chip">genpm info @core/billing</code></div>'+
+   '<div><span class="no">3</span><h3>Inject</h3><p>Code lands in <code>src/</code>, rules go where your IDE reads them, and the lockfile pins the SHA.</p><code class="chip">genpm add @core/billing</code></div></div></section>'+
+
+  '<section class="wrap sec"><div class="sec-h"><div><div class="k">Ask your AI</div><h2>Connect GenPM to your editor</h2><p>One MCP server. Your agent searches, inspects and installs, and asks you before adding anything outside your code.</p></div><a class="btn sm" href="#mcp">All clients '+ico('arrow','width:14px;height:14px')+'</a></div>'+clientsBlock()+'</section>'+
+
+  '<section class="wrap sec"><div class="sec-h"><div><div class="k">Security</div><h2>What you reviewed is what gets installed.</h2></div></div><div class="cols3">'+
+   '<div><h3>'+ico('commit','color:var(--context)')+'Pinned to a SHA</h3><p>Tags resolve to a 40-character commit, verified after every fetch. Never a branch.</p></div>'+
+   '<div><h3>'+ico('ban')+'Zero scripts</h3><p>GenPM has no lifecycle hooks. Nothing from a package runs on your machine.</p></div>'+
+   '<div><h3>'+ico('shield','color:var(--code-ink)')+'Rules scanned</h3><p>Every AI rule file is checked for prompt injection before it is listed.</p></div></div></section>'+
+
+  '<section class="wrap sec"><div class="pub"><div><div class="k">For authors</div><h2 style="margin-top:10px">Publish your architecture in 60 seconds.</h2><p>Tag a release, add a <code>genpm.json</code> and an <code>AGENTS.md</code>. The registry stores metadata only; your code stays on GitHub.</p><div class="row" style="margin-top:28px"><a class="btn primary lg" href="#publish">Publish a package</a><a class="btn ghost lg" href="#docs">Read the docs</a></div></div>'+
+   '<div class="stats"><div><b>128</b><span class="k">packages</span></div><div><b>12.4k</b><span class="k">installs</span></div><div><b>41</b><span class="k">publishers</span></div></div></div></section>';
+}
+
+/* Búsqueda */
+var S={q:'',mcp:false,ver:false,cat:'',sort:'relevance'};
+function vSearch(){
+  var cats='<label><input type="radio" name="cat" value="" '+(S.cat===''?'checked':'')+'>All<span class="c">'+P.length+'</span></label>'+CATS.map(function(c){var n=P.filter(function(p){return p.cat===c}).length;return '<label><input type="radio" name="cat" value="'+c+'" '+(S.cat===c?'checked':'')+'>'+c+'<span class="c">'+n+'</span></label>'}).join('');
+  return '<div class="wrap"><div class="phead" style="padding-bottom:24px"><h1>Packages</h1><div class="hsearch" style="display:flex;max-width:560px;height:44px"><svg class="ico"><use href="#i-search"/></svg><input id="sq" type="search" placeholder="auth, stripe, email…" value="'+esc(S.q)+'" autocomplete="off" aria-label="Search packages"></div></div>'+
+   '<div class="srch"><aside class="filters" aria-label="Filters">'+
+    '<fieldset><legend class="k">Layers</legend><label><input type="checkbox" id="fmcp" '+(S.mcp?'checked':'')+'>Has MCP</label><label><input type="checkbox" id="fver" '+(S.ver?'checked':'')+'>Verified</label></fieldset>'+
+    '<fieldset><legend class="k">Category</legend>'+cats+'</fieldset>'+
+   '</aside><div class="results" id="results"></div></div></div>';
+}
+function runSearch(){
+  var q=S.q.trim().toLowerCase();
+  var r=P.filter(function(p){
+    if(S.mcp&&!(p.m&&p.m.length))return false;
+    if(S.ver&&!p.ver)return false;
+    if(S.cat&&p.cat!==S.cat)return false;
+    if(!q)return true;
+    return (p.n+' '+p.s+' '+p.k.join(' ')).toLowerCase().indexOf(q)>-1;
+  });
+  if(S.sort==='installs')r.sort(function(a,b){return b.inst-a.inst});
+  else if(S.sort==='recent')r.sort(function(a,b){return a.c<b.c?1:-1});
+  else r.sort(function(a,b){var an=q&&a.n.toLowerCase().indexOf(q)>-1?1:0,bn=q&&b.n.toLowerCase().indexOf(q)>-1?1:0;return (bn-an)||(b.inst-a.inst)});
+  var el=document.getElementById('results');if(!el)return;
+  var head='<div class="rbar"><span class="q">'+(q?'<b>"'+esc(S.q)+'"</b> · ':'')+r.length+' result'+(r.length===1?'':'s')+'</span><label class="hint">Sort <select class="sel" id="ssort"><option value="relevance">Relevance</option><option value="installs">Installs</option><option value="recent">Recent</option></select></label></div>';
+  if(!r.length){
+    el.innerHTML=head+'<div class="empty"><h3>No packages for "'+esc(S.q)+'"</h3><p style="color:var(--ink-2)">Try <a href="#search" data-q="auth" style="border-bottom:1px solid var(--line-2)">auth</a>, <a href="#search" data-q="stripe" style="border-bottom:1px solid var(--line-2)">stripe</a> or <a href="#search" data-q="email" style="border-bottom:1px solid var(--line-2)">email</a>. Nobody has published this yet.</p><a class="btn primary" href="#publish">Publish one</a></div>';
+  } else {
+    var items='';
+    if(!S.ver&&!S.mcp)items+='<a class="ritem sp" href="#search"><div class="nm"><span class="spons">Sponsored</span><b>'+SPON.n+'</b><span class="v">'+SPON.v+'</span></div><p>'+SPON.s+'</p></a>';
+    items+=r.map(function(p){
+      return '<div class="ritem"><div class="nm"><a href="#'+p.slug+'"><b>'+p.n+'</b></a><span class="v">'+p.v+'</span>'+vmark(p)+'</div><p>'+esc(p.s)+'</p><div class="meta"><div class="row" style="gap:6px">'+badges(p,true)+'<span class="kw">'+p.k.slice(0,3).join(' · ')+'</span></div><span class="inst tnum">'+fmt(p.inst)+' / 30d</span></div>'+cmd('npx genpm add '+p.n,'sm')+'</div>';
+    }).join('');
+    el.innerHTML=head+items;
+  }
+  document.getElementById('ssort').value=S.sort;
+}
+function wireSearch(){
+  var sq=document.getElementById('sq');
+  sq.addEventListener('input',function(){S.q=sq.value;document.getElementById('hq').value=S.q;runSearch()});
+  document.getElementById('fmcp').addEventListener('change',function(e){S.mcp=e.target.checked;runSearch()});
+  document.getElementById('fver').addEventListener('change',function(e){S.ver=e.target.checked;runSearch()});
+  document.querySelectorAll('input[name=cat]').forEach(function(r){r.addEventListener('change',function(){S.cat=r.value;runSearch()})});
+  document.getElementById('results').addEventListener('change',function(e){if(e.target.id==='ssort'){S.sort=e.target.value;runSearch()}});
+  document.getElementById('results').addEventListener('click',function(e){var a=e.target.closest('[data-q]');if(a){e.preventDefault();S.q=a.dataset.q;sq.value=S.q;runSearch()}});
+  runSearch();
+}
+
+/* Paquete */
+function highlight(name,size){
+  var lines;
+  if(/\.tsx?$/.test(name)){
+    var fn=name.split('/').pop().replace(/\.tsx?$/,'').replace(/-(\w)/g,function(m,c){return c.toUpperCase()});
+    lines=['<span class="kw1">import</span> { db } <span class="kw1">from</span> <span class="str">"@/lib/db"</span>','<span class="kw1">import</span> { env } <span class="kw1">from</span> <span class="str">"./env"</span>','','<span class="cm">// '+esc(name)+' · '+size+' · injected as source, edit freely</span>','<span class="kw1">export async function</span> '+fn+'(input: Input) {','  <span class="kw1">const</span> row = <span class="kw1">await</span> db.query.'+fn+'.findFirst()','  <span class="kw1">return</span> row ?? <span class="kw1">null</span>','}'];
+  } else lines=['<span class="cm">'+esc(name)+'</span>'];
+  return lines.map(function(l,i){return '<span class="ln">'+(i+1)+'</span>'+l}).join('\n');
+}
+function vPkg(p){
+  var parts=p.n.split('/');
+  var rules=p.rules.map(function(l){return l.indexOf('#')===0?'<span class="h">'+esc(l)+'</span>':esc(l)}).join('\n');
+  var tree='<div class="dir"><span>'+p.d+'/</span><span>'+p.size+'</span></div><button data-file="AGENTS.md|4.3 KB" aria-current="true"><span>&nbsp;&nbsp;AGENTS.md</span><span>4.3 KB</span></button>'+p.tree.map(function(f){var a=f.split('|');return '<button data-file="'+f+'"><span>&nbsp;&nbsp;'+a[0]+'</span><span>'+a[1]+'</span></button>'}).join('')+(p.files>p.tree.length+1?'<div class="dir" style="font-weight:400;color:var(--ink-3)"><span>&nbsp;&nbsp;+ '+(p.files-p.tree.length-1)+' more files</span><span></span></div>':'');
+  var vers=[[p.v,p.c,p.pub,'ok']];
+  var vb=p.v.split('.').map(Number);var shas=['c41e8b7','e88b2fa','5a1c0de','2f9d6c4'];
+  for(var i=0;i<4;i++){var vv=vb[0]+'.'+Math.max(0,vb[1]-Math.ceil((i+1)/2))+'.'+((i%2)?0:Math.max(0,vb[2]+1));if(i===0)vv=vb[0]+'.'+Math.max(0,vb[1]-1)+'.2';vers.push([vv,shas[i],['3 weeks ago','2 months ago','3 months ago','5 months ago'][i],'ok'])}
+  if(p.yank)vers.splice(2,0,[p.yank.v,p.yank.c,'yanked · '+p.yank.why,'y']);
+  var vrows=vers.map(function(r){return '<tr class="'+(r[3]==='y'?'y':'')+'"><td>'+r[0]+'</td><td><span class="sha">'+r[1]+'</span></td><td>'+r[2]+'</td><td style="color:'+(r[3]==='y'?'var(--danger)':'var(--code-ink)')+'">'+(r[3]==='y'?'✖ yanked':'✔ passed')+'</td></tr>'}).join('');
+  var deps=Object.keys(p.g).map(function(k){var s=BY['p-'+k.replace('@','').replace('/','-')];return s?'<a href="#'+s.slug+'">'+k+' '+p.g[k]+'</a>':k+' '+p.g[k]}).join('');
+  var npm=Object.keys(p.p).map(function(k){return '<span>'+k+' '+p.p[k]+'</span>'}).join('');
+  var hasM=p.m&&p.m.length;
+  var mcpPanel=hasM?p.m.map(function(m){return '<dl class="dl"><div><dt>server</dt><dd class="mono"><b>'+m.n+'</b></dd></div><div><dt>command</dt><dd class="mono" style="white-space:nowrap">'+esc(m.cmd)+'</dd></div><div><dt>env</dt><dd class="mono">'+m.e.join(' ')+'</dd></div><div><dt>why</dt><dd>'+esc(m.why)+'</dd></div></dl>'}).join('')+'<div class="banner" style="--c:var(--mcp)"><b>Consent</b><span>Added to <code>.mcp.json</code> only if you say yes during install. Enable it later with <code>genpm mcp add '+p.n+'</code>.</span></div>':'<p>This package declares no MCP servers.</p>';
+  var cliId=nid(),prId=nid(),manId=nid();
+  return '<div class="wrap">'+
+  '<div class="pk-head"><div class="crumb"><a href="#search">Packages</a> / <a href="#search" data-cat="'+p.cat+'">'+p.cat+'</a></div>'+
+   '<div class="pk-title"><h1><span>'+parts[0]+' /</span> '+parts[1]+'</h1><span class="badge">'+p.v+' ▾</span>'+(p.ver?'<span class="badge ver">'+ico('shield')+'verified</span>':'')+'<span class="badge">'+p.l+'</span><div class="act"><button class="btn sm ghost" data-report>Report</button><a class="btn sm" href="#'+p.slug+'">'+ico('gh','width:15px;height:15px')+'GitHub</a></div></div>'+
+   '<p>'+esc(p.s)+'</p><div class="row" style="gap:6px">'+badges(p)+'<span class="badge ok">scan ✔ passed</span></div></div>'+
+  '<div class="pk-body"><div class="pk-main" data-tabs>'+
+   '<div class="pk-tabs" role="tablist" aria-label="Package">'+
+    '<button role="tab" aria-selected="false" tabindex="-1" data-tab="ov">Overview</button>'+
+    '<button role="tab" aria-selected="true" data-tab="rules" style="--c:var(--context)"><i></i>AI Rules</button>'+
+    '<button role="tab" aria-selected="false" tabindex="-1" data-tab="files" style="--c:var(--code)"><i></i>Files <em>'+p.files+'</em></button>'+
+    '<button role="tab" aria-selected="false" tabindex="-1" data-tab="mcp" style="--c:var(--mcp)"><i></i>MCP <em>'+(hasM?p.m.length:0)+'</em></button>'+
+    '<button role="tab" aria-selected="false" tabindex="-1" data-tab="ver">Versions <em>'+vers.length+'</em></button>'+
+    '<button role="tab" aria-selected="false" tabindex="-1" data-tab="deps">Dependencies</button>'+
+    '<button role="tab" aria-selected="false" tabindex="-1" data-tab="sec">Security</button>'+
+   '</div>'+
+   '<div class="pk-panel" data-panel="ov" hidden><h2>'+p.n+'</h2><p>'+esc(p.s)+'</p><h3>Install</h3>'+cmd('npx genpm add '+p.n)+'<h3>What you get</h3><ul class="dots"><li>Source in <code>'+p.d+'/</code>, '+p.files+' files ('+p.size+').</li><li>AI rules in <code>'+p.d+'/AGENTS.md</code> (~'+p.tok+' tokens), plus IDE rule files.</li>'+(p.e.length?'<li>Env vars added to <code>.env.example</code>: '+p.e.map(function(x){return '<code>'+x+'</code>'}).join(', ')+'.</li>':'')+(Object.keys(p.g).length?'<li>Resolves '+Object.keys(p.g).join(' and ')+' for you.</li>':'')+'</ul></div>'+
+   '<div class="pk-panel" data-panel="rules"><div class="row" style="gap:6px"><span class="badge ctx"><i></i>~'+p.tok+' tokens</span><span class="badge">→ '+p.d+'/AGENTS.md</span><span class="badge">→ .cursor/rules/'+parts[1]+'.mdc</span></div><p>This is exactly what your AI reads when it works in <code>'+p.d+'</code>. Nothing else is added to its context.</p><div class="md"><pre>'+rules+'</pre></div></div>'+
+   '<div class="pk-panel" data-panel="files" hidden><p>The exact tree that will be injected, after <code>.genpmignore</code>. Pinned to <span class="sha">'+p.c+'</span></p><div class="tree" id="ftree">'+tree+'</div><div class="term viewer"><div class="bar"><span id="fname">'+p.d+'/AGENTS.md</span><span>read-only · '+p.c+'</span></div><pre id="fbody">'+rules+'</pre></div></div>'+
+   '<div class="pk-panel" data-panel="mcp" hidden>'+mcpPanel+'</div>'+
+   '<div class="pk-panel" data-panel="ver" hidden><div class="scroll"><table class="tbl"><thead><tr><th>Version</th><th>Commit</th><th>Published</th><th>Scan</th></tr></thead><tbody>'+vrows+'</tbody></table></div></div>'+
+   '<div class="pk-panel" data-panel="deps" hidden><dl class="dl"><div><dt>genpm</dt><dd>'+(deps||'<span style="color:var(--ink-3)">none</span>')+'</dd></div><div><dt>npm</dt><dd class="mono">'+(npm||'<span style="color:var(--ink-3)">none</span>')+'</dd></div><div><dt>proposed</dt><dd>GenPM proposes the npm command and runs it only if you say yes.</dd></div></dl></div>'+
+   '<div class="pk-panel" data-panel="sec" hidden><dl class="dl"><div><dt>scan</dt><dd style="color:var(--code-ink)">✔ passed · 0 findings in the rule files</dd></div><div><dt>commit</dt><dd class="mono">tag v'+p.v+' → '+p.c+' · verified after fetch</dd></div><div><dt>scripts</dt><dd>None. GenPM never runs package code.</dd></div><div><dt>license</dt><dd>'+p.l+' (detected in LICENSE)</dd></div><div><dt>report</dt><dd>See something wrong? <button style="border-bottom:1px solid var(--line-2)" data-report>Report this package</button></dd></div></dl></div>'+
+  '</div>'+
+  '<aside class="side" data-tabs aria-label="Install">'+
+   '<div class="seg" role="tablist" aria-label="Install method"><button role="tab" aria-selected="true" data-tab="cli">CLI</button><button role="tab" aria-selected="false" tabindex="-1" data-tab="prompt">MCP prompt</button><button role="tab" aria-selected="false" tabindex="-1" data-tab="man">Manual</button></div>'+
+   '<div data-panel="cli" style="display:grid;gap:10px"><div class="runner" role="group" aria-label="Runner"><button aria-pressed="true" data-run="npx">npx</button><button aria-pressed="false" data-run="pnpm dlx">pnpm dlx</button><button aria-pressed="false" data-run="bunx">bunx</button></div><div class="cmd"><span class="p">$</span><code id="'+cliId+'" data-pkg="'+p.n+'">npx genpm add '+p.n+'</code><button class="cp" data-copy="'+cliId+'">Copy</button></div></div>'+
+   '<div data-panel="prompt" hidden><div class="term"><div class="bar"><span>paste in your agent</span><button class="cp" data-copy="'+prId+'">Copy</button></div><pre id="'+prId+'" style="white-space:pre-wrap">Install '+p.n+' with genpm and integrate it following its AGENTS.md</pre></div></div>'+
+   '<div data-panel="man" hidden><div class="term"><div class="bar"><span>without the CLI</span><button class="cp" data-copy="'+manId+'">Copy</button></div><pre id="'+manId+'" style="white-space:pre-wrap">git fetch https://github.com/genpm-net/'+parts[1]+' '+p.c+'\n# copy into '+p.d+'</pre></div></div>'+
+   '<dl class="kv"><dt>Injects</dt><dd>'+p.d+'</dd><dt>Commit</dt><dd><button class="sha" data-copysha="'+p.c+'">'+ico('commit')+p.c+'</button></dd><dt>Tag</dt><dd>v'+p.v+'</dd>'+(deps?'<dt>Requires</dt><dd>'+deps+'</dd>':'')+(npm?'<dt>npm</dt><dd>'+npm+'</dd>':'')+(p.e.length?'<dt>Env</dt><dd>'+p.e.join(' ')+'</dd>':'')+
+   '<dt>Installs</dt><dd>'+spark(p.tr,80,20)+'<span class="tnum">'+fmt(p.inst)+' / 30d</span></dd><dt>Published</dt><dd>'+p.pub+' · '+p.by+'</dd></dl>'+
+   '<div class="term"><div class="bar"><span>README badge</span><button class="cp" data-copy="bd'+p.c+'">Copy</button></div><pre id="bd'+p.c+'" style="white-space:pre-wrap;word-break:break-all">[![genpm](https://genpm.net/v1/badge/'+p.n+'.svg)](https://genpm.net/p/'+p.n+')</pre></div>'+
+  '</aside></div></div>';
+}
+function wirePkg(p){
+  document.querySelectorAll('[data-run]').forEach(function(b){b.addEventListener('click',function(){
+    b.parentNode.querySelectorAll('[data-run]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+    var c=document.querySelector('code[data-pkg]');c.textContent=b.dataset.run+' genpm add '+c.dataset.pkg;
+  })});
+  var ft=document.getElementById('ftree');
+  ft.addEventListener('click',function(e){var b=e.target.closest('[data-file]');if(!b)return;
+    ft.querySelectorAll('[data-file]').forEach(function(x){x.removeAttribute('aria-current')});b.setAttribute('aria-current','true');
+    var a=b.dataset.file.split('|');document.getElementById('fname').textContent=p.d+'/'+a[0];
+    document.getElementById('fbody').innerHTML=a[0]==='AGENTS.md'?p.rules.map(function(l){return l.indexOf('#')===0?'<span class="h">'+esc(l)+'</span>':esc(l)}).join('\n'):highlight(a[0],a[1]);
+  });
+  document.querySelectorAll('[data-copysha]').forEach(function(b){b.addEventListener('click',function(){copyText(b.dataset.copysha,null,'Commit SHA copied')})});
+  document.querySelectorAll('[data-report]').forEach(function(b){b.addEventListener('click',function(){go('login');})});
+  document.querySelectorAll('[data-cat]').forEach(function(a){a.addEventListener('click',function(){S.cat=a.dataset.cat;S.q=''})});
+}
+
+/* MCP */
+function vMcp(){
+  var tools=[['genpm_search','Find packages by need. Sponsored results are never returned to agents.'],['genpm_info','Read a package: manifest, rules, MCP and scan, before installing.'],['genpm_add','Plan and inject. Dry run first; asks you before MCP config or npm installs.'],['genpm_list','What is installed in this project, with versions and SHAs.'],['genpm_outdated','Packages with newer versions available.'],['genpm_remove','Remove a package and its rules cleanly.']];
+  return '<div class="wrap"><div class="phead"><span class="eyebrow" style="--c:var(--mcp);justify-self:start"><i></i>Connections</span><h1>Ask your AI to install it.</h1><p>The GenPM MCP server gives your agent the same engine as the CLI. It can search, inspect and inject modules, and it always asks before touching anything outside your code.</p></div>'+
+  '<section class="sec" style="padding-top:40px"><div class="sec-h"><div><div class="k">Step 1</div><h2>Add the server to your client</h2></div></div>'+clientsBlock()+'</section>'+
+  '<section class="sec"><div class="sec-h"><div><div class="k">Step 2</div><h2>What your agent can do</h2><p>Six tools. No publish, login or force: credentials stay outside the agent’s reach.</p></div></div><div class="scroll"><table class="tbl"><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>'+tools.map(function(t){return '<tr><td style="color:var(--mcp)">'+t[0]+'</td><td style="white-space:normal;color:var(--ink-2)">'+t[1]+'</td></tr>'}).join('')+'</tbody></table></div></section>'+
+  '<section class="sec"><div class="sec-h"><div><div class="k">Safety</div><h2>Defaults that protect your project</h2></div></div><div class="cols3">'+
+   '<div><h3>'+ico('plug','color:var(--mcp)')+'MCP off by default</h3><p>A package’s MCP servers are only added after you confirm, with the full command shown.</p></div>'+
+   '<div><h3>'+ico('code','color:var(--code-ink)')+'Writes stay in your repo</h3><p>The server only writes inside the project root, through the same path checks as the CLI.</p></div>'+
+   '<div><h3>'+ico('ban')+'No npm without you</h3><p>npm dependencies are proposed, never installed silently.</p></div></div></section></div>';
+}
+
+/* Publish */
+function vPublish(){
+  return '<div class="wrap"><div class="phead"><span class="eyebrow" style="justify-self:start"><i></i>For authors</span><h1>Publish your architecture.</h1><p>Your code stays on GitHub. The registry stores the manifest and the commit it points to. Four steps, about a minute.</p></div>'+
+  '<div class="steps4">'+
+   '<div><span class="no">1</span><h3>Init</h3><p>Creates <code>genpm.json</code> from your repo.</p><code class="chip">npx genpm init</code></div>'+
+   '<div><span class="no">2</span><h3>Write the rules</h3><p>An <code>AGENTS.md</code> with Integración, Datos and No hacer.</p><code class="chip">AGENTS.md</code></div>'+
+   '<div><span class="no">3</span><h3>Tag</h3><p>Tags are immutable. Branches are rejected.</p><code class="chip">git tag v1.0.0 && git push --tags</code></div>'+
+   '<div><span class="no">4</span><h3>Publish</h3><p>Verifies the tag, scans the rules, lists the package.</p><code class="chip">npx genpm publish</code></div>'+
+  '</div>'+
+  '<section class="sec" style="margin-top:56px"><div class="sec-h"><div><div class="k">Manifest builder</div><h2>Build your genpm.json</h2><p>Validated in your browser with the same rules as the registry.</p></div></div>'+
+  '<div class="builder"><form id="mf" novalidate>'+
+   '<div class="two"><div class="field"><label for="f-n">n <em>· name</em></label><input id="f-n" class="mono" value="@acme/payments"><span class="err" id="e-n"></span></div><div class="field"><label for="f-v">v <em>· version</em></label><input id="f-v" class="mono" value="1.0.0"><span class="err" id="e-v"></span></div></div>'+
+   '<div class="field"><label for="f-s">s <em>· summary, ≤ 160 chars</em></label><input id="f-s" value="Stripe Checkout and webhooks for Hono"><span class="err" id="e-s"></span></div>'+
+   '<div class="two"><div class="field"><label for="f-d">d <em>· destination</em></label><input id="f-d" class="mono" value="src/lib/payments"><span class="err" id="e-d"></span></div><div class="field"><label for="f-l">l <em>· license</em></label><input id="f-l" class="mono" value="MIT"></div></div>'+
+   '<div class="field"><label for="f-k">k <em>· keywords, comma separated</em></label><input id="f-k" class="mono" value="billing, stripe"><span class="err" id="e-k"></span></div>'+
+   '<div class="field"><label for="f-g">g <em>· genpm deps</em></label><input id="f-g" class="mono" value="@core/db ^1.0.0"></div>'+
+   '<div class="field"><label for="f-p">p <em>· npm deps</em></label><input id="f-p" class="mono" value="stripe ^17.0.0"></div>'+
+   '<div class="field"><label for="f-e">e <em>· env var names</em></label><input id="f-e" class="mono" value="STRIPE_SECRET_KEY"><span class="err" id="e-e"></span></div>'+
+   '<label class="check"><input type="checkbox" id="f-m"> m · declare the Stripe MCP server</label>'+
+  '</form><div class="out"><div class="bar"><span>genpm.json</span><button type="button" class="cp" data-copy="mjson" style="border:0;padding:0;min-width:0;font-size:11.5px">Copy genpm.json</button></div><pre id="mjson"></pre><div class="vbar" id="mval"></div></div></div></section>'+
+  '<section class="sec"><div class="sec-h"><div><div class="k">Before you publish</div><h2>Quality checklist</h2></div></div><ul class="checklist">'+
+   '<li>A LICENSE file that matches <code>l</code>.</li><li>AGENTS.md under 16 KB, with Integración, Datos and No hacer sections.</li><li>No secrets, no <code>.env</code> files, no build output in the injected tree.</li><li>Tests excluded with <code>.genpmignore</code>.</li><li>A summary your users understand in one line.</li></ul></section></div>';
+}
+function wirePublish(){
+  var f=document.getElementById('mf');
+  function v(id){return document.getElementById(id).value.trim()}
+  function pairs(s){var o={};s.split(',').map(function(x){return x.trim()}).filter(Boolean).forEach(function(x){var a=x.split(/\s+/);o[a[0]]=a[1]||'*'});return o}
+  function setErr(id,msg){document.getElementById('e-'+id).textContent=msg;document.getElementById('f-'+id).setAttribute('aria-invalid',msg?'true':'false')}
+  function render(){
+    var errs=0;
+    var n=v('f-n'),ver=v('f-v'),s=v('f-s'),d=v('f-d'),l=v('f-l');
+    var k=v('f-k').split(',').map(function(x){return x.trim()}).filter(Boolean);
+    var e=v('f-e').split(/[\s,]+/).filter(Boolean);
+    function chk(id,bad,msg){setErr(id,bad?msg:'');if(bad)errs++}
+    chk('n',!/^@[a-z0-9][a-z0-9-]{0,38}\/[a-z0-9][a-z0-9-]{0,63}$/.test(n),'E_MANIFEST_NAME · fix: use @scope/name in lowercase');
+    chk('v',!/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-[0-9A-Za-z.-]+)?$/.test(ver),'E_MANIFEST_VERSION · fix: strict SemVer, no "v" prefix');
+    chk('s',s.length>160,'E_MANIFEST_SUMMARY · fix: '+s.length+'/160 chars');
+    chk('d',!d||/^\//.test(d)||/(^|\/)\.\.(\/|$)/.test(d)||/\\/.test(d),'E_MANIFEST_DEST · fix: relative POSIX path inside the project');
+    chk('k',k.length>10||k.some(function(x){return !/^[a-z0-9-]{2,32}$/.test(x)}),'E_MANIFEST_KEYWORDS · fix: lowercase, 2–32 chars, max 10');
+    chk('e',e.some(function(x){return !/^[A-Z][A-Z0-9_]{1,63}$/.test(x)}),'E_MANIFEST_ENV · fix: UPPER_SNAKE names, never values');
+    var o={"$":1,n:n,v:ver};if(s)o.s={en:s};o.d=d;if(l)o.l=l;if(k.length)o.k=k;
+    var g=pairs(v('f-g'));if(Object.keys(g).length)o.g=g;
+    var p=pairs(v('f-p'));if(Object.keys(p).length)o.p=p;
+    if(e.length)o.e=e;
+    if(document.getElementById('f-m').checked)o.m=[{n:'stripe',c:'npx',a:['-y','@stripe/mcp','--tools=all'],e:['STRIPE_SECRET_KEY']}];
+    var json=JSON.stringify(o,null,2);
+    document.getElementById('mjson').innerHTML=esc(json).replace(/^(\s*)&quot;([^&]+)&quot;:/gm,'$1<span class="jk">"$2"</span>:').replace(/: &quot;([^&]*)&quot;/g,': <span class="js">"$1"</span>').replace(/: (\d+)/g,': <span class="jn">$1</span>');
+    document.getElementById('mval').innerHTML=errs?'<span style="color:var(--danger)">✖ '+errs+' issue'+(errs>1?'s':'')+' · fix them before publishing</span>':'<span style="color:var(--code-ink)">✔ valid · schema v1</span>';
+  }
+  f.addEventListener('input',render);f.addEventListener('submit',function(e){e.preventDefault()});render();
+}
+
+/* Docs */
+function vDocs(){
+  var nav=[['Getting started',['Quickstart (60 s)','How GenPM works','FAQ']],['Using packages',['add','search','list / remove','outdated','Context & IDEs','MCP config','Lockfile']],['Publishing',['Your first package','genpm.json reference','Writing AI rules']],['Reference',['CLI','API','Error codes']]];
+  return '<div class="wrap"><div class="docs"><nav class="dnav" aria-label="Docs">'+nav.map(function(g,gi){return '<div><div class="k" style="margin-bottom:8px;padding-left:10px">'+g[0]+'</div><ul>'+g[1].map(function(x,i){return '<li><a href="#docs"'+(gi===0&&i===0?' aria-current="page"':'')+'>'+x+'</a></li>'}).join('')+'</ul></div>'}).join('')+'</nav>'+
+  '<article class="dbody"><div class="crumb">Docs / Getting started</div><h1>Quickstart</h1><p class="lead">Add your first module in about a minute. You need Node 20.11+ and git.</p>'+
+   '<h2 id="d1"><span>1</span>Add a package</h2><p>Run this in the root of your project. GenPM shows the full plan and asks before writing anything.</p>'+cmd('npx genpm add @core/auth')+
+   '<h2 id="d2"><span>2</span>See what changed</h2><p>The code is in <code>src/lib/auth</code>, the rules in <code>src/lib/auth/AGENTS.md</code>, and <code>genpm.lock</code> pins the commit.</p>'+
+   '<div class="term"><div class="bar"><span>git status</span><span>your-app</span></div><pre><span class="t-code">new file:</span>   genpm.lock\n<span class="t-code">new file:</span>   src/lib/auth/AGENTS.md\n<span class="t-code">new file:</span>   src/lib/auth/index.ts\n<span class="t-code">new file:</span>   src/lib/auth/session.ts\n<span class="t-mut">… 16 more</span>\n<span class="t-ctx">modified:</span>   AGENTS.md          <span class="t-mut"># index of module rules</span>\n<span class="t-ctx">modified:</span>   .env.example</pre></div>'+
+   '<h2 id="d3"><span>3</span>Let your AI take over</h2><p>Open your agent and ask it to wire the module in. It reads the module rules and follows the Integración section.</p><div class="prompts"><div>Integrate @core/auth following src/lib/auth/AGENTS.md. Add GitHub login.</div></div>'+
+   '<div class="banner" style="--c:var(--context)"><b>Tip</b><span>Connect the MCP server and your agent can do step 1 too. See <a href="#mcp" style="border-bottom:1px solid var(--line-2)">MCP setup</a>.</span></div>'+
+   '<div class="dfoot"><span class="hint">Edit this page · Copy as Markdown</span><a class="btn sm" href="#docs">How GenPM works '+ico('arrow','width:14px;height:14px')+'</a></div>'+
+  '</article><aside class="dtoc"><div class="k" style="margin-bottom:6px">On this page</div><a href="#docs" data-jump="d1">Add a package</a><a href="#docs" data-jump="d2">See what changed</a><a href="#docs" data-jump="d3">Let your AI take over</a></aside></div></div>';
+}
+
+function vLogin(){
+  return '<div class="wrap"><div class="login"><a class="logo" href="#home" style="font-size:28px">genpm<span class="caret"></span></a><h1>Sign in to publish</h1><p style="color:var(--ink-2)">Browsing and installing never need an account. Sign in to publish packages, create tokens and report packages.</p>'+
+  '<button class="btn primary lg" data-gh>'+ico('gh')+'Continue with GitHub</button>'+
+  '<div class="perm"><div><code>read:user</code><span>Your username and avatar, to show who published.</span></div><div><code>read:org</code><span>Your organizations, so you can publish under their scope.</span></div></div>'+
+  '<p class="hint">We never ask for repo write access. Your code stays on GitHub.</p></div></div>';
+}
+
+/* ——————————————— Router ——————————————— */
+var view=document.getElementById('view');
+var CUR=(location.hash||'#home').slice(1)||'home';
+function go(h){CUR=h;try{history.replaceState(null,'','#'+h)}catch(e){}route()}
+function route(){
+  var h=CUR;
+  var html,after;
+  if(BY[h]){html=vPkg(BY[h]);after=function(){wirePkg(BY[h])};document.title=BY[h].n+' — GenPM'}
+  else if(h==='search'){html=vSearch();after=wireSearch;document.title='Packages — GenPM'}
+  else if(h==='mcp'){html=vMcp();document.title='MCP — GenPM'}
+  else if(h==='publish'){html=vPublish();after=wirePublish;document.title='Publish — GenPM'}
+  else if(h==='docs'){html=vDocs();document.title='Quickstart — GenPM'}
+  else if(h==='login'){html=vLogin();document.title='Sign in — GenPM'}
+  else {html=vHome();h='home';document.title='genpm.net'}
+  view.innerHTML=html;wireTabs(view);if(after)after();
+  document.querySelectorAll('[data-nav]').forEach(function(a){a.toggleAttribute('aria-current',a.dataset.nav===h);if(a.dataset.nav===h)a.setAttribute('aria-current','page')});
+  document.getElementById('sheet').hidden=true;document.getElementById('mMenu').setAttribute('aria-expanded','false');
+  if(h!=='search')document.getElementById('hq').value='';
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',function(){var h=(location.hash||'#home').slice(1);if(h&&h!==CUR){CUR=h;route()}});
+document.addEventListener('click',function(e){
+  if(e.defaultPrevented)return;
+  var a=e.target.closest('a[href^="#"]');if(!a)return;
+  var h=a.getAttribute('href').slice(1);if(!h||h==='view')return;
+  e.preventDefault();go(h);
+});
+view.addEventListener('click',function(e){
+  var j=e.target.closest('[data-jump]');if(j){e.preventDefault();var t=document.getElementById(j.dataset.jump);if(t)t.scrollIntoView();return}
+  if(e.target.closest('[data-gh]')){toast('GitHub OAuth runs here in production');return}
+  if(e.target.closest('[data-open-pal]')){openPal();}
+});
+
+/* Header search → página de búsqueda */
+var hq=document.getElementById('hq');
+hq.addEventListener('input',function(){S.q=hq.value;if(CUR!=='search'){go('search');setTimeout(function(){var s=document.getElementById('sq');if(s){s.focus();s.setSelectionRange(s.value.length,s.value.length)}},0)}else{var s=document.getElementById('sq');if(s)s.value=S.q;runSearch()}});
+hq.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();go('search')}});
+document.getElementById('mMenu').addEventListener('click',function(){var s=document.getElementById('sheet');s.hidden=!s.hidden;this.setAttribute('aria-expanded',String(!s.hidden))});
+document.getElementById('mSearch').addEventListener('click',function(){openPal()});
+
+/* ——————————————— Paleta ⌘K ——————————————— */
+var palIdx=0,palRes=[];
+function openPal(){
+  var root=document.getElementById('pal-root');if(root.firstChild)return;
+  root.innerHTML='<div class="scrim" id="scrim"><div class="pal" role="dialog" aria-modal="true" aria-label="Search packages"><div class="in">'+ico('search')+'<input id="pq" placeholder="Search packages…" role="combobox" aria-expanded="true" aria-controls="plist" autocomplete="off"><span class="kbd">esc</span></div><ul id="plist" role="listbox"></ul><div class="ft"><span>↑↓ move</span><span>↵ open</span><span>⌘↵ copy install</span></div></div></div>';
+  var pq=document.getElementById('pq');pq.focus();
+  function draw(){
+    var q=pq.value.trim().toLowerCase();
+    palRes=P.filter(function(p){return !q||(p.n+' '+p.s+' '+p.k.join(' ')).toLowerCase().indexOf(q)>-1}).sort(function(a,b){return b.inst-a.inst}).slice(0,5);
+    palIdx=Math.min(palIdx,Math.max(0,palRes.length-1));
+    document.getElementById('plist').innerHTML=palRes.length?palRes.map(function(p,i){return '<li role="option" aria-selected="'+(i===palIdx)+'"><a href="#'+p.slug+'"><b>'+p.n+'</b><span>'+esc(p.s)+'</span><span class="bd">'+badges(p,true)+'</span></a></li>'}).join(''):'<li class="none">No packages for "'+esc(pq.value)+'". <a href="#publish" style="border-bottom:1px solid var(--line-2)">Publish one</a></li>';
+  }
+  pq.addEventListener('input',function(){palIdx=0;draw()});
+  pq.addEventListener('keydown',function(e){
+    if(e.key==='ArrowDown'){e.preventDefault();palIdx=Math.min(palIdx+1,palRes.length-1);draw()}
+    else if(e.key==='ArrowUp'){e.preventDefault();palIdx=Math.max(palIdx-1,0);draw()}
+    else if(e.key==='Enter'&&palRes[palIdx]){e.preventDefault();var p=palRes[palIdx];if(e.metaKey||e.ctrlKey){copyText('npx genpm add '+p.n,null,'Install command copied');closePal()}else{closePal();go(p.slug)}}
+  });
+  document.getElementById('scrim').addEventListener('click',function(e){if(e.target.id==='scrim'||e.target.closest('a'))closePal()});
+  draw();
+}
+function closePal(){document.getElementById('pal-root').innerHTML=''}
+document.addEventListener('keydown',function(e){
+  var open=document.getElementById('pal-root').firstChild;
+  if(e.key==='Escape'&&open){closePal();return}
+  var typing=/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||'');
+  if(((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k')||(e.key==='/'&&!typing)){e.preventDefault();open?closePal():openPal()}
+});
+
+route();
+})();
+</script>

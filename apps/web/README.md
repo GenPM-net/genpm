@@ -1,4 +1,4 @@
-# apps/web — genpm.com
+# apps/web — genpm.net
 
 Astro (SSR, adapter Cloudflare) + Tailwind + islas React/Preact puntuales. Consume el registry vía Service Binding.
 

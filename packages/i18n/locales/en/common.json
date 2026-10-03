@@ -1,0 +1,27 @@
+{
+  "product": { "tagline": "Install architectures, not dependencies." },
+  "layers": {
+    "code": "Code",
+    "context": "Context",
+    "connections": "Connections"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "pt-BR": "Português (Brasil)",
+    "fr": "Français",
+    "de": "Deutsch",
+    "ja": "日本語",
+    "zh-CN": "简体中文",
+    "ko": "한국어"
+  },
+  "betaTranslation": "Beta translation",
+  "scan": {
+    "passed": "scan passed",
+    "flagged": "flagged for review",
+    "failed": "scan failed",
+    "pending": "scan pending"
+  },
+  "sponsored": "Sponsored",
+  "verified": "Verified"
+}

@@ -21,7 +21,7 @@ con reglas de contexto con alcance, y cablea el resultado siguiendo las reglas �
 1. `npx genpm search auth` devuelve resultados del registry en producción en < 1 s.
 2. `npx genpm add @core/billing` instala billing + auth + db (dependencias), escribe contexto para Cursor y Claude Code, propone `pnpm add` y no escribe MCP sin consentimiento.
 3. En Cursor y Claude Code, la instalación conversacional vía `@genpm/mcp` funciona con el guion anterior.
-4. `genpm publish` de un paquete nuevo desde un repo de GitHub aparece en `genpm.com` en < 1 minuto.
+4. `genpm publish` de un paquete nuevo desde un repo de GitHub aparece en `genpm.net` en < 1 minuto.
 5. Los 5 paquetes semilla están publicados, con escaneo `passed`.
 
 ## 2. Alcance
@@ -42,16 +42,16 @@ con reglas de contexto con alcance, y cablea el resultado siguiendo las reglas �
 
 Decisiones ya tomadas: ver [brainstorming §2](brainstorming.md#2-decisiones-del-fundador-antes-preguntas-abiertas). Acciones del fundador (crear cuentas y pagar):
 
-- [ ] **genpm.com**: está registrado desde 2020 (NameBright/TurnCommerce) → compra en mercado secundario; confirmar precio, transferir a Cloudflare Registrar, activar *registrar lock* y DNSSEC. Subdominios `api.`, `mcp.`, `www`.
-- [ ] **genpm.dev** (libre) como dominio defensivo → 301 a genpm.com.
-- [ ] Org de GitHub **`genpmhq`** (`genpm` está ocupado) + **OAuth App** con *Device Flow* + **GitHub App** (solo lectura) para el registry. 2FA obligatorio en la org.
+- [ ] **genpm.net**: ✅ comprado el 2026-10-03 en Piensa Solutions. Falta: DNS en Cloudflare, DNSSEC, renovación automática y 2FA en el registrador (tarea `D0-01`). Subdominios `api.`, `mcp.`, `www`.
+- [ ] **genpm.dev** (libre) como dominio defensivo → 301 a genpm.net.
+- [ ] Org de GitHub **`GenPM-net`** (✅ creada el 2026-10-03) + **OAuth App** con *Device Flow* + **GitHub App** (solo lectura) para el registry. 2FA obligatorio en la org.
 - [ ] Org de npm **`@genpm`** con 2FA obligatorio; reservar el paquete `genpm` (placeholder `0.0.0`); configurar *trusted publishing* para el repo del monorepo.
-- [ ] Handles `@genpm` en X, Discord, YouTube y LinkedIn (fallback `genpmhq`).
+- [ ] Handles `@genpm` en X, Discord, YouTube y LinkedIn (fallback `genpmnet` / `genpm-net`).
 - [ ] Cuenta Cloudflare Workers Paid con llaves FIDO2; D1 `genpm-registry` y `genpm-registry-staging`; dataset de Analytics Engine; Queue para el escaneo.
 - [ ] Generar las claves de firma Ed25519 (`k1` activa, `k2` siguiente) y la clave raíz offline de revocación; guardar la raíz fuera de línea.
-- [ ] Repo `genpmhq/genpm` (este monorepo) con protección de `main`, y repos vacíos para las 5 semillas.
+- [ ] Repo `GenPM-net/genpm` (este monorepo) con protección de `main`, y repos vacíos para las 5 semillas.
 - [ ] Contratar revisor nativo de `pt-BR` (Día 6) y buscar revisores para el nivel 2 de idiomas.
-- [ ] `security@genpm.com` operativo; secretos en el gestor del equipo; nada en `.env` commiteado.
+- [ ] `security@genpm.net` operativo; secretos en el gestor del equipo; nada en `.env` commiteado.
 
 ## 4. Plan día a día
 
@@ -104,7 +104,7 @@ Decisiones ya tomadas: ver [brainstorming §2](brainstorming.md#2-decisiones-del
 - **Dogfooding total** (todos): crear 2 apps desde cero (Hono + Next) solo con el MCP en Claude Code y Cursor; registrar cada fricción como issue; arreglar P0/P1.
 - **Puertas de seguridad** ([security §10](security.md#10-puertas-de-seguridad-del-lanzamiento-día-6)): sin todas en verde no hay lanzamiento.
 - **Idiomas**: revisión nativa de `pt-BR`, legal y `security.txt` en nivel 1, capturas con pseudo-locale.
-- Producción: migraciones D1 prod, dominios `api.genpm.com` / `genpm.com`, secretos, rate limits, alertas (errores 5xx > 1 %, latencia p95).
+- Producción: migraciones D1 prod, dominios `api.genpm.net` / `genpm.net`, secretos, rate limits, alertas (errores 5xx > 1 %, latencia p95).
 - Publicar las 5 semillas en **prod** con el CLI; marcar `@core/*` como featured y el scope como verificado.
 - `npm publish` de `genpm@0.1.0` y `@genpm/mcp@0.1.0` (con provenance).
 - Docs: README, Quickstart (60 s), Guía de publicación, Referencia del manifiesto, Config MCP por cliente.

@@ -15,9 +15,9 @@ Orden de lectura recomendado:
 | 4c | [i18n.md](i18n.md) | 8 idiomas: superficies, arquitectura `@genpm/i18n`, flujo de traducción, QA | Ingeniería, producto |
 | 5 | [roadmap-mvp.md](roadmap-mvp.md) | Plan día a día, criterios de aceptación, plan de recorte, post-MVP | Todos |
 | 6 | [branding.md](branding.md) | Nombre, posicionamiento, voz, paleta, tipografía, CLI, mensajes de lanzamiento | Producto, diseño, marketing |
-| 7 | [web-ui-spec.md](web-ui-spec.md) | Páginas, funcionalidades, componentes y requisitos de genpm.com | Diseño, frontend |
+| 7 | [web-ui-spec.md](web-ui-spec.md) | Páginas, funcionalidades, componentes y requisitos de genpm.net | Diseño, frontend |
 
-Fuera de `/docs`: [seeds/README.md](../seeds/README.md) (los 5 paquetes semilla) y [AGENTS.md](../AGENTS.md) (reglas para agentes IA que trabajen en este repo).
+Fuera de `/docs`: [tasks/](../tasks/README.md) (plan maestro y tareas del sprint, `pnpm tasks`), [seeds/README.md](../seeds/README.md) (los 5 paquetes semilla) y [AGENTS.md](../AGENTS.md) (reglas para agentes IA que trabajen en este repo).
 
 ## Resumen en 30 segundos
 

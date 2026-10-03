@@ -1,0 +1,1294 @@
+<title>Identidad GenPM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=JetBrains+Mono:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: hoja técnica. Riel izquierdo de etiquetas mono + 9 columnas de contenido; todo anclado a líneas de 1 px; cero sombras. */
+:root{
+  --paper:#FFFFFF;      /* fondo: siempre blanco */
+  --wash:#F6F7F9;       /* superficie: bloques de código, celdas */
+  --line:#E6E8EC;       /* borde base (nivel 1) */
+  --line-2:#CDD2D9;     /* borde de control (nivel 2) */
+  --ink:#0B0D11;        /* tinta: texto, marca, CTA */
+  --ink-2:#4A505C;      /* texto secundario 8.2:1 */
+  --ink-3:#6A7180;      /* texto terciario 4.9:1 */
+  --code:#5AA300;       /* capa Code: señal gráfica (caret, nodos) */
+  --code-ink:#3B7300;   /* capa Code: texto sobre blanco 5.6:1 */
+  --context:#5B4BDB;    /* capa Context 5.6:1 */
+  --mcp:#0A7F90;        /* capa Connections 4.7:1 */
+  --warn:#A15F00;
+  --danger:#C62828;
+  --f-sans:"Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --r:4px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;font-variation-settings:"wdth" 100}
+::selection{background:var(--ink);color:var(--paper)}
+a{color:inherit}
+code,kbd,.mono{font-family:var(--f-mono);font-variant-ligatures:none}
+h1,h2,h3,h4{margin:0;font-weight:600;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--code-ink);outline-offset:2px;border-radius:2px}
+.tnum{font-variant-numeric:tabular-nums}
+
+.wrap{max-width:1200px;margin-inline:auto;padding-inline:24px}
+@media (max-width:600px){.wrap{padding-inline:16px}}
+
+/* ——— Caret: el único elemento vivo de la marca ——— */
+.caret{display:inline-block;width:.42em;height:.78em;background:var(--code);margin-left:.04em;vertical-align:-.04em}
+.blink{animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.blink{animation:none}}
+
+/* ——— Barra superior del documento ——— */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:24px;height:52px}
+.top .logo{font-family:var(--f-mono);font-weight:800;font-size:17px;letter-spacing:-.02em;text-decoration:none}
+.top .doc{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+.top nav{margin-left:auto;display:flex;gap:4px}
+.top nav a{font-family:var(--f-mono);font-size:12px;text-decoration:none;color:var(--ink-2);padding:6px 10px;border-radius:var(--r)}
+.top nav a:hover{background:var(--wash);color:var(--ink)}
+@media (max-width:600px){.top .doc{display:none}.top nav a{padding:6px 6px}}
+
+/* ——— Portada ——— */
+.cover{border-bottom:1px solid var(--line)}
+.cover .wrap{padding-block:56px 0}
+.meta{display:flex;flex-wrap:wrap;gap:8px 24px;font-family:var(--f-mono);font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em}
+.mark-xl{font-family:var(--f-mono);font-weight:800;font-size:clamp(72px,15vw,188px);letter-spacing:-.055em;line-height:.9;margin-block:40px 28px}
+.cover .tag{font-size:clamp(22px,2.6vw,30px);font-weight:500;letter-spacing:-.02em;max-width:24ch}
+.specrow{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);margin-top:48px}
+.specrow>div{padding:16px 16px 18px 0;border-right:1px solid var(--line);min-width:0}
+.specrow>div+div{padding-left:16px}
+.specrow>div:last-child{border-right:0}
+.specrow dt{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+.specrow dd{margin:4px 0 0;font-size:15px;font-weight:500}
+@media (max-width:760px){.specrow{grid-template-columns:1fr 1fr}.specrow>div:nth-child(2){border-right:0}.specrow>div:nth-child(3){padding-left:0;border-top:1px solid var(--line)}.specrow>div:nth-child(4){border-top:1px solid var(--line)}}
+
+/* ——— Secciones tipo hoja técnica ——— */
+.part{border-bottom:1px solid var(--line)}
+.part-head{display:grid;grid-template-columns:3fr 9fr;gap:24px;padding-block:72px 40px}
+.part-no{font-family:var(--f-mono);font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;padding-top:12px}
+.part-head h2{font-size:clamp(36px,5vw,60px);letter-spacing:-.035em;line-height:1;font-variation-settings:"wdth" 88}
+.part-head .lede{margin-top:20px;font-size:18px;color:var(--ink-2);max-width:62ch}
+.block{display:grid;grid-template-columns:3fr 9fr;gap:24px;padding-block:40px;border-top:1px solid var(--line)}
+.block>.lbl{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2)}
+.block>.lbl small{display:block;margin-top:6px;text-transform:none;letter-spacing:0;color:var(--ink-3);font-size:12px;line-height:1.5;max-width:28ch}
+.block>.body{min-width:0;display:grid;gap:24px}
+@media (max-width:860px){.part-head,.block{grid-template-columns:1fr;gap:12px}.part-head{padding-block:56px 28px}}
+h3{font-size:20px;letter-spacing:-.015em}
+.note{font-size:14px;color:var(--ink-2);max-width:64ch}
+
+/* ——— Concepto ——— */
+.thesis{font-size:clamp(22px,2.4vw,28px);line-height:1.35;letter-spacing:-.015em;max-width:40ch;font-weight:500}
+.thesis em{font-style:normal;color:var(--ink-3)}
+.principles{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.principles>div{padding:24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;gap:10px;align-content:start;min-width:0}
+.principles h4{font-size:17px;letter-spacing:-.01em}
+.principles p{font-size:14px;color:var(--ink-2)}
+.principles .k{font-family:var(--f-mono);font-size:11px;color:var(--ink-3)}
+@media (max-width:640px){.principles{grid-template-columns:1fr}}
+
+table.spec{width:100%;border-collapse:collapse;font-size:14px}
+table.spec th{font-family:var(--f-mono);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);text-align:left;padding:0 12px 10px 0;border-bottom:1px solid var(--line-2)}
+table.spec td{padding:12px 12px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.spec td:first-child{font-weight:500;white-space:nowrap}
+table.spec .was{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--line-2)}
+.scroll{overflow-x:auto;min-width:0}
+
+/* ——— Logo ——— */
+.logo-grid{display:grid;grid-template-columns:2fr 1fr;border:1px solid var(--line)}
+.logo-grid>div{padding:28px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;gap:24px;min-width:0}
+.logo-grid>div+div{border-left:1px solid var(--line)}
+.logo-grid .cap{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em}
+.wm{font-family:var(--f-mono);font-weight:800;letter-spacing:-.05em;line-height:1}
+.inv{background:var(--ink);color:var(--paper)}
+.inv .cap{color:#9AA0AC}
+.iso{display:inline-grid;place-items:center;background:var(--ink);color:var(--paper);border-radius:22%;font-family:var(--f-mono);font-weight:800;letter-spacing:-.06em;line-height:1}
+.iso-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.iso-row figure{margin:0;display:grid;gap:8px;justify-items:start}
+.iso-row figcaption{font-family:var(--f-mono);font-size:11px;color:var(--ink-3)}
+@media (max-width:760px){.logo-grid{grid-template-columns:1fr}.logo-grid>div+div{border-left:0;border-top:1px solid var(--line)}}
+
+.construct{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.cs-box{border:1px solid var(--line);padding:28px;display:grid;place-items:center;min-height:200px;min-width:0}
+.cs-inner{position:relative;padding:44px 52px;outline:1px dashed var(--line-2);outline-offset:0}
+.cs-inner .wm{font-size:56px;outline:1px solid var(--code);outline-offset:0}
+.cs-x{position:absolute;font-family:var(--f-mono);font-size:10px;color:var(--ink-3)}
+.rules{display:grid;gap:10px;font-size:14px;color:var(--ink-2);align-content:center}
+.rules li{list-style:none;display:grid;grid-template-columns:16px 1fr;gap:8px}
+.rules li::before{content:"›";font-family:var(--f-mono);color:var(--ink-3)}
+.rules{margin:0;padding:0}
+@media (max-width:760px){.construct{grid-template-columns:1fr}}
+
+.donts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line)}
+.donts>div{padding:20px;display:grid;gap:14px;align-content:space-between;min-height:132px;min-width:0;border-right:1px solid var(--line)}
+.donts>div:last-child{border-right:0}
+.donts .x{font-family:var(--f-mono);font-size:11px;color:var(--danger)}
+.donts .wm{font-size:26px}
+@media (max-width:760px){.donts{grid-template-columns:1fr 1fr}.donts>div:nth-child(2){border-right:0}.donts>div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* ——— Color ——— */
+.sw-grid{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--line)}
+.sw{display:grid;grid-template-rows:88px auto;min-width:0;border-right:1px solid var(--line)}
+.sw:last-child{border-right:0}
+.sw .chip{border-bottom:1px solid var(--line)}
+.sw .meta2{padding:10px 12px 12px;display:grid;gap:2px;font-size:12px}
+.sw b{font-weight:600;font-size:13px}
+.sw code{font-size:11.5px;color:var(--ink-2)}
+.sw span{color:var(--ink-3);font-size:12px}
+@media (max-width:860px){.sw-grid{grid-template-columns:repeat(4,1fr)}.sw:nth-child(4){border-right:0}.sw:nth-child(n+5){border-top:1px solid var(--line)}}
+@media (max-width:480px){.sw-grid{grid-template-columns:repeat(2,1fr)}.sw{border-right:1px solid var(--line)!important;border-top:0!important}.sw:nth-child(2n){border-right:0!important}.sw:nth-child(n+3){border-top:1px solid var(--line)!important}}
+
+.layers{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line)}
+.layer{padding:24px;display:grid;gap:16px;align-content:start;min-width:0}
+.layer+.layer{border-left:1px solid var(--line)}
+.layer .bar{height:56px;border-radius:var(--r)}
+.layer h4{font-size:17px;display:flex;align-items:center;gap:8px}
+.layer dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:12.5px}
+.layer dt{font-family:var(--f-mono);color:var(--ink-3)}
+.layer dd{margin:0;font-family:var(--f-mono);color:var(--ink-2);min-width:0}
+.layer p{font-size:14px;color:var(--ink-2)}
+@media (max-width:760px){.layers{grid-template-columns:1fr}.layer+.layer{border-left:0;border-top:1px solid var(--line)}}
+
+.ratio{display:grid;gap:10px}
+.ratio .track{display:flex;height:40px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.ratio .track>i{display:block}
+.ratio .leg{display:flex;flex-wrap:wrap;gap:6px 20px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2)}
+.ratio .leg span::before{content:"";display:inline-block;width:8px;height:8px;margin-right:6px;border:1px solid var(--line-2);vertical-align:0;background:var(--c)}
+
+.dark-strip{display:grid;grid-template-columns:repeat(4,1fr);background:var(--ink);border-radius:var(--r);overflow:hidden}
+.dark-strip>div{padding:16px;display:grid;gap:8px;color:#EDEEF0;font-size:12px;min-width:0}
+.dark-strip>div+div{border-left:1px solid #2A2E36}
+.dark-strip i{display:block;height:24px;border-radius:2px}
+.dark-strip code{color:#A3A9B6;font-size:11px}
+@media (max-width:600px){.dark-strip{grid-template-columns:1fr 1fr}.dark-strip>div:nth-child(3){border-left:0;border-top:1px solid #2A2E36}.dark-strip>div:nth-child(4){border-top:1px solid #2A2E36}}
+
+/* ——— Tipografía ——— */
+.type-pair{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line)}
+.type-pair>div{padding:28px;display:grid;gap:18px;align-content:start;min-width:0}
+.type-pair>div+div{border-left:1px solid var(--line)}
+.type-pair .aa{font-size:112px;line-height:.9;letter-spacing:-.05em}
+.type-pair .glyphs{font-size:15px;color:var(--ink-2);word-break:break-all}
+.type-pair .cap{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em}
+@media (max-width:760px){.type-pair{grid-template-columns:1fr}.type-pair>div+div{border-left:0;border-top:1px solid var(--line)}}
+.scale td:nth-child(2),.scale td:nth-child(3){font-family:var(--f-mono);font-size:12px;color:var(--ink-2);white-space:nowrap}
+.scale td:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0;width:50%}
+
+/* ——— Espacio ——— */
+.space-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.sp-list{display:grid;gap:8px}
+.sp{display:grid;grid-template-columns:52px 1fr 52px;align-items:center;gap:12px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2)}
+.sp i{display:block;height:12px;background:var(--ink)}
+.sp span:last-child{color:var(--ink-3);text-align:right}
+.elev{display:grid;gap:12px}
+.elev>div{padding:16px 18px;border-radius:var(--r);display:flex;justify-content:space-between;gap:12px;font-size:14px}
+.elev code{font-size:11.5px;color:var(--ink-3)}
+.gridviz{position:relative;height:120px;border:1px solid var(--line);display:grid;grid-template-columns:repeat(12,1fr);gap:8px;padding:0 12px}
+.gridviz i{background:var(--wash);border-inline:1px solid var(--line)}
+@media (max-width:760px){.space-row{grid-template-columns:1fr}}
+
+/* ——— Componentes (compartidos por manual y web) ——— */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line)}
+.comp{padding:24px;display:grid;gap:16px;align-content:start;min-width:0;border-bottom:1px solid var(--line)}
+.comp:nth-child(odd){border-right:1px solid var(--line)}
+.comp:nth-last-child(-n+2){border-bottom:0}
+.comp .cap{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+@media (max-width:760px){.comp-grid{grid-template-columns:1fr}.comp:nth-child(odd){border-right:0}.comp:nth-last-child(2){border-bottom:1px solid var(--line)}}
+
+.btn{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:var(--r);font-size:14px;font-weight:500;border:1px solid var(--line-2);background:var(--paper);color:var(--ink);text-decoration:none;white-space:nowrap}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn.primary:hover{background:#262A33}
+.btn.ghost{border-color:transparent;color:var(--ink-2)}
+.btn.ghost:hover{background:var(--wash);color:var(--ink)}
+.btn.sm{height:30px;padding:0 10px;font-size:13px}
+
+.cmd{display:flex;align-items:stretch;border:1px solid var(--line-2);border-radius:var(--r);background:var(--paper);font-family:var(--f-mono);font-size:14px;min-width:0;height:44px}
+.cmd .p{color:var(--ink-3);padding-left:14px;display:flex;align-items:center;user-select:none}
+.cmd code{flex:1;display:flex;align-items:center;padding:0 12px 0 10px;white-space:nowrap;overflow-x:auto;min-width:0;scrollbar-width:none}
+.cmd code::-webkit-scrollbar{display:none}
+.cmd .cp{border-left:1px solid var(--line-2);padding:0 14px;font-family:var(--f-mono);font-size:12px;color:var(--ink-2);min-width:76px}
+.cmd .cp:hover{background:var(--wash);color:var(--ink)}
+.cmd .cp.ok{color:var(--code-ink)}
+
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border:1px solid var(--line-2);border-radius:var(--r);font-family:var(--f-mono);font-size:11.5px;color:var(--ink);white-space:nowrap}
+.badge i{width:7px;height:7px;border-radius:1px;background:var(--c,var(--ink));display:block}
+.badge.code{--c:var(--code)}
+.badge.ctx{--c:var(--context)}
+.badge.mcp{--c:var(--mcp)}
+.badge em{font-style:normal;color:var(--ink-3)}
+.badge.ok{color:var(--code-ink)}
+.badge.flag{color:var(--danger);border-color:var(--danger)}
+.badge.ver svg{color:var(--code-ink)}
+.spons{display:inline-flex;align-items:center;height:20px;padding:0 6px;border:1px solid var(--warn);color:var(--warn);border-radius:2px;font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em}
+.sha{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:12.5px;color:var(--context);border:1px solid var(--line-2);border-radius:var(--r);height:24px;padding:0 8px}
+.sha:hover{border-color:var(--context)}
+.kbd{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);border:1px solid var(--line-2);border-radius:3px;padding:1px 5px;line-height:1.4}
+.input{display:flex;align-items:center;gap:10px;height:36px;border:1px solid var(--line-2);border-radius:var(--r);padding:0 10px;color:var(--ink-3);font-size:14px;min-width:0;width:100%;max-width:360px}
+.input .kbd{margin-left:auto}
+.banner{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 14px;border:1px solid var(--c);border-left-width:3px;font-size:13.5px;border-radius:var(--r);color:var(--ink-2)}
+.banner b{color:var(--c);font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding-top:2px}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:var(--r);padding:2px;gap:2px}
+.seg button{height:26px;padding:0 10px;font-family:var(--f-mono);font-size:12px;color:var(--ink-2);border-radius:2px}
+.seg button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+
+.term{border:1px solid var(--line);border-radius:var(--r);background:var(--wash);font-family:var(--f-mono);font-size:12.5px;line-height:1.75;min-width:0}
+.term .bar{display:flex;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--line);font-size:11px;color:var(--ink-3)}
+.term pre{margin:0;padding:14px 16px;overflow-x:auto;color:var(--ink)}
+.term.dark{background:var(--ink);border-color:var(--ink);color:#EDEEF0}
+.term.dark .bar{border-color:#2A2E36;color:#8C93A0}
+.term.dark pre{color:#EDEEF0}
+.t-mut{color:var(--ink-3)}.t-code{color:var(--code-ink)}.t-ctx{color:var(--context)}.t-mcp{color:var(--mcp)}.t-b{font-weight:700}.t-warn{color:var(--warn)}
+.term.dark .t-mut{color:#8C93A0}.term.dark .t-code{color:#C4F54A}.term.dark .t-ctx{color:#8B7CFF}.term.dark .t-mcp{color:#38D5E8}.term.dark .t-warn{color:#F5B83D}
+
+.ico{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.icons{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--line)}
+.icons>div{padding:20px 12px;display:grid;justify-items:center;gap:10px;font-family:var(--f-mono);font-size:11px;color:var(--ink-3);text-align:center;min-width:0}
+.icons>div+div{border-left:1px solid var(--line)}
+.icons .ico{width:28px;height:28px;color:var(--ink)}
+@media (max-width:600px){.icons{grid-template-columns:repeat(3,1fr)}.icons>div:nth-child(4){border-left:0}.icons>div:nth-child(n+4){border-top:1px solid var(--line)}}
+
+.voice{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line)}
+.voice>div{padding:20px 24px;display:grid;gap:10px;align-content:start;min-width:0}
+.voice>div+div{border-left:1px solid var(--line)}
+.voice ul{margin:0;padding:0;display:grid;gap:6px;font-size:14px}
+.voice li{list-style:none}
+.voice .y li::before{content:"✔  ";font-family:var(--f-mono);color:var(--code-ink)}
+.voice .n li{color:var(--ink-3)}
+.voice .n li::before{content:"✖  ";font-family:var(--f-mono);color:var(--danger)}
+@media (max-width:640px){.voice{grid-template-columns:1fr}.voice>div+div{border-left:0;border-top:1px solid var(--line)}}
+
+.shield{display:inline-flex;font-family:var(--f-mono);font-size:11px;line-height:20px;border-radius:3px;overflow:hidden}
+.shield span{padding:0 7px}
+.shield span:first-child{background:var(--ink);color:var(--paper)}
+
+/* ——— Web: marco de navegador ——— */
+.frame{border:1px solid var(--line-2);border-radius:6px;overflow:hidden;background:var(--paper);min-width:0}
+.frame .chrome{display:flex;align-items:center;gap:12px;height:36px;padding:0 12px;border-bottom:1px solid var(--line);background:var(--paper)}
+.frame .dots{display:flex;gap:6px}
+.frame .dots i{width:9px;height:9px;border-radius:50%;border:1px solid var(--line-2);display:block}
+.frame .url{flex:1;max-width:420px;margin-inline:auto;height:22px;border:1px solid var(--line);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:11px;color:var(--ink-3);white-space:nowrap;overflow:hidden}
+.frame .url b{color:var(--ink);font-weight:500}
+.frame-cap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);margin-bottom:12px}
+
+.site{container-type:inline-size;font-size:14.5px}
+.w-pad{padding-inline:40px}
+@container (max-width:760px){.w-pad{padding-inline:20px}}
+
+.w-head{display:flex;align-items:center;gap:20px;height:56px;border-bottom:1px solid var(--line)}
+.w-logo{font-family:var(--f-mono);font-weight:800;font-size:17px;letter-spacing:-.03em;white-space:nowrap}
+.w-head .input{max-width:340px;height:32px;font-size:13px}
+.w-nav{display:flex;gap:2px;margin-left:auto}
+.w-nav a{font-size:13.5px;color:var(--ink-2);text-decoration:none;padding:6px 10px;border-radius:var(--r)}
+.w-nav a:hover{color:var(--ink);background:var(--wash)}
+.w-burger{display:none}
+@container (max-width:760px){.w-head .input,.w-nav,.w-head .btn{display:none}.w-burger{display:flex;margin-left:auto;gap:14px}}
+
+.w-hero{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding-block:72px 64px;align-items:start}
+.w-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);padding:4px 8px}
+.w-eyebrow i{width:6px;height:6px;background:var(--code);display:block}
+.w-h1{font-size:clamp(40px,6.2cqi,64px);line-height:.98;letter-spacing:-.045em;margin-block:20px 18px;font-variation-settings:"wdth" 86;font-weight:600}
+.w-sub{font-size:17px;color:var(--ink-2);max-width:44ch}
+.w-cta{display:grid;gap:12px;margin-top:32px;max-width:480px}
+.w-cta .top2{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.w-cta .hint{font-size:12.5px;color:var(--ink-3)}
+.w-cta .hint code{color:var(--ink-2)}
+.w-trust{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:28px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3)}
+.w-trust span{display:inline-flex;gap:6px;align-items:center}
+.w-trust .ico{width:14px;height:14px}
+@container (max-width:860px){.w-hero{grid-template-columns:1fr;gap:32px;padding-block:48px}}
+
+.w-sec{border-top:1px solid var(--line);padding-block:64px}
+.w-sec-h{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.w-sec-h h2{font-size:30px;letter-spacing:-.03em;line-height:1.05;font-variation-settings:"wdth" 88}
+.w-sec-h p{color:var(--ink-2);max-width:48ch;font-size:14.5px;margin-top:8px}
+.w-k{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);margin-bottom:10px}
+
+.w-graft{border:1px solid var(--line);overflow-x:auto}
+.w-graft svg{display:block;width:100%;min-width:640px;height:auto}
+.g-t{font-family:var(--f-mono);font-size:12px;fill:var(--ink)}
+.g-m{font-family:var(--f-mono);font-size:11px;fill:var(--ink-3)}
+.g-h{font-family:var(--f-mono);font-size:13px;font-weight:700;fill:var(--ink)}
+.w-3c{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-top:0}
+.w-3c>div{padding:22px 24px;display:grid;gap:8px;align-content:start;min-width:0}
+.w-3c>div+div{border-left:1px solid var(--line)}
+.w-3c h3{font-size:16px;display:flex;gap:8px;align-items:center}
+.w-3c h3 i{width:8px;height:8px;background:var(--c);display:block}
+.w-3c p{font-size:13.5px;color:var(--ink-2)}
+.w-3c code{font-size:12px;color:var(--ink-2)}
+@container (max-width:760px){.w-3c{grid-template-columns:1fr}.w-3c>div+div{border-left:0;border-top:1px solid var(--line)}}
+
+.w-feat{display:grid;grid-template-columns:2fr 1fr;gap:32px}
+.w-cards{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.pcard{padding:18px 20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;gap:10px;align-content:start;min-width:0}
+.pcard:hover{background:var(--wash)}
+.pcard .nm{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.pcard .nm b{font-family:var(--f-mono);font-size:14px;font-weight:700}
+.pcard .nm span{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+.pcard .nm .ver{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-family:var(--f-mono);font-size:11px;color:var(--code-ink)}
+.pcard .nm .ver .ico{width:13px;height:13px}
+.pcard p{font-size:13.5px;color:var(--ink-2)}
+.pcard .ft{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.pcard .ft .row{gap:6px}
+.pcard .inst{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3)}
+.pcard.sp{outline:1px solid var(--warn);outline-offset:-1px}
+.trend{display:grid;align-content:start}
+.trend li{list-style:none;display:grid;grid-template-columns:20px 1fr 64px 52px;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-family:var(--f-mono);font-size:12.5px}
+.trend li:first-child{border-top:1px solid var(--line)}
+.trend ol{margin:0;padding:0}
+.trend .n{color:var(--ink-3)}
+.trend .d{color:var(--code-ink);text-align:right}
+.trend svg{width:64px;height:18px;display:block}
+@container (max-width:860px){.w-feat{grid-template-columns:1fr}}
+@container (max-width:600px){.w-cards{grid-template-columns:1fr}}
+
+.w-steps{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line)}
+.w-steps>div{padding:22px 24px;display:grid;gap:10px;align-content:start;min-width:0}
+.w-steps>div+div{border-left:1px solid var(--line)}
+.w-steps .no{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+.w-steps h3{font-size:17px}
+.w-steps p{font-size:13.5px;color:var(--ink-2)}
+.w-steps code{font-size:12px;background:var(--wash);border:1px solid var(--line);border-radius:3px;padding:2px 6px;justify-self:start;max-width:100%;overflow-x:auto;white-space:nowrap}
+@container (max-width:760px){.w-steps{grid-template-columns:1fr}.w-steps>div+div{border-left:0;border-top:1px solid var(--line)}}
+
+.w-mcp{display:grid;grid-template-columns:220px 1fr;border:1px solid var(--line)}
+.w-mcp [role=tablist]{display:grid;align-content:start;border-right:1px solid var(--line)}
+.w-mcp [role=tab]{text-align:left;padding:12px 16px;font-size:14px;color:var(--ink-2);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.w-mcp [role=tab]:hover{background:var(--wash)}
+.w-mcp [role=tab][aria-selected="true"]{color:var(--ink);font-weight:600;box-shadow:inset 2px 0 0 var(--ink)}
+.w-mcp [role=tab] code{font-size:10.5px;color:var(--ink-3);font-weight:400}
+.w-mcp .pn{padding:20px 24px;display:grid;gap:14px;align-content:start;min-width:0}
+.w-mcp .pn p{font-size:13.5px;color:var(--ink-2)}
+.w-mcp .term{background:var(--wash)}
+.prompt-ex{display:grid;gap:6px}
+.prompt-ex div{font-size:13.5px;border-left:2px solid var(--context);padding:4px 0 4px 12px;color:var(--ink)}
+@container (max-width:760px){.w-mcp{grid-template-columns:1fr}.w-mcp [role=tablist]{grid-auto-flow:column;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}.w-mcp [role=tab]{border-bottom:0;border-right:1px solid var(--line);white-space:nowrap}.w-mcp [role=tab] code{display:none}.w-mcp [role=tab][aria-selected="true"]{box-shadow:inset 0 -2px 0 var(--ink)}}
+
+.w-sec3{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line)}
+.w-sec3>div{padding:22px 24px;display:grid;gap:10px;align-content:start;min-width:0}
+.w-sec3>div+div{border-left:1px solid var(--line)}
+.w-sec3 h3{font-size:16px;display:flex;align-items:center;gap:10px}
+.w-sec3 p{font-size:13.5px;color:var(--ink-2)}
+@container (max-width:760px){.w-sec3{grid-template-columns:1fr}.w-sec3>div+div{border-left:0;border-top:1px solid var(--line)}}
+
+.w-pub{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+.w-pub h2{font-size:clamp(28px,4cqi,40px);letter-spacing:-.035em;line-height:1.02;font-variation-settings:"wdth" 86}
+.w-pub p{color:var(--ink-2);margin-top:12px;max-width:46ch}
+.w-pub .row{margin-top:24px}
+.w-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line)}
+.w-stats>div{padding:18px 20px;min-width:0}
+.w-stats>div+div{border-left:1px solid var(--line)}
+.w-stats b{display:block;font-size:30px;letter-spacing:-.03em;font-weight:600;font-variant-numeric:tabular-nums}
+.w-stats span{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+@container (max-width:760px){.w-pub{grid-template-columns:1fr;gap:24px}}
+
+.w-foot{border-top:1px solid var(--line);padding-block:40px 28px;display:grid;gap:32px}
+.w-foot .cols{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:24px}
+.w-foot h4{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:500;margin-bottom:10px}
+.w-foot ul{margin:0;padding:0;display:grid;gap:6px}
+.w-foot li{list-style:none;font-size:13.5px;color:var(--ink-2)}
+.w-foot .base{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:18px}
+.w-foot .status{display:inline-flex;align-items:center;gap:6px}
+.w-foot .status i{width:7px;height:7px;border-radius:50%;background:var(--code);display:block}
+@container (max-width:760px){.w-foot .cols{grid-template-columns:1fr 1fr}.w-foot .cols>div:first-child{grid-column:1/-1}}
+
+/* ——— Web: página de paquete ——— */
+.pk-head{padding-block:36px 24px;display:grid;gap:14px}
+.pk-title{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pk-title h1{font-family:var(--f-mono);font-size:28px;letter-spacing:-.03em;font-weight:700}
+.pk-title h1 span{color:var(--ink-3);font-weight:400}
+.pk-title .act{margin-left:auto;display:flex;gap:8px}
+.pk-head p{font-size:16px;color:var(--ink-2);max-width:60ch}
+.pk-body{display:grid;grid-template-columns:1fr 340px;border-top:1px solid var(--line)}
+.pk-main{min-width:0;border-right:1px solid var(--line)}
+.pk-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--line);scrollbar-width:none}
+.pk-tabs [role=tab]{padding:14px 16px;font-size:13.5px;color:var(--ink-2);white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.pk-tabs [role=tab]:hover{color:var(--ink)}
+.pk-tabs [role=tab][aria-selected="true"]{color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--c,var(--ink))}
+.pk-tabs [role=tab] i{width:7px;height:7px;background:var(--c);display:block}
+.pk-tabs [role=tab] em{font-style:normal;font-family:var(--f-mono);font-size:11px;color:var(--ink-3);font-weight:400}
+.pk-panel{padding:28px 32px;display:grid;gap:18px;align-content:start;min-width:0}
+.pk-panel h3{font-size:17px}
+.pk-panel p{font-size:14px;color:var(--ink-2);max-width:62ch}
+.rules-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.md{font-family:var(--f-mono);font-size:12.5px;line-height:1.8;border:1px solid var(--line);border-radius:var(--r);overflow-x:auto}
+.md pre{margin:0;padding:16px 18px}
+.md .h{font-weight:700}
+.md .hit{background:#FFF4DC;outline:1px solid #F0D49A}
+.tree{font-family:var(--f-mono);font-size:12.5px;border:1px solid var(--line);border-radius:var(--r);overflow-x:auto}
+.tree div{display:grid;grid-template-columns:1fr auto;gap:16px;padding:7px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tree div:last-child{border-bottom:0}
+.tree div span:last-child{color:var(--ink-3)}
+.tree .dir{font-weight:700}
+.vt td:first-child{font-family:var(--f-mono)}
+.vt td{font-size:13px}
+.vt .y td{color:var(--ink-3)}
+.vt .y td:first-child{text-decoration:line-through}
+.mcp-card{border:1px solid var(--line);border-radius:var(--r);display:grid}
+.mcp-card>div{padding:14px 16px;display:grid;grid-template-columns:120px 1fr;gap:12px;border-bottom:1px solid var(--line);font-size:13.5px}
+.mcp-card>div:last-child{border-bottom:0}
+.mcp-card dt{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);padding-top:2px}
+.mcp-card dd{margin:0;min-width:0;overflow-x:auto}
+.pk-side{padding:24px;display:grid;gap:20px;align-content:start;min-width:0}
+.pk-side .seg{width:100%}
+.pk-side .seg button{flex:1}
+.kv{margin:0;display:grid;grid-template-columns:92px 1fr;border-top:1px solid var(--line)}
+.kv dt,.kv dd{padding:10px 0;border-bottom:1px solid var(--line);font-size:13px;min-width:0}
+.kv dt{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;padding-top:12px}
+.kv dd{margin:0;font-family:var(--f-mono);font-size:12.5px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.kv dd a{text-decoration:none;border-bottom:1px solid var(--line-2)}
+.runner{display:flex;gap:6px;font-family:var(--f-mono);font-size:11.5px}
+.runner button{padding:3px 7px;border-radius:3px;color:var(--ink-3);border:1px solid transparent}
+.runner button[aria-pressed="true"]{color:var(--ink);border-color:var(--line-2)}
+@container (max-width:900px){.pk-body{grid-template-columns:1fr}.pk-main{border-right:0;order:2}.pk-side{order:1;border-bottom:1px solid var(--line)}}
+@container (max-width:600px){.pk-panel{padding:20px}.pk-title .act{margin-left:0}.mcp-card>div{grid-template-columns:1fr;gap:4px}}
+
+/* ——— Móvil ——— */
+.mobile-row{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start}
+.phone{width:340px;max-width:100%;border:1px solid var(--line-2);border-radius:28px;padding:10px;background:var(--paper)}
+.phone .scr{border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.phone .site{font-size:14px}
+.phone .w-hero{padding-block:32px 28px}
+.phone .w-h1{font-size:38px}
+.anno{display:grid;gap:0;border-top:1px solid var(--line)}
+.anno>div{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-2)}
+.anno b{color:var(--ink);font-weight:600}
+.anno .k{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);padding-top:2px}
+@media (max-width:860px){.mobile-row{grid-template-columns:1fr;justify-items:center}.anno{width:100%}}
+
+.end{padding-block:48px 64px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></symbol>
+    <symbol id="i-context" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-commit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M3 12h6"/><path d="M15 12h6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></symbol>
+    <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top">genpm<span class="caret"></span></a>
+    <span class="doc">Sistema de identidad · v0.2</span>
+    <nav aria-label="Secciones">
+      <a href="#concepto">01 Concepto</a>
+      <a href="#marca">02 Marca</a>
+      <a href="#web">03 Web</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<!-- ═══════════ PORTADA ═══════════ -->
+<section class="cover">
+  <div class="wrap">
+    <div class="meta"><span>GenPM</span><span>Identidad + genpm.net</span><span>v0.2 · 2026-10-02</span><span>Sustituye §8 de branding.md v0.1</span></div>
+    <div class="mark-xl" aria-label="genpm">genpm<span class="caret blink"></span></div>
+    <p class="tag">Instala arquitecturas, no dependencias.</p>
+    <dl class="specrow">
+      <div><dt>Concepto</dt><dd>Anclado</dd></div>
+      <div><dt>Fondo</dt><dd class="mono tnum">#FFFFFF</dd></div>
+      <div><dt>Sombras</dt><dd class="mono tnum">0</dd></div>
+      <div><dt>Color con significado</dt><dd>3 capas + 2 estados</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ═══════════ 01 CONCEPTO ═══════════ -->
+<section class="part" id="concepto">
+  <div class="wrap">
+    <div class="part-head">
+      <div class="part-no">01 — Concepto</div>
+      <div>
+        <h2>Anclado.</h2>
+        <p class="lede">Un paquete GenPM es confiable porque está anclado a un commit: lo que revisaste es exactamente lo que se instala. La identidad aplica la misma regla a la forma. Cada elemento se apoya en una retícula de líneas de 1&nbsp;px, nada flota, y el color solo aparece cuando lleva información.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="lbl">Tesis</div>
+      <div class="body">
+        <p class="thesis">El blanco es el estado limpio del repositorio antes de inyectar. <em>Lo que se añade (código, reglas, conexiones) se ve con precisión porque no hay nada más compitiendo.</em></p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="lbl">Principios<small>Cuatro reglas que deciden cualquier pantalla nueva.</small></div>
+      <div class="body">
+        <div class="principles">
+          <div><span class="k">regla · elevación</span><h4>Línea, no sombra</h4><p>La profundidad se dibuja con bordes de 1&nbsp;px y espacio. Hay dos niveles de borde y ningún tercero. Una tabla de un millón de filas y una tarjeta de paquete usan el mismo lenguaje, así la interfaz escala sin acumular ruido.</p></div>
+          <div><span class="k">regla · color</span><h4>El color es dato</h4><p>La marca es tinta sobre blanco. Verde, violeta y cian existen solo para las tres capas: Code, Context y Connections. Ámbar y rojo, solo para estados. Si un color no codifica algo, no se usa.</p></div>
+          <div><span class="k">regla · imagen</span><h4>El comando es la imagen</h4><p>Sin fotos de stock ni ilustraciones decorativas. Las imágenes de GenPM son comandos, árboles de archivos, SHAs y diagramas de injerto reales, en HTML copiable.</p></div>
+          <div><span class="k">regla · movimiento</span><h4>Un solo elemento vivo</h4><p>El caret <code>▍</code> es lo único que se anima por sí mismo: parpadea en el logo del hero. Todo lo demás se mueve solo como respuesta a una acción (150–200&nbsp;ms, ease-out).</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="lbl">Cambios frente a v0.1<small>branding.md §8 pasa a esta versión; nombre, voz y mensajes se mantienen.</small></div>
+      <div class="body scroll">
+        <table class="spec">
+          <thead><tr><th>Decisión</th><th>v0.1</th><th>v0.2 (este documento)</th></tr></thead>
+          <tbody>
+            <tr><td>Fondo</td><td class="was">Dark-first, ink-950</td><td>Blanco puro. El oscuro queda para CLI, terminal e IDE.</td></tr>
+            <tr><td>Color de marca</td><td class="was">Graft Lime como primario y CTA</td><td>Tinta <code>#0B0D11</code>. El verde vive solo en el caret y en la capa Code.</td></tr>
+            <tr><td>Tipografía</td><td class="was">Space Grotesk + Inter + JetBrains Mono</td><td>Instrument Sans (con eje de ancho) + JetBrains Mono. Dos familias.</td></tr>
+            <tr><td>Elevación</td><td class="was">Sin definir</td><td>Cero sombras. Borde <code>line</code> o <code>line-2</code>.</td></tr>
+            <tr><td>Radio</td><td class="was">Redondeado genérico</td><td>4&nbsp;px en controles, 0 en secciones, 22&nbsp;% solo en el isotipo.</td></tr>
+            <tr><td>Icono de Context</td><td class="was">brain</td><td>file-text: las reglas son archivos, no una mente.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 02 MANUAL DE MARCA ═══════════ -->
+<section class="part" id="marca">
+  <div class="wrap">
+    <div class="part-head">
+      <div class="part-no">02 — Manual de marca</div>
+      <div>
+        <h2>Manual de marca</h2>
+        <p class="lede">Las piezas del sistema y sus reglas de uso. Todo lo que aparece aquí sale de un único archivo de tokens (<code>tokens.json</code>) compartido por la web, el CLI, los badges y las imágenes OG.</p>
+      </div>
+    </div>
+
+    <!-- 2.1 Logo -->
+    <div class="block">
+      <div class="lbl">2.1 Logo<small>Wordmark en JetBrains Mono ExtraBold, minúsculas, seguido del caret de bloque. El caret es el cursor que escribe código.</small></div>
+      <div class="body">
+        <div class="logo-grid">
+          <div><span class="cap">Wordmark · principal</span><div class="wm" style="font-size:clamp(56px,9vw,104px)">genpm<span class="caret"></span></div><span class="cap">Uso: web, docs, README, presentaciones</span></div>
+          <div class="inv"><span class="cap">Inverso · sobre tinta</span><div class="wm" style="font-size:48px">genpm<span class="caret"></span></div><span class="cap">Uso: terminal, avatar, eventos</span></div>
+        </div>
+        <div class="logo-grid" style="grid-template-columns:1fr 1fr">
+          <div>
+            <span class="cap">Isotipo · g▍</span>
+            <div class="iso-row">
+              <figure><span class="iso" style="width:96px;height:96px;font-size:56px">g<span class="caret" style="height:.7em"></span></span><figcaption>96 · app</figcaption></figure>
+              <figure><span class="iso" style="width:48px;height:48px;font-size:28px">g<span class="caret" style="height:.7em"></span></span><figcaption>48</figcaption></figure>
+              <figure><span class="iso" style="width:32px;height:32px;font-size:19px">g<span class="caret" style="height:.7em"></span></span><figcaption>32</figcaption></figure>
+              <figure><span class="iso" style="width:16px;height:16px;font-size:10px;border-radius:3px">g</span><figcaption>16 · sin caret</figcaption></figure>
+            </div>
+          </div>
+          <div>
+            <span class="cap">Monocromo</span>
+            <div class="row" style="gap:28px">
+              <div class="wm" style="font-size:40px">genpm▍</div>
+              <span class="iso" style="width:48px;height:48px;font-size:28px;background:var(--paper);color:var(--ink);border:1px solid var(--ink)">g▍</span>
+            </div>
+            <span class="cap">Caret en tinta solo cuando no hay color</span>
+          </div>
+        </div>
+        <div class="construct">
+          <div class="cs-box">
+            <div class="cs-inner">
+              <span class="cs-x" style="top:14px;left:50%;transform:translateX(-50%)">x</span>
+              <span class="cs-x" style="bottom:14px;left:50%;transform:translateX(-50%)">x</span>
+              <span class="cs-x" style="left:20px;top:50%;transform:translateY(-50%)">x</span>
+              <span class="cs-x" style="right:20px;top:50%;transform:translateY(-50%)">x</span>
+              <div class="wm">genpm<span class="caret"></span></div>
+            </div>
+          </div>
+          <ul class="rules">
+            <li>Área de respeto <b>x</b> = altura de la <code>g</code> en cada lado.</li>
+            <li>Mínimo: wordmark 72&nbsp;px de ancho, isotipo 16&nbsp;px. Por debajo de 24&nbsp;px el isotipo pierde el caret.</li>
+            <li>El caret siempre en <code>code #5AA300</code>. En monocromo, en tinta o blanco.</li>
+            <li>En prosa se escribe <b>GenPM</b>. En comandos, URLs y paquetes, <code>genpm</code>.</li>
+            <li>El caret parpadea solo en el hero de la home (1&nbsp;s, <code>steps(1)</code>).</li>
+          </ul>
+        </div>
+        <div class="donts">
+          <div><span class="x">✖ mayúsculas</span><div class="wm" style="font-size:22px">GENPM▍</div></div>
+          <div><span class="x">✖ sombra</span><div class="wm" style="text-shadow:3px 3px 0 var(--line-2)">genpm<span class="caret"></span></div></div>
+          <div><span class="x">✖ otro color de caret</span><div class="wm">genpm<span class="caret" style="background:var(--context)"></span></div></div>
+          <div><span class="x">✖ otra fuente</span><div class="wm" style="font-family:Georgia,serif;font-weight:700;letter-spacing:0">genpm▍</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.2 Color -->
+    <div class="block">
+      <div class="lbl">2.2 Color<small>Neutros con un ligero sesgo frío (azul), nunca gris puro. Contraste medido sobre blanco.</small></div>
+      <div class="body">
+        <div class="sw-grid">
+          <div class="sw"><div class="chip" style="background:var(--paper)"></div><div class="meta2"><b>paper</b><code>#FFFFFF</code><span>Fondo único</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--wash)"></div><div class="meta2"><b>wash</b><code>#F6F7F9</code><span>Código, hover</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--line)"></div><div class="meta2"><b>line</b><code>#E6E8EC</code><span>Borde nivel 1</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--line-2)"></div><div class="meta2"><b>line-2</b><code>#CDD2D9</code><span>Controles</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--ink-3)"></div><div class="meta2"><b>ink-3</b><code>#6A7180</code><span>Meta · 4.9:1</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--ink-2)"></div><div class="meta2"><b>ink-2</b><code>#4A505C</code><span>Texto 2º · 8.2:1</span></div></div>
+          <div class="sw"><div class="chip" style="background:var(--ink)"></div><div class="meta2"><b>ink</b><code>#0B0D11</code><span>Marca · 19.4:1</span></div></div>
+        </div>
+
+        <div class="layers">
+          <div class="layer">
+            <div class="bar" style="background:var(--code)"></div>
+            <h4><svg class="ico" style="color:var(--code-ink)"><use href="#i-code"/></svg>Code</h4>
+            <p>Código que es tuyo. Caret del logo, capa Code, éxito en CLI.</p>
+            <dl><dt>señal</dt><dd>#5AA300 · 3.2:1 gráfico</dd><dt>texto</dt><dd>#3B7300 · 5.6:1</dd><dt>oscuro</dt><dd>#C4F54A</dd></dl>
+          </div>
+          <div class="layer">
+            <div class="bar" style="background:var(--context)"></div>
+            <h4><svg class="ico" style="color:var(--context)"><use href="#i-context"/></svg>Context</h4>
+            <p>Reglas de IA. Pestaña AI Rules, tokens, SHA.</p>
+            <dl><dt>señal</dt><dd>#5B4BDB · 5.6:1</dd><dt>texto</dt><dd>#5B4BDB</dd><dt>oscuro</dt><dd>#8B7CFF</dd></dl>
+          </div>
+          <div class="layer">
+            <div class="bar" style="background:var(--mcp)"></div>
+            <h4><svg class="ico" style="color:var(--mcp)"><use href="#i-plug"/></svg>Connections</h4>
+            <p>Servidores MCP declarados, siempre con consentimiento.</p>
+            <dl><dt>señal</dt><dd>#0A7F90 · 4.7:1</dd><dt>texto</dt><dd>#0A7F90</dd><dt>oscuro</dt><dd>#38D5E8</dd></dl>
+          </div>
+        </div>
+
+        <div class="ratio">
+          <div class="track" aria-label="Proporción de color en una pantalla tipo">
+            <i style="flex:86;background:var(--paper)"></i><i style="flex:4;background:var(--wash)"></i><i style="flex:7;background:var(--ink)"></i><i style="flex:1.2;background:var(--code)"></i><i style="flex:.9;background:var(--context)"></i><i style="flex:.9;background:var(--mcp)"></i>
+          </div>
+          <div class="leg"><span style="--c:var(--paper)">paper 86%</span><span style="--c:var(--wash)">wash 4%</span><span style="--c:var(--ink)">ink 7%</span><span style="--c:var(--code)">capas ≤ 3%</span></div>
+          <p class="note">Proporción objetivo en cualquier pantalla. Si las tres capas superan el 3&nbsp;% del área, la pantalla está sobrecargada.</p>
+        </div>
+
+        <div class="scroll">
+          <table class="spec">
+            <thead><tr><th>Estado</th><th>Hex</th><th>Uso</th></tr></thead>
+            <tbody>
+              <tr><td><span style="color:var(--code-ink)">✔ success</span></td><td class="mono">= code-ink</td><td>Escaneo superado, verificado, operación completada</td></tr>
+              <tr><td><span style="color:var(--warn)">▲ warning</span></td><td class="mono">#A15F00</td><td>Drift, deprecated, <b>Sponsored</b> (nunca en verde: no debe parecer oficial)</td></tr>
+              <tr><td><span style="color:var(--danger)">✖ danger</span></td><td class="mono">#C62828</td><td>Errores, escaneo <code>flagged</code>, versión <code>yanked</code>, cuarentena</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="dark-strip" aria-label="Superficies oscuras">
+          <div><i style="background:#0B0D11;border:1px solid #2A2E36"></i>ink<code>#0B0D11</code></div>
+          <div><i style="background:#C4F54A"></i>code<code>#C4F54A</code></div>
+          <div><i style="background:#8B7CFF"></i>context<code>#8B7CFF</code></div>
+          <div><i style="background:#38D5E8"></i>connections<code>#38D5E8</code></div>
+        </div>
+        <p class="note">Superficies oscuras (terminal del usuario, IDE, avatar): se conservan los valores brillantes de v0.1, que contrastan sobre tinta. La web tiene modo oscuro con estos mismos tokens, pero el blanco es el modo por defecto.</p>
+      </div>
+    </div>
+
+    <!-- 2.3 Tipografía -->
+    <div class="block">
+      <div class="lbl">2.3 Tipografía<small>Dos familias, ambas OFL y self-hosted en producción.</small></div>
+      <div class="body">
+        <div class="type-pair">
+          <div>
+            <span class="cap">Instrument Sans · display y UI</span>
+            <div class="aa" style="font-weight:600;font-variation-settings:'wdth' 86">Aa</div>
+            <p class="glyphs">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br>abcdefghijklmnñopqrstuvwxyz 0123456789</p>
+            <p class="note">Titulares a 600 con ancho 86 y tracking −3.5&nbsp;%. Interfaz a 400/500 con ancho 100.</p>
+          </div>
+          <div>
+            <span class="cap">JetBrains Mono · código, datos, wordmark</span>
+            <div class="aa mono" style="font-weight:800;letter-spacing:-.06em">Aa</div>
+            <p class="glyphs mono" style="font-size:13.5px">9f2c4e1 ◆ ◇ ✔ ▲ ✖ › ▍<br>@core/billing ^1.2.0 → src/lib</p>
+            <p class="note">Comandos, SHAs, rutas, versiones y etiquetas en mayúscula (+8&nbsp;% tracking). Ligaduras siempre desactivadas.</p>
+          </div>
+        </div>
+        <div class="scroll">
+          <table class="spec scale">
+            <thead><tr><th>Token</th><th>Tamaño / línea</th><th>Peso</th><th>Muestra</th></tr></thead>
+            <tbody>
+              <tr><td>display</td><td>64 / 0.98</td><td>600 · w86</td><td style="font-size:30px;font-weight:600;letter-spacing:-.04em;font-variation-settings:'wdth' 86">Install architectures</td></tr>
+              <tr><td>h1</td><td>40 / 1.02</td><td>600 · w88</td><td style="font-size:24px;font-weight:600;letter-spacing:-.03em;font-variation-settings:'wdth' 88">Publish your architecture</td></tr>
+              <tr><td>h2</td><td>30 / 1.05</td><td>600 · w88</td><td style="font-size:20px;font-weight:600;letter-spacing:-.02em">Trending this week</td></tr>
+              <tr><td>h3</td><td>17 / 1.3</td><td>600</td><td style="font-size:17px;font-weight:600">Scoped AI rules</td></tr>
+              <tr><td>body</td><td>15 / 1.55</td><td>400</td><td>Stripe subscriptions, portal and idempotent webhooks.</td></tr>
+              <tr><td>small</td><td>13 / 1.5</td><td>400</td><td style="font-size:13px;color:var(--ink-2)">Published 2 days ago by GenPM</td></tr>
+              <tr><td>mono</td><td>12.5 / 1.75</td><td>400 · 700</td><td class="mono" style="font-size:12.5px">npx genpm add @core/billing</td></tr>
+              <tr><td>label</td><td>11 / +8%</td><td>500 mono</td><td class="mono" style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)">Injects into</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Cifras siempre con <code>tabular-nums</code>. Números grandes abreviados con una cifra decimal: <span class="mono tnum">1.2M installs</span>, <span class="mono tnum">12.4k</span>, nunca <span class="mono tnum">1,204,331</span> en tarjetas.</p>
+      </div>
+    </div>
+
+    <!-- 2.4 Retícula -->
+    <div class="block">
+      <div class="lbl">2.4 Retícula, espacio y elevación<small>Base de 4&nbsp;px. 12 columnas, 1200&nbsp;px de ancho máximo, gutter de 24&nbsp;px (16 en móvil).</small></div>
+      <div class="body">
+        <div class="gridviz" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="space-row">
+          <div class="sp-list">
+            <div class="sp"><span>s-1</span><i style="width:4px"></i><span>4</span></div>
+            <div class="sp"><span>s-2</span><i style="width:8px"></i><span>8</span></div>
+            <div class="sp"><span>s-3</span><i style="width:12px"></i><span>12</span></div>
+            <div class="sp"><span>s-4</span><i style="width:16px"></i><span>16</span></div>
+            <div class="sp"><span>s-6</span><i style="width:24px"></i><span>24</span></div>
+            <div class="sp"><span>s-8</span><i style="width:32px"></i><span>32</span></div>
+            <div class="sp"><span>s-12</span><i style="width:48px"></i><span>48</span></div>
+            <div class="sp"><span>s-16</span><i style="width:64px"></i><span>64</span></div>
+            <div class="sp"><span>s-24</span><i style="width:96px"></i><span>96</span></div>
+          </div>
+          <div class="elev">
+            <div style="border:1px dashed var(--line-2)"><span>Nivel 0 · papel</span><code>sin borde</code></div>
+            <div style="border:1px solid var(--line)"><span>Nivel 1 · secciones, tarjetas, tablas</span><code>line</code></div>
+            <div style="border:1px solid var(--line-2);background:var(--wash)"><span>Nivel 2 · controles, código</span><code>line-2 + wash</code></div>
+            <div style="border:1px solid var(--line);color:var(--ink-3);text-decoration:line-through"><span>Nivel 3 · sombra</span><code>no existe</code></div>
+          </div>
+        </div>
+        <p class="note">Los grupos de tarjetas comparten bordes (rejilla colapsada) en lugar de separarse con huecos. Así una lista de 6 o de 600 paquetes se ve igual de ordenada.</p>
+      </div>
+    </div>
+
+    <!-- 2.5 Componentes -->
+    <div class="block">
+      <div class="lbl">2.5 Componentes<small>Los mismos que define web-ui-spec §6, dibujados con el sistema.</small></div>
+      <div class="body">
+        <div class="comp-grid">
+          <div class="comp">
+            <span class="cap">Button</span>
+            <div class="row"><a class="btn primary" href="#web">Get started</a><a class="btn" href="#web">Read the docs</a><a class="btn ghost" href="#web">Sign in</a></div>
+          </div>
+          <div class="comp">
+            <span class="cap">Search · ⌘K</span>
+            <div class="input"><svg class="ico" style="width:16px;height:16px"><use href="#i-search"/></svg>Search 128 packages…<span class="kbd">⌘K</span></div>
+          </div>
+          <div class="comp" style="grid-column:1/-1">
+            <span class="cap">CommandBlock</span>
+            <div class="cmd" style="max-width:520px"><span class="p">$</span><code id="c-demo">npx genpm add @core/auth</code><button class="cp" data-copy="c-demo">Copy</button></div>
+          </div>
+          <div class="comp">
+            <span class="cap">LayerBadges</span>
+            <div class="row"><span class="badge code"><i></i>Code</span><span class="badge ctx"><i></i>Context <em>1.1k tok</em></span><span class="badge mcp"><i></i>MCP <em>stripe</em></span></div>
+          </div>
+          <div class="comp">
+            <span class="cap">Confianza</span>
+            <div class="row"><span class="badge ver"><svg class="ico" style="width:13px;height:13px"><use href="#i-shield"/></svg>verified</span><span class="badge ok">scan ✔ passed</span><span class="badge flag">scan ✖ flagged</span><span class="sha"><svg class="ico" style="width:13px;height:13px"><use href="#i-commit"/></svg>9f2c4e1</span><span class="spons">Sponsored</span></div>
+          </div>
+          <div class="comp">
+            <span class="cap">Segmented</span>
+            <div class="seg" role="tablist" data-tabs="segdemo"><button role="tab" aria-selected="true" data-tab="a">CLI</button><button role="tab" aria-selected="false" data-tab="b">MCP</button><button role="tab" aria-selected="false" data-tab="c">Manual</button></div>
+          </div>
+          <div class="comp">
+            <span class="cap">Banner</span>
+            <div class="banner" style="--c:var(--warn)"><b>Deprecated</b><span>Use <code>@core/billing@2</code>. Webhooks moved to <code>/api/billing</code>.</span></div>
+            <div class="banner" style="--c:var(--danger)"><b>Yanked</b><span>1.1.1 skipped signature checks. Latest good: 1.2.0.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.6 Iconos -->
+    <div class="block">
+      <div class="lbl">2.6 Iconografía y grafismo<small>Lucide, trazo 1.5&nbsp;px. El color del icono sigue a su capa.</small></div>
+      <div class="body">
+        <div class="icons">
+          <div><svg class="ico" style="color:var(--code-ink)"><use href="#i-code"/></svg>code-2<br>Code</div>
+          <div><svg class="ico" style="color:var(--context)"><use href="#i-context"/></svg>file-text<br>Context</div>
+          <div><svg class="ico" style="color:var(--mcp)"><use href="#i-plug"/></svg>plug<br>MCP</div>
+          <div><svg class="ico"><use href="#i-shield"/></svg>shield-check<br>verified</div>
+          <div><svg class="ico" style="color:var(--context)"><use href="#i-commit"/></svg>git-commit<br>SHA</div>
+          <div><svg class="ico"><use href="#i-search"/></svg>search<br>buscar</div>
+        </div>
+        <div class="w-graft" style="border-radius:var(--r)">
+          <svg viewBox="0 0 880 120" role="img" aria-label="Línea de injerto: módulo, verificación de SHA y destino">
+            <rect x="20" y="40" width="200" height="40" rx="4" fill="var(--paper)" stroke="var(--line-2)"/>
+            <text x="36" y="65" class="g-t">@core/billing</text>
+            <path d="M220 60 H420" stroke="var(--ink)" fill="none"/>
+            <rect x="420" y="30" width="40" height="60" rx="2" fill="var(--ink)"/>
+            <text x="440" y="20" class="g-m" text-anchor="middle">9f2c4e1 ✓</text>
+            <path d="M460 60 H560 V60 H660" stroke="var(--ink)" fill="none"/>
+            <circle cx="220" cy="60" r="4" fill="var(--code)"/><circle cx="660" cy="60" r="4" fill="var(--code)"/>
+            <rect x="660" y="40" width="200" height="40" rx="4" fill="var(--paper)" stroke="var(--line-2)"/>
+            <text x="676" y="65" class="g-t">src/lib/billing/</text>
+          </svg>
+        </div>
+        <p class="note">Línea de injerto: conectores ortogonales de 1&nbsp;px con nodos en los extremos. Todo flujo pasa por el bloque de tinta del SHA, porque nada entra al proyecto sin verificarse. Es el único grafismo de la marca.</p>
+      </div>
+    </div>
+
+    <!-- 2.7 Voz -->
+    <div class="block">
+      <div class="lbl">2.7 Voz<small>Precisa, directa, generosa. Un senior que ayuda sin hacerte sentir junior.</small></div>
+      <div class="body">
+        <div class="voice">
+          <div class="y"><span class="cap mono" style="font-size:11px;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase">Decimos</span>
+            <ul><li>Installs auth in 4 s.</li><li>Injected into src/lib/billing.</li><li>No postinstall. No surprises.</li><li>Your code. Your AI. Your repo.</li><li>fix: use --dest src/lib/auth2</li></ul></div>
+          <div class="n"><span class="cap mono" style="font-size:11px;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase">No decimos</span>
+            <ul><li>Revolutionize your workflow</li><li>Magic, 10x, disruptive</li><li>Simply / obviously / just</li><li>Our code in your project</li><li>Something went wrong</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.8 CLI y badges -->
+    <div class="block">
+      <div class="lbl">2.8 CLI y badges<small>La marca vive en la terminal del usuario: mismos símbolos, mismas tres capas.</small></div>
+      <div class="body">
+        <div class="term dark">
+          <div class="bar"><span>zsh — your-app</span><span>NO_COLOR respetado</span></div>
+<pre><span class="t-code">◆</span> <span class="t-b">genpm add</span> @core/billing
+
+  <span class="t-mut">Resolved</span>
+  ├─ <span class="t-b">@core/billing</span>  <span class="t-mut">1.2.0</span>  <span class="t-ctx">9f2c4e1</span>  → src/lib/billing
+  ├─ <span class="t-b">@core/auth</span>     <span class="t-mut">1.2.0</span>  <span class="t-ctx">1b9d3a0</span>  → src/lib/auth      <span class="t-mut">dependency</span>
+  └─ <span class="t-b">@core/db</span>       <span class="t-mut">1.0.3</span>  <span class="t-ctx">77ac0d2</span>  → <span class="t-mut">skip              already installed</span>
+
+  <span class="t-code">Code</span>     47 files · 112 KB
+  <span class="t-ctx">Rules</span>    2 files · ~1.4k tokens · scan passed
+  <span class="t-mcp">MCP</span>      stripe: npx -y @stripe/mcp --tools=all
+
+<span class="t-mut">◇</span> Inject 2 packages (47 files, 112 KB)? <span class="t-code">Yes</span>
+<span class="t-mut">◇</span> Add MCP server "stripe" to .mcp.json? <span class="t-mut">No</span>
+
+<span class="t-code">✔</span> Injected 2 packages in 1.8s
+  <span class="t-mut">›</span> Follow "Integración" in src/lib/billing/AGENTS.md</pre>
+        </div>
+        <div class="row" style="gap:12px">
+          <span class="shield"><span>genpm</span><span style="background:var(--code);color:var(--ink)">1.2.0</span></span>
+          <span class="shield"><span>genpm</span><span style="background:var(--wash);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)">890 / 30d</span></span>
+          <span class="shield"><span>genpm</span><span style="background:var(--mcp);color:var(--paper)">mcp</span></span>
+          <span class="shield"><span>genpm</span><span style="background:var(--code);color:var(--ink)">✓ verified</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 03 WEB ═══════════ -->
+<section class="part" id="web">
+  <div class="wrap">
+    <div class="part-head">
+      <div class="part-no">03 — genpm.net</div>
+      <div>
+        <h2>La web</h2>
+        <p class="lede">Las dos páginas P0 que más pesan en la conversión: la home (explicar el concepto en 5 segundos) y la página de paquete (confiar antes de instalar). Contenido real de los paquetes semilla; cifras de ejemplo. Los controles funcionan: copiar, CLI/MCP, clientes y pestañas.</p>
+      </div>
+    </div>
+
+    <!-- HOME -->
+    <div class="frame-cap"><span>/ · Home · P0</span><span>1200 px · se adapta al ancho</span></div>
+    <div class="frame">
+      <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url"><b>genpm.net</b></div><div style="width:39px"></div></div>
+      <div class="site">
+        <div class="w-head w-pad">
+          <span class="w-logo">genpm<span class="caret"></span></span>
+          <div class="input"><svg class="ico" style="width:15px;height:15px"><use href="#i-search"/></svg>Search 128 packages…<span class="kbd">⌘K</span></div>
+          <nav class="w-nav"><a href="#web">Docs</a><a href="#web">MCP</a><a href="#web">Publish</a></nav>
+          <a class="btn sm" href="#web">Sign in</a>
+          <div class="w-burger"><svg class="ico"><use href="#i-search"/></svg><svg class="ico"><use href="#i-menu"/></svg></div>
+        </div>
+
+        <div class="w-hero w-pad">
+          <div style="min-width:0">
+            <span class="w-eyebrow"><i></i>Code · Context · Connections</span>
+            <h1 class="w-h1">Install architectures, not dependencies.</h1>
+            <p class="w-sub">Source code, AI rules and MCP servers, injected into your repo and pinned to a commit. Your AI already knows how to use it.</p>
+            <div class="w-cta" data-tabs="hero">
+              <div class="top2">
+                <div class="seg" role="tablist" aria-label="Install method"><button role="tab" aria-selected="true" data-tab="cli">CLI</button><button role="tab" aria-selected="false" data-tab="mcp">MCP</button></div>
+                <span class="hint">No install needed</span>
+              </div>
+              <div data-panel="cli">
+                <div class="cmd"><span class="p">$</span><code id="c-hero">npx genpm add @core/auth</code><button class="cp" data-copy="c-hero">Copy</button></div>
+              </div>
+              <div data-panel="mcp" hidden>
+                <div class="cmd"><span class="p">$</span><code id="c-hero-mcp">claude mcp add genpm -- npx -y @genpm/mcp</code><button class="cp" data-copy="c-hero-mcp">Copy</button></div>
+                <p class="hint" style="margin-top:10px">Then ask: <code>"Add GitHub login to this project with genpm"</code></p>
+              </div>
+            </div>
+            <div class="w-trust">
+              <span><svg class="ico"><use href="#i-commit"/></svg>SHA-verified</span>
+              <span><svg class="ico"><use href="#i-ban"/></svg>Zero install scripts</span>
+              <span><svg class="ico"><use href="#i-shield"/></svg>Rules scanned</span>
+            </div>
+          </div>
+          <div class="term" style="min-width:0">
+            <div class="bar"><span>your-app — zsh</span><span>1.8s</span></div>
+<pre><span class="t-code">◆</span> <span class="t-b">genpm add</span> @core/billing
+
+  ├─ <span class="t-b">@core/billing</span> <span class="t-mut">1.2.0</span> <span class="t-ctx">9f2c4e1</span>
+  │  → src/lib/billing
+  └─ <span class="t-b">@core/auth</span>    <span class="t-mut">1.2.0</span> <span class="t-ctx">1b9d3a0</span>
+     → src/lib/auth
+
+  <span class="t-code">Code</span>   47 files · 112 KB
+  <span class="t-ctx">Rules</span>  ~1.4k tokens · scan passed
+  <span class="t-mcp">MCP</span>    stripe <span class="t-mut">(asks first)</span>
+
+<span class="t-code">✔</span> Injected 2 packages in 1.8s
+  <span class="t-mut">›</span> Set STRIPE_SECRET_KEY in .env</pre>
+          </div>
+        </div>
+
+        <div class="w-sec w-pad">
+          <div class="w-sec-h"><div><div class="w-k">What gets injected</div><h2>Three layers. One commit.</h2><p>Every package carries code, the rules your AI needs to use it, and the MCP servers it talks to. All of it passes through the same SHA check.</p></div></div>
+          <div class="w-graft">
+            <svg viewBox="0 0 880 290" role="img" aria-label="Diagrama: las tres capas de @core/billing pasan por la verificación del SHA y llegan a su destino en tu proyecto">
+              <rect x="20" y="20" width="270" height="250" rx="4" fill="var(--paper)" stroke="var(--line-2)"/>
+              <text x="40" y="52" class="g-h">@core/billing</text>
+              <text x="40" y="72" class="g-m">1.2.0 · github.com/genpm-net/billing</text>
+              <line x1="20" y1="90" x2="290" y2="90" stroke="var(--line)"/>
+              <rect x="40" y="120" width="8" height="8" fill="var(--code)"/><text x="58" y="128" class="g-t">Code</text><text x="270" y="128" class="g-m" text-anchor="end">23 files</text>
+              <rect x="40" y="180" width="8" height="8" fill="var(--context)"/><text x="58" y="188" class="g-t">Context</text><text x="270" y="188" class="g-m" text-anchor="end">~1.1k tok</text>
+              <rect x="40" y="240" width="8" height="8" fill="var(--mcp)"/><text x="58" y="248" class="g-t">Connections</text><text x="270" y="248" class="g-m" text-anchor="end">stripe</text>
+
+              <path d="M290 124 H420" stroke="var(--code)" fill="none"/><path d="M460 124 H590" stroke="var(--code)" fill="none"/>
+              <path d="M290 184 H420" stroke="var(--context)" fill="none"/><path d="M460 184 H590" stroke="var(--context)" fill="none"/>
+              <path d="M290 244 H420" stroke="var(--mcp)" fill="none"/><path d="M460 244 H520" stroke="var(--mcp)" fill="none" /><path d="M520 244 H590" stroke="var(--mcp)" fill="none" stroke-dasharray="3 4"/>
+              <rect x="420" y="100" width="40" height="170" rx="2" fill="var(--ink)"/>
+              <text x="440" y="70" class="g-m" text-anchor="middle">verify</text>
+              <text x="440" y="88" class="g-t" text-anchor="middle" style="fill:var(--context)">9f2c4e1</text>
+              <circle cx="290" cy="124" r="4" fill="var(--code)"/><circle cx="590" cy="124" r="4" fill="var(--code)"/>
+              <circle cx="290" cy="184" r="4" fill="var(--context)"/><circle cx="590" cy="184" r="4" fill="var(--context)"/>
+              <circle cx="290" cy="244" r="4" fill="var(--mcp)"/><circle cx="590" cy="244" r="4" fill="var(--paper)" stroke="var(--mcp)"/>
+              <text x="555" y="236" class="g-m" text-anchor="middle">consent</text>
+
+              <rect x="590" y="20" width="270" height="250" rx="4" fill="var(--paper)" stroke="var(--line-2)"/>
+              <text x="610" y="52" class="g-h">your-app/</text>
+              <text x="610" y="72" class="g-m">genpm.lock updated</text>
+              <line x1="590" y1="90" x2="860" y2="90" stroke="var(--line)"/>
+              <text x="610" y="128" class="g-t">src/lib/billing/</text>
+              <text x="610" y="188" class="g-t">src/lib/billing/AGENTS.md</text>
+              <text x="610" y="248" class="g-t">.mcp.json</text>
+            </svg>
+          </div>
+          <div class="w-3c">
+            <div style="--c:var(--code)"><h3><i></i>Code you own</h3><p>Lands in <code>src/</code>, not in node_modules. You see it in your diff, edit it, commit it.</p></div>
+            <div style="--c:var(--context)"><h3><i></i>Context your AI gets</h3><p>An <code>AGENTS.md</code> per module, loaded only when your agent works in that folder.</p></div>
+            <div style="--c:var(--mcp)"><h3><i></i>Connections, ready</h3><p>The MCP servers a module needs, declared in its manifest. Added only with your consent.</p></div>
+          </div>
+        </div>
+
+        <div class="w-sec w-pad">
+          <div class="w-feat">
+            <div style="min-width:0">
+              <div class="w-sec-h"><div><div class="w-k">Featured</div><h2>Start with @core</h2></div><a class="btn sm" href="#web">Browse all</a></div>
+              <div class="w-cards">
+                <div class="pcard"><div class="nm"><b>@core/auth</b><span>1.2.0</span><span class="ver"><svg class="ico"><use href="#i-shield"/></svg>verified</span></div><p>Sessions and OAuth (GitHub, Google) with Drizzle.</p><div class="ft"><div class="row"><span class="badge code"><i></i>Code</span><span class="badge ctx"><i></i>0.9k</span></div><span class="inst tnum">1.5k / 30d</span></div></div>
+                <div class="pcard"><div class="nm"><b>@core/billing</b><span>1.2.0</span><span class="ver"><svg class="ico"><use href="#i-shield"/></svg>verified</span></div><p>Stripe subscriptions, portal and idempotent webhooks.</p><div class="ft"><div class="row"><span class="badge code"><i></i>Code</span><span class="badge ctx"><i></i>1.1k</span><span class="badge mcp"><i></i>stripe</span></div><span class="inst tnum">890 / 30d</span></div></div>
+                <div class="pcard"><div class="nm"><b>@core/ai</b><span>0.9.0</span><span class="ver"><svg class="ico"><use href="#i-shield"/></svg>verified</span></div><p>Streaming chat, versioned prompts and usage logging.</p><div class="ft"><div class="row"><span class="badge code"><i></i>Code</span><span class="badge ctx"><i></i>1.3k</span></div><span class="inst tnum">1.1k / 30d</span></div></div>
+                <div class="pcard sp"><div class="nm"><b>@vendor/obs</b><span>2.1.0</span><span class="spons" style="margin-left:auto">Sponsored</span></div><p>Tracing and logs in one command.</p><div class="ft"><div class="row"><span class="badge code"><i></i>Code</span><span class="badge ctx"><i></i>0.4k</span></div><span class="inst tnum">310 / 30d</span></div></div>
+              </div>
+            </div>
+            <div class="trend" style="min-width:0">
+              <div class="w-sec-h"><div><div class="w-k">Trending this week</div><h2>Installs</h2></div></div>
+              <ol id="trend"></ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-sec w-pad">
+          <div class="w-sec-h"><div><div class="w-k">How it works</div><h2>Search. Inspect. Inject.</h2></div></div>
+          <div class="w-steps">
+            <div><span class="no">1</span><h3>Search</h3><p>Find a module by need, from the web, the CLI or your AI.</p><code>genpm search stripe</code></div>
+            <div><span class="no">2</span><h3>Inspect</h3><p>Read the exact files, the AI rules and the commit before anything touches your repo.</p><code>genpm info @core/billing</code></div>
+            <div><span class="no">3</span><h3>Inject</h3><p>The code lands in <code style="padding:0 4px">src/</code>, the rules where your IDE reads them, the lock pins the SHA.</p><code>genpm add @core/billing</code></div>
+          </div>
+        </div>
+
+        <div class="w-sec w-pad">
+          <div class="w-sec-h"><div><div class="w-k">Ask your AI</div><h2>Connect GenPM to your editor</h2><p>One MCP server. Your agent searches, inspects and installs, and asks you before adding anything outside your code.</p></div></div>
+          <div class="w-mcp" data-tabs="clients">
+            <div role="tablist" aria-label="Client">
+              <button role="tab" aria-selected="true" data-tab="claude">Claude Code <code>CLI</code></button>
+              <button role="tab" aria-selected="false" data-tab="cursor">Cursor <code>.cursor/mcp.json</code></button>
+              <button role="tab" aria-selected="false" data-tab="vscode">VS Code <code>.vscode/mcp.json</code></button>
+              <button role="tab" aria-selected="false" data-tab="windsurf">Windsurf <code>mcp_config.json</code></button>
+              <button role="tab" aria-selected="false" data-tab="codex">Codex <code>config.toml</code></button>
+            </div>
+            <div class="pn">
+              <div data-panel="claude"><div class="cmd"><span class="p">$</span><code id="m1">claude mcp add genpm -- npx -y @genpm/mcp</code><button class="cp" data-copy="m1">Copy</button></div></div>
+              <div data-panel="cursor" hidden><div class="term"><div class="bar"><span>.cursor/mcp.json</span><button class="cp mono" data-copy="m2" style="font-size:11px">Copy</button></div><pre id="m2">{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }</pre></div></div>
+              <div data-panel="vscode" hidden><div class="term"><div class="bar"><span>.vscode/mcp.json</span><button class="cp mono" data-copy="m3" style="font-size:11px">Copy</button></div><pre id="m3">{ "servers": { "genpm": { "type": "stdio", "command": "npx", "args": ["-y", "@genpm/mcp"] } } }</pre></div></div>
+              <div data-panel="windsurf" hidden><div class="term"><div class="bar"><span>~/.codeium/windsurf/mcp_config.json</span><button class="cp mono" data-copy="m4" style="font-size:11px">Copy</button></div><pre id="m4">{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }</pre></div></div>
+              <div data-panel="codex" hidden><div class="term"><div class="bar"><span>~/.codex/config.toml</span><button class="cp mono" data-copy="m5" style="font-size:11px">Copy</button></div><pre id="m5">[mcp_servers.genpm]
+command = "npx"
+args = ["-y", "@genpm/mcp"]</pre></div></div>
+              <div class="prompt-ex">
+                <span class="w-k" style="margin:8px 0 2px">Then try</span>
+                <div>Add GitHub login to this project with genpm.</div>
+                <div>Find a billing module with Stripe and show me its rules before installing.</div>
+                <div>Which genpm packages in this repo are outdated?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-sec w-pad">
+          <div class="w-sec-h"><div><div class="w-k">Security</div><h2>What you reviewed is what gets installed.</h2></div></div>
+          <div class="w-sec3">
+            <div><h3><svg class="ico" style="color:var(--context)"><use href="#i-commit"/></svg>Pinned to a SHA</h3><p>Tags resolve to a 40-character commit, verified after every fetch. Never a branch.</p></div>
+            <div><h3><svg class="ico"><use href="#i-ban"/></svg>Zero scripts</h3><p>GenPM has no lifecycle hooks. Nothing from a package runs on your machine.</p></div>
+            <div><h3><svg class="ico" style="color:var(--code-ink)"><use href="#i-shield"/></svg>Rules scanned</h3><p>Every AI rule file is checked for prompt injection before it is listed.</p></div>
+          </div>
+        </div>
+
+        <div class="w-sec w-pad">
+          <div class="w-pub">
+            <div>
+              <div class="w-k">For authors</div>
+              <h2>Publish your architecture in 60 seconds.</h2>
+              <p>Tag a release, add a <code>genpm.json</code> and an <code>AGENTS.md</code>. The registry stores metadata only; your code stays on GitHub.</p>
+              <div class="row"><a class="btn primary" href="#web">Publish a package</a><a class="btn ghost" href="#web">genpm.json reference</a></div>
+            </div>
+            <div class="w-stats">
+              <div><b>128</b><span>packages</span></div>
+              <div><b>12.4k</b><span>installs</span></div>
+              <div><b>41</b><span>publishers</span></div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="w-foot w-pad">
+          <div class="cols">
+            <div><span class="w-logo">genpm<span class="caret"></span></span><p style="font-size:13px;color:var(--ink-3);margin-top:10px;max-width:28ch">Install architectures, not dependencies.</p></div>
+            <div><h4>Product</h4><ul><li>Docs</li><li>MCP</li><li>Publish</li><li>Changelog</li></ul></div>
+            <div><h4>Company</h4><ul><li>Sponsors</li><li>Enterprise</li><li>Blog</li></ul></div>
+            <div><h4>Community</h4><ul><li>GitHub</li><li>Discord</li><li>X</li></ul></div>
+            <div><h4>Legal</h4><ul><li>Terms</li><li>Privacy</li><li>Policy</li><li>Report abuse</li></ul></div>
+          </div>
+          <div class="base"><span>© 2026 GenPM · llms.txt</span><span class="status"><i></i>All systems normal</span></div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- PAQUETE -->
+    <div class="frame-cap" style="margin-top:56px"><span>/p/@core/billing · Paquete · P0</span><span>La página más importante del sitio</span></div>
+    <div class="frame">
+      <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url">genpm.net<b>/p/@core/billing</b></div><div style="width:39px"></div></div>
+      <div class="site">
+        <div class="w-head w-pad">
+          <span class="w-logo">genpm<span class="caret"></span></span>
+          <div class="input"><svg class="ico" style="width:15px;height:15px"><use href="#i-search"/></svg>stripe<span class="kbd">⌘K</span></div>
+          <nav class="w-nav"><a href="#web">Docs</a><a href="#web">MCP</a><a href="#web">Publish</a></nav>
+          <a class="btn sm" href="#web">Sign in</a>
+          <div class="w-burger"><svg class="ico"><use href="#i-search"/></svg><svg class="ico"><use href="#i-menu"/></svg></div>
+        </div>
+        <div class="pk-head w-pad">
+          <div class="pk-title">
+            <h1><span>@core /</span> billing</h1>
+            <span class="badge">1.2.0 ▾</span>
+            <span class="badge ver"><svg class="ico" style="width:13px;height:13px"><use href="#i-shield"/></svg>verified</span>
+            <span class="badge">MIT</span>
+            <div class="act"><a class="btn sm ghost" href="#web">Report</a><a class="btn sm" href="#web">GitHub</a></div>
+          </div>
+          <p>Stripe subscriptions, customer portal and idempotent webhooks, with Drizzle.</p>
+          <div class="row"><span class="badge code"><i></i>Code <em>23 files</em></span><span class="badge ctx"><i></i>Context <em>~1.1k tokens</em></span><span class="badge mcp"><i></i>MCP <em>stripe</em></span><span class="badge ok">scan ✔ passed</span></div>
+        </div>
+        <div class="pk-body">
+          <div class="pk-main" data-tabs="pkg">
+            <div class="pk-tabs" role="tablist" aria-label="Package">
+              <button role="tab" aria-selected="false" data-tab="ov">Overview</button>
+              <button role="tab" aria-selected="true" data-tab="rules" style="--c:var(--context)"><i></i>AI Rules</button>
+              <button role="tab" aria-selected="false" data-tab="files" style="--c:var(--code)"><i></i>Files <em>23</em></button>
+              <button role="tab" aria-selected="false" data-tab="mcp" style="--c:var(--mcp)"><i></i>MCP</button>
+              <button role="tab" aria-selected="false" data-tab="ver">Versions <em>7</em></button>
+              <button role="tab" aria-selected="false" data-tab="sec">Security</button>
+            </div>
+            <div class="pk-panel" data-panel="ov" hidden>
+              <h3>@core/billing</h3>
+              <p>Subscription checkout, customer portal and an idempotent webhook handler backed by a <code>stripe_events</code> table. Gate features with <code>hasEntitlement(user, feature)</code>.</p>
+              <p>Adapters for Hono and Next.js route handlers. Requires <code>@core/db</code> and <code>@core/auth</code>, which GenPM resolves for you.</p>
+            </div>
+            <div class="pk-panel" data-panel="rules">
+              <div class="rules-head"><span class="badge ctx"><i></i>~1.1k tokens</span><span class="badge">→ src/lib/billing/AGENTS.md</span><span class="badge">→ .cursor/rules/billing.mdc</span></div>
+              <p>This is exactly what your AI will read when it works in <code>src/lib/billing</code>. Nothing else is added to its context.</p>
+              <div class="md"><pre><span class="h"># @core/billing</span>
+
+<span class="h">## Integración</span>
+- Mount the webhook at POST /api/billing/webhook.
+- Verify the Stripe signature before parsing the body.
+- Gate features with hasEntitlement(user, feature).
+  Never read the subscriptions table directly.
+
+<span class="h">## Datos</span>
+- Tables live in schema/billing.ts. Do not edit
+  tables owned by @core/auth or @core/db.
+
+<span class="h">## No hacer</span>
+- Do not store card data or raw PaymentMethods.
+- Do not hardcode price IDs; read STRIPE_PRICE_* from env.</pre></div>
+            </div>
+            <div class="pk-panel" data-panel="files" hidden>
+              <p>The exact tree that will be injected, after <code>.genpmignore</code>.</p>
+              <div class="tree">
+                <div class="dir"><span>src/lib/billing/</span><span>112 KB</span></div>
+                <div><span>&nbsp;&nbsp;AGENTS.md</span><span>4.3 KB</span></div>
+                <div><span>&nbsp;&nbsp;index.ts</span><span>1.1 KB</span></div>
+                <div><span>&nbsp;&nbsp;checkout.ts</span><span>3.8 KB</span></div>
+                <div><span>&nbsp;&nbsp;portal.ts</span><span>1.6 KB</span></div>
+                <div><span>&nbsp;&nbsp;webhooks.ts</span><span>6.2 KB</span></div>
+                <div><span>&nbsp;&nbsp;entitlements.ts</span><span>2.4 KB</span></div>
+                <div><span>&nbsp;&nbsp;schema/billing.ts</span><span>3.0 KB</span></div>
+                <div><span>&nbsp;&nbsp;adapters/hono.ts</span><span>1.9 KB</span></div>
+                <div><span>&nbsp;&nbsp;adapters/next.ts</span><span>2.1 KB</span></div>
+                <div style="color:var(--ink-3)"><span>&nbsp;&nbsp;+ 13 more files</span><span></span></div>
+              </div>
+            </div>
+            <div class="pk-panel" data-panel="mcp" hidden>
+              <dl class="mcp-card">
+                <div><dt>server</dt><dd class="mono"><b>stripe</b></dd></div>
+                <div><dt>command</dt><dd class="mono" style="white-space:nowrap">npx -y @stripe/mcp --tools=all</dd></div>
+                <div><dt>env</dt><dd class="mono">STRIPE_SECRET_KEY</dd></div>
+                <div><dt>why</dt><dd>Lets your agent read real products and prices while it integrates billing.</dd></div>
+              </dl>
+              <div class="banner" style="--c:var(--mcp)"><b>Consent</b><span>Added to <code>.mcp.json</code> only if you say yes during install. You can enable it later with <code>genpm mcp add @core/billing</code>.</span></div>
+            </div>
+            <div class="pk-panel" data-panel="ver" hidden>
+              <div class="scroll">
+                <table class="spec vt">
+                  <thead><tr><th>Version</th><th>Commit</th><th>Published</th><th>Scan</th></tr></thead>
+                  <tbody>
+                    <tr><td>1.2.0</td><td><span class="sha">9f2c4e1</span></td><td>2 days ago</td><td style="color:var(--code-ink)">✔ passed</td></tr>
+                    <tr><td>1.1.2</td><td><span class="sha">c41e8b7</span></td><td>3 weeks ago</td><td style="color:var(--code-ink)">✔ passed</td></tr>
+                    <tr class="y"><td>1.1.1</td><td><span class="sha">0d7a913</span></td><td>yanked · skipped signature check</td><td style="color:var(--danger)">✖ yanked</td></tr>
+                    <tr><td>1.1.0</td><td><span class="sha">e88b2fa</span></td><td>2 months ago</td><td style="color:var(--code-ink)">✔ passed</td></tr>
+                    <tr><td>1.0.0</td><td><span class="sha">5a1c0de</span></td><td>3 months ago</td><td style="color:var(--code-ink)">✔ passed</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="pk-panel" data-panel="sec" hidden>
+              <dl class="mcp-card">
+                <div><dt>scan</dt><dd style="color:var(--code-ink)">✔ passed · 0 findings in 2 rule files</dd></div>
+                <div><dt>commit</dt><dd class="mono">tag v1.2.0 → 9f2c4e1 · verified after fetch</dd></div>
+                <div><dt>scripts</dt><dd>None. GenPM never runs package code.</dd></div>
+                <div><dt>license</dt><dd>MIT (detected in LICENSE)</dd></div>
+              </dl>
+            </div>
+          </div>
+
+          <aside class="pk-side" data-tabs="install">
+            <div class="seg" role="tablist" aria-label="Install"><button role="tab" aria-selected="true" data-tab="cli">CLI</button><button role="tab" aria-selected="false" data-tab="prompt">MCP prompt</button><button role="tab" aria-selected="false" data-tab="man">Manual</button></div>
+            <div data-panel="cli" style="display:grid;gap:10px">
+              <div class="runner" role="group" aria-label="Runner"><button aria-pressed="true" data-run="npx">npx</button><button aria-pressed="false" data-run="pnpm dlx">pnpm dlx</button><button aria-pressed="false" data-run="bunx">bunx</button></div>
+              <div class="cmd"><span class="p">$</span><code id="c-pk">npx genpm add @core/billing</code><button class="cp" data-copy="c-pk">Copy</button></div>
+            </div>
+            <div data-panel="prompt" hidden>
+              <div class="term"><div class="bar"><span>paste in your agent</span><button class="cp mono" data-copy="c-pr" style="font-size:11px">Copy</button></div><pre id="c-pr" style="white-space:pre-wrap">Install @core/billing with genpm and integrate it following its AGENTS.md</pre></div>
+            </div>
+            <div data-panel="man" hidden>
+              <div class="term"><pre style="white-space:pre-wrap">git fetch https://github.com/genpm-net/billing 9f2c4e1
+# copy src/ → src/lib/billing</pre></div>
+            </div>
+            <dl class="kv">
+              <dt>Injects</dt><dd>src/lib/billing</dd>
+              <dt>Commit</dt><dd><span class="sha">9f2c4e1</span></dd>
+              <dt>Tag</dt><dd>v1.2.0</dd>
+              <dt>Requires</dt><dd><a href="#web">@core/db ^1</a><a href="#web">@core/auth ^1</a></dd>
+              <dt>npm</dt><dd>stripe ^17</dd>
+              <dt>Env</dt><dd>STRIPE_SECRET_KEY STRIPE_WEBHOOK_SECRET</dd>
+              <dt>Installs</dt><dd><svg viewBox="0 0 80 20" width="80" height="20" id="spark-pk"></svg><span class="tnum">890 / 30d</span></dd>
+              <dt>Published</dt><dd>2 days ago · GenPM</dd>
+            </dl>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <!-- MÓVIL -->
+    <div class="frame-cap" style="margin-top:56px"><span>/ · Home · móvil · 360 px</span><span>Comando visible sin scroll</span></div>
+    <div class="mobile-row">
+      <div class="phone">
+        <div class="scr">
+          <div class="site">
+            <div class="w-head w-pad" style="padding-inline:16px"><span class="w-logo">genpm<span class="caret"></span></span><div class="w-burger" style="display:flex"><svg class="ico"><use href="#i-search"/></svg><svg class="ico"><use href="#i-menu"/></svg></div></div>
+            <div class="w-hero" style="grid-template-columns:1fr;padding-inline:16px">
+              <div>
+                <span class="w-eyebrow"><i></i>Code · Context · Connections</span>
+                <h1 class="w-h1">Install architectures, not dependencies.</h1>
+                <p class="w-sub" style="font-size:15px">Source code, AI rules and MCP servers, pinned to a commit.</p>
+                <div class="w-cta" style="margin-top:24px">
+                  <div class="cmd" style="font-size:12.5px"><span class="p">$</span><code>npx genpm add @core/auth</code><button class="cp" style="min-width:0">Copy</button></div>
+                </div>
+                <div class="row" style="margin-top:20px;gap:6px"><span class="badge code"><i></i>Code</span><span class="badge ctx"><i></i>Context</span><span class="badge mcp"><i></i>MCP</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="anno">
+        <div><span class="k">A</span><span><b>Command-first.</b> El comando de instalación es el elemento más visible de cada página relevante y se copia con un clic. En la página de paquete, el panel de instalación sube por encima de las pestañas por debajo de 1024&nbsp;px.</span></div>
+        <div><span class="k">B</span><span><b>Transparencia sin login.</b> AI Rules, Files, MCP, SHA y escaneo son públicos. AI Rules es la pestaña abierta por defecto: es lo que no existe en npm.</span></div>
+        <div><span class="k">C</span><span><b>Rejilla colapsada.</b> Tarjetas, pasos y estadísticas comparten bordes. No hay huecos ni sombras que crezcan con el volumen de datos.</span></div>
+        <div><span class="k">D</span><span><b>Patrocinio honesto.</b> Una sola tarjeta patrocinada, al final de Featured, con borde y etiqueta en ámbar. Nunca en verde, nunca en resultados para agentes.</span></div>
+        <div><span class="k">E</span><span><b>Presupuesto.</b> JS de cliente &lt; 30&nbsp;KB en home: búsqueda, copiar y pestañas. Todo lo demás es HTML servido desde el edge.</span></div>
+      </div>
+    </div>
+
+    <div class="end"><span>genpm▍ · Sistema de identidad v0.2</span><a href="https://claude.ai/artifact/Heyx8RiFV5VcZ233rNLH8r" style="color:var(--ink);border-bottom:1px solid var(--line-2)">Ver el prototipo navegable de genpm.net →</a></div>
+  </div>
+</section>
+</main>
+
+<script>
+(function(){
+  // Copiar
+  function flash(btn,txt,cls){var o=btn.dataset.label||btn.textContent;btn.dataset.label=o;btn.textContent=txt;if(cls)btn.classList.add(cls);setTimeout(function(){btn.textContent=o;btn.classList.remove('ok')},1500)}
+  function selectEl(el){try{var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r)}catch(e){}}
+  document.addEventListener('click',function(e){
+    var btn=e.target.closest('[data-copy]');if(!btn)return;
+    var el=document.getElementById(btn.dataset.copy);if(!el)return;
+    var t=el.textContent;
+    try{navigator.clipboard.writeText(t).then(function(){flash(btn,'Copied','ok')},function(){selectEl(el);flash(btn,'⌘C')})}
+    catch(err){selectEl(el);flash(btn,'⌘C')}
+  });
+  // Pestañas genéricas
+  document.querySelectorAll('[data-tabs]').forEach(function(box){
+    var tabs=box.querySelectorAll('[role=tab]');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click',function(){
+        tabs.forEach(function(t){t.setAttribute('aria-selected',t===tab?'true':'false')});
+        box.querySelectorAll('[data-panel]').forEach(function(p){
+          if(p.closest('[data-tabs]')!==box)return;
+          p.hidden=p.dataset.panel!==tab.dataset.tab;
+        });
+      });
+    });
+  });
+  // Selector de runner
+  document.querySelectorAll('[data-run]').forEach(function(b){
+    b.addEventListener('click',function(){
+      b.parentNode.querySelectorAll('[data-run]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+      document.getElementById('c-pk').textContent=b.dataset.run+' genpm add @core/billing';
+    });
+  });
+  // Sparklines
+  function spark(svg,data,w,h){
+    var max=Math.max.apply(null,data),min=Math.min.apply(null,data),n=data.length;
+    var pts=data.map(function(v,i){return [(i/(n-1))*(w-4)+2,h-2-((v-min)/((max-min)||1))*(h-4)]});
+    var ns='http://www.w3.org/2000/svg';
+    var area=document.createElementNS(ns,'path');
+    area.setAttribute('d','M'+pts.map(function(p){return p.join(' ')}).join(' L')+' L'+pts[n-1][0]+' '+h+' L'+pts[0][0]+' '+h+'Z');
+    area.setAttribute('fill','var(--wash)');
+    var line=document.createElementNS(ns,'polyline');
+    line.setAttribute('points',pts.map(function(p){return p.join(',')}).join(' '));
+    line.setAttribute('fill','none');line.setAttribute('stroke','var(--ink)');line.setAttribute('stroke-width','1.2');
+    var dot=document.createElementNS(ns,'circle');
+    dot.setAttribute('cx',pts[n-1][0]);dot.setAttribute('cy',pts[n-1][1]);dot.setAttribute('r','2');dot.setAttribute('fill','var(--code)');
+    svg.appendChild(area);svg.appendChild(line);svg.appendChild(dot);
+  }
+  var trend=[
+    ['@core/billing','+32%',[12,14,13,18,22,21,27,31,36,41,47,58]],
+    ['@core/ai','+27%',[20,22,21,25,24,29,31,33,38,40,44,52]],
+    ['@core/auth','+12%',[60,62,61,65,66,64,70,71,73,72,76,80]],
+    ['@core/email','+9%',[30,31,33,32,34,33,35,36,35,37,38,40]],
+    ['@core/db','+6%',[70,71,70,72,73,72,74,73,75,74,76,77]]
+  ];
+  var ol=document.getElementById('trend');
+  trend.forEach(function(r,i){
+    var li=document.createElement('li');
+    li.innerHTML='<span class="n">'+(i+1)+'</span><span>'+r[0]+'</span><svg viewBox="0 0 64 18" aria-hidden="true"></svg><span class="d tnum">'+r[1]+'</span>';
+    ol.appendChild(li);spark(li.querySelector('svg'),r[2],64,18);
+  });
+  spark(document.getElementById('spark-pk'),[8,9,11,10,13,15,14,18,20,22,24,27],80,20);
+})();
+</script>

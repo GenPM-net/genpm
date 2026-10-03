@@ -1,6 +1,6 @@
 # Paquetes semilla `@core/*`
 
-Los paquetes **no viven en este monorepo**: cada uno es un repo Git público propio (`github.com/genpmhq/<nombre>`, ADR-015)
+Los paquetes **no viven en este monorepo**: cada uno es un repo Git público propio (`github.com/genpm-net/<nombre>`, ADR-015)
 porque GenPM instala desde tags/SHA de repos reales. Esta carpeta solo contiene su especificación.
 
 Stack común (Q3): **TypeScript estricto + Drizzle ORM**, agnóstico de framework, con adaptadores para **Hono** y **Next.js (route handlers)**.

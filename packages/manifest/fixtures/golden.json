@@ -1,0 +1,627 @@
+{
+  "source": {
+    "valid": [
+      {
+        "name": "minimal",
+        "input": {
+          "n": "@core/email",
+          "v": "1.0.0",
+          "d": "src/lib/email"
+        }
+      },
+      {
+        "name": "full",
+        "input": {
+          "$": 1,
+          "n": "@core/billing",
+          "v": "1.2.0",
+          "s": {
+            "en": "Stripe subscriptions: checkout, portal and idempotent webhooks with Drizzle",
+            "es": "Suscripciones Stripe: checkout, portal y webhooks idempotentes con Drizzle",
+            "pt-BR": "Assinaturas Stripe: checkout, portal e webhooks idempotentes com Drizzle"
+          },
+          "d": "src/lib/billing",
+          "x": "AGENTS.md",
+          "l": "MIT",
+          "k": [
+            "billing",
+            "stripe",
+            "subscriptions",
+            "webhooks"
+          ],
+          "g": {
+            "@core/db": "^1.0.0",
+            "@core/auth": "^1.1.0"
+          },
+          "p": {
+            "stripe": "^17.0.0"
+          },
+          "e": [
+            "STRIPE_SECRET_KEY",
+            "STRIPE_WEBHOOK_SECRET"
+          ],
+          "m": [
+            {
+              "n": "stripe",
+              "c": "npx",
+              "a": [
+                "-y",
+                "@stripe/mcp",
+                "--tools=all"
+              ],
+              "e": [
+                "STRIPE_SECRET_KEY"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "monorepo",
+        "input": {
+          "n": "@acme/auth",
+          "v": "0.3.0",
+          "i": "packages/auth",
+          "x": "AGENTS.md",
+          "d": "src/lib/auth",
+          "t": "auth@0.3.0"
+        }
+      },
+      {
+        "name": "prerelease",
+        "input": {
+          "n": "@core/ai",
+          "v": "2.0.0-beta.1",
+          "d": "src/lib/ai"
+        }
+      },
+      {
+        "name": "string-summary",
+        "input": {
+          "n": "@core/db",
+          "v": "1.0.0",
+          "d": "src/lib/db",
+          "s": "Drizzle client factory"
+        }
+      },
+      {
+        "name": "mcp-shorthand",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "m": [
+            "@stripe/mcp"
+          ]
+        }
+      },
+      {
+        "name": "mcp-url",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "m": [
+            {
+              "n": "remote",
+              "u": "https://mcp.example.com/sse"
+            }
+          ]
+        }
+      },
+      {
+        "name": "extension-key",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "_vendor": {
+            "a": 1
+          }
+        }
+      },
+      {
+        "name": "sha-ref",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "t": "9f2c4e1b7a3d5f60e8c2b1a4d7e9f0c3b5a6d8e1"
+        }
+      },
+      {
+        "name": "schema-1",
+        "input": {
+          "$": 1,
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "packages/x"
+        }
+      }
+    ],
+    "invalid": [
+      {
+        "name": "missing-name",
+        "input": {
+          "v": "1.0.0",
+          "d": "src/x"
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "missing-dest",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0"
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "unscoped-name",
+        "input": {
+          "n": "auth",
+          "v": "1.0.0",
+          "d": "src/x"
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "uppercase-name",
+        "input": {
+          "n": "@Core/Auth",
+          "v": "1.0.0",
+          "d": "src/x"
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "v-prefix",
+        "input": {
+          "n": "@core/x",
+          "v": "v1.0.0",
+          "d": "src/x"
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "build-metadata",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0+build.1",
+          "d": "src/x"
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "unknown-key",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "z": 1
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "own-commit",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "c": "9f2c4e1b7a3d5f60e8c2b1a4d7e9f0c3b5a6d8e1"
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "dest-traversal",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "../../.ssh"
+        },
+        "code": "E_PATH_UNSAFE"
+      },
+      {
+        "name": "dest-absolute",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "/etc/x"
+        },
+        "code": "E_PATH_UNSAFE"
+      },
+      {
+        "name": "dest-git",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": ".git/hooks"
+        },
+        "code": "E_PATH_UNSAFE"
+      },
+      {
+        "name": "dest-github",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": ".github"
+        },
+        "code": "E_PATH_UNSAFE"
+      },
+      {
+        "name": "dest-windows",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "C:\\x"
+        },
+        "code": "E_PATH_UNSAFE"
+      },
+      {
+        "name": "dest-deep",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "a/b/c/d/e/f/g/h/i"
+        },
+        "code": "E_PATH_UNSAFE"
+      },
+      {
+        "name": "context-escapes-include",
+        "input": {
+          "n": "@acme/auth",
+          "v": "0.3.0",
+          "i": "packages/auth/src",
+          "x": "../AGENTS.md",
+          "d": "src/lib/auth"
+        },
+        "code": "E_PATH_UNSAFE"
+      },
+      {
+        "name": "branch-ref",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "t": "main"
+        },
+        "code": "E_REF_MUTABLE"
+      },
+      {
+        "name": "summary-without-en",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "s": {
+            "es": "hola"
+          }
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "summary-too-long",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "s": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "summary-multiline",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "s": "a\nb"
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "bad-env",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "e": [
+            "stripe_key"
+          ]
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "too-many-mcp",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "m": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+          ]
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "mcp-both-c-and-u",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "m": [
+            {
+              "n": "x",
+              "c": "npx",
+              "u": "https://x.dev"
+            }
+          ]
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "mcp-http-url",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "m": [
+            {
+              "n": "x",
+              "u": "http://x.dev"
+            }
+          ]
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "duplicate-keywords",
+        "input": {
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x",
+          "k": [
+            "ab",
+            "ab"
+          ]
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "schema-2",
+        "input": {
+          "$": 2,
+          "n": "@core/x",
+          "v": "1.0.0",
+          "d": "src/x"
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "not-an-object",
+        "input": [
+          "@core/x"
+        ],
+        "code": "E_MANIFEST_INVALID"
+      }
+    ]
+  },
+  "resolved": {
+    "valid": [
+      {
+        "name": "billing",
+        "input": {
+          "$": 1,
+          "n": "@core/billing",
+          "v": "1.2.0",
+          "s": {
+            "en": "Stripe subscriptions: checkout, portal and idempotent webhooks with Drizzle",
+            "es": "Suscripciones Stripe: checkout, portal y webhooks idempotentes con Drizzle",
+            "pt-BR": "Assinaturas Stripe: checkout, portal e webhooks idempotentes com Drizzle"
+          },
+          "r": "https://github.com/genpm-net/billing",
+          "t": "v1.2.0",
+          "c": "9f2c4e1b7a3d5f60e8c2b1a4d7e9f0c3b5a6d8e1",
+          "d": "src/lib/billing",
+          "i": ".",
+          "x": "AGENTS.md",
+          "l": "MIT",
+          "k": [
+            "billing",
+            "stripe",
+            "subscriptions",
+            "webhooks"
+          ],
+          "g": {
+            "@core/db": "^1.0.0",
+            "@core/auth": "^1.1.0"
+          },
+          "p": {
+            "stripe": "^17.0.0"
+          },
+          "e": [
+            "STRIPE_SECRET_KEY",
+            "STRIPE_WEBHOOK_SECRET"
+          ],
+          "m": [
+            {
+              "n": "stripe",
+              "c": "npx",
+              "a": [
+                "-y",
+                "@stripe/mcp",
+                "--tools=all"
+              ],
+              "e": [
+                "STRIPE_SECRET_KEY"
+              ]
+            }
+          ]
+        },
+        "canonical": "{\"$\":1,\"n\":\"@core/billing\",\"v\":\"1.2.0\",\"s\":{\"en\":\"Stripe subscriptions: checkout, portal and idempotent webhooks with Drizzle\",\"es\":\"Suscripciones Stripe: checkout, portal y webhooks idempotentes con Drizzle\",\"pt-BR\":\"Assinaturas Stripe: checkout, portal e webhooks idempotentes com Drizzle\"},\"r\":\"https://github.com/genpm-net/billing\",\"t\":\"v1.2.0\",\"c\":\"9f2c4e1b7a3d5f60e8c2b1a4d7e9f0c3b5a6d8e1\",\"d\":\"src/lib/billing\",\"i\":\".\",\"x\":\"AGENTS.md\",\"l\":\"MIT\",\"k\":[\"billing\",\"stripe\",\"subscriptions\",\"webhooks\"],\"g\":{\"@core/auth\":\"^1.1.0\",\"@core/db\":\"^1.0.0\"},\"p\":{\"stripe\":\"^17.0.0\"},\"e\":[\"STRIPE_SECRET_KEY\",\"STRIPE_WEBHOOK_SECRET\"],\"m\":[{\"n\":\"stripe\",\"c\":\"npx\",\"a\":[\"-y\",\"@stripe/mcp\",\"--tools=all\"],\"e\":[\"STRIPE_SECRET_KEY\"]}]}"
+      }
+    ],
+    "invalid": [
+      {
+        "name": "missing-commit",
+        "input": {
+          "$": 1,
+          "n": "@core/billing",
+          "v": "1.2.0",
+          "s": {
+            "en": "Stripe subscriptions: checkout, portal and idempotent webhooks with Drizzle",
+            "es": "Suscripciones Stripe: checkout, portal y webhooks idempotentes con Drizzle",
+            "pt-BR": "Assinaturas Stripe: checkout, portal e webhooks idempotentes com Drizzle"
+          },
+          "r": "https://github.com/genpm-net/billing",
+          "t": "v1.2.0",
+          "d": "src/lib/billing",
+          "i": ".",
+          "x": "AGENTS.md",
+          "l": "MIT",
+          "k": [
+            "billing",
+            "stripe",
+            "subscriptions",
+            "webhooks"
+          ],
+          "g": {
+            "@core/db": "^1.0.0",
+            "@core/auth": "^1.1.0"
+          },
+          "p": {
+            "stripe": "^17.0.0"
+          },
+          "e": [
+            "STRIPE_SECRET_KEY",
+            "STRIPE_WEBHOOK_SECRET"
+          ],
+          "m": [
+            {
+              "n": "stripe",
+              "c": "npx",
+              "a": [
+                "-y",
+                "@stripe/mcp",
+                "--tools=all"
+              ],
+              "e": [
+                "STRIPE_SECRET_KEY"
+              ]
+            }
+          ]
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "short-commit",
+        "input": {
+          "$": 1,
+          "n": "@core/billing",
+          "v": "1.2.0",
+          "s": {
+            "en": "Stripe subscriptions: checkout, portal and idempotent webhooks with Drizzle",
+            "es": "Suscripciones Stripe: checkout, portal y webhooks idempotentes con Drizzle",
+            "pt-BR": "Assinaturas Stripe: checkout, portal e webhooks idempotentes com Drizzle"
+          },
+          "r": "https://github.com/genpm-net/billing",
+          "t": "v1.2.0",
+          "c": "9f2c4e1",
+          "d": "src/lib/billing",
+          "i": ".",
+          "x": "AGENTS.md",
+          "l": "MIT",
+          "k": [
+            "billing",
+            "stripe",
+            "subscriptions",
+            "webhooks"
+          ],
+          "g": {
+            "@core/db": "^1.0.0",
+            "@core/auth": "^1.1.0"
+          },
+          "p": {
+            "stripe": "^17.0.0"
+          },
+          "e": [
+            "STRIPE_SECRET_KEY",
+            "STRIPE_WEBHOOK_SECRET"
+          ],
+          "m": [
+            {
+              "n": "stripe",
+              "c": "npx",
+              "a": [
+                "-y",
+                "@stripe/mcp",
+                "--tools=all"
+              ],
+              "e": [
+                "STRIPE_SECRET_KEY"
+              ]
+            }
+          ]
+        },
+        "code": "E_MANIFEST_INVALID"
+      },
+      {
+        "name": "branch",
+        "input": {
+          "$": 1,
+          "n": "@core/billing",
+          "v": "1.2.0",
+          "s": {
+            "en": "Stripe subscriptions: checkout, portal and idempotent webhooks with Drizzle",
+            "es": "Suscripciones Stripe: checkout, portal y webhooks idempotentes con Drizzle",
+            "pt-BR": "Assinaturas Stripe: checkout, portal e webhooks idempotentes com Drizzle"
+          },
+          "r": "https://github.com/genpm-net/billing",
+          "t": "master",
+          "c": "9f2c4e1b7a3d5f60e8c2b1a4d7e9f0c3b5a6d8e1",
+          "d": "src/lib/billing",
+          "i": ".",
+          "x": "AGENTS.md",
+          "l": "MIT",
+          "k": [
+            "billing",
+            "stripe",
+            "subscriptions",
+            "webhooks"
+          ],
+          "g": {
+            "@core/db": "^1.0.0",
+            "@core/auth": "^1.1.0"
+          },
+          "p": {
+            "stripe": "^17.0.0"
+          },
+          "e": [
+            "STRIPE_SECRET_KEY",
+            "STRIPE_WEBHOOK_SECRET"
+          ],
+          "m": [
+            {
+              "n": "stripe",
+              "c": "npx",
+              "a": [
+                "-y",
+                "@stripe/mcp",
+                "--tools=all"
+              ],
+              "e": [
+                "STRIPE_SECRET_KEY"
+              ]
+            }
+          ]
+        },
+        "code": "E_REF_MUTABLE"
+      }
+    ]
+  }
+}

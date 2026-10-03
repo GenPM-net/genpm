@@ -1,0 +1,27 @@
+{
+  "product": { "tagline": "Instala arquitecturas, no dependencias." },
+  "layers": {
+    "code": "Código",
+    "context": "Contexto",
+    "connections": "Conexiones"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "pt-BR": "Português (Brasil)",
+    "fr": "Français",
+    "de": "Deutsch",
+    "ja": "日本語",
+    "zh-CN": "简体中文",
+    "ko": "한국어"
+  },
+  "betaTranslation": "Traducción beta",
+  "scan": {
+    "passed": "escaneo superado",
+    "flagged": "marcado para revisión",
+    "failed": "escaneo fallido",
+    "pending": "escaneo pendiente"
+  },
+  "sponsored": "Patrocinado",
+  "verified": "Verificado"
+}

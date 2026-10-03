@@ -84,7 +84,7 @@ Requisitos: Node ≥ 20.11; `git` ≥ 2.25 recomendado (sin git se usa el fallba
 | Flag | Env | Descripción |
 |---|---|---|
 | `--cwd <dir>` | `GENPM_CWD` | Directorio de trabajo (default: `process.cwd()`; la raíz se busca hacia arriba: `genpm.lock` → `.git` → `package.json`). |
-| `--registry <url>` | `GENPM_REGISTRY` | Registry (default `https://api.genpm.com`; por scope vía `.genpmrc`). |
+| `--registry <url>` | `GENPM_REGISTRY` | Registry (default `https://api.genpm.net`; por scope vía `.genpmrc`). |
 | `--json` | — | Salida JSON en stdout (una sola línea), sin colores ni prompts; logs a stderr. |
 | `-y, --yes` | `GENPM_YES=1` | Acepta prompts de instalación de código. **No** implica `--mcp` ni `--install-deps`. |
 | `--lang <locale>` | `GENPM_LANG` | Idioma de la salida humana (`en`, `es`, `pt-BR`, `fr`, `de`, `ja`, `zh-CN`, `ko`). Default: locale del sistema. `--json` es siempre inglés. Ver [i18n §3](i18n.md#3-superficies-y-negociación-del-idioma). |
@@ -294,7 +294,7 @@ Device flow de GitHub (ver [architecture §6.5](architecture.md#65-login-device-
 |---|---|
 | Paquete npm | `@genpm/mcp` (bin `genpm-mcp`) |
 | Server info | `{ name: "genpm", version: <semver> }` |
-| Transporte | stdio (MVP). Streamable HTTP solo-lectura (search/info) en `mcp.genpm.com` ⏳ v0.3 |
+| Transporte | stdio (MVP). Streamable HTTP solo-lectura (search/info) en `mcp.genpm.net` ⏳ v0.3 |
 | SDK | `@modelcontextprotocol/sdk` (`McpServer`, `registerTool`, `outputSchema` + `structuredContent`) |
 | Capabilities | `tools`, `resources`, `prompts`, `logging` |
 | Raíz del proyecto | `roots/list` del cliente (primer root `file://`) → `GENPM_CWD` → `process.cwd()`. Se recalcula en `notifications/roots/list_changed`. |

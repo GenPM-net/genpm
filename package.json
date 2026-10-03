@@ -1,13 +1,29 @@
 {
   "name": "genpm-monorepo",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@10.24.0",
-  "engines": { "node": ">=20.11" },
+  "engines": {
+    "node": ">=20.11"
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "test": "turbo run test",
-    "lint": "biome check .",
-    "typecheck": "turbo run typecheck"
+    "lint": "biome check . && node packages/i18n/scripts/lint-literals.mjs && node packages/i18n/scripts/check.mjs",
+    "format": "biome check --write .",
+    "typecheck": "turbo run typecheck",
+    "changeset": "changeset",
+    "tasks": "node tasks/board.mjs"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@changesets/cli": "^2.29.0",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "~4.1.0",
+    "fast-check": "^4.10.0",
+    "turbo": "^2.11.0",
+    "typescript": "~5.9.3",
+    "vitest": "~4.1.0"
   }
 }
