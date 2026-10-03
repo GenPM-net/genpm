@@ -1,0 +1,59 @@
+{
+  "product.tagline": {
+    "machine": true
+  },
+  "layers.code": {
+    "machine": true
+  },
+  "layers.context": {
+    "machine": true
+  },
+  "layers.connections": {
+    "machine": true
+  },
+  "languages.en": {
+    "machine": true
+  },
+  "languages.es": {
+    "machine": true
+  },
+  "languages.pt-BR": {
+    "machine": true
+  },
+  "languages.fr": {
+    "machine": true
+  },
+  "languages.de": {
+    "machine": true
+  },
+  "languages.ja": {
+    "machine": true
+  },
+  "languages.zh-CN": {
+    "machine": true
+  },
+  "languages.ko": {
+    "machine": true
+  },
+  "betaTranslation": {
+    "machine": true
+  },
+  "scan.passed": {
+    "machine": true
+  },
+  "scan.flagged": {
+    "machine": true
+  },
+  "scan.failed": {
+    "machine": true
+  },
+  "scan.pending": {
+    "machine": true
+  },
+  "sponsored": {
+    "machine": true
+  },
+  "verified": {
+    "machine": true
+  }
+}

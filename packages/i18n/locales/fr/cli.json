@@ -1,0 +1,176 @@
+{
+  "desc": {
+    "root": "Installez des architectures, pas des dépendances : code + règles IA + config MCP depuis des commits Git immuables.",
+    "add": "Injecter un ou plusieurs paquets (et leurs dépendances GenPM) dans ce projet",
+    "search": "Rechercher dans le registre",
+    "info": "Afficher un paquet : manifeste, dépendances, MCP, variables d’environnement et règles IA",
+    "list": "Lister les paquets installés et les modifications locales (drift)",
+    "remove": "Supprimer un paquet installé",
+    "outdated": "Afficher les paquets installés ayant des versions plus récentes",
+    "audit": "Vérifier l’intégrité, les signatures, les alertes et les versions retirées",
+    "doctor": "Vérifier votre environnement et ce projet",
+    "init": "Créer genpm.json, AGENTS.md et .genpmignore dans un dépôt de paquet",
+    "validate": "Valider un paquet avant publication (même analyseur que le registre)",
+    "publish": "Publier le tag Git actuel dans le registre",
+    "yank": "Retirer une version publiée (elle reste immuable et n’est jamais republiée)",
+    "login": "Se connecter avec GitHub (device flow)",
+    "logout": "Se déconnecter et révoquer le token",
+    "whoami": "Afficher le compte connecté",
+    "mcp": "Gérer la configuration MCP",
+    "mcpSetup": "Enregistrer le serveur MCP de GenPM dans votre client IA",
+    "mcpAdd": "Écrire les serveurs MCP déclarés par un paquet installé",
+    "mcpRemove": "Supprimer les serveurs MCP déclarés par un paquet installé",
+    "cache": "Afficher ou vider le cache de téléchargement"
+  },
+  "arg": {
+    "cwd": "Répertoire de travail",
+    "registry": "URL du registre",
+    "json": "Sortie JSON sur une ligne (anglais, sans questions)",
+    "yes": "Accepter les questions d’injection de code (n’implique ni --mcp ni --install-deps)",
+    "lang": "Langue de sortie (en, es, pt-BR, fr, de, ja, zh-CN, ko)",
+    "verbose": "Journaux de débogage",
+    "quiet": "Erreurs uniquement",
+    "spec": "Spécification du paquet, p. ex. @core/auth ou @core/auth@^1.2",
+    "dest": "Installer dans un autre répertoire (un seul paquet)",
+    "dryRun": "Afficher le plan et quitter sans écrire",
+    "mcp": "Écrire la config MCP sans demander",
+    "noMcp": "Ne pas écrire la config MCP ni demander",
+    "installDeps": "Exécuter la commande proposée du gestionnaire de paquets sans demander",
+    "clients": "Clients IA : agents,claude,cursor,copilot,windsurf",
+    "force": "Écraser une destination non vide (crée d’abord une sauvegarde)",
+    "allowAutorun": "Autoriser les fichiers à exécution automatique (éditeurs vérifiés uniquement)",
+    "maxSize": "Limite de taille par paquet en Mo",
+    "query": "Ce dont vous avez besoin, p. ex. \"abonnements stripe\"",
+    "keyword": "Filtrer par mot-clé (séparés par des virgules)",
+    "onlyMcp": "Uniquement les paquets avec serveurs MCP",
+    "sort": "relevance | installs | recent",
+    "limit": "Nombre maximal de résultats",
+    "name": "Nom du paquet, p. ex. @core/auth",
+    "rules": "Afficher uniquement les règles IA",
+    "keepCode": "Conserver le code ; oublier seulement le paquet",
+    "exitCode": "Quitter avec le code 4 si quelque chose est obsolète",
+    "path": "Répertoire du paquet",
+    "manifest": "Chemin vers genpm.json (monorepos de paquets)",
+    "ref": "Tag ou SHA complet à publier",
+    "distTag": "Dist-tag (latest, ou next pour les préversions)",
+    "reason": "Motif du retrait (obligatoire)",
+    "client": "claude | cursor | vscode | windsurf | codex",
+    "scope": "project | user",
+    "workflow": "Créer aussi un workflow GitHub Actions qui publie sur les tags v*",
+    "action": "dir | clean"
+  },
+  "label": {
+    "resolved": "Résolu",
+    "dependency": "dépendance",
+    "skip": "ignorer",
+    "rules": "Règles",
+    "context": "Contexte",
+    "npm": "npm",
+    "env": "Env",
+    "mcp": "MCP",
+    "next": "Ensuite",
+    "conflicts": "Conflits",
+    "warnings": "Avertissements",
+    "fix": "solution",
+    "version": "Version",
+    "repo": "Dépôt",
+    "commit": "Commit",
+    "dest": "Répertoire",
+    "license": "Licence",
+    "deps": "Deps GenPM",
+    "scan": "Analyse",
+    "installed": "Installé",
+    "sponsored": "Sponsorisé"
+  },
+  "add": {
+    "rulesSummary": "{files, plural, one {# fichier} other {# fichiers}} · ~{tokens} tokens · analyse {scan}",
+    "rulesHint": "(genpm info <pkg> pour lire)",
+    "contextSummary": "{count, plural, one {# fichier} other {# fichiers}} : {files}",
+    "flagged": "L’analyseur a signalé ces règles : lisez-les avant d’installer.",
+    "confirm": "Injecter {count, plural, one {# paquet} other {# paquets}} ({files, number} fichiers, {size}) ?",
+    "mcpConsent": "Ajouter le serveur MCP \"{name}\" à {targets} ?",
+    "npmConsent": "Exécuter `{command}` ?",
+    "injected": "{count, plural, one {# paquet injecté} other {# paquets injectés}} en {seconds, number, ::.0} s",
+    "nothing": "Rien à installer : tout est déjà installé.",
+    "dryRun": "Simulation : rien n’a été écrit.",
+    "cancelled": "Annulé. Rien n’a été écrit.",
+    "mcpWritten": "MCP écrit dans {files}",
+    "resigned": "Signature du registre mise à jour pour {names}"
+  },
+  "search": {
+    "empty": "Aucun paquet trouvé pour \"{query}\".",
+    "installs": "{count}/30 j",
+    "more": "Plus de résultats : --limit {limit}"
+  },
+  "list": {
+    "empty": "Aucun paquet GenPM dans ce projet.",
+    "drift": "{count, plural, =0 {propre} one {# fichier modifié} other {# fichiers modifiés}}"
+  },
+  "remove": {
+    "done": "{name} supprimé",
+    "kept": "Code conservé dans {dest}",
+    "mcpLeft": "La config MCP n’a pas été modifiée : genpm mcp remove {name}"
+  },
+  "outdated": {
+    "none": "Tout est à jour."
+  },
+  "audit": {
+    "ok": "{count, plural, one {# paquet} other {# paquets}} · signatures valides",
+    "problems": "{count, plural, one {# problème} other {# problèmes}}"
+  },
+  "doctor": {
+    "ok": "Tout semble correct.",
+    "problems": "{count, plural, one {# problème trouvé} other {# problèmes trouvés}}"
+  },
+  "init": {
+    "name": "Nom du paquet (@scope/nom)",
+    "version": "Version",
+    "summary": "Résumé en une ligne",
+    "dest": "Répertoire d’installation dans le projet consommateur",
+    "keywords": "Mots-clés (séparés par des virgules)",
+    "done": "Créé : {files}",
+    "nextValidate": "Modifiez AGENTS.md, puis exécutez genpm validate"
+  },
+  "validate": {
+    "ok": "genpm.json est valide ({files, plural, one {# fichier} other {# fichiers}}, ~{tokens} tokens de règles)",
+    "failed": "{count, plural, one {# erreur} other {# erreurs}}"
+  },
+  "publish": {
+    "done": "Publié {name}@{version} → {url}",
+    "scan": "Analyse : {status}",
+    "dryRun": "Simulation OK : {name}@{version} serait publié depuis {commit}"
+  },
+  "yank": {
+    "done": "Retiré {name}@{version}"
+  },
+  "login": {
+    "open": "Ouvrez {url} et saisissez le code {code}",
+    "waiting": "En attente de GitHub…",
+    "done": "Connecté en tant que {handle}",
+    "noClientId": "La connexion GitHub n’est pas encore configurée pour ce registre : définissez GENPM_TOKEN à la place."
+  },
+  "logout": {
+    "done": "Déconnecté de {registry}",
+    "none": "Vous n’étiez pas connecté à {registry}"
+  },
+  "whoami": {
+    "none": "Non connecté. Exécutez genpm login."
+  },
+  "mcp": {
+    "setupConfirm": "Ajouter GenPM à {file} ?",
+    "setupDone": "MCP de GenPM enregistré dans {file}",
+    "setupManual": "Exécutez cette commande : {command}",
+    "addDone": "Serveurs MCP écrits dans {files}",
+    "removeDone": "{count, plural, one {# serveur MCP supprimé} other {# serveurs MCP supprimés}} de {files}",
+    "nothing": "{name} ne déclare aucun serveur MCP."
+  },
+  "cache": {
+    "cleaned": "Cache vidé : {dir}"
+  },
+  "next": {
+    "env": "Définissez {vars} (voir .env.example)",
+    "integration": "Suivez « Integration » dans {file}",
+    "npm": "Exécutez {command}",
+    "mcp": "Activez MCP plus tard : genpm mcp add {names}"
+  }
+}

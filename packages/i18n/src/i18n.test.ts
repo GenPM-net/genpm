@@ -125,3 +125,10 @@ describe('format', () => {
     expect(format.date('en', now)).toBe('Oct 3, 2026');
   });
 });
+
+describe('robustness', () => {
+  it('never throws when ICU params are missing', () => {
+    expect(en.raw('errors.E_BAD_REQUEST.message')).toBe('The request is invalid: {detail}');
+    expect(en.raw('errors.E_DRIFT.message', { name: '@a/b' })).toBe('@a/b has local changes in {count}.');
+  });
+});

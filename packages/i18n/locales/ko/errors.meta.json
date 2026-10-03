@@ -1,0 +1,260 @@
+{
+  "E_INTERNAL.message": {
+    "machine": true
+  },
+  "E_INTERNAL.fix": {
+    "machine": true
+  },
+  "E_BAD_REQUEST.message": {
+    "machine": true
+  },
+  "E_BAD_REQUEST.fix": {
+    "machine": true
+  },
+  "E_USAGE.message": {
+    "machine": true
+  },
+  "E_USAGE.fix": {
+    "machine": true
+  },
+  "E_CONFIRM_REQUIRED.message": {
+    "machine": true
+  },
+  "E_CONFIRM_REQUIRED.fix": {
+    "machine": true
+  },
+  "E_PAYLOAD_TOO_LARGE.message": {
+    "machine": true
+  },
+  "E_PAYLOAD_TOO_LARGE.fix": {
+    "machine": true
+  },
+  "E_NOT_FOUND.message": {
+    "machine": true
+  },
+  "E_NOT_FOUND.fix": {
+    "machine": true
+  },
+  "E_NO_MATCHING_VERSION.message": {
+    "machine": true
+  },
+  "E_NO_MATCHING_VERSION.fix": {
+    "machine": true
+  },
+  "E_DEST_CONFLICT.message": {
+    "machine": true
+  },
+  "E_DEST_CONFLICT.fix": {
+    "machine": true
+  },
+  "E_RANGE_UNSATISFIED.message": {
+    "machine": true
+  },
+  "E_RANGE_UNSATISFIED.fix": {
+    "machine": true
+  },
+  "E_ALREADY_INSTALLED.message": {
+    "machine": true
+  },
+  "E_ALREADY_INSTALLED.fix": {
+    "machine": true
+  },
+  "E_VERSION_EXISTS.message": {
+    "machine": true
+  },
+  "E_VERSION_EXISTS.fix": {
+    "machine": true
+  },
+  "E_DRIFT.message": {
+    "machine": true
+  },
+  "E_DRIFT.fix": {
+    "machine": true
+  },
+  "E_REQUIRED_BY.message": {
+    "machine": true
+  },
+  "E_REQUIRED_BY.fix": {
+    "machine": true
+  },
+  "E_BUSY.message": {
+    "machine": true
+  },
+  "E_BUSY.fix": {
+    "machine": true
+  },
+  "E_PLAN_STALE.message": {
+    "machine": true
+  },
+  "E_PLAN_STALE.fix": {
+    "machine": true
+  },
+  "E_NETWORK.message": {
+    "machine": true
+  },
+  "E_NETWORK.fix": {
+    "machine": true
+  },
+  "E_UPSTREAM_GIT.message": {
+    "machine": true
+  },
+  "E_UPSTREAM_GIT.fix": {
+    "machine": true
+  },
+  "E_RATE_LIMITED.message": {
+    "machine": true
+  },
+  "E_RATE_LIMITED.fix": {
+    "machine": true
+  },
+  "E_INTEGRITY.message": {
+    "machine": true
+  },
+  "E_INTEGRITY.fix": {
+    "machine": true
+  },
+  "E_SIGNATURE.message": {
+    "machine": true
+  },
+  "E_SIGNATURE.fix": {
+    "machine": true
+  },
+  "E_PATH_UNSAFE.message": {
+    "machine": true
+  },
+  "E_PATH_UNSAFE.fix": {
+    "machine": true
+  },
+  "E_AUTORUN_FILE.message": {
+    "machine": true
+  },
+  "E_AUTORUN_FILE.fix": {
+    "machine": true
+  },
+  "E_SCAN_FAILED.message": {
+    "machine": true
+  },
+  "E_SCAN_FAILED.fix": {
+    "machine": true
+  },
+  "E_INSECURE_PERMS.message": {
+    "machine": true
+  },
+  "E_INSECURE_PERMS.fix": {
+    "machine": true
+  },
+  "E_QUARANTINED.message": {
+    "machine": true
+  },
+  "E_QUARANTINED.fix": {
+    "machine": true
+  },
+  "E_REF_MUTABLE.message": {
+    "machine": true
+  },
+  "E_REF_MUTABLE.fix": {
+    "machine": true
+  },
+  "E_ADVISORY.message": {
+    "machine": true
+  },
+  "E_ADVISORY.fix": {
+    "machine": true
+  },
+  "E_TOO_LARGE.message": {
+    "machine": true
+  },
+  "E_TOO_LARGE.fix": {
+    "machine": true
+  },
+  "E_MANIFEST_INVALID.message": {
+    "machine": true
+  },
+  "E_MANIFEST_INVALID.fix": {
+    "machine": true
+  },
+  "E_LOCK_INVALID.message": {
+    "machine": true
+  },
+  "E_LOCK_INVALID.fix": {
+    "machine": true
+  },
+  "E_NAME_MISMATCH.message": {
+    "machine": true
+  },
+  "E_NAME_MISMATCH.fix": {
+    "machine": true
+  },
+  "E_REF_NOT_FOUND.message": {
+    "machine": true
+  },
+  "E_REF_NOT_FOUND.fix": {
+    "machine": true
+  },
+  "E_REF_NOT_PUSHED.message": {
+    "machine": true
+  },
+  "E_REF_NOT_PUSHED.fix": {
+    "machine": true
+  },
+  "E_REPO_NOT_ALLOWED.message": {
+    "machine": true
+  },
+  "E_REPO_NOT_ALLOWED.fix": {
+    "machine": true
+  },
+  "E_REPO_CHANGED.message": {
+    "machine": true
+  },
+  "E_REPO_CHANGED.fix": {
+    "machine": true
+  },
+  "E_CONTEXT_MISSING.message": {
+    "machine": true
+  },
+  "E_CONTEXT_MISSING.fix": {
+    "machine": true
+  },
+  "E_CONTEXT_TOO_LARGE.message": {
+    "machine": true
+  },
+  "E_CONTEXT_TOO_LARGE.fix": {
+    "machine": true
+  },
+  "E_AUTH.message": {
+    "machine": true
+  },
+  "E_AUTH.fix": {
+    "machine": true
+  },
+  "E_FORBIDDEN_SCOPE.message": {
+    "machine": true
+  },
+  "E_FORBIDDEN_SCOPE.fix": {
+    "machine": true
+  },
+  "E_GIT_MISSING.message": {
+    "machine": true
+  },
+  "E_GIT_MISSING.fix": {
+    "machine": true
+  },
+  "E_NODE_VERSION.message": {
+    "machine": true
+  },
+  "E_NODE_VERSION.fix": {
+    "machine": true
+  },
+  "E_NOT_A_PROJECT.message": {
+    "machine": true
+  },
+  "E_NOT_A_PROJECT.fix": {
+    "machine": true
+  },
+  "E_READ_ONLY.message": {
+    "machine": true
+  },
+  "E_READ_ONLY.fix": {
+    "machine": true
+  }
+}

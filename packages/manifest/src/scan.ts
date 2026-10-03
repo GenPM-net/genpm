@@ -41,7 +41,8 @@ export type ScanRule =
   | 'size.files'
   | 'size.total'
   | 'size.file'
-  | 'perm.executable';
+  | 'perm.executable'
+  | 'typosquat';
 
 export type Finding = { rule: ScanRule; severity: Severity; path?: string; line?: number; detail: string };
 
@@ -80,10 +81,12 @@ const OVERRIDE = [
 
 const EXFIL_VERB = /\b(send|post|upload|exfiltrate|transmit|forward|curl|wget|fetch)\b/i;
 const URL_RE = /\bhttps?:\/\/[^\s)>\]"'`]+/gi;
-const PIPE_SHELL = /\b(curl|wget|iwr|Invoke-WebRequest)\b[^\n|]*\|\s*(sudo\s+)?(sh|bash|zsh|pwsh|powershell|iex|python3?|node)\b/i;
+const PIPE_SHELL =
+  /\b(curl|wget|iwr|Invoke-WebRequest)\b[^\n|]*\|\s*(sudo\s+)?(sh|bash|zsh|pwsh|powershell|iex|python3?|node)\b/i;
 const BASE64_BLOB = /[A-Za-z0-9+/]{200,}={0,2}/;
 const HEX_BLOB = /\b(?:[0-9a-fA-F]{2}){100,}\b/;
-const SHORTENERS = /\b(bit\.ly|tinyurl\.com|t\.co|goo\.gl|is\.gd|ow\.ly|buff\.ly|rebrand\.ly|cutt\.ly|shorturl\.at|rb\.gy|tiny\.cc)\//i;
+const SHORTENERS =
+  /\b(bit\.ly|tinyurl\.com|t\.co|goo\.gl|is\.gd|ow\.ly|buff\.ly|rebrand\.ly|cutt\.ly|shorturl\.at|rb\.gy|tiny\.cc)\//i;
 
 /** Unicode Tags, zero-width y otros invisibles (no bidi: ese tiene su propia regla). */
 const INVISIBLE = /[­᠎​-‍⁠-⁤﻿\u{E0000}-\u{E007F}]/u;
@@ -106,7 +109,8 @@ const SECRETS: Array<[string, RegExp]> = [
 
 const EVAL_DECODED =
   /\b(eval|Function)\s*\(\s*[^)]*\b(atob|Buffer\.from\([^)]*['"](base64|hex)['"]|decodeURIComponent|unescape|String\.fromCharCode)/;
-const IP_LITERAL = /\b(fetch|axios|request|got|http\.get|https\.get|XMLHttpRequest|WebSocket)\s*\(?[^)\n]*['"`](https?|wss?):\/\/\d{1,3}(\.\d{1,3}){3}/;
+const IP_LITERAL =
+  /\b(fetch|axios|request|got|http\.get|https\.get|XMLHttpRequest|WebSocket)\s*\(?[^)\n]*['"`](https?|wss?):\/\/\d{1,3}(\.\d{1,3}){3}/;
 
 const CODE_EXT = /\.(c|m)?[jt]sx?$|\.(py|rb|go|rs|java|kt|swift|php|sh|bash|zsh|ps1|vue|svelte|astro)$/i;
 
@@ -189,7 +193,14 @@ export function scanRules(rules: string, path = 'AGENTS.md'): Finding[] {
   }
   for (const re of OVERRIDE) {
     const m = re.exec(rules);
-    if (m) out.push({ rule: 'rules.override', severity: 'flag', path, line: lineOf(rules, m.index), detail: m[0].slice(0, 80) });
+    if (m)
+      out.push({
+        rule: 'rules.override',
+        severity: 'flag',
+        path,
+        line: lineOf(rules, m.index),
+        detail: m[0].slice(0, 80),
+      });
   }
   const lines = rules.split('\n');
   lines.forEach((l, i) => {
@@ -197,15 +208,30 @@ export function scanRules(rules: string, path = 'AGENTS.md'): Finding[] {
     if (urls && EXFIL_VERB.test(l)) {
       out.push({ rule: 'rules.exfiltration', severity: 'flag', path, line: i + 1, detail: urls[0]!.slice(0, 80) });
     }
-    if (PIPE_SHELL.test(l)) out.push({ rule: 'rules.pipe_shell', severity: 'flag', path, line: i + 1, detail: l.trim().slice(0, 80) });
-    if (SHORTENERS.test(l)) out.push({ rule: 'rules.shortener', severity: 'flag', path, line: i + 1, detail: l.trim().slice(0, 80) });
+    if (PIPE_SHELL.test(l))
+      out.push({ rule: 'rules.pipe_shell', severity: 'flag', path, line: i + 1, detail: l.trim().slice(0, 80) });
+    if (SHORTENERS.test(l))
+      out.push({ rule: 'rules.shortener', severity: 'flag', path, line: i + 1, detail: l.trim().slice(0, 80) });
   });
   const blob = BASE64_BLOB.exec(rules) ?? HEX_BLOB.exec(rules);
-  if (blob) out.push({ rule: 'rules.encoded_blob', severity: 'flag', path, line: lineOf(rules, blob.index), detail: `${blob[0].length} chars` });
+  if (blob)
+    out.push({
+      rule: 'rules.encoded_blob',
+      severity: 'flag',
+      path,
+      line: lineOf(rules, blob.index),
+      detail: `${blob[0].length} chars`,
+    });
   const inv = INVISIBLE.exec(rules) ?? BIDI.exec(rules);
   if (inv) {
     const cp = inv[0].codePointAt(0)!.toString(16).toUpperCase().padStart(4, '0');
-    out.push({ rule: 'rules.invisible_chars', severity: 'flag', path, line: lineOf(rules, inv.index), detail: `U+${cp}` });
+    out.push({
+      rule: 'rules.invisible_chars',
+      severity: 'flag',
+      path,
+      line: lineOf(rules, inv.index),
+      detail: `U+${cp}`,
+    });
   }
   return out;
 }
@@ -248,7 +274,8 @@ export function scanTree(files: readonly ScanFile[], opts: ScanOptions = {}): Sc
     if (prev !== undefined) findings.push({ rule: 'path.collision', severity: 'fail', path: f.path, detail: prev });
     else seen.set(key, f.path);
 
-    if (f.size > LIMITS.fileBytes) findings.push({ rule: 'size.file', severity: 'warn', path: f.path, detail: `${f.size} bytes` });
+    if (f.size > LIMITS.fileBytes)
+      findings.push({ rule: 'size.file', severity: 'warn', path: f.path, detail: `${f.size} bytes` });
     if (f.mode !== undefined && (f.mode & 0o111) !== 0) {
       findings.push({ rule: 'perm.executable', severity: 'warn', path: f.path, detail: (f.mode & 0o777).toString(8) });
     }
@@ -269,17 +296,46 @@ export function scanTree(files: readonly ScanFile[], opts: ScanOptions = {}): Sc
     }
     for (const [kind, re] of SECRETS) {
       const m = re.exec(body);
-      if (m) findings.push({ rule: 'secret', severity: 'fail', path: f.path, line: lineOf(body, m.index), detail: kind });
+      if (m)
+        findings.push({ rule: 'secret', severity: 'fail', path: f.path, line: lineOf(body, m.index), detail: kind });
     }
     if (CODE_EXT.test(f.path)) {
       const bidi = BIDI.exec(body);
-      if (bidi) findings.push({ rule: 'trojan_source.bidi', severity: 'fail', path: f.path, line: lineOf(body, bidi.index), detail: 'bidi control' });
+      if (bidi)
+        findings.push({
+          rule: 'trojan_source.bidi',
+          severity: 'fail',
+          path: f.path,
+          line: lineOf(body, bidi.index),
+          detail: 'bidi control',
+        });
       const homo = scanHomoglyphs(body);
-      if (homo) findings.push({ rule: 'trojan_source.homoglyph', severity: 'fail', path: f.path, line: homo.line, detail: homo.token });
+      if (homo)
+        findings.push({
+          rule: 'trojan_source.homoglyph',
+          severity: 'fail',
+          path: f.path,
+          line: homo.line,
+          detail: homo.token,
+        });
       const ev = EVAL_DECODED.exec(body);
-      if (ev) findings.push({ rule: 'code.eval_decoded', severity: 'flag', path: f.path, line: lineOf(body, ev.index), detail: ev[0].slice(0, 60) });
+      if (ev)
+        findings.push({
+          rule: 'code.eval_decoded',
+          severity: 'flag',
+          path: f.path,
+          line: lineOf(body, ev.index),
+          detail: ev[0].slice(0, 60),
+        });
       const ip = IP_LITERAL.exec(body);
-      if (ip) findings.push({ rule: 'code.ip_literal', severity: 'flag', path: f.path, line: lineOf(body, ip.index), detail: ip[0].slice(0, 60) });
+      if (ip)
+        findings.push({
+          rule: 'code.ip_literal',
+          severity: 'flag',
+          path: f.path,
+          line: lineOf(body, ip.index),
+          detail: ip[0].slice(0, 60),
+        });
       if (/\.(c|m)?js$/.test(f.path) && body.split('\n').some((l) => l.length > 1000)) {
         findings.push({ rule: 'code.minified', severity: 'flag', path: f.path, detail: 'line > 1000 chars' });
       }
@@ -312,7 +368,16 @@ export function statusOf(findings: readonly Finding[]): ScanStatus {
 
 // ───────────── Typosquatting (registry) ─────────────
 
-const CONFUSABLE: Record<string, string> = { '0': 'o', '1': 'l', '3': 'e', '5': 's', '7': 't', rn: 'm', vv: 'w', i: 'l' };
+const CONFUSABLE: Record<string, string> = {
+  '0': 'o',
+  '1': 'l',
+  '3': 'e',
+  '5': 's',
+  '7': 't',
+  rn: 'm',
+  vv: 'w',
+  i: 'l',
+};
 
 function skeleton(s: string): string {
   let out = s.toLowerCase();

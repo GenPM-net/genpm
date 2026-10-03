@@ -23,14 +23,23 @@ export async function signBytes(key: CryptoKey, data: string): Promise<string> {
 export async function verifyBytes(publicKeyB64Url: string, data: string, sigB64Url: string): Promise<boolean> {
   try {
     const key = await importPublicKey(publicKeyB64Url);
-    return await crypto.subtle.verify(ED25519, key, base64UrlToBytes(sigB64Url) as BufferSource, new TextEncoder().encode(data));
+    return await crypto.subtle.verify(
+      ED25519,
+      key,
+      base64UrlToBytes(sigB64Url) as BufferSource,
+      new TextEncoder().encode(data),
+    );
   } catch {
     return false;
   }
 }
 
 /** Firma la forma canónica del manifiesto resuelto → `sg`. */
-export async function signManifest(manifest: Record<string, unknown>, keyId: string, privateKey: CryptoKey): Promise<string> {
+export async function signManifest(
+  manifest: Record<string, unknown>,
+  keyId: string,
+  privateKey: CryptoKey,
+): Promise<string> {
   return `${keyId}:${await signBytes(privateKey, canonicalize(manifest))}`;
 }
 
@@ -50,7 +59,9 @@ export function parseSignatureHeader(header: string | null | undefined): string 
   return m ? `${m[1]}:${m[2]}` : null;
 }
 
-export type VerifyResult = { ok: true; keyId: string } | { ok: false; reason: 'malformed' | 'unknown_key' | 'revoked_key' | 'bad_signature' };
+export type VerifyResult =
+  | { ok: true; keyId: string }
+  | { ok: false; reason: 'malformed' | 'unknown_key' | 'revoked_key' | 'bad_signature' };
 
 /**
  * Verifica `sg` contra el manifiesto con las claves públicas fijadas (y la lista de revocación).
@@ -67,7 +78,9 @@ export async function verifyManifest(
   if (revoked.includes(p.keyId)) return { ok: false, reason: 'revoked_key' };
   const pub = keys[p.keyId];
   if (!pub) return { ok: false, reason: 'unknown_key' };
-  return (await verifyBytes(pub, canonicalize(manifest), p.sig)) ? { ok: true, keyId: p.keyId } : { ok: false, reason: 'bad_signature' };
+  return (await verifyBytes(pub, canonicalize(manifest), p.sig))
+    ? { ok: true, keyId: p.keyId }
+    : { ok: false, reason: 'bad_signature' };
 }
 
 /** Lista de revocación firmada por la clave raíz offline (security §4.3). */

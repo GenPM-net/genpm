@@ -1,0 +1,176 @@
+{
+  "desc": {
+    "root": "依存関係ではなく、アーキテクチャをインストール。不変の Git コミットからコード + AI ルール + MCP 設定を組み込みます。",
+    "add": "1 つ以上のパッケージ（とその GenPM 依存関係）をこのプロジェクトに組み込む",
+    "search": "レジストリを検索する",
+    "info": "パッケージを表示する: マニフェスト、依存関係、MCP、環境変数、AI ルール",
+    "list": "インストール済みパッケージとローカル変更（ドリフト）を一覧表示する",
+    "remove": "インストール済みパッケージを削除する",
+    "outdated": "新しいバージョンがあるインストール済みパッケージを表示する",
+    "audit": "整合性、署名、アドバイザリ、取り下げ済みバージョンを検証する",
+    "doctor": "環境とこのプロジェクトを診断する",
+    "init": "パッケージリポジトリに genpm.json、AGENTS.md、.genpmignore を作成する",
+    "validate": "公開前にパッケージを検証する（レジストリと同じスキャナー）",
+    "publish": "現在の Git タグをレジストリに公開する",
+    "yank": "公開済みバージョンを取り下げる（不変のまま残り、再公開されることはありません）",
+    "login": "GitHub でログインする（デバイスフロー）",
+    "logout": "ログアウトしてトークンを失効させる",
+    "whoami": "ログイン中のアカウントを表示する",
+    "mcp": "MCP 設定を管理する",
+    "mcpSetup": "GenPM の MCP サーバーを AI クライアントに登録する",
+    "mcpAdd": "インストール済みパッケージが宣言する MCP サーバーを書き込む",
+    "mcpRemove": "インストール済みパッケージが宣言する MCP サーバーを削除する",
+    "cache": "ダウンロードキャッシュを表示または削除する"
+  },
+  "arg": {
+    "cwd": "作業ディレクトリ",
+    "registry": "レジストリの URL",
+    "json": "1 行の JSON 出力（英語、確認なし）",
+    "yes": "コード組み込みの確認を承認する（--mcp や --install-deps は含みません）",
+    "lang": "出力言語（en, es, pt-BR, fr, de, ja, zh-CN, ko）",
+    "verbose": "デバッグログ",
+    "quiet": "エラーのみ",
+    "spec": "パッケージ指定。例: @core/auth または @core/auth@^1.2",
+    "dest": "別のディレクトリにインストールする（パッケージ 1 つのみ）",
+    "dryRun": "プランを表示し、書き込まずに終了する",
+    "mcp": "確認せずに MCP 設定を書き込む",
+    "noMcp": "MCP 設定を書き込まず、確認もしない",
+    "installDeps": "提案されたパッケージマネージャーのコマンドを確認せずに実行する",
+    "clients": "AI クライアント: agents,claude,cursor,copilot,windsurf",
+    "force": "空でない出力先を上書きする（先にバックアップを作成）",
+    "allowAutorun": "自動実行ファイルを許可する（認証済みの公開者のみ）",
+    "maxSize": "パッケージあたりのサイズ上限（MB）",
+    "query": "必要なもの。例: \"stripe サブスクリプション\"",
+    "keyword": "キーワードで絞り込む（カンマ区切り）",
+    "onlyMcp": "MCP サーバーを持つパッケージのみ",
+    "sort": "relevance | installs | recent",
+    "limit": "最大件数",
+    "name": "パッケージ名。例: @core/auth",
+    "rules": "AI ルールのみを表示する",
+    "keepCode": "コードは残し、パッケージの登録だけを解除する",
+    "exitCode": "古いものがあれば終了コード 4 で終了する",
+    "path": "パッケージのディレクトリ",
+    "manifest": "genpm.json へのパス（パッケージのモノレポ用）",
+    "ref": "公開するタグまたは完全な SHA",
+    "distTag": "dist-tag（latest、プレリリースは next）",
+    "reason": "取り下げる理由（必須）",
+    "client": "claude | cursor | vscode | windsurf | codex",
+    "scope": "project | user",
+    "workflow": "v* タグで公開する GitHub Actions ワークフローも作成する",
+    "action": "dir | clean"
+  },
+  "label": {
+    "resolved": "解決済み",
+    "dependency": "依存関係",
+    "skip": "スキップ",
+    "rules": "ルール",
+    "context": "コンテキスト",
+    "npm": "npm",
+    "env": "Env",
+    "mcp": "MCP",
+    "next": "次の手順",
+    "conflicts": "競合",
+    "warnings": "警告",
+    "fix": "対処",
+    "version": "バージョン",
+    "repo": "リポジトリ",
+    "commit": "コミット",
+    "dest": "ディレクトリ",
+    "license": "ライセンス",
+    "deps": "GenPM 依存",
+    "scan": "スキャン",
+    "installed": "インストール済み",
+    "sponsored": "スポンサー"
+  },
+  "add": {
+    "rulesSummary": "{files, plural, other {# ファイル}} · 約 {tokens} トークン · スキャン {scan}",
+    "rulesHint": "（genpm info <pkg> で表示）",
+    "contextSummary": "{count, plural, other {# ファイル}}: {files}",
+    "flagged": "スキャナーがこれらのルールにフラグを立てました。インストール前に内容を確認してください。",
+    "confirm": "{count, plural, other {# 個のパッケージ}}を組み込みますか？（{files, number} ファイル、{size}）",
+    "mcpConsent": "MCP サーバー \"{name}\" を {targets} に追加しますか？",
+    "npmConsent": "`{command}` を実行しますか？",
+    "injected": "{count, plural, other {# 個のパッケージ}}を {seconds, number, ::.0} 秒で組み込みました",
+    "nothing": "インストールするものはありません。すべてインストール済みです。",
+    "dryRun": "ドライラン: 何も書き込まれていません。",
+    "cancelled": "キャンセルしました。何も書き込まれていません。",
+    "mcpWritten": "MCP を {files} に書き込みました",
+    "resigned": "{names} のレジストリ署名を更新しました"
+  },
+  "search": {
+    "empty": "\"{query}\" に一致するパッケージはありません。",
+    "installs": "{count}/30日",
+    "more": "さらに表示: --limit {limit}"
+  },
+  "list": {
+    "empty": "このプロジェクトに GenPM パッケージはありません。",
+    "drift": "{count, plural, =0 {変更なし} other {# ファイル変更}}"
+  },
+  "remove": {
+    "done": "{name} を削除しました",
+    "kept": "コードは {dest} に残しました",
+    "mcpLeft": "MCP 設定は変更されていません: genpm mcp remove {name}"
+  },
+  "outdated": {
+    "none": "すべて最新です。"
+  },
+  "audit": {
+    "ok": "{count, plural, other {# パッケージ}} · 署名は有効",
+    "problems": "{count, plural, other {# 件の指摘}}"
+  },
+  "doctor": {
+    "ok": "問題は見つかりませんでした。",
+    "problems": "{count, plural, other {# 件の問題}}が見つかりました"
+  },
+  "init": {
+    "name": "パッケージ名（@scope/name）",
+    "version": "バージョン",
+    "summary": "1 行の概要",
+    "dest": "利用側プロジェクトでのインストール先ディレクトリ",
+    "keywords": "キーワード（カンマ区切り）",
+    "done": "{files} を作成しました",
+    "nextValidate": "AGENTS.md を編集してから genpm validate を実行してください"
+  },
+  "validate": {
+    "ok": "genpm.json は有効です（{files, plural, other {# ファイル}}、ルール約 {tokens} トークン）",
+    "failed": "{count, plural, other {# 件のエラー}}"
+  },
+  "publish": {
+    "done": "{name}@{version} を公開しました → {url}",
+    "scan": "スキャン: {status}",
+    "dryRun": "ドライラン OK: {name}@{version} は {commit} から公開されます"
+  },
+  "yank": {
+    "done": "{name}@{version} を取り下げました"
+  },
+  "login": {
+    "open": "{url} を開いてコード {code} を入力してください",
+    "waiting": "GitHub を待っています…",
+    "done": "{handle} としてログインしました",
+    "noClientId": "このレジストリでは GitHub ログインがまだ設定されていません。代わりに GENPM_TOKEN を設定してください。"
+  },
+  "logout": {
+    "done": "{registry} からログアウトしました",
+    "none": "{registry} にはログインしていませんでした"
+  },
+  "whoami": {
+    "none": "ログインしていません。genpm login を実行してください。"
+  },
+  "mcp": {
+    "setupConfirm": "GenPM を {file} に追加しますか？",
+    "setupDone": "GenPM の MCP を {file} に登録しました",
+    "setupManual": "次のコマンドを実行してください: {command}",
+    "addDone": "MCP サーバーを {files} に書き込みました",
+    "removeDone": "{files} から {count, plural, other {# 個の MCP サーバー}}を削除しました",
+    "nothing": "{name} は MCP サーバーを宣言していません。"
+  },
+  "cache": {
+    "cleaned": "キャッシュを削除しました: {dir}"
+  },
+  "next": {
+    "env": "{vars} を設定してください（.env.example を参照）",
+    "integration": "{file} の「Integration」に従ってください",
+    "npm": "{command} を実行してください",
+    "mcp": "MCP は後から有効化できます: genpm mcp add {names}"
+  }
+}

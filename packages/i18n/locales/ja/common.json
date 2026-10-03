@@ -1,0 +1,27 @@
+{
+  "product": { "tagline": "依存関係ではなく、アーキテクチャをインストール。" },
+  "layers": {
+    "code": "コード",
+    "context": "コンテキスト",
+    "connections": "コネクション"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "pt-BR": "Português (Brasil)",
+    "fr": "Français",
+    "de": "Deutsch",
+    "ja": "日本語",
+    "zh-CN": "简体中文",
+    "ko": "한국어"
+  },
+  "betaTranslation": "ベータ版の翻訳",
+  "scan": {
+    "passed": "スキャン合格",
+    "flagged": "レビュー対象",
+    "failed": "スキャン不合格",
+    "pending": "スキャン待ち"
+  },
+  "sponsored": "スポンサー",
+  "verified": "認証済み"
+}

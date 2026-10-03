@@ -3,13 +3,22 @@
     "message": "Something went wrong inside GenPM.",
     "fix": "Retry with --verbose and report the issue with its requestId if it persists."
   },
-  "E_BAD_REQUEST": { "message": "The request is invalid: {detail}", "fix": "Check the parameters and try again." },
-  "E_USAGE": { "message": "Invalid usage: {detail}", "fix": "Run genpm --help to see the available options." },
+  "E_BAD_REQUEST": {
+    "message": "The request is invalid: {detail}",
+    "fix": "Check the parameters and try again."
+  },
+  "E_USAGE": {
+    "message": "Invalid usage: {detail}",
+    "fix": "Run genpm --help to see the available options."
+  },
   "E_CONFIRM_REQUIRED": {
     "message": "Confirmation needed: {question}",
     "fix": "Run in an interactive terminal, or pass {flag} to confirm."
   },
-  "E_PAYLOAD_TOO_LARGE": { "message": "The request body is too large.", "fix": "Send at most 16 KB." },
+  "E_PAYLOAD_TOO_LARGE": {
+    "message": "The request body is too large.",
+    "fix": "Send at most 16 KB."
+  },
   "E_NOT_FOUND": {
     "message": "{name} was not found.",
     "fix": "Check the spelling or search with genpm search <query>."
@@ -38,7 +47,10 @@
     "message": "{name} has local changes in {count, plural, one {# file} other {# files}}.",
     "fix": "Use --keep-code to keep your code, or --force to delete it anyway."
   },
-  "E_REQUIRED_BY": { "message": "{name} is required by {dependents}.", "fix": "Remove the dependent packages first." },
+  "E_REQUIRED_BY": {
+    "message": "{name} is required by {dependents}.",
+    "fix": "Remove the dependent packages first."
+  },
   "E_BUSY": {
     "message": "Another GenPM process is modifying this project.",
     "fix": "Wait for it to finish. If none is running, delete .genpm/.lock."
@@ -58,6 +70,10 @@
   "E_RATE_LIMITED": {
     "message": "Too many requests.",
     "fix": "Wait {seconds, plural, one {# second} other {# seconds}} and retry."
+  },
+  "E_READ_ONLY": {
+    "message": "The registry is in read-only mode during maintenance.",
+    "fix": "Installing still works. Try publishing again later; status updates on genpm.net."
   },
   "E_INTEGRITY": {
     "message": "Integrity check failed for {name}: {detail}",
@@ -79,7 +95,10 @@
     "message": "The security scan rejected {name}: {detail}",
     "fix": "Fix the findings listed by genpm validate and publish a new version."
   },
-  "E_INSECURE_PERMS": { "message": "{path} is readable by other users.", "fix": "Run chmod 600 {path}." },
+  "E_INSECURE_PERMS": {
+    "message": "{path} is readable by other users.",
+    "fix": "Run chmod 600 {path}."
+  },
   "E_QUARANTINED": {
     "message": "{name} is under security review.",
     "fix": "Try again later or choose another package. Reviews take less than 24 business hours."
@@ -144,7 +163,10 @@
     "message": "Git is not installed or is older than 2.25.",
     "fix": "Install Git 2.25 or later, then retry."
   },
-  "E_NODE_VERSION": { "message": "GenPM needs Node.js 20.11 or later (found {version}).", "fix": "Update Node.js." },
+  "E_NODE_VERSION": {
+    "message": "GenPM needs Node.js 20.11 or later (found {version}).",
+    "fix": "Update Node.js."
+  },
   "E_NOT_A_PROJECT": {
     "message": "No project found in {path}.",
     "fix": "Run the command inside a project (with package.json or .git), or pass --cwd <dir>."

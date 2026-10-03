@@ -1,0 +1,174 @@
+{
+  "E_INTERNAL": {
+    "message": "GenPM の内部でエラーが発生しました。",
+    "fix": "--verbose を付けて再実行し、解決しない場合は requestId を添えて報告してください。"
+  },
+  "E_BAD_REQUEST": {
+    "message": "リクエストが不正です: {detail}",
+    "fix": "パラメーターを確認して再試行してください。"
+  },
+  "E_USAGE": {
+    "message": "使い方が正しくありません: {detail}",
+    "fix": "genpm --help で利用可能なオプションを確認してください。"
+  },
+  "E_CONFIRM_REQUIRED": {
+    "message": "確認が必要です: {question}",
+    "fix": "対話型ターミナルで実行するか、{flag} を指定して確定してください。"
+  },
+  "E_PAYLOAD_TOO_LARGE": {
+    "message": "リクエスト本文が大きすぎます。",
+    "fix": "16 KB 以下にしてください。"
+  },
+  "E_NOT_FOUND": {
+    "message": "{name} が見つかりません。",
+    "fix": "綴りを確認するか、genpm search <検索語> で検索してください。"
+  },
+  "E_NO_MATCHING_VERSION": {
+    "message": "{range} に一致する {name} のバージョンがありません。",
+    "fix": "genpm info {name} で公開済みのバージョンを確認してください。"
+  },
+  "E_DEST_CONFLICT": {
+    "message": "{path} は存在し、空ではありません。",
+    "fix": "--dest <dir> または --force（先にバックアップを作成）を使用してください。"
+  },
+  "E_RANGE_UNSATISFIED": {
+    "message": "すべての範囲を満たすバージョンがありません: {detail}",
+    "fix": "競合するパッケージの互換バージョンを先にインストールするか、別のバージョンに固定してください。"
+  },
+  "E_ALREADY_INSTALLED": {
+    "message": "{name} {version} はすでにインストールされています。",
+    "fix": "対応は不要です。genpm list でインストール済みパッケージを確認できます。"
+  },
+  "E_VERSION_EXISTS": {
+    "message": "{name}@{version} はすでに公開されています。",
+    "fix": "バージョンは不変です。genpm.json のバージョンを上げて新しいタグを作成してください。"
+  },
+  "E_DRIFT": {
+    "message": "{name} には {count, plural, other {# 個のファイル}}にローカル変更があります。",
+    "fix": "コードを残すには --keep-code、それでも削除するには --force を使用してください。"
+  },
+  "E_REQUIRED_BY": {
+    "message": "{name} は {dependents} に必要とされています。",
+    "fix": "先に依存しているパッケージを削除してください。"
+  },
+  "E_BUSY": {
+    "message": "別の GenPM プロセスがこのプロジェクトを変更中です。",
+    "fix": "完了するまでお待ちください。実行中のものがなければ .genpm/.lock を削除してください。"
+  },
+  "E_PLAN_STALE": {
+    "message": "プランの計算後にプロジェクトが変更されました。",
+    "fix": "プランを再計算（ドライラン）して確認してください。"
+  },
+  "E_NETWORK": {
+    "message": "{host} に接続できません。",
+    "fix": "接続、プロキシ、または GENPM_REGISTRY を確認して再試行してください。"
+  },
+  "E_UPSTREAM_GIT": {
+    "message": "Git ホストでエラーが発生しました: {detail}",
+    "fix": "お使いの Git 認証情報でリポジトリにアクセスできることを確認して再試行してください。"
+  },
+  "E_RATE_LIMITED": {
+    "message": "リクエストが多すぎます。",
+    "fix": "{seconds, plural, other {# 秒}}待ってから再試行してください。"
+  },
+  "E_READ_ONLY": {
+    "message": "メンテナンス中のため、レジストリは読み取り専用です。",
+    "fix": "インストールは引き続き利用できます。公開は後でもう一度お試しください。状況は genpm.net でお知らせします。"
+  },
+  "E_INTEGRITY": {
+    "message": "{name} の整合性チェックに失敗しました: {detail}",
+    "fix": "このパッケージは使用しないでください。解決しない場合は genpm.net/report から報告してください。"
+  },
+  "E_SIGNATURE": {
+    "message": "{name} のレジストリ署名が無効です。",
+    "fix": "インストールしないでください。GenPM を更新（新しい署名鍵）し、解決しない場合は報告してください。"
+  },
+  "E_PATH_UNSAFE": {
+    "message": "安全でないパス {path}（{reason}）。",
+    "fix": "プロジェクト内の相対パスを使用してください。..、絶対パス、予約済みフォルダーは使えません。"
+  },
+  "E_AUTORUN_FILE": {
+    "message": "{name} に自動実行されるファイルが含まれています: {files}。",
+    "fix": "これらのファイルはインストールされません。作者に削除を依頼するか、認証済みの公開者に限り --allow-autorun を使用してください。"
+  },
+  "E_SCAN_FAILED": {
+    "message": "セキュリティスキャンが {name} を拒否しました: {detail}",
+    "fix": "genpm validate が示す指摘を修正して新しいバージョンを公開してください。"
+  },
+  "E_INSECURE_PERMS": {
+    "message": "{path} は他のユーザーから読み取り可能です。",
+    "fix": "chmod 600 {path} を実行してください。"
+  },
+  "E_QUARANTINED": {
+    "message": "{name} はセキュリティレビュー中です。",
+    "fix": "後でもう一度試すか、別のパッケージを選んでください。レビューは 24 営業時間以内に完了します。"
+  },
+  "E_REF_MUTABLE": {
+    "message": "{ref} は不変の参照ではありません。",
+    "fix": "Git タグまたは 40 文字のコミット SHA を使用してください。ブランチは使えません。"
+  },
+  "E_ADVISORY": {
+    "message": "{name} {version} には深刻度 {severity} のセキュリティアドバイザリがあります。",
+    "fix": "{patched} 以降に更新してください。"
+  },
+  "E_TOO_LARGE": {
+    "message": "{name} はサイズ上限を超えています: {detail}",
+    "fix": ".genpmignore でファイルを除外するか、正当なパッケージであれば --max-size で上限を引き上げてください。"
+  },
+  "E_MANIFEST_INVALID": {
+    "message": "genpm.json が無効です。",
+    "fix": "詳細に記載されたフィールドを修正してください。完全なレポートは genpm validate で確認できます。"
+  },
+  "E_LOCK_INVALID": {
+    "message": "genpm.lock が無効か破損しています。",
+    "fix": "Git から復元してください。genpm.lock を手で編集しないでください。"
+  },
+  "E_NAME_MISMATCH": {
+    "message": "マニフェスト名 {actual} が {expected} と一致しません。",
+    "fix": "genpm.json に宣言された名前で公開してください。"
+  },
+  "E_REF_NOT_FOUND": {
+    "message": "{ref} は {repo} に存在しません。",
+    "fix": "タグを作成してプッシュしてください: git tag {ref} && git push --tags。"
+  },
+  "E_REF_NOT_PUSHED": {
+    "message": "{ref} がリモートにないか、別のコミットを指しています。",
+    "fix": "git push origin {ref} でタグをプッシュしてください。"
+  },
+  "E_REPO_NOT_ALLOWED": {
+    "message": "{repo} はスコープ @{scope} の所有ではありません。",
+    "fix": "スコープに紐づく GitHub オーナーのリポジトリから公開してください。"
+  },
+  "E_REPO_CHANGED": {
+    "message": "{name} の背後にあるリポジトリが変わりました（リポジャッキングの可能性）。",
+    "fix": "パッケージを移管するには、件名を [SECURITY] として hello@genpm.net にメールしてください。"
+  },
+  "E_CONTEXT_MISSING": {
+    "message": "AI ルールファイル {path} が存在しません。",
+    "fix": "{path} を作成する（genpm init でテンプレートを生成）か、genpm.json で x を設定してください。"
+  },
+  "E_CONTEXT_TOO_LARGE": {
+    "message": "AI ルールファイル {path} が 16 KB を超えています。",
+    "fix": "短くしてください。ルールは目的、構成、統合、規約、禁止事項に絞りましょう。"
+  },
+  "E_AUTH": {
+    "message": "ログインしていないか、トークンが無効または期限切れです。",
+    "fix": "genpm login を実行してください（CI では GENPM_TOKEN を設定）。"
+  },
+  "E_FORBIDDEN_SCOPE": {
+    "message": "@{scope} には公開できません。",
+    "fix": "@{scope} のオーナーに公開権限を依頼するか、自分のスコープを使用してください。"
+  },
+  "E_GIT_MISSING": {
+    "message": "Git がインストールされていないか、2.25 より古いバージョンです。",
+    "fix": "Git 2.25 以降をインストールして再試行してください。"
+  },
+  "E_NODE_VERSION": {
+    "message": "GenPM には Node.js 20.11 以降が必要です（検出: {version}）。",
+    "fix": "Node.js を更新してください。"
+  },
+  "E_NOT_A_PROJECT": {
+    "message": "{path} にプロジェクトが見つかりません。",
+    "fix": "プロジェクト（package.json または .git があるもの）の中で実行するか、--cwd <dir> を指定してください。"
+  }
+}

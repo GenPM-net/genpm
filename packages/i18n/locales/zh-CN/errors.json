@@ -1,0 +1,174 @@
+{
+  "E_INTERNAL": {
+    "message": "GenPM 内部出错了。",
+    "fix": "使用 --verbose 重试；如果问题仍然存在，请附上 requestId 报告。"
+  },
+  "E_BAD_REQUEST": {
+    "message": "请求无效：{detail}",
+    "fix": "请检查参数后重试。"
+  },
+  "E_USAGE": {
+    "message": "用法无效：{detail}",
+    "fix": "运行 genpm --help 查看可用选项。"
+  },
+  "E_CONFIRM_REQUIRED": {
+    "message": "需要确认：{question}",
+    "fix": "请在交互式终端中运行，或传入 {flag} 进行确认。"
+  },
+  "E_PAYLOAD_TOO_LARGE": {
+    "message": "请求体过大。",
+    "fix": "最多发送 16 KB。"
+  },
+  "E_NOT_FOUND": {
+    "message": "未找到 {name}。",
+    "fix": "请检查拼写，或使用 genpm search <关键词> 搜索。"
+  },
+  "E_NO_MATCHING_VERSION": {
+    "message": "{name} 没有匹配 {range} 的版本。",
+    "fix": "运行 genpm info {name} 查看已发布的版本。"
+  },
+  "E_DEST_CONFLICT": {
+    "message": "{path} 已存在且不为空。",
+    "fix": "使用 --dest <dir> 或 --force（会先备份）。"
+  },
+  "E_RANGE_UNSATISFIED": {
+    "message": "没有版本能满足所有范围：{detail}",
+    "fix": "请先安装冲突包的兼容版本，或固定为其他版本。"
+  },
+  "E_ALREADY_INSTALLED": {
+    "message": "{name} {version} 已安装。",
+    "fix": "无需操作。使用 genpm list 查看已安装的包。"
+  },
+  "E_VERSION_EXISTS": {
+    "message": "{name}@{version} 已发布。",
+    "fix": "版本不可变：请在 genpm.json 中提升版本号并创建新标签。"
+  },
+  "E_DRIFT": {
+    "message": "{name} 在 {count, plural, other {# 个文件}}中有本地修改。",
+    "fix": "使用 --keep-code 保留你的代码，或使用 --force 强制删除。"
+  },
+  "E_REQUIRED_BY": {
+    "message": "{dependents} 依赖 {name}。",
+    "fix": "请先移除依赖它的包。"
+  },
+  "E_BUSY": {
+    "message": "另一个 GenPM 进程正在修改此项目。",
+    "fix": "请等待其完成。如果没有进程在运行，请删除 .genpm/.lock。"
+  },
+  "E_PLAN_STALE": {
+    "message": "自计划生成以来项目已发生变化。",
+    "fix": "请重新生成计划（试运行）并确认。"
+  },
+  "E_NETWORK": {
+    "message": "无法连接到 {host}。",
+    "fix": "请检查网络连接、代理或 GENPM_REGISTRY 后重试。"
+  },
+  "E_UPSTREAM_GIT": {
+    "message": "Git 主机出错：{detail}",
+    "fix": "请确认使用你的 Git 凭据可以访问该仓库，然后重试。"
+  },
+  "E_RATE_LIMITED": {
+    "message": "请求过多。",
+    "fix": "请等待 {seconds, plural, other {# 秒}}后重试。"
+  },
+  "E_READ_ONLY": {
+    "message": "注册表正在维护，处于只读模式。",
+    "fix": "安装仍可正常使用。请稍后再发布；最新状态见 genpm.net。"
+  },
+  "E_INTEGRITY": {
+    "message": "{name} 完整性校验失败：{detail}",
+    "fix": "请勿使用此包。如果问题持续，请通过 genpm.net/report 报告。"
+  },
+  "E_SIGNATURE": {
+    "message": "{name} 的注册表签名无效。",
+    "fix": "请勿安装。请更新 GenPM（新的签名密钥），如果问题持续请报告。"
+  },
+  "E_PATH_UNSAFE": {
+    "message": "不安全的路径 {path}（{reason}）。",
+    "fix": "请使用项目内的相对路径，不得包含 ..、绝对路径或保留目录。"
+  },
+  "E_AUTORUN_FILE": {
+    "message": "{name} 包含会自动运行的文件：{files}。",
+    "fix": "这些文件永远不会被安装。请让作者删除它们，或仅对已验证的发布者使用 --allow-autorun。"
+  },
+  "E_SCAN_FAILED": {
+    "message": "安全扫描拒绝了 {name}：{detail}",
+    "fix": "请修复 genpm validate 列出的问题，然后发布新版本。"
+  },
+  "E_INSECURE_PERMS": {
+    "message": "{path} 可被其他用户读取。",
+    "fix": "运行 chmod 600 {path}。"
+  },
+  "E_QUARANTINED": {
+    "message": "{name} 正在接受安全审核。",
+    "fix": "请稍后再试或选择其他包。审核在 24 个工作小时内完成。"
+  },
+  "E_REF_MUTABLE": {
+    "message": "{ref} 不是不可变引用。",
+    "fix": "请使用 Git 标签或完整的 40 位提交 SHA，不要使用分支。"
+  },
+  "E_ADVISORY": {
+    "message": "{name} {version} 存在严重程度为 {severity} 的安全公告。",
+    "fix": "请升级到 {patched} 或更高版本。"
+  },
+  "E_TOO_LARGE": {
+    "message": "{name} 超出大小限制：{detail}",
+    "fix": "使用 .genpmignore 排除文件；如果包是正当的，可用 --max-size 提高限制。"
+  },
+  "E_MANIFEST_INVALID": {
+    "message": "genpm.json 无效。",
+    "fix": "请修正详情中列出的字段。运行 genpm validate 获取完整报告。"
+  },
+  "E_LOCK_INVALID": {
+    "message": "genpm.lock 无效或已损坏。",
+    "fix": "请从 Git 恢复；切勿手动编辑 genpm.lock。"
+  },
+  "E_NAME_MISMATCH": {
+    "message": "清单名称 {actual} 与 {expected} 不一致。",
+    "fix": "请使用 genpm.json 中声明的名称发布。"
+  },
+  "E_REF_NOT_FOUND": {
+    "message": "{repo} 中不存在 {ref}。",
+    "fix": "创建并推送标签：git tag {ref} && git push --tags。"
+  },
+  "E_REF_NOT_PUSHED": {
+    "message": "{ref} 不在远程仓库中，或指向了另一个提交。",
+    "fix": "使用 git push origin {ref} 推送标签。"
+  },
+  "E_REPO_NOT_ALLOWED": {
+    "message": "{repo} 不属于作用域 @{scope}。",
+    "fix": "请从与该作用域关联的 GitHub 所有者的仓库发布。"
+  },
+  "E_REPO_CHANGED": {
+    "message": "{name} 背后的仓库已变更（可能是仓库劫持）。",
+    "fix": "请发邮件至 hello@genpm.net，主题为 [SECURITY]，以转移该包。"
+  },
+  "E_CONTEXT_MISSING": {
+    "message": "AI 规则文件 {path} 不存在。",
+    "fix": "创建 {path}（genpm init 可生成模板），或在 genpm.json 中设置 x。"
+  },
+  "E_CONTEXT_TOO_LARGE": {
+    "message": "AI 规则文件 {path} 超过 16 KB。",
+    "fix": "请精简：让规则聚焦于目的、结构、集成、约定和禁止事项。"
+  },
+  "E_AUTH": {
+    "message": "你尚未登录，或令牌无效、已过期。",
+    "fix": "运行 genpm login（在 CI 中设置 GENPM_TOKEN）。"
+  },
+  "E_FORBIDDEN_SCOPE": {
+    "message": "你无法发布到 @{scope}。",
+    "fix": "请向 @{scope} 的所有者申请发布权限，或使用你自己的作用域。"
+  },
+  "E_GIT_MISSING": {
+    "message": "未安装 Git，或版本低于 2.25。",
+    "fix": "请安装 Git 2.25 或更高版本后重试。"
+  },
+  "E_NODE_VERSION": {
+    "message": "GenPM 需要 Node.js 20.11 或更高版本（当前为 {version}）。",
+    "fix": "请更新 Node.js。"
+  },
+  "E_NOT_A_PROJECT": {
+    "message": "在 {path} 中未找到项目。",
+    "fix": "请在项目内（包含 package.json 或 .git）运行该命令，或传入 --cwd <dir>。"
+  }
+}

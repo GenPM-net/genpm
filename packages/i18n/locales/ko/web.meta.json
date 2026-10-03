@@ -1,0 +1,1217 @@
+{
+  "meta.title": {
+    "machine": true
+  },
+  "meta.description": {
+    "machine": true
+  },
+  "meta.suffix": {
+    "machine": true
+  },
+  "nav.skip": {
+    "machine": true
+  },
+  "nav.home": {
+    "machine": true
+  },
+  "nav.searchPlaceholder": {
+    "machine": true
+  },
+  "nav.searchLabel": {
+    "machine": true
+  },
+  "nav.docs": {
+    "machine": true
+  },
+  "nav.mcp": {
+    "machine": true
+  },
+  "nav.publish": {
+    "machine": true
+  },
+  "nav.signIn": {
+    "machine": true
+  },
+  "nav.signOut": {
+    "machine": true
+  },
+  "nav.dashboard": {
+    "machine": true
+  },
+  "nav.tokens": {
+    "machine": true
+  },
+  "nav.menu": {
+    "machine": true
+  },
+  "nav.main": {
+    "machine": true
+  },
+  "nav.language": {
+    "machine": true
+  },
+  "nav.theme": {
+    "machine": true
+  },
+  "nav.beta": {
+    "machine": true
+  },
+  "nav.suggestLang": {
+    "machine": true
+  },
+  "nav.switch": {
+    "machine": true
+  },
+  "nav.dismiss": {
+    "machine": true
+  },
+  "footer.tagline": {
+    "machine": true
+  },
+  "footer.product": {
+    "machine": true
+  },
+  "footer.company": {
+    "machine": true
+  },
+  "footer.community": {
+    "machine": true
+  },
+  "footer.legal": {
+    "machine": true
+  },
+  "footer.browse": {
+    "machine": true
+  },
+  "footer.changelog": {
+    "machine": true
+  },
+  "footer.sponsors": {
+    "machine": true
+  },
+  "footer.enterprise": {
+    "machine": true
+  },
+  "footer.blog": {
+    "machine": true
+  },
+  "footer.security": {
+    "machine": true
+  },
+  "footer.advisories": {
+    "machine": true
+  },
+  "footer.terms": {
+    "machine": true
+  },
+  "footer.privacy": {
+    "machine": true
+  },
+  "footer.policy": {
+    "machine": true
+  },
+  "footer.report": {
+    "machine": true
+  },
+  "footer.status": {
+    "machine": true
+  },
+  "footer.beta": {
+    "machine": true
+  },
+  "common.copy": {
+    "machine": true
+  },
+  "common.copied": {
+    "machine": true
+  },
+  "common.copiedToast": {
+    "machine": true
+  },
+  "common.copyFail": {
+    "machine": true
+  },
+  "common.shaCopied": {
+    "machine": true
+  },
+  "common.installCopied": {
+    "machine": true
+  },
+  "common.verified": {
+    "machine": true
+  },
+  "common.sponsored": {
+    "machine": true
+  },
+  "common.perMonth": {
+    "machine": true
+  },
+  "common.none": {
+    "machine": true
+  },
+  "common.more": {
+    "machine": true
+  },
+  "common.browseAll": {
+    "machine": true
+  },
+  "common.readDocs": {
+    "machine": true
+  },
+  "common.loadMore": {
+    "machine": true
+  },
+  "common.cachedData": {
+    "machine": true
+  },
+  "common.sourceUnavailableTab": {
+    "machine": true
+  },
+  "common.retry": {
+    "machine": true
+  },
+  "common.files": {
+    "machine": true
+  },
+  "common.tokens": {
+    "machine": true
+  },
+  "common.noResults": {
+    "machine": true
+  },
+  "home.eyebrow": {
+    "machine": true
+  },
+  "home.title": {
+    "machine": true
+  },
+  "home.lede": {
+    "machine": true
+  },
+  "home.installMethod": {
+    "machine": true
+  },
+  "home.noGlobal": {
+    "machine": true
+  },
+  "home.thenAsk": {
+    "machine": true
+  },
+  "home.askExample": {
+    "machine": true
+  },
+  "home.searchCta": {
+    "machine": true
+  },
+  "home.trustSha": {
+    "machine": true
+  },
+  "home.trustScripts": {
+    "machine": true
+  },
+  "home.trustScan": {
+    "machine": true
+  },
+  "home.layersKicker": {
+    "machine": true
+  },
+  "home.layersTitle": {
+    "machine": true
+  },
+  "home.layersText": {
+    "machine": true
+  },
+  "home.graftLabel": {
+    "machine": true
+  },
+  "home.codeTitle": {
+    "machine": true
+  },
+  "home.codeText": {
+    "machine": true
+  },
+  "home.contextTitle": {
+    "machine": true
+  },
+  "home.contextText": {
+    "machine": true
+  },
+  "home.connectionsTitle": {
+    "machine": true
+  },
+  "home.connectionsText": {
+    "machine": true
+  },
+  "home.featuredKicker": {
+    "machine": true
+  },
+  "home.featuredTitle": {
+    "machine": true
+  },
+  "home.trendingKicker": {
+    "machine": true
+  },
+  "home.trendingTitle": {
+    "machine": true
+  },
+  "home.howKicker": {
+    "machine": true
+  },
+  "home.howTitle": {
+    "machine": true
+  },
+  "home.step1": {
+    "machine": true
+  },
+  "home.step1Text": {
+    "machine": true
+  },
+  "home.step2": {
+    "machine": true
+  },
+  "home.step2Text": {
+    "machine": true
+  },
+  "home.step3": {
+    "machine": true
+  },
+  "home.step3Text": {
+    "machine": true
+  },
+  "home.aiKicker": {
+    "machine": true
+  },
+  "home.aiTitle": {
+    "machine": true
+  },
+  "home.aiText": {
+    "machine": true
+  },
+  "home.allClients": {
+    "machine": true
+  },
+  "home.secKicker": {
+    "machine": true
+  },
+  "home.secTitle": {
+    "machine": true
+  },
+  "home.secSha": {
+    "machine": true
+  },
+  "home.secShaText": {
+    "machine": true
+  },
+  "home.secScripts": {
+    "machine": true
+  },
+  "home.secScriptsText": {
+    "machine": true
+  },
+  "home.secScan": {
+    "machine": true
+  },
+  "home.secScanText": {
+    "machine": true
+  },
+  "home.pubKicker": {
+    "machine": true
+  },
+  "home.pubTitle": {
+    "machine": true
+  },
+  "home.pubText": {
+    "machine": true
+  },
+  "home.pubCta": {
+    "machine": true
+  },
+  "home.statPackages": {
+    "machine": true
+  },
+  "home.statInstalls": {
+    "machine": true
+  },
+  "home.statPublishers": {
+    "machine": true
+  },
+  "home.empty": {
+    "machine": true
+  },
+  "clients.label": {
+    "machine": true
+  },
+  "clients.orSetup": {
+    "machine": true
+  },
+  "clients.thenAsk": {
+    "machine": true
+  },
+  "clients.p1": {
+    "machine": true
+  },
+  "clients.p2": {
+    "machine": true
+  },
+  "clients.p3": {
+    "machine": true
+  },
+  "clients.deeplink": {
+    "machine": true
+  },
+  "search.title": {
+    "machine": true
+  },
+  "search.placeholder": {
+    "machine": true
+  },
+  "search.filters": {
+    "machine": true
+  },
+  "search.layers": {
+    "machine": true
+  },
+  "search.hasMcp": {
+    "machine": true
+  },
+  "search.verifiedOnly": {
+    "machine": true
+  },
+  "search.keyword": {
+    "machine": true
+  },
+  "search.sort": {
+    "machine": true
+  },
+  "search.relevance": {
+    "machine": true
+  },
+  "search.installs": {
+    "machine": true
+  },
+  "search.recent": {
+    "machine": true
+  },
+  "search.results": {
+    "machine": true
+  },
+  "search.emptyTitle": {
+    "machine": true
+  },
+  "search.emptyText": {
+    "machine": true
+  },
+  "search.publishOne": {
+    "machine": true
+  },
+  "search.apply": {
+    "machine": true
+  },
+  "pkg.packages": {
+    "machine": true
+  },
+  "pkg.report": {
+    "machine": true
+  },
+  "pkg.github": {
+    "machine": true
+  },
+  "pkg.scanPassed": {
+    "machine": true
+  },
+  "pkg.scanFlagged": {
+    "machine": true
+  },
+  "pkg.scanFailed": {
+    "machine": true
+  },
+  "pkg.scanPending": {
+    "machine": true
+  },
+  "pkg.tabs": {
+    "machine": true
+  },
+  "pkg.overview": {
+    "machine": true
+  },
+  "pkg.rules": {
+    "machine": true
+  },
+  "pkg.files": {
+    "machine": true
+  },
+  "pkg.versions": {
+    "machine": true
+  },
+  "pkg.dependencies": {
+    "machine": true
+  },
+  "pkg.security": {
+    "machine": true
+  },
+  "pkg.install": {
+    "machine": true
+  },
+  "pkg.whatYouGet": {
+    "machine": true
+  },
+  "pkg.getSource": {
+    "machine": true
+  },
+  "pkg.getRules": {
+    "machine": true
+  },
+  "pkg.getEnv": {
+    "machine": true
+  },
+  "pkg.getDeps": {
+    "machine": true
+  },
+  "pkg.readme": {
+    "machine": true
+  },
+  "pkg.noReadme": {
+    "machine": true
+  },
+  "pkg.rulesIntro": {
+    "machine": true
+  },
+  "pkg.rulesRendered": {
+    "machine": true
+  },
+  "pkg.rulesRaw": {
+    "machine": true
+  },
+  "pkg.noRules": {
+    "machine": true
+  },
+  "pkg.filesIntro": {
+    "machine": true
+  },
+  "pkg.readOnly": {
+    "machine": true
+  },
+  "pkg.mcpNone": {
+    "machine": true
+  },
+  "pkg.mcpServer": {
+    "machine": true
+  },
+  "pkg.mcpCommand": {
+    "machine": true
+  },
+  "pkg.mcpEnv": {
+    "machine": true
+  },
+  "pkg.mcpConsent": {
+    "machine": true
+  },
+  "pkg.mcpConsentText": {
+    "machine": true
+  },
+  "pkg.version": {
+    "machine": true
+  },
+  "pkg.commit": {
+    "machine": true
+  },
+  "pkg.published": {
+    "machine": true
+  },
+  "pkg.scan": {
+    "machine": true
+  },
+  "pkg.yanked": {
+    "machine": true
+  },
+  "pkg.genpmDeps": {
+    "machine": true
+  },
+  "pkg.npmDeps": {
+    "machine": true
+  },
+  "pkg.proposed": {
+    "machine": true
+  },
+  "pkg.proposedText": {
+    "machine": true
+  },
+  "pkg.secScan": {
+    "machine": true
+  },
+  "pkg.secCommit": {
+    "machine": true
+  },
+  "pkg.secCommitText": {
+    "machine": true
+  },
+  "pkg.secScripts": {
+    "machine": true
+  },
+  "pkg.secScriptsText": {
+    "machine": true
+  },
+  "pkg.secLicense": {
+    "machine": true
+  },
+  "pkg.secReport": {
+    "machine": true
+  },
+  "pkg.secReportText": {
+    "machine": true
+  },
+  "pkg.secReportLink": {
+    "machine": true
+  },
+  "pkg.findings": {
+    "machine": true
+  },
+  "pkg.installPanel": {
+    "machine": true
+  },
+  "pkg.cli": {
+    "machine": true
+  },
+  "pkg.prompt": {
+    "machine": true
+  },
+  "pkg.manual": {
+    "machine": true
+  },
+  "pkg.runner": {
+    "machine": true
+  },
+  "pkg.pasteAgent": {
+    "machine": true
+  },
+  "pkg.promptText": {
+    "machine": true
+  },
+  "pkg.withoutCli": {
+    "machine": true
+  },
+  "pkg.injects": {
+    "machine": true
+  },
+  "pkg.tag": {
+    "machine": true
+  },
+  "pkg.requires": {
+    "machine": true
+  },
+  "pkg.env": {
+    "machine": true
+  },
+  "pkg.installs": {
+    "machine": true
+  },
+  "pkg.repo": {
+    "machine": true
+  },
+  "pkg.publishedBy": {
+    "machine": true
+  },
+  "pkg.badge": {
+    "machine": true
+  },
+  "pkg.deprecated": {
+    "machine": true
+  },
+  "pkg.yankedBanner": {
+    "machine": true
+  },
+  "pkg.latestGood": {
+    "machine": true
+  },
+  "pkg.quarantined": {
+    "machine": true
+  },
+  "pkg.quarantinedText": {
+    "machine": true
+  },
+  "pkg.unavailable": {
+    "machine": true
+  },
+  "pkg.unavailableText": {
+    "machine": true
+  },
+  "pkg.notFoundTitle": {
+    "machine": true
+  },
+  "pkg.selectVersion": {
+    "machine": true
+  },
+  "report.title": {
+    "machine": true
+  },
+  "report.reason": {
+    "machine": true
+  },
+  "report.malware": {
+    "machine": true
+  },
+  "report.prompt_injection": {
+    "machine": true
+  },
+  "report.spam": {
+    "machine": true
+  },
+  "report.typosquat": {
+    "machine": true
+  },
+  "report.license": {
+    "machine": true
+  },
+  "report.other": {
+    "machine": true
+  },
+  "report.version": {
+    "machine": true
+  },
+  "report.details": {
+    "machine": true
+  },
+  "report.send": {
+    "machine": true
+  },
+  "report.cancel": {
+    "machine": true
+  },
+  "report.loginFirst": {
+    "machine": true
+  },
+  "report.thanks": {
+    "machine": true
+  },
+  "mcp.eyebrow": {
+    "machine": true
+  },
+  "mcp.title": {
+    "machine": true
+  },
+  "mcp.lede": {
+    "machine": true
+  },
+  "mcp.step1": {
+    "machine": true
+  },
+  "mcp.step1Title": {
+    "machine": true
+  },
+  "mcp.step2": {
+    "machine": true
+  },
+  "mcp.step2Title": {
+    "machine": true
+  },
+  "mcp.step2Text": {
+    "machine": true
+  },
+  "mcp.tool": {
+    "machine": true
+  },
+  "mcp.does": {
+    "machine": true
+  },
+  "mcp.t_search": {
+    "machine": true
+  },
+  "mcp.t_info": {
+    "machine": true
+  },
+  "mcp.t_add": {
+    "machine": true
+  },
+  "mcp.t_list": {
+    "machine": true
+  },
+  "mcp.t_remove": {
+    "machine": true
+  },
+  "mcp.t_outdated": {
+    "machine": true
+  },
+  "mcp.t_audit": {
+    "machine": true
+  },
+  "mcp.t_validate": {
+    "machine": true
+  },
+  "mcp.safety": {
+    "machine": true
+  },
+  "mcp.safetyTitle": {
+    "machine": true
+  },
+  "mcp.s1": {
+    "machine": true
+  },
+  "mcp.s1Text": {
+    "machine": true
+  },
+  "mcp.s2": {
+    "machine": true
+  },
+  "mcp.s2Text": {
+    "machine": true
+  },
+  "mcp.s3": {
+    "machine": true
+  },
+  "mcp.s3Text": {
+    "machine": true
+  },
+  "publish.eyebrow": {
+    "machine": true
+  },
+  "publish.title": {
+    "machine": true
+  },
+  "publish.lede": {
+    "machine": true
+  },
+  "publish.s1": {
+    "machine": true
+  },
+  "publish.s1Text": {
+    "machine": true
+  },
+  "publish.s2": {
+    "machine": true
+  },
+  "publish.s2Text": {
+    "machine": true
+  },
+  "publish.s3": {
+    "machine": true
+  },
+  "publish.s3Text": {
+    "machine": true
+  },
+  "publish.s4": {
+    "machine": true
+  },
+  "publish.s4Text": {
+    "machine": true
+  },
+  "publish.builderKicker": {
+    "machine": true
+  },
+  "publish.builderTitle": {
+    "machine": true
+  },
+  "publish.builderText": {
+    "machine": true
+  },
+  "publish.fName": {
+    "machine": true
+  },
+  "publish.fVersion": {
+    "machine": true
+  },
+  "publish.fSummary": {
+    "machine": true
+  },
+  "publish.fDest": {
+    "machine": true
+  },
+  "publish.fLicense": {
+    "machine": true
+  },
+  "publish.fKeywords": {
+    "machine": true
+  },
+  "publish.fDeps": {
+    "machine": true
+  },
+  "publish.fNpm": {
+    "machine": true
+  },
+  "publish.fEnv": {
+    "machine": true
+  },
+  "publish.fMcp": {
+    "machine": true
+  },
+  "publish.copyJson": {
+    "machine": true
+  },
+  "publish.valid": {
+    "machine": true
+  },
+  "publish.issues": {
+    "machine": true
+  },
+  "publish.rulesTokens": {
+    "machine": true
+  },
+  "publish.rulesCount": {
+    "machine": true
+  },
+  "publish.checklistKicker": {
+    "machine": true
+  },
+  "publish.checklistTitle": {
+    "machine": true
+  },
+  "publish.c1": {
+    "machine": true
+  },
+  "publish.c2": {
+    "machine": true
+  },
+  "publish.c3": {
+    "machine": true
+  },
+  "publish.c4": {
+    "machine": true
+  },
+  "publish.c5": {
+    "machine": true
+  },
+  "login.title": {
+    "machine": true
+  },
+  "login.text": {
+    "machine": true
+  },
+  "login.cta": {
+    "machine": true
+  },
+  "login.readUser": {
+    "machine": true
+  },
+  "login.readOrg": {
+    "machine": true
+  },
+  "login.noWrite": {
+    "machine": true
+  },
+  "login.notConfigured": {
+    "machine": true
+  },
+  "login.failed": {
+    "machine": true
+  },
+  "tokens.title": {
+    "machine": true
+  },
+  "tokens.lede": {
+    "machine": true
+  },
+  "tokens.name": {
+    "machine": true
+  },
+  "tokens.scopes": {
+    "machine": true
+  },
+  "tokens.lastUsed": {
+    "machine": true
+  },
+  "tokens.expires": {
+    "machine": true
+  },
+  "tokens.never": {
+    "machine": true
+  },
+  "tokens.create": {
+    "machine": true
+  },
+  "tokens.expiry": {
+    "machine": true
+  },
+  "tokens.days": {
+    "machine": true
+  },
+  "tokens.revoke": {
+    "machine": true
+  },
+  "tokens.revokeConfirm": {
+    "machine": true
+  },
+  "tokens.showOnce": {
+    "machine": true
+  },
+  "tokens.empty": {
+    "machine": true
+  },
+  "dashboard.title": {
+    "machine": true
+  },
+  "dashboard.myPackages": {
+    "machine": true
+  },
+  "dashboard.activity": {
+    "machine": true
+  },
+  "dashboard.empty": {
+    "machine": true
+  },
+  "dashboard.emptyCta": {
+    "machine": true
+  },
+  "publisher.packages": {
+    "machine": true
+  },
+  "publisher.installs": {
+    "machine": true
+  },
+  "publisher.reserved": {
+    "machine": true
+  },
+  "sponsors.title": {
+    "machine": true
+  },
+  "sponsors.lede": {
+    "machine": true
+  },
+  "sponsors.what": {
+    "machine": true
+  },
+  "sponsors.w1": {
+    "machine": true
+  },
+  "sponsors.w2": {
+    "machine": true
+  },
+  "sponsors.w3": {
+    "machine": true
+  },
+  "sponsors.w4": {
+    "machine": true
+  },
+  "sponsors.rules": {
+    "machine": true
+  },
+  "sponsors.r1": {
+    "machine": true
+  },
+  "sponsors.r2": {
+    "machine": true
+  },
+  "sponsors.r3": {
+    "machine": true
+  },
+  "sponsors.form": {
+    "machine": true
+  },
+  "sponsors.email": {
+    "machine": true
+  },
+  "sponsors.company": {
+    "machine": true
+  },
+  "sponsors.message": {
+    "machine": true
+  },
+  "sponsors.send": {
+    "machine": true
+  },
+  "sponsors.sent": {
+    "machine": true
+  },
+  "enterprise.title": {
+    "machine": true
+  },
+  "enterprise.lede": {
+    "machine": true
+  },
+  "enterprise.f1": {
+    "machine": true
+  },
+  "enterprise.f2": {
+    "machine": true
+  },
+  "enterprise.f3": {
+    "machine": true
+  },
+  "enterprise.f4": {
+    "machine": true
+  },
+  "enterprise.waitlist": {
+    "machine": true
+  },
+  "enterprise.size": {
+    "machine": true
+  },
+  "enterprise.ide": {
+    "machine": true
+  },
+  "enterprise.join": {
+    "machine": true
+  },
+  "security.title": {
+    "machine": true
+  },
+  "security.lede": {
+    "machine": true
+  },
+  "security.invariants": {
+    "machine": true
+  },
+  "security.inv1": {
+    "machine": true
+  },
+  "security.inv2": {
+    "machine": true
+  },
+  "security.inv3": {
+    "machine": true
+  },
+  "security.inv4": {
+    "machine": true
+  },
+  "security.inv5": {
+    "machine": true
+  },
+  "security.inv6": {
+    "machine": true
+  },
+  "security.inv7": {
+    "machine": true
+  },
+  "security.inv8": {
+    "machine": true
+  },
+  "security.inv9": {
+    "machine": true
+  },
+  "security.inv10": {
+    "machine": true
+  },
+  "security.reportTitle": {
+    "machine": true
+  },
+  "security.reportText": {
+    "machine": true
+  },
+  "security.advisories": {
+    "machine": true
+  },
+  "security.advisoriesEmpty": {
+    "machine": true
+  },
+  "security.severity": {
+    "machine": true
+  },
+  "security.affected": {
+    "machine": true
+  },
+  "security.patched": {
+    "machine": true
+  },
+  "security.feed": {
+    "machine": true
+  },
+  "errors.notFoundTitle": {
+    "machine": true
+  },
+  "errors.notFoundText": {
+    "machine": true
+  },
+  "errors.searchFor": {
+    "machine": true
+  },
+  "errors.serverTitle": {
+    "machine": true
+  },
+  "errors.serverText": {
+    "machine": true
+  },
+  "errors.home": {
+    "machine": true
+  },
+  "palette.label": {
+    "machine": true
+  },
+  "palette.placeholder": {
+    "machine": true
+  },
+  "palette.move": {
+    "machine": true
+  },
+  "palette.open": {
+    "machine": true
+  },
+  "palette.copy": {
+    "machine": true
+  },
+  "palette.none": {
+    "machine": true
+  },
+  "palette.publish": {
+    "machine": true
+  },
+  "docs.title": {
+    "machine": true
+  },
+  "docs.onThisPage": {
+    "machine": true
+  },
+  "docs.copyMd": {
+    "machine": true
+  },
+  "docs.edit": {
+    "machine": true
+  },
+  "docs.notTranslated": {
+    "machine": true
+  },
+  "docs.next": {
+    "machine": true
+  },
+  "docs.prev": {
+    "machine": true
+  },
+  "legal.binding": {
+    "machine": true
+  },
+  "legal.updated": {
+    "machine": true
+  },
+  "home.termInstalled": {
+    "machine": true
+  },
+  "home.termAsks": {
+    "machine": true
+  },
+  "home.termConfirm": {
+    "machine": true
+  },
+  "home.termInjected": {
+    "machine": true
+  },
+  "docs.errorsTitle": {
+    "machine": true
+  },
+  "docs.errorsSection": {
+    "machine": true
+  },
+  "docs.errorsIntro": {
+    "machine": true
+  },
+  "docs.fixLabel": {
+    "machine": true
+  },
+  "legal.formNotice": {
+    "machine": true
+  },
+  "legal.privacyLink": {
+    "machine": true
+  },
+  "legal.loginNotice": {
+    "machine": true
+  },
+  "legal.reportNotice": {
+    "machine": true
+  },
+  "legal.termsLink": {
+    "machine": true
+  },
+  "footer.legalNotice": {
+    "machine": true
+  },
+  "footer.cookies": {
+    "machine": true
+  }
+}

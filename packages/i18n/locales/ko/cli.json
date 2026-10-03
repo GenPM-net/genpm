@@ -1,0 +1,176 @@
+{
+  "desc": {
+    "root": "의존성이 아닌 아키텍처를 설치하세요: 변경 불가능한 Git 커밋에서 코드 + AI 규칙 + MCP 설정을 가져옵니다.",
+    "add": "하나 이상의 패키지(및 GenPM 의존성)를 이 프로젝트에 주입",
+    "search": "레지스트리 검색",
+    "info": "패키지 표시: 매니페스트, 의존성, MCP, 환경 변수, AI 규칙",
+    "list": "설치된 패키지와 로컬 변경 사항(드리프트) 나열",
+    "remove": "설치된 패키지 제거",
+    "outdated": "새 버전이 있는 설치된 패키지 표시",
+    "audit": "무결성, 서명, 보안 권고, 철회된 버전 검증",
+    "doctor": "환경과 이 프로젝트 점검",
+    "init": "패키지 저장소에 genpm.json, AGENTS.md, .genpmignore 생성",
+    "validate": "게시 전에 패키지 검증(레지스트리와 같은 검사기)",
+    "publish": "현재 Git 태그를 레지스트리에 게시",
+    "yank": "게시된 버전 철회(변경 불가 상태로 남으며 다시 게시되지 않음)",
+    "login": "GitHub로 로그인(디바이스 플로)",
+    "logout": "로그아웃하고 토큰 폐기",
+    "whoami": "로그인한 계정 표시",
+    "mcp": "MCP 설정 관리",
+    "mcpSetup": "AI 클라이언트에 GenPM MCP 서버 등록",
+    "mcpAdd": "설치된 패키지가 선언한 MCP 서버 기록",
+    "mcpRemove": "설치된 패키지가 선언한 MCP 서버 제거",
+    "cache": "다운로드 캐시 표시 또는 정리"
+  },
+  "arg": {
+    "cwd": "작업 디렉터리",
+    "registry": "레지스트리 URL",
+    "json": "한 줄 JSON 출력(영어, 질문 없음)",
+    "yes": "코드 주입 질문에 동의(--mcp나 --install-deps는 포함하지 않음)",
+    "lang": "출력 언어(en, es, pt-BR, fr, de, ja, zh-CN, ko)",
+    "verbose": "디버그 로그",
+    "quiet": "오류만 표시",
+    "spec": "패키지 지정, 예: @core/auth 또는 @core/auth@^1.2",
+    "dest": "다른 디렉터리에 설치(패키지 하나만)",
+    "dryRun": "계획을 보여 주고 쓰지 않고 종료",
+    "mcp": "묻지 않고 MCP 설정 기록",
+    "noMcp": "MCP 설정을 기록하지도 묻지도 않음",
+    "installDeps": "제안된 패키지 관리자 명령을 묻지 않고 실행",
+    "clients": "AI 클라이언트: agents,claude,cursor,copilot,windsurf",
+    "force": "비어 있지 않은 대상 덮어쓰기(먼저 백업함)",
+    "allowAutorun": "자동 실행 파일 허용(인증된 게시자만)",
+    "maxSize": "패키지당 크기 제한(MB)",
+    "query": "필요한 것, 예: \"stripe 구독\"",
+    "keyword": "키워드로 필터링(쉼표로 구분)",
+    "onlyMcp": "MCP 서버가 있는 패키지만",
+    "sort": "relevance | installs | recent",
+    "limit": "최대 결과 수",
+    "name": "패키지 이름, 예: @core/auth",
+    "rules": "AI 규칙만 출력",
+    "keepCode": "코드는 유지하고 패키지 관리만 해제",
+    "exitCode": "오래된 항목이 있으면 종료 코드 4로 종료",
+    "path": "패키지 디렉터리",
+    "manifest": "genpm.json 경로(패키지 모노레포)",
+    "ref": "게시할 태그 또는 전체 SHA",
+    "distTag": "dist-tag(latest, 프리릴리스는 next)",
+    "reason": "철회 사유(필수)",
+    "client": "claude | cursor | vscode | windsurf | codex",
+    "scope": "project | user",
+    "workflow": "v* 태그에서 게시하는 GitHub Actions 워크플로도 생성",
+    "action": "dir | clean"
+  },
+  "label": {
+    "resolved": "확인됨",
+    "dependency": "의존성",
+    "skip": "건너뜀",
+    "rules": "규칙",
+    "context": "컨텍스트",
+    "npm": "npm",
+    "env": "Env",
+    "mcp": "MCP",
+    "next": "다음 단계",
+    "conflicts": "충돌",
+    "warnings": "경고",
+    "fix": "해결",
+    "version": "버전",
+    "repo": "저장소",
+    "commit": "커밋",
+    "dest": "디렉터리",
+    "license": "라이선스",
+    "deps": "GenPM 의존성",
+    "scan": "검사",
+    "installed": "설치됨",
+    "sponsored": "스폰서"
+  },
+  "add": {
+    "rulesSummary": "{files, plural, other {파일 #개}} · 약 {tokens}토큰 · 검사 {scan}",
+    "rulesHint": "(genpm info <pkg>로 읽기)",
+    "contextSummary": "{count, plural, other {파일 #개}}: {files}",
+    "flagged": "검사기가 이 규칙들을 표시했습니다. 설치 전에 읽어 보세요.",
+    "confirm": "{count, plural, other {패키지 #개}}를 주입할까요? (파일 {files, number}개, {size})",
+    "mcpConsent": "MCP 서버 \"{name}\"을(를) {targets}에 추가할까요?",
+    "npmConsent": "`{command}`을(를) 실행할까요?",
+    "injected": "{seconds, number, ::.0}초 만에 {count, plural, other {패키지 #개}}를 주입했습니다",
+    "nothing": "설치할 것이 없습니다. 모두 이미 설치되어 있습니다.",
+    "dryRun": "시험 실행: 아무것도 기록하지 않았습니다.",
+    "cancelled": "취소했습니다. 아무것도 기록하지 않았습니다.",
+    "mcpWritten": "MCP를 {files}에 기록했습니다",
+    "resigned": "{names}의 레지스트리 서명을 갱신했습니다"
+  },
+  "search": {
+    "empty": "\"{query}\"에 해당하는 패키지가 없습니다.",
+    "installs": "{count}/30일",
+    "more": "더 많은 결과: --limit {limit}"
+  },
+  "list": {
+    "empty": "이 프로젝트에 GenPM 패키지가 없습니다.",
+    "drift": "{count, plural, =0 {변경 없음} other {파일 #개 수정됨}}"
+  },
+  "remove": {
+    "done": "{name}을(를) 제거했습니다",
+    "kept": "코드는 {dest}에 남겨 두었습니다",
+    "mcpLeft": "MCP 설정은 변경되지 않았습니다: genpm mcp remove {name}"
+  },
+  "outdated": {
+    "none": "모두 최신 상태입니다."
+  },
+  "audit": {
+    "ok": "{count, plural, other {패키지 #개}} · 서명 유효",
+    "problems": "{count, plural, other {문제 #건}}"
+  },
+  "doctor": {
+    "ok": "모두 정상입니다.",
+    "problems": "{count, plural, other {문제 #건}}을 발견했습니다"
+  },
+  "init": {
+    "name": "패키지 이름(@scope/name)",
+    "version": "버전",
+    "summary": "한 줄 요약",
+    "dest": "사용하는 프로젝트의 설치 디렉터리",
+    "keywords": "키워드(쉼표로 구분)",
+    "done": "{files}을(를) 생성했습니다",
+    "nextValidate": "AGENTS.md를 편집한 뒤 genpm validate를 실행하세요"
+  },
+  "validate": {
+    "ok": "genpm.json이 유효합니다({files, plural, other {파일 #개}}, 규칙 약 {tokens}토큰)",
+    "failed": "{count, plural, other {오류 #건}}"
+  },
+  "publish": {
+    "done": "{name}@{version}을(를) 게시했습니다 → {url}",
+    "scan": "검사: {status}",
+    "dryRun": "시험 실행 성공: {name}@{version}이(가) {commit}에서 게시됩니다"
+  },
+  "yank": {
+    "done": "{name}@{version}을(를) 철회했습니다"
+  },
+  "login": {
+    "open": "{url}을(를) 열고 코드 {code}를 입력하세요",
+    "waiting": "GitHub를 기다리는 중…",
+    "done": "{handle}(으)로 로그인했습니다",
+    "noClientId": "이 레지스트리에는 아직 GitHub 로그인이 설정되지 않았습니다. 대신 GENPM_TOKEN을 설정하세요."
+  },
+  "logout": {
+    "done": "{registry}에서 로그아웃했습니다",
+    "none": "{registry}에 로그인되어 있지 않았습니다"
+  },
+  "whoami": {
+    "none": "로그인되어 있지 않습니다. genpm login을 실행하세요."
+  },
+  "mcp": {
+    "setupConfirm": "GenPM을 {file}에 추가할까요?",
+    "setupDone": "GenPM MCP를 {file}에 등록했습니다",
+    "setupManual": "다음 명령을 실행하세요: {command}",
+    "addDone": "MCP 서버를 {files}에 기록했습니다",
+    "removeDone": "{files}에서 {count, plural, other {MCP 서버 #개}}를 제거했습니다",
+    "nothing": "{name}은(는) MCP 서버를 선언하지 않습니다."
+  },
+  "cache": {
+    "cleaned": "캐시를 정리했습니다: {dir}"
+  },
+  "next": {
+    "env": "{vars}을(를) 설정하세요(.env.example 참고)",
+    "integration": "{file}의 \"Integration\"을 따르세요",
+    "npm": "{command}을(를) 실행하세요",
+    "mcp": "나중에 MCP 활성화: genpm mcp add {names}"
+  }
+}

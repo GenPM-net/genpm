@@ -19,7 +19,18 @@ async function keypair() {
   return { pkcs8, raw };
 }
 
-const manifest = { $: 1, n: '@core/db', v: '1.0.0', r: 'https://github.com/genpmhq/db', t: 'v1.0.0', c: 'a'.repeat(40), d: 'src/lib/db', i: '.', x: 'AGENTS.md', l: 'MIT' };
+const manifest = {
+  $: 1,
+  n: '@core/db',
+  v: '1.0.0',
+  r: 'https://github.com/genpm-net/db',
+  t: 'v1.0.0',
+  c: 'a'.repeat(40),
+  d: 'src/lib/db',
+  i: '.',
+  x: 'AGENTS.md',
+  l: 'MIT',
+};
 
 describe('Ed25519 manifest signatures (INV-8)', () => {
   it('signs canonical form and verifies with pinned keys', async () => {
@@ -28,14 +39,17 @@ describe('Ed25519 manifest signatures (INV-8)', () => {
     expect(sg).toMatch(/^k1:[A-Za-z0-9_-]{86}$/);
     expect(await verifyManifest(manifest, sg, { k1: k1.raw })).toEqual({ ok: true, keyId: 'k1' });
     // Orden de claves distinto y `sg` embebido: misma forma canónica
-    const reordered = { sg, l: 'MIT', ...manifest };
+    const reordered = { sg, ...Object.fromEntries(Object.entries(manifest).reverse()) };
     expect(await verifyManifest(reordered, sg, { k1: k1.raw })).toEqual({ ok: true, keyId: 'k1' });
   });
   it('rejects tampering, unknown and revoked keys, malformed signatures', async () => {
     const k1 = await keypair();
     const k2 = await keypair();
     const sg = await signManifest(manifest, 'k1', await importPrivateKey(k1.pkcs8));
-    expect(await verifyManifest({ ...manifest, c: 'b'.repeat(40) }, sg, { k1: k1.raw })).toEqual({ ok: false, reason: 'bad_signature' });
+    expect(await verifyManifest({ ...manifest, c: 'b'.repeat(40) }, sg, { k1: k1.raw })).toEqual({
+      ok: false,
+      reason: 'bad_signature',
+    });
     expect(await verifyManifest(manifest, sg, { k1: k2.raw })).toEqual({ ok: false, reason: 'bad_signature' });
     expect(await verifyManifest(manifest, sg, { k2: k2.raw })).toEqual({ ok: false, reason: 'unknown_key' });
     expect(await verifyManifest(manifest, sg, { k1: k1.raw }, ['k1'])).toEqual({ ok: false, reason: 'revoked_key' });

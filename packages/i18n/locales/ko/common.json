@@ -1,0 +1,27 @@
+{
+  "product": { "tagline": "의존성이 아닌 아키텍처를 설치하세요." },
+  "layers": {
+    "code": "코드",
+    "context": "컨텍스트",
+    "connections": "커넥션"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "pt-BR": "Português (Brasil)",
+    "fr": "Français",
+    "de": "Deutsch",
+    "ja": "日本語",
+    "zh-CN": "简体中文",
+    "ko": "한국어"
+  },
+  "betaTranslation": "베타 번역",
+  "scan": {
+    "passed": "검사 통과",
+    "flagged": "검토 대상",
+    "failed": "검사 실패",
+    "pending": "검사 대기 중"
+  },
+  "sponsored": "스폰서",
+  "verified": "인증됨"
+}

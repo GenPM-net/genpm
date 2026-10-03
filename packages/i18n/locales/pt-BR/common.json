@@ -1,0 +1,27 @@
+{
+  "product": { "tagline": "Instale arquiteturas, não dependências." },
+  "layers": {
+    "code": "Código",
+    "context": "Contexto",
+    "connections": "Conexões"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "pt-BR": "Português (Brasil)",
+    "fr": "Français",
+    "de": "Deutsch",
+    "ja": "日本語",
+    "zh-CN": "简体中文",
+    "ko": "한국어"
+  },
+  "betaTranslation": "Tradução beta",
+  "scan": {
+    "passed": "análise aprovada",
+    "flagged": "marcado para revisão",
+    "failed": "análise reprovada",
+    "pending": "análise pendente"
+  },
+  "sponsored": "Patrocinado",
+  "verified": "Verificado"
+}

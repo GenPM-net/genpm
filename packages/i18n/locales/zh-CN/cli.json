@@ -1,0 +1,176 @@
+{
+  "desc": {
+    "root": "安装架构，而不是依赖：从不可变的 Git 提交注入代码 + AI 规则 + MCP 配置。",
+    "add": "将一个或多个包（及其 GenPM 依赖）注入此项目",
+    "search": "搜索注册表",
+    "info": "显示包：清单、依赖、MCP、环境变量及其 AI 规则",
+    "list": "列出已安装的包和本地修改（漂移）",
+    "remove": "移除已安装的包",
+    "outdated": "显示有新版本的已安装包",
+    "audit": "验证完整性、签名、安全公告和已撤回的版本",
+    "doctor": "检查你的环境和此项目",
+    "init": "在包仓库中创建 genpm.json、AGENTS.md 和 .genpmignore",
+    "validate": "发布前验证包（与注册表使用同一扫描器）",
+    "publish": "将当前 Git 标签发布到注册表",
+    "yank": "撤回已发布的版本（版本保持不可变，且永远不会重新发布）",
+    "login": "使用 GitHub 登录（设备流程）",
+    "logout": "退出登录并吊销令牌",
+    "whoami": "显示当前登录的账号",
+    "mcp": "管理 MCP 配置",
+    "mcpSetup": "在你的 AI 客户端中注册 GenPM 的 MCP 服务器",
+    "mcpAdd": "写入已安装包声明的 MCP 服务器",
+    "mcpRemove": "移除已安装包声明的 MCP 服务器",
+    "cache": "显示或清理下载缓存"
+  },
+  "arg": {
+    "cwd": "工作目录",
+    "registry": "注册表 URL",
+    "json": "单行 JSON 输出（英文，无交互）",
+    "yes": "接受代码注入的确认（不包含 --mcp 或 --install-deps）",
+    "lang": "输出语言（en, es, pt-BR, fr, de, ja, zh-CN, ko）",
+    "verbose": "调试日志",
+    "quiet": "仅显示错误",
+    "spec": "包规格，例如 @core/auth 或 @core/auth@^1.2",
+    "dest": "安装到其他目录（仅限单个包）",
+    "dryRun": "显示计划并退出，不写入任何内容",
+    "mcp": "无需询问直接写入 MCP 配置",
+    "noMcp": "不写入 MCP 配置，也不询问",
+    "installDeps": "无需询问直接运行建议的包管理器命令",
+    "clients": "AI 客户端：agents,claude,cursor,copilot,windsurf",
+    "force": "覆盖非空目标目录（会先备份）",
+    "allowAutorun": "允许自动运行的文件（仅限已验证的发布者）",
+    "maxSize": "每个包的大小限制（MB）",
+    "query": "你需要什么，例如 \"stripe 订阅\"",
+    "keyword": "按关键词筛选（逗号分隔）",
+    "onlyMcp": "仅显示带 MCP 服务器的包",
+    "sort": "relevance | installs | recent",
+    "limit": "最大结果数",
+    "name": "包名，例如 @core/auth",
+    "rules": "仅输出 AI 规则",
+    "keepCode": "保留代码，只取消对该包的管理",
+    "exitCode": "如有过期内容则以退出码 4 结束",
+    "path": "包目录",
+    "manifest": "genpm.json 的路径（包的 monorepo）",
+    "ref": "要发布的标签或完整 SHA",
+    "distTag": "发行标签（latest，预发布用 next）",
+    "reason": "撤回原因（必填）",
+    "client": "claude | cursor | vscode | windsurf | codex",
+    "scope": "project | user",
+    "workflow": "同时创建在 v* 标签上发布的 GitHub Actions 工作流",
+    "action": "dir | clean"
+  },
+  "label": {
+    "resolved": "已解析",
+    "dependency": "依赖",
+    "skip": "跳过",
+    "rules": "规则",
+    "context": "上下文",
+    "npm": "npm",
+    "env": "Env",
+    "mcp": "MCP",
+    "next": "下一步",
+    "conflicts": "冲突",
+    "warnings": "警告",
+    "fix": "解决方法",
+    "version": "版本",
+    "repo": "仓库",
+    "commit": "提交",
+    "dest": "目录",
+    "license": "许可证",
+    "deps": "GenPM 依赖",
+    "scan": "扫描",
+    "installed": "已安装",
+    "sponsored": "赞助"
+  },
+  "add": {
+    "rulesSummary": "{files, plural, other {# 个文件}} · 约 {tokens} 个 token · 扫描 {scan}",
+    "rulesHint": "（使用 genpm info <pkg> 阅读）",
+    "contextSummary": "{count, plural, other {# 个文件}}：{files}",
+    "flagged": "扫描器标记了这些规则：请在安装前阅读。",
+    "confirm": "注入 {count, plural, other {# 个包}}（{files, number} 个文件，{size}）？",
+    "mcpConsent": "将 MCP 服务器 \"{name}\" 添加到 {targets}？",
+    "npmConsent": "运行 `{command}`？",
+    "injected": "已在 {seconds, number, ::.0} 秒内注入 {count, plural, other {# 个包}}",
+    "nothing": "无需安装：所有内容均已安装。",
+    "dryRun": "试运行：未写入任何内容。",
+    "cancelled": "已取消。未写入任何内容。",
+    "mcpWritten": "MCP 已写入 {files}",
+    "resigned": "已更新 {names} 的注册表签名"
+  },
+  "search": {
+    "empty": "未找到与 \"{query}\" 相关的包。",
+    "installs": "{count}/30天",
+    "more": "更多结果：--limit {limit}"
+  },
+  "list": {
+    "empty": "此项目中没有 GenPM 包。",
+    "drift": "{count, plural, =0 {无修改} other {# 个文件已修改}}"
+  },
+  "remove": {
+    "done": "已移除 {name}",
+    "kept": "代码保留在 {dest}",
+    "mcpLeft": "MCP 配置未更改：genpm mcp remove {name}"
+  },
+  "outdated": {
+    "none": "一切都是最新的。"
+  },
+  "audit": {
+    "ok": "{count, plural, other {# 个包}} · 签名有效",
+    "problems": "{count, plural, other {# 个问题}}"
+  },
+  "doctor": {
+    "ok": "一切正常。",
+    "problems": "发现 {count, plural, other {# 个问题}}"
+  },
+  "init": {
+    "name": "包名（@scope/name）",
+    "version": "版本",
+    "summary": "一句话简介",
+    "dest": "在使用方项目中的安装目录",
+    "keywords": "关键词（逗号分隔）",
+    "done": "已创建 {files}",
+    "nextValidate": "编辑 AGENTS.md，然后运行 genpm validate"
+  },
+  "validate": {
+    "ok": "genpm.json 有效（{files, plural, other {# 个文件}}，规则约 {tokens} 个 token）",
+    "failed": "{count, plural, other {# 个错误}}"
+  },
+  "publish": {
+    "done": "已发布 {name}@{version} → {url}",
+    "scan": "扫描：{status}",
+    "dryRun": "试运行成功：{name}@{version} 将从 {commit} 发布"
+  },
+  "yank": {
+    "done": "已撤回 {name}@{version}"
+  },
+  "login": {
+    "open": "打开 {url} 并输入代码 {code}",
+    "waiting": "正在等待 GitHub…",
+    "done": "已登录为 {handle}",
+    "noClientId": "此注册表尚未配置 GitHub 登录：请改为设置 GENPM_TOKEN。"
+  },
+  "logout": {
+    "done": "已从 {registry} 退出登录",
+    "none": "你未登录 {registry}"
+  },
+  "whoami": {
+    "none": "未登录。请运行 genpm login。"
+  },
+  "mcp": {
+    "setupConfirm": "将 GenPM 添加到 {file}？",
+    "setupDone": "GenPM 的 MCP 已注册到 {file}",
+    "setupManual": "请运行此命令：{command}",
+    "addDone": "MCP 服务器已写入 {files}",
+    "removeDone": "已从 {files} 移除 {count, plural, other {# 个 MCP 服务器}}",
+    "nothing": "{name} 未声明 MCP 服务器。"
+  },
+  "cache": {
+    "cleaned": "缓存已清理：{dir}"
+  },
+  "next": {
+    "env": "设置 {vars}（参见 .env.example）",
+    "integration": "按照 {file} 中的“Integration”操作",
+    "npm": "运行 {command}",
+    "mcp": "稍后启用 MCP：genpm mcp add {names}"
+  }
+}

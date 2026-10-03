@@ -1,0 +1,174 @@
+{
+  "E_INTERNAL": {
+    "message": "GenPM 내부에서 오류가 발생했습니다.",
+    "fix": "--verbose 옵션으로 다시 시도하고, 계속되면 requestId와 함께 문제를 신고하세요."
+  },
+  "E_BAD_REQUEST": {
+    "message": "요청이 올바르지 않습니다: {detail}",
+    "fix": "매개변수를 확인하고 다시 시도하세요."
+  },
+  "E_USAGE": {
+    "message": "잘못된 사용법: {detail}",
+    "fix": "genpm --help를 실행해 사용 가능한 옵션을 확인하세요."
+  },
+  "E_CONFIRM_REQUIRED": {
+    "message": "확인이 필요합니다: {question}",
+    "fix": "대화형 터미널에서 실행하거나 {flag}를 전달해 확인하세요."
+  },
+  "E_PAYLOAD_TOO_LARGE": {
+    "message": "요청 본문이 너무 큽니다.",
+    "fix": "최대 16 KB까지 보내세요."
+  },
+  "E_NOT_FOUND": {
+    "message": "{name}을(를) 찾을 수 없습니다.",
+    "fix": "철자를 확인하거나 genpm search <검색어>로 검색하세요."
+  },
+  "E_NO_MATCHING_VERSION": {
+    "message": "{range}에 맞는 {name} 버전이 없습니다.",
+    "fix": "genpm info {name}을(를) 실행해 게시된 버전을 확인하세요."
+  },
+  "E_DEST_CONFLICT": {
+    "message": "{path}이(가) 이미 존재하며 비어 있지 않습니다.",
+    "fix": "--dest <dir> 또는 --force(먼저 백업함)를 사용하세요."
+  },
+  "E_RANGE_UNSATISFIED": {
+    "message": "모든 범위를 만족하는 버전이 없습니다: {detail}",
+    "fix": "충돌하는 패키지의 호환 버전을 먼저 설치하거나 다른 버전으로 고정하세요."
+  },
+  "E_ALREADY_INSTALLED": {
+    "message": "{name} {version}은(는) 이미 설치되어 있습니다.",
+    "fix": "할 일이 없습니다. genpm list로 설치된 패키지를 확인하세요."
+  },
+  "E_VERSION_EXISTS": {
+    "message": "{name}@{version}은(는) 이미 게시되었습니다.",
+    "fix": "버전은 변경할 수 없습니다. genpm.json의 버전을 올리고 새 태그를 만드세요."
+  },
+  "E_DRIFT": {
+    "message": "{name}의 {count, plural, other {파일 #개}}에 로컬 변경 사항이 있습니다.",
+    "fix": "코드를 유지하려면 --keep-code를, 그래도 삭제하려면 --force를 사용하세요."
+  },
+  "E_REQUIRED_BY": {
+    "message": "{dependents}에서 {name}이(가) 필요합니다.",
+    "fix": "의존하는 패키지를 먼저 제거하세요."
+  },
+  "E_BUSY": {
+    "message": "다른 GenPM 프로세스가 이 프로젝트를 수정하고 있습니다.",
+    "fix": "끝날 때까지 기다리세요. 실행 중인 프로세스가 없다면 .genpm/.lock을 삭제하세요."
+  },
+  "E_PLAN_STALE": {
+    "message": "계획을 계산한 뒤 프로젝트가 변경되었습니다.",
+    "fix": "계획을 다시 계산(시험 실행)하고 확인하세요."
+  },
+  "E_NETWORK": {
+    "message": "{host}에 연결할 수 없습니다.",
+    "fix": "연결, 프록시 또는 GENPM_REGISTRY를 확인한 뒤 다시 시도하세요."
+  },
+  "E_UPSTREAM_GIT": {
+    "message": "Git 호스트에서 오류가 발생했습니다: {detail}",
+    "fix": "Git 자격 증명으로 저장소에 접근할 수 있는지 확인한 뒤 다시 시도하세요."
+  },
+  "E_RATE_LIMITED": {
+    "message": "요청이 너무 많습니다.",
+    "fix": "{seconds, plural, other {#초}} 기다린 뒤 다시 시도하세요."
+  },
+  "E_READ_ONLY": {
+    "message": "점검 중이라 레지스트리가 읽기 전용입니다.",
+    "fix": "설치는 계속 가능합니다. 게시는 나중에 다시 시도하세요. 상태는 genpm.net에서 안내합니다."
+  },
+  "E_INTEGRITY": {
+    "message": "{name}의 무결성 검사에 실패했습니다: {detail}",
+    "fix": "이 패키지를 사용하지 마세요. 계속되면 genpm.net/report에서 신고하세요."
+  },
+  "E_SIGNATURE": {
+    "message": "{name}의 레지스트리 서명이 유효하지 않습니다.",
+    "fix": "설치하지 마세요. GenPM을 업데이트(새 서명 키)하고 계속되면 신고하세요."
+  },
+  "E_PATH_UNSAFE": {
+    "message": "안전하지 않은 경로 {path}({reason}).",
+    "fix": "프로젝트 내부의 상대 경로를 사용하세요. .., 절대 경로, 예약된 폴더는 사용할 수 없습니다."
+  },
+  "E_AUTORUN_FILE": {
+    "message": "{name}에 자동으로 실행되는 파일이 있습니다: {files}.",
+    "fix": "이 파일들은 설치되지 않습니다. 작성자에게 제거를 요청하거나, 인증된 게시자에 한해 --allow-autorun을 사용하세요."
+  },
+  "E_SCAN_FAILED": {
+    "message": "보안 검사에서 {name}이(가) 거부되었습니다: {detail}",
+    "fix": "genpm validate가 알려 준 문제를 수정하고 새 버전을 게시하세요."
+  },
+  "E_INSECURE_PERMS": {
+    "message": "{path}을(를) 다른 사용자가 읽을 수 있습니다.",
+    "fix": "chmod 600 {path}을(를) 실행하세요."
+  },
+  "E_QUARANTINED": {
+    "message": "{name}은(는) 보안 검토 중입니다.",
+    "fix": "나중에 다시 시도하거나 다른 패키지를 선택하세요. 검토는 영업시간 기준 24시간 이내에 끝납니다."
+  },
+  "E_REF_MUTABLE": {
+    "message": "{ref}은(는) 변경 불가능한 참조가 아닙니다.",
+    "fix": "Git 태그나 40자 전체 커밋 SHA를 사용하세요. 브랜치는 사용할 수 없습니다."
+  },
+  "E_ADVISORY": {
+    "message": "{name} {version}에 심각도 {severity}의 보안 권고가 있습니다.",
+    "fix": "{patched} 이상으로 업데이트하세요."
+  },
+  "E_TOO_LARGE": {
+    "message": "{name}이(가) 크기 제한을 초과합니다: {detail}",
+    "fix": ".genpmignore로 파일을 제외하거나, 정상적인 패키지라면 --max-size로 제한을 늘리세요."
+  },
+  "E_MANIFEST_INVALID": {
+    "message": "genpm.json이 올바르지 않습니다.",
+    "fix": "세부 정보에 나열된 필드를 수정하세요. 전체 보고서는 genpm validate로 확인하세요."
+  },
+  "E_LOCK_INVALID": {
+    "message": "genpm.lock이 올바르지 않거나 손상되었습니다.",
+    "fix": "Git에서 복원하세요. genpm.lock을 직접 수정하지 마세요."
+  },
+  "E_NAME_MISMATCH": {
+    "message": "매니페스트 이름 {actual}이(가) {expected}와(과) 일치하지 않습니다.",
+    "fix": "genpm.json에 선언된 이름으로 게시하세요."
+  },
+  "E_REF_NOT_FOUND": {
+    "message": "{repo}에 {ref}이(가) 없습니다.",
+    "fix": "태그를 만들고 푸시하세요: git tag {ref} && git push --tags."
+  },
+  "E_REF_NOT_PUSHED": {
+    "message": "{ref}이(가) 원격에 없거나 다른 커밋을 가리킵니다.",
+    "fix": "git push origin {ref}로 태그를 푸시하세요."
+  },
+  "E_REPO_NOT_ALLOWED": {
+    "message": "{repo}은(는) 스코프 @{scope}의 소유가 아닙니다.",
+    "fix": "스코프에 연결된 GitHub 소유자의 저장소에서 게시하세요."
+  },
+  "E_REPO_CHANGED": {
+    "message": "{name}의 저장소가 변경되었습니다(저장소 하이재킹 가능성).",
+    "fix": "패키지를 이전하려면 제목을 [SECURITY]로 하여 hello@genpm.net에 메일을 보내세요."
+  },
+  "E_CONTEXT_MISSING": {
+    "message": "AI 규칙 파일 {path}이(가) 없습니다.",
+    "fix": "{path}을(를) 만들거나(genpm init이 템플릿을 생성함) genpm.json에서 x를 설정하세요."
+  },
+  "E_CONTEXT_TOO_LARGE": {
+    "message": "AI 규칙 파일 {path}이(가) 16 KB를 넘습니다.",
+    "fix": "줄이세요. 규칙은 목적, 구조, 통합, 규약, 금지 사항에 집중하세요."
+  },
+  "E_AUTH": {
+    "message": "로그인하지 않았거나 토큰이 유효하지 않거나 만료되었습니다.",
+    "fix": "genpm login을 실행하세요(CI에서는 GENPM_TOKEN 설정)."
+  },
+  "E_FORBIDDEN_SCOPE": {
+    "message": "@{scope}에 게시할 수 없습니다.",
+    "fix": "@{scope}의 소유자에게 게시 권한을 요청하거나 자신의 스코프를 사용하세요."
+  },
+  "E_GIT_MISSING": {
+    "message": "Git이 설치되어 있지 않거나 2.25보다 오래되었습니다.",
+    "fix": "Git 2.25 이상을 설치한 뒤 다시 시도하세요."
+  },
+  "E_NODE_VERSION": {
+    "message": "GenPM에는 Node.js 20.11 이상이 필요합니다(현재 {version}).",
+    "fix": "Node.js를 업데이트하세요."
+  },
+  "E_NOT_A_PROJECT": {
+    "message": "{path}에서 프로젝트를 찾을 수 없습니다.",
+    "fix": "프로젝트(package.json 또는 .git이 있는 곳) 안에서 명령을 실행하거나 --cwd <dir>을 전달하세요."
+  }
+}

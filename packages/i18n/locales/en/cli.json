@@ -1,0 +1,176 @@
+{
+  "desc": {
+    "root": "Install architectures, not dependencies: code + AI rules + MCP config from immutable Git commits.",
+    "add": "Inject one or more packages (and their GenPM dependencies) into this project",
+    "search": "Search the registry",
+    "info": "Show a package: manifest, dependencies, MCP, env vars and its AI rules",
+    "list": "List installed packages and local changes (drift)",
+    "remove": "Remove an installed package",
+    "outdated": "Show installed packages with newer versions",
+    "audit": "Verify integrity, signatures, advisories and yanked versions",
+    "doctor": "Check your environment and this project",
+    "init": "Create genpm.json, AGENTS.md and .genpmignore in a package repo",
+    "validate": "Validate a package before publishing (same scanner as the registry)",
+    "publish": "Publish the current Git tag to the registry",
+    "yank": "Withdraw a published version (it stays immutable and is never re-published)",
+    "login": "Log in with GitHub (device flow)",
+    "logout": "Log out and revoke the token",
+    "whoami": "Show the logged-in account",
+    "mcp": "Manage MCP configuration",
+    "mcpSetup": "Register the GenPM MCP server in your AI client",
+    "mcpAdd": "Write the MCP servers declared by an installed package",
+    "mcpRemove": "Remove the MCP servers declared by an installed package",
+    "cache": "Show or clean the download cache"
+  },
+  "arg": {
+    "cwd": "Working directory",
+    "registry": "Registry URL",
+    "json": "Single-line JSON output (English, no prompts)",
+    "yes": "Accept code-injection prompts (does not imply --mcp or --install-deps)",
+    "lang": "Output language (en, es, pt-BR, fr, de, ja, zh-CN, ko)",
+    "verbose": "Debug logs",
+    "quiet": "Only errors",
+    "spec": "Package spec, e.g. @core/auth or @core/auth@^1.2",
+    "dest": "Install into another directory (single package only)",
+    "dryRun": "Show the plan and exit without writing",
+    "mcp": "Write MCP config without asking",
+    "noMcp": "Do not write MCP config nor ask",
+    "installDeps": "Run the proposed package-manager command without asking",
+    "clients": "AI clients: agents,claude,cursor,copilot,windsurf",
+    "force": "Overwrite a non-empty destination (backs it up first)",
+    "allowAutorun": "Allow auto-run files (verified publishers only)",
+    "maxSize": "Size limit per package in MB",
+    "query": "What you need, e.g. \"stripe subscriptions\"",
+    "keyword": "Filter by keyword (comma-separated)",
+    "onlyMcp": "Only packages with MCP servers",
+    "sort": "relevance | installs | recent",
+    "limit": "Maximum results",
+    "name": "Package name, e.g. @core/auth",
+    "rules": "Print only the AI rules",
+    "keepCode": "Keep the code; only forget the package",
+    "exitCode": "Exit with code 4 if something is outdated",
+    "path": "Package directory",
+    "manifest": "Path to genpm.json (package monorepos)",
+    "ref": "Tag or full SHA to publish",
+    "distTag": "Dist-tag (latest, or next for prereleases)",
+    "reason": "Why it is withdrawn (required)",
+    "client": "claude | cursor | vscode | windsurf | codex",
+    "scope": "project | user",
+    "workflow": "Also create a GitHub Actions workflow that publishes on v* tags",
+    "action": "dir | clean"
+  },
+  "label": {
+    "resolved": "Resolved",
+    "dependency": "dependency",
+    "skip": "skip",
+    "rules": "Rules",
+    "context": "Context",
+    "npm": "npm",
+    "env": "Env",
+    "mcp": "MCP",
+    "next": "Next",
+    "conflicts": "Conflicts",
+    "warnings": "Warnings",
+    "fix": "fix",
+    "version": "Version",
+    "repo": "Repository",
+    "commit": "Commit",
+    "dest": "Directory",
+    "license": "License",
+    "deps": "GenPM deps",
+    "scan": "Scan",
+    "installed": "Installed",
+    "sponsored": "Sponsored"
+  },
+  "add": {
+    "rulesSummary": "{files, plural, one {# file} other {# files}} · ~{tokens} tokens · scan {scan}",
+    "rulesHint": "(genpm info <pkg> to read)",
+    "contextSummary": "{count, plural, one {# file} other {# files}}: {files}",
+    "flagged": "The scanner flagged these rules: read them before installing.",
+    "confirm": "Inject {count, plural, one {# package} other {# packages}} ({files, number} files, {size})?",
+    "mcpConsent": "Add MCP server \"{name}\" to {targets}?",
+    "npmConsent": "Run `{command}`?",
+    "injected": "Injected {count, plural, one {# package} other {# packages}} in {seconds, number, ::.0}s",
+    "nothing": "Nothing to install: everything is already installed.",
+    "dryRun": "Dry run: nothing was written.",
+    "cancelled": "Cancelled. Nothing was written.",
+    "mcpWritten": "MCP written to {files}",
+    "resigned": "Refreshed the registry signature of {names}"
+  },
+  "search": {
+    "empty": "No packages found for \"{query}\".",
+    "installs": "{count}/30d",
+    "more": "More results: --limit {limit}"
+  },
+  "list": {
+    "empty": "No GenPM packages in this project.",
+    "drift": "{count, plural, =0 {clean} one {# file modified} other {# files modified}}"
+  },
+  "remove": {
+    "done": "Removed {name}",
+    "kept": "Code kept in {dest}",
+    "mcpLeft": "MCP config was not changed: genpm mcp remove {name}"
+  },
+  "outdated": {
+    "none": "Everything is up to date."
+  },
+  "audit": {
+    "ok": "{count, plural, one {# package} other {# packages}} · signatures valid",
+    "problems": "{count, plural, one {# finding} other {# findings}}"
+  },
+  "doctor": {
+    "ok": "Everything looks good.",
+    "problems": "{count, plural, one {# problem} other {# problems}} found"
+  },
+  "init": {
+    "name": "Package name (@scope/name)",
+    "version": "Version",
+    "summary": "One-line summary",
+    "dest": "Install directory in the consumer project",
+    "keywords": "Keywords (comma-separated)",
+    "done": "Created {files}",
+    "nextValidate": "Edit AGENTS.md, then run genpm validate"
+  },
+  "validate": {
+    "ok": "genpm.json is valid ({files, plural, one {# file} other {# files}}, ~{tokens} rule tokens)",
+    "failed": "{count, plural, one {# error} other {# errors}}"
+  },
+  "publish": {
+    "done": "Published {name}@{version} → {url}",
+    "scan": "Scan: {status}",
+    "dryRun": "Dry run OK: {name}@{version} would be published from {commit}"
+  },
+  "yank": {
+    "done": "Withdrew {name}@{version}"
+  },
+  "login": {
+    "open": "Open {url} and enter the code {code}",
+    "waiting": "Waiting for GitHub…",
+    "done": "Logged in as {handle}",
+    "noClientId": "GitHub login is not configured for this registry yet: set GENPM_TOKEN instead."
+  },
+  "logout": {
+    "done": "Logged out from {registry}",
+    "none": "You were not logged in to {registry}"
+  },
+  "whoami": {
+    "none": "Not logged in. Run genpm login."
+  },
+  "mcp": {
+    "setupConfirm": "Add GenPM to {file}?",
+    "setupDone": "GenPM MCP registered in {file}",
+    "setupManual": "Run this command: {command}",
+    "addDone": "MCP servers written to {files}",
+    "removeDone": "Removed {count, plural, one {# MCP server} other {# MCP servers}} from {files}",
+    "nothing": "{name} does not declare MCP servers."
+  },
+  "cache": {
+    "cleaned": "Cache cleaned: {dir}"
+  },
+  "next": {
+    "env": "Set {vars} (see .env.example)",
+    "integration": "Follow \"Integration\" in {file}",
+    "npm": "Run {command}",
+    "mcp": "Enable MCP later: genpm mcp add {names}"
+  }
+}

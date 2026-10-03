@@ -1,0 +1,27 @@
+{
+  "product": { "tagline": "Installiere Architekturen, nicht Abhängigkeiten." },
+  "layers": {
+    "code": "Code",
+    "context": "Kontext",
+    "connections": "Verbindungen"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "pt-BR": "Português (Brasil)",
+    "fr": "Français",
+    "de": "Deutsch",
+    "ja": "日本語",
+    "zh-CN": "简体中文",
+    "ko": "한국어"
+  },
+  "betaTranslation": "Beta-Übersetzung",
+  "scan": {
+    "passed": "Prüfung bestanden",
+    "flagged": "zur Überprüfung markiert",
+    "failed": "Prüfung fehlgeschlagen",
+    "pending": "Prüfung ausstehend"
+  },
+  "sponsored": "Gesponsert",
+  "verified": "Verifiziert"
+}

@@ -30,6 +30,7 @@ export const ERRORS = {
   E_NETWORK: { http: 502, exit: 5 },
   E_UPSTREAM_GIT: { http: 502, exit: 5 },
   E_RATE_LIMITED: { http: 429, exit: 5 },
+  E_READ_ONLY: { http: 503, exit: 5 },
   E_INTEGRITY: { http: 422, exit: 6 },
   E_SIGNATURE: { http: 422, exit: 6 },
   E_PATH_UNSAFE: { http: 422, exit: 6 },

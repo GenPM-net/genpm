@@ -71,6 +71,10 @@
     "message": "Demasiadas peticiones.",
     "fix": "Espera {seconds, plural, one {# segundo} other {# segundos}} y reintenta."
   },
+  "E_READ_ONLY": {
+    "message": "El registry está en modo solo lectura por mantenimiento.",
+    "fix": "Instalar sigue funcionando. Vuelve a publicar más tarde; hay novedades en genpm.net."
+  },
   "E_INTEGRITY": {
     "message": "Falló la verificación de integridad de {name}: {detail}",
     "fix": "No uses este paquete. Repórtalo en genpm.net/report si persiste."
@@ -91,7 +95,10 @@
     "message": "El escaneo de seguridad rechazó {name}: {detail}",
     "fix": "Corrige los hallazgos que muestra genpm validate y publica una versión nueva."
   },
-  "E_INSECURE_PERMS": { "message": "Otros usuarios pueden leer {path}.", "fix": "Ejecuta chmod 600 {path}." },
+  "E_INSECURE_PERMS": {
+    "message": "Otros usuarios pueden leer {path}.",
+    "fix": "Ejecuta chmod 600 {path}."
+  },
   "E_QUARANTINED": {
     "message": "{name} está en revisión de seguridad.",
     "fix": "Inténtalo más tarde o elige otro paquete. Las revisiones tardan menos de 24 horas hábiles."

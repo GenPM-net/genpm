@@ -61,7 +61,9 @@ for (const { dir, exts, kind } of TARGETS) {
         }
         return;
       }
-      for (const lit of stringLiterals(line)) {
+      for (const raw of stringLiterals(line)) {
+        // En plantillas solo cuenta el texto literal, no las expresiones `${…}`.
+        const lit = raw.replace(/\$\{[^}]*\}/g, ' ').trim();
         if (PHRASE.test(lit) && !NOT_UI.some((r) => r.test(lit))) problems.push(`${where}  "${lit.slice(0, 60)}"`);
       }
     });

@@ -61,7 +61,15 @@ export function createTSync(locale: string, catalogs: Catalogs): Translator {
       cache.set(key, compiled);
     }
     if (typeof compiled === 'string') return compiled;
-    return String(compiled.format(params as Record<string, string | number | Date>));
+    try {
+      return String(compiled.format(params as Record<string, string | number | Date>));
+    } catch {
+      // Nunca romper la interfaz por un parámetro ausente: se sustituyen los que hay y el resto queda como `{nombre}`.
+      const src = resolve(key)?.msg ?? key;
+      return src.replace(/\{(\w+)(?:,[^{}]*(?:\{[^{}]*\}[^{}]*)*)?\}/g, (_m, name: string) =>
+        params && name in params ? String(params[name]) : `{${name}}`,
+      );
+    }
   }
 
   return {

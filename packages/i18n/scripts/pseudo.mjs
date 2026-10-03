@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 // Genera el pseudo-locale en-XA (+40 % de longitud y acentos) para detectar cortes y textos sin externalizar (i18n §6).
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse, TYPE } from '@formatjs/icu-messageformat-parser';
 import { printAST } from '@formatjs/icu-messageformat-parser/printer.js';
-import { LOCALES_DIR, namespaces, readCatalog, SOURCE } from './lib.mjs';
+import { LOCALES_DIR, namespaces, ROOT, readCatalog, SOURCE } from './lib.mjs';
 
 const MAP = {
   a: 'å',
@@ -36,7 +36,32 @@ const MAP = {
   O: 'Ö',
   U: 'Û',
 };
-const accent = (s) => s.replace(/[A-Za-z]/g, (c) => MAP[c] ?? c);
+// Lo que nunca se traduce queda intacto (glosario, comandos `genpm <cmd>`, flags, rutas, archivos, @scopes), igual que en
+// las traducciones reales: así una captura en en-XA solo muestra sin acentos lo que de verdad falta por externalizar.
+const glossary = JSON.parse(readFileSync(join(ROOT, 'glossary.json'), 'utf8')).doNotTranslate;
+const COMMANDS =
+  'add|search|info|list|remove|outdated|audit|doctor|init|validate|publish|yank|login|logout|whoami|mcp|cache';
+const esc = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const KEEP = new RegExp(
+  [
+    `genpm (?:${COMMANDS})\\b`,
+    ...[...glossary].sort((a, b) => b.length - a.length).map(esc),
+    '--[a-z][\\w-]*',
+    '@[\\w-]+(?:/[\\w.-]+)?',
+    '[\\w-]*(?:\\.[\\w-]+)+',
+    '[A-Z][A-Z0-9_]{2,}',
+  ].join('|'),
+  'g',
+);
+const accent = (s) => {
+  let out = '';
+  let last = 0;
+  for (const m of s.matchAll(KEEP)) {
+    out += s.slice(last, m.index).replace(/[A-Za-z]/g, (c) => MAP[c] ?? c) + m[0];
+    last = m.index + m[0].length;
+  }
+  return out + s.slice(last).replace(/[A-Za-z]/g, (c) => MAP[c] ?? c);
+};
 
 function transform(els) {
   for (const el of els) {

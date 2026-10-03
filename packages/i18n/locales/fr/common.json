@@ -1,0 +1,27 @@
+{
+  "product": { "tagline": "Installez des architectures, pas des dépendances." },
+  "layers": {
+    "code": "Code",
+    "context": "Contexte",
+    "connections": "Connexions"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "pt-BR": "Português (Brasil)",
+    "fr": "Français",
+    "de": "Deutsch",
+    "ja": "日本語",
+    "zh-CN": "简体中文",
+    "ko": "한국어"
+  },
+  "betaTranslation": "Traduction bêta",
+  "scan": {
+    "passed": "analyse réussie",
+    "flagged": "signalé pour examen",
+    "failed": "analyse échouée",
+    "pending": "analyse en attente"
+  },
+  "sponsored": "Sponsorisé",
+  "verified": "Vérifié"
+}

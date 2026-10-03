@@ -1,0 +1,404 @@
+{
+  "desc.root": {
+    "machine": true
+  },
+  "desc.add": {
+    "machine": true
+  },
+  "desc.search": {
+    "machine": true
+  },
+  "desc.info": {
+    "machine": true
+  },
+  "desc.list": {
+    "machine": true
+  },
+  "desc.remove": {
+    "machine": true
+  },
+  "desc.outdated": {
+    "machine": true
+  },
+  "desc.audit": {
+    "machine": true
+  },
+  "desc.doctor": {
+    "machine": true
+  },
+  "desc.init": {
+    "machine": true
+  },
+  "desc.validate": {
+    "machine": true
+  },
+  "desc.publish": {
+    "machine": true
+  },
+  "desc.yank": {
+    "machine": true
+  },
+  "desc.login": {
+    "machine": true
+  },
+  "desc.logout": {
+    "machine": true
+  },
+  "desc.whoami": {
+    "machine": true
+  },
+  "desc.mcp": {
+    "machine": true
+  },
+  "desc.mcpSetup": {
+    "machine": true
+  },
+  "desc.mcpAdd": {
+    "machine": true
+  },
+  "desc.mcpRemove": {
+    "machine": true
+  },
+  "desc.cache": {
+    "machine": true
+  },
+  "arg.cwd": {
+    "machine": true
+  },
+  "arg.registry": {
+    "machine": true
+  },
+  "arg.json": {
+    "machine": true
+  },
+  "arg.yes": {
+    "machine": true
+  },
+  "arg.lang": {
+    "machine": true
+  },
+  "arg.verbose": {
+    "machine": true
+  },
+  "arg.quiet": {
+    "machine": true
+  },
+  "arg.spec": {
+    "machine": true
+  },
+  "arg.dest": {
+    "machine": true
+  },
+  "arg.dryRun": {
+    "machine": true
+  },
+  "arg.mcp": {
+    "machine": true
+  },
+  "arg.noMcp": {
+    "machine": true
+  },
+  "arg.installDeps": {
+    "machine": true
+  },
+  "arg.clients": {
+    "machine": true
+  },
+  "arg.force": {
+    "machine": true
+  },
+  "arg.allowAutorun": {
+    "machine": true
+  },
+  "arg.maxSize": {
+    "machine": true
+  },
+  "arg.query": {
+    "machine": true
+  },
+  "arg.keyword": {
+    "machine": true
+  },
+  "arg.onlyMcp": {
+    "machine": true
+  },
+  "arg.sort": {
+    "machine": true
+  },
+  "arg.limit": {
+    "machine": true
+  },
+  "arg.name": {
+    "machine": true
+  },
+  "arg.rules": {
+    "machine": true
+  },
+  "arg.keepCode": {
+    "machine": true
+  },
+  "arg.exitCode": {
+    "machine": true
+  },
+  "arg.path": {
+    "machine": true
+  },
+  "arg.manifest": {
+    "machine": true
+  },
+  "arg.ref": {
+    "machine": true
+  },
+  "arg.distTag": {
+    "machine": true
+  },
+  "arg.reason": {
+    "machine": true
+  },
+  "arg.client": {
+    "machine": true
+  },
+  "arg.scope": {
+    "machine": true
+  },
+  "arg.workflow": {
+    "machine": true
+  },
+  "arg.action": {
+    "machine": true
+  },
+  "label.resolved": {
+    "machine": true
+  },
+  "label.dependency": {
+    "machine": true
+  },
+  "label.skip": {
+    "machine": true
+  },
+  "label.rules": {
+    "machine": true
+  },
+  "label.context": {
+    "machine": true
+  },
+  "label.npm": {
+    "machine": true
+  },
+  "label.env": {
+    "machine": true
+  },
+  "label.mcp": {
+    "machine": true
+  },
+  "label.next": {
+    "machine": true
+  },
+  "label.conflicts": {
+    "machine": true
+  },
+  "label.warnings": {
+    "machine": true
+  },
+  "label.fix": {
+    "machine": true
+  },
+  "label.version": {
+    "machine": true
+  },
+  "label.repo": {
+    "machine": true
+  },
+  "label.commit": {
+    "machine": true
+  },
+  "label.dest": {
+    "machine": true
+  },
+  "label.license": {
+    "machine": true
+  },
+  "label.deps": {
+    "machine": true
+  },
+  "label.scan": {
+    "machine": true
+  },
+  "label.installed": {
+    "machine": true
+  },
+  "label.sponsored": {
+    "machine": true
+  },
+  "add.rulesSummary": {
+    "machine": true
+  },
+  "add.rulesHint": {
+    "machine": true
+  },
+  "add.contextSummary": {
+    "machine": true
+  },
+  "add.flagged": {
+    "machine": true
+  },
+  "add.confirm": {
+    "machine": true
+  },
+  "add.mcpConsent": {
+    "machine": true
+  },
+  "add.npmConsent": {
+    "machine": true
+  },
+  "add.injected": {
+    "machine": true
+  },
+  "add.nothing": {
+    "machine": true
+  },
+  "add.dryRun": {
+    "machine": true
+  },
+  "add.cancelled": {
+    "machine": true
+  },
+  "add.mcpWritten": {
+    "machine": true
+  },
+  "search.empty": {
+    "machine": true
+  },
+  "search.installs": {
+    "machine": true
+  },
+  "search.more": {
+    "machine": true
+  },
+  "list.empty": {
+    "machine": true
+  },
+  "list.drift": {
+    "machine": true
+  },
+  "remove.done": {
+    "machine": true
+  },
+  "remove.kept": {
+    "machine": true
+  },
+  "remove.mcpLeft": {
+    "machine": true
+  },
+  "outdated.none": {
+    "machine": true
+  },
+  "audit.ok": {
+    "machine": true
+  },
+  "audit.problems": {
+    "machine": true
+  },
+  "doctor.ok": {
+    "machine": true
+  },
+  "doctor.problems": {
+    "machine": true
+  },
+  "init.name": {
+    "machine": true
+  },
+  "init.version": {
+    "machine": true
+  },
+  "init.summary": {
+    "machine": true
+  },
+  "init.dest": {
+    "machine": true
+  },
+  "init.keywords": {
+    "machine": true
+  },
+  "init.done": {
+    "machine": true
+  },
+  "init.nextValidate": {
+    "machine": true
+  },
+  "validate.ok": {
+    "machine": true
+  },
+  "validate.failed": {
+    "machine": true
+  },
+  "publish.done": {
+    "machine": true
+  },
+  "publish.scan": {
+    "machine": true
+  },
+  "publish.dryRun": {
+    "machine": true
+  },
+  "yank.done": {
+    "machine": true
+  },
+  "login.open": {
+    "machine": true
+  },
+  "login.waiting": {
+    "machine": true
+  },
+  "login.done": {
+    "machine": true
+  },
+  "login.noClientId": {
+    "machine": true
+  },
+  "logout.done": {
+    "machine": true
+  },
+  "logout.none": {
+    "machine": true
+  },
+  "whoami.none": {
+    "machine": true
+  },
+  "mcp.setupConfirm": {
+    "machine": true
+  },
+  "mcp.setupDone": {
+    "machine": true
+  },
+  "mcp.setupManual": {
+    "machine": true
+  },
+  "mcp.addDone": {
+    "machine": true
+  },
+  "mcp.removeDone": {
+    "machine": true
+  },
+  "mcp.nothing": {
+    "machine": true
+  },
+  "cache.cleaned": {
+    "machine": true
+  },
+  "next.env": {
+    "machine": true
+  },
+  "next.integration": {
+    "machine": true
+  },
+  "next.npm": {
+    "machine": true
+  },
+  "next.mcp": {
+    "machine": true
+  },
+  "add.resigned": {
+    "machine": true
+  }
+}

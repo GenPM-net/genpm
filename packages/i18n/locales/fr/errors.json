@@ -1,0 +1,174 @@
+{
+  "E_INTERNAL": {
+    "message": "Une erreur interne s’est produite dans GenPM.",
+    "fix": "Réessayez avec --verbose et, si le problème persiste, signalez-le avec son requestId."
+  },
+  "E_BAD_REQUEST": {
+    "message": "La requête est invalide : {detail}",
+    "fix": "Vérifiez les paramètres et réessayez."
+  },
+  "E_USAGE": {
+    "message": "Utilisation invalide : {detail}",
+    "fix": "Exécutez genpm --help pour voir les options disponibles."
+  },
+  "E_CONFIRM_REQUIRED": {
+    "message": "Confirmation requise : {question}",
+    "fix": "Exécutez dans un terminal interactif, ou passez {flag} pour confirmer."
+  },
+  "E_PAYLOAD_TOO_LARGE": {
+    "message": "Le corps de la requête est trop volumineux.",
+    "fix": "Envoyez 16 Ko au maximum."
+  },
+  "E_NOT_FOUND": {
+    "message": "{name} est introuvable.",
+    "fix": "Vérifiez l’orthographe ou recherchez avec genpm search <requête>."
+  },
+  "E_NO_MATCHING_VERSION": {
+    "message": "Aucune version de {name} ne correspond à {range}.",
+    "fix": "Exécutez genpm info {name} pour voir les versions publiées."
+  },
+  "E_DEST_CONFLICT": {
+    "message": "{path} existe et n’est pas vide.",
+    "fix": "Utilisez --dest <dir> ou --force (crée d’abord une sauvegarde)."
+  },
+  "E_RANGE_UNSATISFIED": {
+    "message": "Aucune version ne satisfait toutes les plages : {detail}",
+    "fix": "Installez d’abord une version compatible du paquet en conflit, ou fixez une autre version."
+  },
+  "E_ALREADY_INSTALLED": {
+    "message": "{name} {version} est déjà installé.",
+    "fix": "Rien à faire. Utilisez genpm list pour voir les paquets installés."
+  },
+  "E_VERSION_EXISTS": {
+    "message": "{name}@{version} a déjà été publié.",
+    "fix": "Les versions sont immuables : incrémentez la version dans genpm.json et créez un nouveau tag."
+  },
+  "E_DRIFT": {
+    "message": "{name} a des modifications locales dans {count, plural, one {# fichier} other {# fichiers}}.",
+    "fix": "Utilisez --keep-code pour conserver votre code, ou --force pour le supprimer quand même."
+  },
+  "E_REQUIRED_BY": {
+    "message": "{name} est requis par {dependents}.",
+    "fix": "Supprimez d’abord les paquets dépendants."
+  },
+  "E_BUSY": {
+    "message": "Un autre processus GenPM modifie ce projet.",
+    "fix": "Attendez qu’il se termine. Si aucun n’est en cours, supprimez .genpm/.lock."
+  },
+  "E_PLAN_STALE": {
+    "message": "Le projet a changé depuis le calcul du plan.",
+    "fix": "Recalculez le plan (simulation) et confirmez-le."
+  },
+  "E_NETWORK": {
+    "message": "Impossible de joindre {host}.",
+    "fix": "Vérifiez votre connexion, votre proxy ou GENPM_REGISTRY, puis réessayez."
+  },
+  "E_UPSTREAM_GIT": {
+    "message": "L’hôte Git a échoué : {detail}",
+    "fix": "Vérifiez que le dépôt est accessible avec vos identifiants Git, puis réessayez."
+  },
+  "E_RATE_LIMITED": {
+    "message": "Trop de requêtes.",
+    "fix": "Attendez {seconds, plural, one {# seconde} other {# secondes}} et réessayez."
+  },
+  "E_READ_ONLY": {
+    "message": "Le registre est en lecture seule pendant une maintenance.",
+    "fix": "L’installation fonctionne toujours. Réessayez de publier plus tard ; suivi sur genpm.net."
+  },
+  "E_INTEGRITY": {
+    "message": "La vérification d’intégrité de {name} a échoué : {detail}",
+    "fix": "N’utilisez pas ce paquet. Signalez-le via genpm.net/report si cela persiste."
+  },
+  "E_SIGNATURE": {
+    "message": "La signature du registre pour {name} est invalide.",
+    "fix": "Ne l’installez pas. Mettez à jour GenPM (nouvelles clés de signature) et signalez-le si cela persiste."
+  },
+  "E_PATH_UNSAFE": {
+    "message": "Chemin non sûr {path} ({reason}).",
+    "fix": "Utilisez un chemin relatif dans le projet, sans .., chemin absolu ni dossier réservé."
+  },
+  "E_AUTORUN_FILE": {
+    "message": "{name} contient des fichiers exécutés automatiquement : {files}.",
+    "fix": "Ces fichiers ne sont jamais installés. Demandez à l’auteur de les retirer, ou utilisez --allow-autorun uniquement pour des éditeurs vérifiés."
+  },
+  "E_SCAN_FAILED": {
+    "message": "L’analyse de sécurité a rejeté {name} : {detail}",
+    "fix": "Corrigez les problèmes listés par genpm validate et publiez une nouvelle version."
+  },
+  "E_INSECURE_PERMS": {
+    "message": "{path} est lisible par d’autres utilisateurs.",
+    "fix": "Exécutez chmod 600 {path}."
+  },
+  "E_QUARANTINED": {
+    "message": "{name} est en cours d’examen de sécurité.",
+    "fix": "Réessayez plus tard ou choisissez un autre paquet. Les examens prennent moins de 24 heures ouvrées."
+  },
+  "E_REF_MUTABLE": {
+    "message": "{ref} n’est pas une référence immuable.",
+    "fix": "Utilisez un tag Git ou le SHA complet de 40 caractères d’un commit, jamais une branche."
+  },
+  "E_ADVISORY": {
+    "message": "{name} {version} fait l’objet d’une alerte de sécurité de gravité {severity}.",
+    "fix": "Mettez à jour vers {patched} ou ultérieur."
+  },
+  "E_TOO_LARGE": {
+    "message": "{name} dépasse la limite de taille : {detail}",
+    "fix": "Excluez des fichiers avec .genpmignore, ou augmentez la limite avec --max-size si le paquet est légitime."
+  },
+  "E_MANIFEST_INVALID": {
+    "message": "genpm.json est invalide.",
+    "fix": "Corrigez les champs listés dans les détails. Exécutez genpm validate pour un rapport complet."
+  },
+  "E_LOCK_INVALID": {
+    "message": "genpm.lock est invalide ou corrompu.",
+    "fix": "Restaurez-le depuis Git ; ne modifiez jamais genpm.lock à la main."
+  },
+  "E_NAME_MISMATCH": {
+    "message": "Le nom du manifeste {actual} ne correspond pas à {expected}.",
+    "fix": "Publiez avec le nom déclaré dans genpm.json."
+  },
+  "E_REF_NOT_FOUND": {
+    "message": "{ref} n’existe pas dans {repo}.",
+    "fix": "Créez et poussez le tag : git tag {ref} && git push --tags."
+  },
+  "E_REF_NOT_PUSHED": {
+    "message": "{ref} n’est pas sur le dépôt distant ou pointe vers un autre commit.",
+    "fix": "Poussez le tag avec git push origin {ref}."
+  },
+  "E_REPO_NOT_ALLOWED": {
+    "message": "{repo} n’appartient pas au scope @{scope}.",
+    "fix": "Publiez depuis un dépôt du propriétaire GitHub lié au scope."
+  },
+  "E_REPO_CHANGED": {
+    "message": "Le dépôt derrière {name} a changé (possible repojacking).",
+    "fix": "Écrivez à hello@genpm.net avec l’objet [SECURITY] pour transférer le paquet."
+  },
+  "E_CONTEXT_MISSING": {
+    "message": "Le fichier de règles IA {path} n’existe pas.",
+    "fix": "Créez {path} (genpm init génère un modèle) ou définissez x dans genpm.json."
+  },
+  "E_CONTEXT_TOO_LARGE": {
+    "message": "Le fichier de règles IA {path} dépasse 16 Ko.",
+    "fix": "Raccourcissez-le : concentrez les règles sur l’objectif, la carte, l’intégration, les conventions et les interdits."
+  },
+  "E_AUTH": {
+    "message": "Vous n’êtes pas connecté, ou votre token est invalide ou expiré.",
+    "fix": "Exécutez genpm login (ou définissez GENPM_TOKEN en CI)."
+  },
+  "E_FORBIDDEN_SCOPE": {
+    "message": "Vous ne pouvez pas publier dans @{scope}.",
+    "fix": "Demandez les droits de publication à un propriétaire de @{scope}, ou utilisez votre propre scope."
+  },
+  "E_GIT_MISSING": {
+    "message": "Git n’est pas installé ou est antérieur à 2.25.",
+    "fix": "Installez Git 2.25 ou ultérieur, puis réessayez."
+  },
+  "E_NODE_VERSION": {
+    "message": "GenPM nécessite Node.js 20.11 ou ultérieur ({version} trouvé).",
+    "fix": "Mettez à jour Node.js."
+  },
+  "E_NOT_A_PROJECT": {
+    "message": "Aucun projet trouvé dans {path}.",
+    "fix": "Exécutez la commande dans un projet (avec package.json ou .git), ou passez --cwd <dir>."
+  }
+}

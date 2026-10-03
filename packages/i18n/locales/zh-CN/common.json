@@ -1,0 +1,27 @@
+{
+  "product": { "tagline": "安装架构，而不是依赖。" },
+  "layers": {
+    "code": "代码",
+    "context": "上下文",
+    "connections": "连接"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Español",
+    "pt-BR": "Português (Brasil)",
+    "fr": "Français",
+    "de": "Deutsch",
+    "ja": "日本語",
+    "zh-CN": "简体中文",
+    "ko": "한국어"
+  },
+  "betaTranslation": "测试版翻译",
+  "scan": {
+    "passed": "扫描通过",
+    "flagged": "已标记待审核",
+    "failed": "扫描未通过",
+    "pending": "等待扫描"
+  },
+  "sponsored": "赞助",
+  "verified": "已验证"
+}

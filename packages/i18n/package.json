@@ -10,7 +10,8 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./locales/*": "./locales/*"
+    "./locales/*": "./locales/*",
+    "./glossary.json": "./glossary.json"
   },
   "files": [
     "dist",
