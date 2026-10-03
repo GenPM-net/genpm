@@ -33,7 +33,7 @@
   | npm | `genpm` (CLI) y org `@genpm` |
   | GitHub | `GenPM-net` (✅ creada; `genpm` está ocupado por una cuenta inactiva) |
   | X / Discord / YouTube / LinkedIn | `@genpm` (fallback `genpmnet` / `genpm-net`) |
-  | Email | `hello@`, `security@`, `sponsors@` `genpm.net` |
+  | Email | **`hello@genpm.net`** (único por ahora; seguridad con asunto `[SECURITY]`, patrocinios con `[SPONSORS]`) |
 - A los paquetes se les llama **packages** (en ES: "paquetes"). Evitar metáforas propias ("genes", "blueprints") en superficies técnicas: suman fricción. La metáfora del injerto vive solo en la narrativa y el visual.
 
 ## 3. Posicionamiento

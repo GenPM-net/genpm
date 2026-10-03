@@ -122,7 +122,7 @@
   },
   "E_REPO_CHANGED": {
     "message": "The repository behind {name} changed (possible repojacking).",
-    "fix": "Contact security@genpm.net to transfer the package."
+    "fix": "Email hello@genpm.net with subject [SECURITY] to transfer the package."
   },
   "E_CONTEXT_MISSING": {
     "message": "The AI rules file {path} does not exist.",

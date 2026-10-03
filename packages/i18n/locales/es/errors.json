@@ -134,7 +134,7 @@
   },
   "E_REPO_CHANGED": {
     "message": "El repositorio de {name} cambió (posible repojacking).",
-    "fix": "Escribe a security@genpm.net para transferir el paquete."
+    "fix": "Escribe a hello@genpm.net con asunto [SECURITY] para transferir el paquete."
   },
   "E_CONTEXT_MISSING": {
     "message": "No existe el archivo de reglas de IA {path}.",

@@ -51,7 +51,7 @@ Decisiones ya tomadas: ver [brainstorming §2](brainstorming.md#2-decisiones-del
 - [ ] Generar las claves de firma Ed25519 (`k1` activa, `k2` siguiente) y la clave raíz offline de revocación; guardar la raíz fuera de línea.
 - [ ] Repo `GenPM-net/genpm` (este monorepo) con protección de `main`, y repos vacíos para las 5 semillas.
 - [ ] Contratar revisor nativo de `pt-BR` (Día 6) y buscar revisores para el nivel 2 de idiomas.
-- [ ] `security@genpm.net` operativo; secretos en el gestor del equipo; nada en `.env` commiteado.
+- [x] `hello@genpm.net` operativo (único buzón; reportes de seguridad con asunto `[SECURITY]`); secretos en el gestor del equipo; nada en `.env` commiteado.
 
 ## 4. Plan día a día
 

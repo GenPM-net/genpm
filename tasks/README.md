@@ -71,16 +71,16 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-03. No editar a mano. -->
 
-**9 %** completado · 23/253 tareas · 782.5h estimadas pendientes
+**18 %** completado · 45/253 tareas · 731h estimadas pendientes
 
-TODO 209 · DOING 4 · DONE 23 · BLOCKED 17 · CUT 0
+TODO 187 · DOING 3 · DONE 45 · BLOCKED 18 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
-| [Día 0 · Preparación](00-dia-0-preparacion.md) | `░░░░░░░░░░░░` 0 % | 0/16 | 12.5h |
-| [Día 1 · Cimientos](01-dia-1-cimientos.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 16/21 | 5h |
-| [Día 2 · Registry y motor de fetch](02-dia-2-registry-fetch.md) | `▓░░░░░░░░░░░` 5 % | 1/21 | 46h |
-| [Día 3 · CLI y contexto](03-dia-3-cli-contexto.md) | `░░░░░░░░░░░░` 0 % | 0/22 | 42.5h |
+| [Día 0 · Preparación](00-dia-0-preparacion.md) | `▓░░░░░░░░░░░` 6 % | 1/16 | 12h |
+| [Día 1 · Cimientos](01-dia-1-cimientos.md) | `▓▓▓▓▓▓▓▓▓▓░░` 81 % | 17/21 | 4h |
+| [Día 2 · Registry y motor de fetch](02-dia-2-registry-fetch.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 90 % | 19/21 | 1h |
+| [Día 3 · CLI y contexto](03-dia-3-cli-contexto.md) | `▓░░░░░░░░░░░` 9 % | 2/22 | 37.5h |
 | [Día 4 · Servidor MCP](04-dia-4-mcp.md) | `░░░░░░░░░░░░` 0 % | 0/17 | 35.5h |
 | [Día 5 · Web MVP y pulido del cliente](05-dia-5-web.md) | `░░░░░░░░░░░░` 0 % | 0/30 | 63.5h |
 | [Día 6 · Integración, seguridad y producción](06-dia-6-produccion.md) | `░░░░░░░░░░░░` 0 % | 0/29 | 34h |
@@ -94,7 +94,6 @@ TODO 209 · DOING 4 · DONE 23 · BLOCKED 17 · CUT 0
 - `D0-01` Registrar genpm.net, activar registrar lock y DNSSEC (DNS en Cloudflare) · F · 2h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-05` Crear la org de GitHub GenPM-net con 2FA obligatorio · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-08` Repo GenPM-net/genpm con protección de main y 5 repos vacíos para las semillas · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
-- `D2-A-08` Firma Ed25519 del manifiesto resuelto canónico y GET /v1/keys (INV-8) · A · 2h ([02-dia-2-registry-fetch.md](02-dia-2-registry-fetch.md))
 
 **Bloqueadas**
 
@@ -109,23 +108,25 @@ TODO 209 · DOING 4 · DONE 23 · BLOCKED 17 · CUT 0
 - `D0-12` Generar claves de firma Ed25519 (k1 activa, k2 siguiente) y clave raíz de revocación guardada offline · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-13` Gestor de secretos del equipo con todos los secretos; ningún .env commiteado · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-14` Contratar revisor nativo de pt-BR para el Día 6 y buscar revisores de nivel 2 (ja, zh-CN, ko, fr, de) · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
-- `D0-15` Buzón security@genpm.net operativo · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-G-01` M0: todas las cuentas con 2FA/FIDO2 y accesos repartidos al equipo · T · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D1-A-05` Migración 0001_init.sql (api-spec §5.3) aplicada en staging · A · 2h ([01-dia-1-cimientos.md](01-dia-1-cimientos.md))
 - `D1-A-07` GET /v1/health y deploy a staging · A · 1h ([01-dia-1-cimientos.md](01-dia-1-cimientos.md))
 - `D1-G-01` CI verde en macOS, Linux y Windows · T · 0.5h ([01-dia-1-cimientos.md](01-dia-1-cimientos.md))
 - `D1-G-02` GET /v1/health responde en staging · T · 0.5h ([01-dia-1-cimientos.md](01-dia-1-cimientos.md))
+- `D2-G-01` Publicar por curl un fixture en staging y obtener su SHA vía resolve · T · 0.5h ([02-dia-2-registry-fetch.md](02-dia-2-registry-fetch.md))
+- `D2-G-04` Caché caliente del registry < 100 ms · T · 0.5h ([02-dia-2-registry-fetch.md](02-dia-2-registry-fetch.md))
 
 **Siguientes disponibles** (TODO con todas sus dependencias cerradas)
 
-- `D2-B-01` core/fetch: git por SHA (sparse + partial clone) y verificación rev-parse HEAD === c (INV-1) · B · 4h ([02-dia-2-registry-fetch.md](02-dia-2-registry-fetch.md))
-- `D2-B-04` core/plan: plan de instalación sin escrituras · B · 3h ([02-dia-2-registry-fetch.md](02-dia-2-registry-fetch.md))
+- `D3-A-03` CLI login, logout y whoami con device flow y credenciales según security §4.2 · A · 2h ([03-dia-3-cli-contexto.md](03-dia-3-cli-contexto.md))
 - `D3-A-04` CLI init: genera genpm.json desde el repo · A · 1h ([03-dia-3-cli-contexto.md](03-dia-3-cli-contexto.md))
+- `D3-B-01` core/inject: AGENTS.md por paquete e índice en el AGENTS.md raíz · B · 3h ([03-dia-3-cli-contexto.md](03-dia-3-cli-contexto.md))
+- `D3-B-06` CLI search e info · B · 2h ([03-dia-3-cli-contexto.md](03-dia-3-cli-contexto.md))
+- `D3-B-07` CLI list con detección de drift y remove (E_DRIFT con fix) · B · 3h ([03-dia-3-cli-contexto.md](03-dia-3-cli-contexto.md))
+- `D3-B-08` CLI audit y doctor · B · 2h ([03-dia-3-cli-contexto.md](03-dia-3-cli-contexto.md))
 - `D3-B-10` Catálogos del CLI en en y es, flag --lang · B · 2h ([03-dia-3-cli-contexto.md](03-dia-3-cli-contexto.md))
-- `S-00-01` Fijar el stack común: TypeScript estricto + Drizzle, agnóstico de framework, adaptadores Hono y Next.js · C · 1h ([08-semillas.md](08-semillas.md))
-- `BR-07` Wordmark genpm▍ e isotipo g▍ en SVG: claro, oscuro y monocromo, con texto convertido a trazos · D · 2h ([09-marca-diseno.md](09-marca-diseno.md))
-- `BR-11` Badges SVG: versión, installs, mcp y verified (branding §11) · D · 1h ([09-marca-diseno.md](09-marca-diseno.md))
-- `BR-12` Script que genera tokens.css y el preset de Tailwind desde tokens.json (fuente única para web, badges y OG) · D · 2h ([09-marca-diseno.md](09-marca-diseno.md))
-- `BR-17` Revisión de accesibilidad del prototipo (teclado, foco, lectores de pantalla) antes de construir la web · D · 1h ([09-marca-diseno.md](09-marca-diseno.md))
+- `D4-A-01` Cron triggers: rollup de Analytics Engine a D1, popularidad, patrocinios y auditoría de tags · A · 3h ([04-dia-4-mcp.md](04-dia-4-mcp.md))
+- `D4-A-03` Tests de seguridad de la API: traversal vía d, ref de rama, typosquatting, payloads grandes, inyección FTS · A · 3h ([04-dia-4-mcp.md](04-dia-4-mcp.md))
+- `D4-A-04` Suite cross-tenant INV-10 (security §8.4) · A · 2h ([04-dia-4-mcp.md](04-dia-4-mcp.md))
 
 <!-- board:end -->

@@ -208,7 +208,7 @@ Suite que crea dos registries con datos espejo y verifica que cada endpoint, con
 Herramientas de contención: cuarentena de versión/paquete/scope (`451` inmediato tras purga de caché), revocación masiva de tokens de una cuenta, suspensión de cuenta, lista de revocación de claves de firma, modo solo-lectura del registry.
 Post-mortem público sin culpables para toda severidad alta o crítica.
 
-**Canal de reporte:** `security@genpm.net` (clave PGP publicada), GitHub Private Vulnerability Reporting en todos los repos, `https://genpm.net/.well-known/security.txt`. Respuesta inicial ≤ 48 h. Safe harbor para investigadores de buena fe.
+**Canal de reporte:** `hello@genpm.net` con asunto `[SECURITY]` (único buzón por ahora, decisión del fundador 2026-10-03; clave PGP publicada; filtro que marca esos correos como prioritarios). Cuando haya equipo, `security@` como alias o buzón propio. Además: GitHub Private Vulnerability Reporting en todos los repos, `https://genpm.net/.well-known/security.txt`. Respuesta inicial ≤ 48 h. Safe harbor para investigadores de buena fe.
 
 ## 10. Puertas de seguridad del lanzamiento (Día 6)
 

@@ -8,7 +8,7 @@
 - [ ] `D0-01` **DOING** Registrar genpm.net, activar registrar lock y DNSSEC (DNS en Cloudflare) · F · 2h · deps: —
   - ✅ Registrado 2026-10-03 06:12 UTC en Piensa Solutions (Arsys/Nicline), plan Correo Basic. Vence 2027-10-03. `clientTransferProhibited` ya activo.
   - Pendiente: renovación automática (ideal varios años) · 2FA en la cuenta de Piensa · nameservers → Cloudflare · DNSSEC (DS de Cloudflare en el panel DNSSEC de Piensa) · borrar el A de parking `217.76.156.252`.
-  - DNS en Cloudflare: conservar MX `mx.buzondecorreo.com` y SPF de Piensa; SPF `~all` → `-all`; DMARC `p=quarantine` → `p=reject`; DKIM si Piensa lo ofrece; CAA (`letsencrypt.org`, `pki.goog`, `ssl.com`, `iodef mailto:security@genpm.net`).
+  - DNS en Cloudflare: conservar MX `mx.buzondecorreo.com` y SPF de Piensa; SPF `~all` → `-all`; DMARC `p=quarantine` → `p=reject`; DKIM si Piensa lo ofrece; CAA (`letsencrypt.org`, `pki.goog`, `ssl.com`, `iodef mailto:hello@genpm.net`).
   - Opcional: transferir a Cloudflare Registrar a partir del 2026-12-02 (bloqueo ICANN de 60 días en dominios nuevos).
 - [ ] `D0-02` **BLOCKED** Registrar genpm.dev como dominio defensivo con 301 a genpm.net · F · 0.5h · deps: —
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
@@ -48,7 +48,8 @@
 
 - [ ] `D0-14` **BLOCKED** Contratar revisor nativo de pt-BR para el Día 6 y buscar revisores de nivel 2 (ja, zh-CN, ko, fr, de) · F · 1h · deps: —
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
-- [ ] `D0-15` **BLOCKED** Buzón security@genpm.net operativo · F · 0.5h · deps: D0-01
+- [x] `D0-15` **DONE** Buzón hello@genpm.net operativo (único; seguridad con asunto [SECURITY]) · F · 0.5h · deps: D0-01
+  - ✅ Activo el 2026-10-03 en Piensa (Correo Basic). MX `mx.buzondecorreo.com` y SPF verificados por DNS. Falta: DMARC y DKIM (ver `D0-01`), 2FA/contraseña única del buzón, filtro para `[SECURITY]`.
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
 
 ## Gate
