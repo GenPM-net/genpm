@@ -11,15 +11,15 @@
 Al final del Día 7, un desarrollador cualquiera puede:
 
 ```bash
-claude mcp add genpm -- npx -y @genpm/mcp
+claude mcp add genpm -- genpm mcp serve        # con el binario: curl -fsSL https://genpm.net/install.sh | sh
 # en Claude Code: "Crea la base de un SaaS: base de datos, login con GitHub, suscripciones con Stripe y emails"
 ```
 …y su agente busca, inspecciona e inyecta `@core/db`, `@core/auth`, `@core/billing` y `@core/email` desde el registry público,
 con reglas de contexto con alcance, y cablea el resultado siguiendo las reglas — **sin que el humano edite código a mano**.
 
 ### Definición de éxito (demo final, grabada)
-1. `npx genpm search auth` devuelve resultados del registry en producción en < 1 s.
-2. `npx genpm add @core/billing` instala billing + auth + db (dependencias), escribe contexto para Cursor y Claude Code, propone `pnpm add` y no escribe MCP sin consentimiento.
+1. `genpm search auth` devuelve resultados del registry en producción en < 1 s.
+2. `genpm add @core/billing` instala billing + auth + db (dependencias), escribe contexto para Cursor y Claude Code, propone `pnpm add` y no escribe MCP sin consentimiento.
 3. En Cursor y Claude Code, la instalación conversacional vía `@genpm/mcp` funciona con el guion anterior.
 4. `genpm publish` de un paquete nuevo desde un repo de GitHub aparece en `genpm.net` en < 1 minuto.
 5. Los 5 paquetes semilla están publicados, con escaneo `passed`.

@@ -24,7 +24,7 @@
   | Contexto | Forma | Ejemplo |
   |---|---|---|
   | Prosa, títulos | **GenPM** | "GenPM inyecta arquitecturas completas." |
-  | Comando, paquete npm, URLs | **`genpm`** | `npx genpm add @core/auth` |
+  | Comando, paquete npm, URLs | **`genpm`** | `genpm add @core/auth` |
   | Incorrecto | ~~GENPM~~, ~~Genpm~~, ~~GenPm~~, ~~Gen PM~~, ~~gen-pm~~ | — |
 - **"genpm en todo"** (ADR-015): un solo nombre en todos los canales.
   | Canal | Handle |
@@ -240,7 +240,7 @@ No usamos fotos de stock. Imágenes = terminal, diffs, árboles de archivos y di
 
 **ES (comunidad hispana):**
 > Lancé GenPM: en vez de esconder dependencias en node_modules, inyecta módulos completos (código + reglas para tu IA + MCP) en tu proyecto,
-> anclados a un commit. Tu IA los entiende, tú los controlas. `npx genpm add @core/auth`
+> anclados a un commit. Tu IA los entiende, tú los controlas. `genpm add @core/auth`
 
 ## 10. Marca en el CLI
 

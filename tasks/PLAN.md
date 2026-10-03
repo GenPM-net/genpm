@@ -8,7 +8,7 @@
 Al final del **Día 7**, cualquier desarrollador puede ejecutar:
 
 ```bash
-claude mcp add genpm -- npx -y @genpm/mcp
+claude mcp add genpm -- genpm mcp serve        # con el binario: curl -fsSL https://genpm.net/install.sh | sh
 # "Crea la base de un SaaS: base de datos, login con GitHub, suscripciones con Stripe y emails"
 ```
 
@@ -19,8 +19,8 @@ con reglas de contexto con alcance, y deja la app integrada **sin que el humano 
 
 | # | Criterio | Se verifica en |
 |---|---|---|
-| 1 | `npx genpm search auth` responde desde producción en < 1 s | `D6-G-02` |
-| 2 | `npx genpm add @core/billing` instala billing + auth + db, escribe contexto para Cursor y Claude Code, propone `pnpm add` y no escribe MCP sin consentimiento | `D3-G-01` |
+| 1 | `genpm search auth` responde desde producción en < 1 s | `D6-G-02` |
+| 2 | `genpm add @core/billing` instala billing + auth + db, escribe contexto para Cursor y Claude Code, propone `pnpm add` y no escribe MCP sin consentimiento | `D3-G-01` |
 | 3 | Instalación conversacional vía `@genpm/mcp` en Cursor y Claude Code | `D4-G-01` |
 | 4 | `genpm publish` de un paquete nuevo aparece en genpm.net en < 1 min | `D6-G-03` |
 | 5 | Las 5 semillas publicadas con escaneo `passed` | `D6-P-05` |

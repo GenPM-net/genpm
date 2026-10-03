@@ -152,6 +152,9 @@ importers:
       '@genpm/manifest':
         specifier: workspace:*
         version: link:../manifest
+      '@genpm/mcp':
+        specifier: workspace:*
+        version: link:../mcp
       '@genpm/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig

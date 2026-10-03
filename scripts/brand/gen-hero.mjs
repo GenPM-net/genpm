@@ -13,7 +13,7 @@ const LINE = 22;
 const X = 28;
 const TOP = 70;
 const CYCLE = 12; // s
-const CMD = 'npx genpm add @core/billing';
+const CMD = 'genpm add @core/billing';
 
 // [tiempo de aparición (s), segmentos [texto, color]]
 const OUT = [

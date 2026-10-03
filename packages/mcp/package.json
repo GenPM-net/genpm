@@ -14,6 +14,10 @@
     ".": {
       "types": "./dist/server.d.mts",
       "default": "./dist/server.mjs"
+    },
+    "./serve": {
+      "types": "./dist/serve.d.mts",
+      "default": "./dist/serve.mjs"
     }
   },
   "files": [

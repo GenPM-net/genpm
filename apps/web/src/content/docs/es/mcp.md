@@ -3,7 +3,7 @@ title: Servidor MCP
 section: Servidor MCP
 order: 30
 ---
-El servidor MCP de GenPM (`@genpm/mcp`) le da a tu agente el mismo motor que el CLI: busca, inspecciona e inyecta módulos, y te pregunta antes de tocar nada fuera de tu código.
+El servidor MCP de GenPM le da a tu agente el mismo motor que el CLI: busca, inspecciona e inyecta módulos, y te pregunta antes de tocar nada fuera de tu código.
 
 Lo más rápido es dejar que GenPM escriba la config de los clientes que detecta en tu proyecto:
 
@@ -13,10 +13,12 @@ genpm mcp setup
 
 Muestra el cambio exacto y pregunta antes de escribir. Usa `--client` y `--scope` para elegir uno, o configúralo a mano como se indica abajo.
 
+El servidor va dentro del [binario `genpm`](/docs/install): tu cliente lanza `genpm mcp serve`, sin Node.js. Sin el binario, usa el paquete de npm: cambia `genpm mcp serve` por `npx -y @genpm/mcp` (`"command": "npx", "args": ["-y", "@genpm/mcp"]`) en cualquiera de los ejemplos; `genpm mcp setup` ejecutado con npm o npx lo hace por ti.
+
 ## Claude Code
 
 ```bash
-claude mcp add genpm -- npx -y @genpm/mcp
+claude mcp add genpm -- genpm mcp serve
 ```
 
 Eso lo registra para tu usuario. Para compartirlo con tu equipo, versiona un `.mcp.json` en la raíz del proyecto (`genpm mcp setup --client claude --scope project` lo escribe):
@@ -24,7 +26,7 @@ Eso lo registra para tu usuario. Para compartirlo con tu equipo, versiona un `.m
 ```json
 {
   "mcpServers": {
-    "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] }
+    "genpm": { "command": "genpm", "args": ["mcp", "serve"] }
   }
 }
 ```
@@ -36,7 +38,7 @@ Proyecto: `.cursor/mcp.json`. Usuario: `~/.cursor/mcp.json`.
 ```json
 {
   "mcpServers": {
-    "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] }
+    "genpm": { "command": "genpm", "args": ["mcp", "serve"] }
   }
 }
 ```
@@ -53,7 +55,7 @@ Proyecto: `.vscode/mcp.json` (fíjate en la clave `servers` y en `type`):
 ```json
 {
   "servers": {
-    "genpm": { "type": "stdio", "command": "npx", "args": ["-y", "@genpm/mcp"] }
+    "genpm": { "type": "stdio", "command": "genpm", "args": ["mcp", "serve"] }
   }
 }
 ```
@@ -61,7 +63,7 @@ Proyecto: `.vscode/mcp.json` (fíjate en la clave `servers` y en `type`):
 Usuario:
 
 ```bash
-code --add-mcp '{"name":"genpm","command":"npx","args":["-y","@genpm/mcp"]}'
+code --add-mcp '{"name":"genpm","command":"genpm","args":["mcp","serve"]}'
 ```
 
 ## Windsurf
@@ -71,7 +73,7 @@ Solo usuario: `~/.codeium/windsurf/mcp_config.json`.
 ```json
 {
   "mcpServers": {
-    "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] }
+    "genpm": { "command": "genpm", "args": ["mcp", "serve"] }
   }
 }
 ```
@@ -86,8 +88,8 @@ Solo usuario: `~/.codex/config.toml`.
 
 ```toml
 [mcp_servers.genpm]
-command = "npx"
-args = ["-y", "@genpm/mcp"]
+command = "genpm"
+args = ["mcp", "serve"]
 ```
 
 ```bash
@@ -120,6 +122,7 @@ Un paquete puede declarar los servidores MCP que necesita (por ejemplo, el de St
 
 ## Problemas frecuentes
 
-- **El cliente no ve las herramientas**: reinicia el cliente tras cambiar su config y comprueba que `npx -y @genpm/mcp` arranca en una terminal.
+- **El cliente no ve las herramientas**: reinicia el cliente tras cambiar su config y comprueba que `genpm mcp serve` arranca en una terminal (se queda esperando; páralo con Ctrl+C).
+- **El cliente no encuentra `genpm`**: algunas apps no leen el `PATH` de tu shell. Usa la ruta absoluta como comando: `which genpm` la muestra en macOS y Linux (por ejemplo `/Users/tu/.genpm/bin/genpm`), `where.exe genpm` en Windows.
 - **Telemetría**: define `GENPM_TELEMETRY=0` (o `DO_NOT_TRACK=1`) en el `env` del servidor.
 - **Otro registry**: define `GENPM_REGISTRY` en el `env` del servidor.

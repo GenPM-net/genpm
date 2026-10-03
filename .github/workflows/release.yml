@@ -47,10 +47,10 @@ jobs:
           ls -l dist-pack
       - name: Dry-run con provenance
         if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
-        run: for t in dist-pack/*.tgz; do npm publish "$t" --provenance --access public --dry-run; done
+        run: for t in ./dist-pack/*.tgz; do npm publish "$t" --provenance --access public --dry-run; done
       - name: Publicar
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-        run: for t in dist-pack/*.tgz; do npm publish "$t" --provenance --access public; done
+        run: for t in ./dist-pack/*.tgz; do npm publish "$t" --provenance --access public; done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -147,8 +147,10 @@ jobs:
         run: |
           $env:GENPM_DOWNLOAD_URL = "$PWD\dist-bin"
           Get-Content scripts/install/install.ps1 -Raw | Invoke-Expression
-          & "$HOME\.genpm\bin\genpm.exe" doctor --json | Select-String '"id":"runtime"'
-          if (-not $?) { exit 1 }
+          # doctor sale con 1 si el registry no responde; aquí solo importa que el binario arranque e identifique su runtime.
+          $out = & "$HOME\.genpm\bin\genpm.exe" doctor --json
+          if ("$out" -notmatch '"id":"runtime"') { exit 1 }
+          exit 0
 
   github-release:
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}

@@ -10,7 +10,7 @@
   - DoD: `release.yml` verde en macOS, Linux y Windows (smoke del binario + install.sh + install.ps1 en PowerShell 5.1 y 7); autorrevisión diferida (ADR-023) de `scripts/install/` y `core/src/self-update.ts` antes del primer tag. El release real espera a la apertura del repo (D6-P-07).
 - [ ] `V011-03` **TODO** Firma de código de los binarios: Apple Developer ID + notarización y Authenticode · F · 6h · deps: V011-02
 - [ ] `V011-04` **TODO** Canales de paquetes para el binario: Homebrew tap, Scoop y winget · B · 4h · deps: V011-02
-- [ ] `V011-05` **TODO** genpm mcp serve en el binario para usar el MCP sin Node · B · 4h · deps: V011-02
+- [x] `V011-05` **DONE** genpm mcp serve en el binario para usar el MCP sin Node · B · 4h · deps: V011-02
 
 ## v0.2 · +2 semanas
 

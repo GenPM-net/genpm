@@ -17,6 +17,7 @@
     "logout": "로그아웃하고 토큰 폐기",
     "whoami": "로그인한 계정 표시",
     "mcp": "MCP 설정 관리",
+    "mcpServe": "stdio로 GenPM MCP 서버를 실행합니다(AI 클라이언트가 실행하는 것)",
     "mcpSetup": "AI 클라이언트에 GenPM MCP 서버 등록",
     "mcpAdd": "설치된 패키지가 선언한 MCP 서버 기록",
     "mcpRemove": "설치된 패키지가 선언한 MCP 서버 제거",

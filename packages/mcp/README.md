@@ -6,7 +6,7 @@ The GenPM MCP server: lets your AI agent search, inspect and inject architecture
 claude mcp add genpm -- npx -y @genpm/mcp
 ```
 
-Cursor, VS Code, Windsurf and Codex: see [genpm.net/docs/mcp](https://genpm.net/docs/mcp), or run `genpm mcp setup`.
+Don't want Node.js? The same server is built into the native `genpm` binary ([genpm.net/docs/install](https://genpm.net/docs/install)): register `genpm mcp serve` instead, or run `genpm mcp setup` and it writes the config for you. Cursor, VS Code, Windsurf and Codex: see [genpm.net/docs/mcp](https://genpm.net/docs/mcp).
 
 ## Tools
 

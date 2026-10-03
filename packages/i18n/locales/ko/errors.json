@@ -165,7 +165,7 @@
   },
   "E_NODE_VERSION": {
     "message": "GenPM에는 Node.js 20.11 이상이 필요합니다(현재 {version}).",
-    "fix": "Node.js를 업데이트하세요."
+    "fix": "Node.js를 업데이트하거나 Node.js가 필요 없는 독립 실행형 genpm 바이너리를 설치하세요: genpm.net/docs/install"
   },
   "E_UPGRADE_UNSUPPORTED": {
     "message": "이 GenPM은 {via}(으)로 설치되었습니다. genpm upgrade는 독립 실행형 바이너리만 업데이트합니다.",

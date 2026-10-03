@@ -514,11 +514,11 @@ function wireTabs(root){
 
 /* ——————————————— Vistas ——————————————— */
 var CLIENTS=[
- {id:'claude',name:'Claude Code',file:'CLI',kind:'cmd',body:'claude mcp add genpm -- npx -y @genpm/mcp'},
- {id:'cursor',name:'Cursor',file:'.cursor/mcp.json',body:'{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }'},
- {id:'vscode',name:'VS Code',file:'.vscode/mcp.json',body:'{ "servers": { "genpm": { "type": "stdio", "command": "npx", "args": ["-y", "@genpm/mcp"] } } }'},
- {id:'windsurf',name:'Windsurf',file:'mcp_config.json',path:'~/.codeium/windsurf/mcp_config.json',body:'{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }'},
- {id:'codex',name:'Codex',file:'config.toml',path:'~/.codex/config.toml',body:'[mcp_servers.genpm]\ncommand = "npx"\nargs = ["-y", "@genpm/mcp"]'}
+ {id:'claude',name:'Claude Code',file:'CLI',kind:'cmd',body:'claude mcp add genpm -- genpm mcp serve'},
+ {id:'cursor',name:'Cursor',file:'.cursor/mcp.json',body:'{ "mcpServers": { "genpm": { "command": "genpm", "args": ["mcp", "serve"] } } }'},
+ {id:'vscode',name:'VS Code',file:'.vscode/mcp.json',body:'{ "servers": { "genpm": { "type": "stdio", "command": "genpm", "args": ["mcp", "serve"] } } }'},
+ {id:'windsurf',name:'Windsurf',file:'mcp_config.json',path:'~/.codeium/windsurf/mcp_config.json',body:'{ "mcpServers": { "genpm": { "command": "genpm", "args": ["mcp", "serve"] } } }'},
+ {id:'codex',name:'Codex',file:'config.toml',path:'~/.codex/config.toml',body:'[mcp_servers.genpm]\ncommand = "genpm"\nargs = ["mcp", "serve"]'}
 ];
 function clientsBlock(){
   var t='',p='';
@@ -528,7 +528,7 @@ function clientsBlock(){
     p+='<div data-panel="'+c.id+'"'+(i?' hidden':'')+'>'+(c.kind==='cmd'?'<div class="cmd"><span class="p">$</span><code id="'+id+'">'+esc(c.body)+'</code><button class="cp" data-copy="'+id+'">Copy</button></div>':'<div class="term"><div class="bar"><span>'+(c.path||c.file)+'</span><button class="cp" data-copy="'+id+'">Copy</button></div><pre id="'+id+'">'+esc(c.body)+'</pre></div>')+'</div>';
   });
   return '<div class="clients" data-tabs><div role="tablist" aria-label="Client">'+t+'</div><div class="pn">'+p+
-    '<p>Or run <code>npx genpm mcp setup</code> and GenPM writes the config for every client it detects.</p>'+
+    '<p>Or run <code>genpm mcp setup</code> and GenPM writes the config for every client it detects.</p>'+
     '<div class="prompts"><span class="k" style="margin-bottom:4px">Then ask</span><div>Add GitHub login to this project with genpm.</div><div>Find a billing module with Stripe and show me its rules before installing.</div><div>Which genpm packages in this repo are outdated?</div></div></div></div>';
 }
 
@@ -543,8 +543,8 @@ function vHome(){
     '<h1 class="h1">Install architectures, not dependencies.<span class="caret blink" aria-hidden="true"></span></h1>'+
     '<p class="lede">Source code, AI rules and MCP servers, injected into your repo and pinned to a commit. Your AI already knows how to use it.</p>'+
     '<div class="cta" data-tabs><div class="top2"><div class="seg" role="tablist" aria-label="Install method"><button role="tab" aria-selected="true" data-tab="cli">CLI</button><button role="tab" aria-selected="false" tabindex="-1" data-tab="mcp">MCP</button></div><span class="hint">No global install</span></div>'+
-     '<div data-panel="cli">'+cmd('npx genpm add @core/auth')+'</div>'+
-     '<div data-panel="mcp" hidden>'+cmd('claude mcp add genpm -- npx -y @genpm/mcp')+'<p class="hint" style="margin-top:10px">Then ask your agent: <code>Add GitHub login to this project with genpm</code></p></div>'+
+     '<div data-panel="cli">'+cmd('genpm add @core/auth')+'</div>'+
+     '<div data-panel="mcp" hidden>'+cmd('claude mcp add genpm -- genpm mcp serve')+'<p class="hint" style="margin-top:10px">Then ask your agent: <code>Add GitHub login to this project with genpm</code></p></div>'+
      '<button class="hint" data-open-pal style="justify-self:start;display:inline-flex;gap:8px;align-items:center;margin-top:4px">'+ico('search','width:14px;height:14px')+'Search 128 packages <span class="kbd">⌘K</span></button>'+
     '</div>'+
     '<div class="trust"><span>'+ico('commit')+'SHA-verified</span><span>'+ico('ban')+'Zero install scripts</span><span>'+ico('shield')+'Rules scanned</span></div>'+
@@ -630,7 +630,7 @@ function runSearch(){
     var items='';
     if(!S.ver&&!S.mcp)items+='<a class="ritem sp" href="#search"><div class="nm"><span class="spons">Sponsored</span><b>'+SPON.n+'</b><span class="v">'+SPON.v+'</span></div><p>'+SPON.s+'</p></a>';
     items+=r.map(function(p){
-      return '<div class="ritem"><div class="nm"><a href="#'+p.slug+'"><b>'+p.n+'</b></a><span class="v">'+p.v+'</span>'+vmark(p)+'</div><p>'+esc(p.s)+'</p><div class="meta"><div class="row" style="gap:6px">'+badges(p,true)+'<span class="kw">'+p.k.slice(0,3).join(' · ')+'</span></div><span class="inst tnum">'+fmt(p.inst)+' / 30d</span></div>'+cmd('npx genpm add '+p.n,'sm')+'</div>';
+      return '<div class="ritem"><div class="nm"><a href="#'+p.slug+'"><b>'+p.n+'</b></a><span class="v">'+p.v+'</span>'+vmark(p)+'</div><p>'+esc(p.s)+'</p><div class="meta"><div class="row" style="gap:6px">'+badges(p,true)+'<span class="kw">'+p.k.slice(0,3).join(' · ')+'</span></div><span class="inst tnum">'+fmt(p.inst)+' / 30d</span></div>'+cmd('genpm add '+p.n,'sm')+'</div>';
     }).join('');
     el.innerHTML=head+items;
   }
@@ -684,7 +684,7 @@ function vPkg(p){
     '<button role="tab" aria-selected="false" tabindex="-1" data-tab="deps">Dependencies</button>'+
     '<button role="tab" aria-selected="false" tabindex="-1" data-tab="sec">Security</button>'+
    '</div>'+
-   '<div class="pk-panel" data-panel="ov" hidden><h2>'+p.n+'</h2><p>'+esc(p.s)+'</p><h3>Install</h3>'+cmd('npx genpm add '+p.n)+'<h3>What you get</h3><ul class="dots"><li>Source in <code>'+p.d+'/</code>, '+p.files+' files ('+p.size+').</li><li>AI rules in <code>'+p.d+'/AGENTS.md</code> (~'+p.tok+' tokens), plus IDE rule files.</li>'+(p.e.length?'<li>Env vars added to <code>.env.example</code>: '+p.e.map(function(x){return '<code>'+x+'</code>'}).join(', ')+'.</li>':'')+(Object.keys(p.g).length?'<li>Resolves '+Object.keys(p.g).join(' and ')+' for you.</li>':'')+'</ul></div>'+
+   '<div class="pk-panel" data-panel="ov" hidden><h2>'+p.n+'</h2><p>'+esc(p.s)+'</p><h3>Install</h3>'+cmd('genpm add '+p.n)+'<h3>What you get</h3><ul class="dots"><li>Source in <code>'+p.d+'/</code>, '+p.files+' files ('+p.size+').</li><li>AI rules in <code>'+p.d+'/AGENTS.md</code> (~'+p.tok+' tokens), plus IDE rule files.</li>'+(p.e.length?'<li>Env vars added to <code>.env.example</code>: '+p.e.map(function(x){return '<code>'+x+'</code>'}).join(', ')+'.</li>':'')+(Object.keys(p.g).length?'<li>Resolves '+Object.keys(p.g).join(' and ')+' for you.</li>':'')+'</ul></div>'+
    '<div class="pk-panel" data-panel="rules"><div class="row" style="gap:6px"><span class="badge ctx"><i></i>~'+p.tok+' tokens</span><span class="badge">→ '+p.d+'/AGENTS.md</span><span class="badge">→ .cursor/rules/'+parts[1]+'.mdc</span></div><p>This is exactly what your AI reads when it works in <code>'+p.d+'</code>. Nothing else is added to its context.</p><div class="md"><pre>'+rules+'</pre></div></div>'+
    '<div class="pk-panel" data-panel="files" hidden><p>The exact tree that will be injected, after <code>.genpmignore</code>. Pinned to <span class="sha">'+p.c+'</span></p><div class="tree" id="ftree">'+tree+'</div><div class="term viewer"><div class="bar"><span id="fname">'+p.d+'/AGENTS.md</span><span>read-only · '+p.c+'</span></div><pre id="fbody">'+rules+'</pre></div></div>'+
    '<div class="pk-panel" data-panel="mcp" hidden>'+mcpPanel+'</div>'+
@@ -694,7 +694,7 @@ function vPkg(p){
   '</div>'+
   '<aside class="side" data-tabs aria-label="Install">'+
    '<div class="seg" role="tablist" aria-label="Install method"><button role="tab" aria-selected="true" data-tab="cli">CLI</button><button role="tab" aria-selected="false" tabindex="-1" data-tab="prompt">MCP prompt</button><button role="tab" aria-selected="false" tabindex="-1" data-tab="man">Manual</button></div>'+
-   '<div data-panel="cli" style="display:grid;gap:10px"><div class="runner" role="group" aria-label="Runner"><button aria-pressed="true" data-run="npx">npx</button><button aria-pressed="false" data-run="pnpm dlx">pnpm dlx</button><button aria-pressed="false" data-run="bunx">bunx</button></div><div class="cmd"><span class="p">$</span><code id="'+cliId+'" data-pkg="'+p.n+'">npx genpm add '+p.n+'</code><button class="cp" data-copy="'+cliId+'">Copy</button></div></div>'+
+   '<div data-panel="cli" style="display:grid;gap:10px"><div class="runner" role="group" aria-label="Runner"><button aria-pressed="true" data-run="">genpm</button><button aria-pressed="false" data-run="npx">npx</button><button aria-pressed="false" data-run="pnpm dlx">pnpm dlx</button><button aria-pressed="false" data-run="bunx">bunx</button></div><div class="cmd"><span class="p">$</span><code id="'+cliId+'" data-pkg="'+p.n+'">genpm add '+p.n+'</code><button class="cp" data-copy="'+cliId+'">Copy</button></div></div>'+
    '<div data-panel="prompt" hidden><div class="term"><div class="bar"><span>paste in your agent</span><button class="cp" data-copy="'+prId+'">Copy</button></div><pre id="'+prId+'" style="white-space:pre-wrap">Install '+p.n+' with genpm and integrate it following its AGENTS.md</pre></div></div>'+
    '<div data-panel="man" hidden><div class="term"><div class="bar"><span>without the CLI</span><button class="cp" data-copy="'+manId+'">Copy</button></div><pre id="'+manId+'" style="white-space:pre-wrap">git fetch https://github.com/genpm-net/'+parts[1]+' '+p.c+'\n# copy into '+p.d+'</pre></div></div>'+
    '<dl class="kv"><dt>Injects</dt><dd>'+p.d+'</dd><dt>Commit</dt><dd><button class="sha" data-copysha="'+p.c+'">'+ico('commit')+p.c+'</button></dd><dt>Tag</dt><dd>v'+p.v+'</dd>'+(deps?'<dt>Requires</dt><dd>'+deps+'</dd>':'')+(npm?'<dt>npm</dt><dd>'+npm+'</dd>':'')+(p.e.length?'<dt>Env</dt><dd>'+p.e.join(' ')+'</dd>':'')+
@@ -734,10 +734,10 @@ function vMcp(){
 function vPublish(){
   return '<div class="wrap"><div class="phead"><span class="eyebrow" style="justify-self:start"><i></i>For authors</span><h1>Publish your architecture.</h1><p>Your code stays on GitHub. The registry stores the manifest and the commit it points to. Four steps, about a minute.</p></div>'+
   '<div class="steps4">'+
-   '<div><span class="no">1</span><h3>Init</h3><p>Creates <code>genpm.json</code> from your repo.</p><code class="chip">npx genpm init</code></div>'+
+   '<div><span class="no">1</span><h3>Init</h3><p>Creates <code>genpm.json</code> from your repo.</p><code class="chip">genpm init</code></div>'+
    '<div><span class="no">2</span><h3>Write the rules</h3><p>An <code>AGENTS.md</code> with Integración, Datos and No hacer.</p><code class="chip">AGENTS.md</code></div>'+
    '<div><span class="no">3</span><h3>Tag</h3><p>Tags are immutable. Branches are rejected.</p><code class="chip">git tag v1.0.0 && git push --tags</code></div>'+
-   '<div><span class="no">4</span><h3>Publish</h3><p>Verifies the tag, scans the rules, lists the package.</p><code class="chip">npx genpm publish</code></div>'+
+   '<div><span class="no">4</span><h3>Publish</h3><p>Verifies the tag, scans the rules, lists the package.</p><code class="chip">genpm publish</code></div>'+
   '</div>'+
   '<section class="sec" style="margin-top:56px"><div class="sec-h"><div><div class="k">Manifest builder</div><h2>Build your genpm.json</h2><p>Validated in your browser with the same rules as the registry.</p></div></div>'+
   '<div class="builder"><form id="mf" novalidate>'+
@@ -786,8 +786,8 @@ function wirePublish(){
 function vDocs(){
   var nav=[['Getting started',['Quickstart (60 s)','How GenPM works','FAQ']],['Using packages',['add','search','list / remove','outdated','Context & IDEs','MCP config','Lockfile']],['Publishing',['Your first package','genpm.json reference','Writing AI rules']],['Reference',['CLI','API','Error codes']]];
   return '<div class="wrap"><div class="docs"><nav class="dnav" aria-label="Docs">'+nav.map(function(g,gi){return '<div><div class="k" style="margin-bottom:8px;padding-left:10px">'+g[0]+'</div><ul>'+g[1].map(function(x,i){return '<li><a href="#docs"'+(gi===0&&i===0?' aria-current="page"':'')+'>'+x+'</a></li>'}).join('')+'</ul></div>'}).join('')+'</nav>'+
-  '<article class="dbody"><div class="crumb">Docs / Getting started</div><h1>Quickstart</h1><p class="lead">Add your first module in about a minute. You need Node 20.11+ and git.</p>'+
-   '<h2 id="d1"><span>1</span>Add a package</h2><p>Run this in the root of your project. GenPM shows the full plan and asks before writing anything.</p>'+cmd('npx genpm add @core/auth')+
+  '<article class="dbody"><div class="crumb">Docs / Getting started</div><h1>Quickstart</h1><p class="lead">Add your first module in about a minute. You need git 2.25+ (install genpm with curl -fsSL https://genpm.net/install.sh | sh) and git.</p>'+
+   '<h2 id="d1"><span>1</span>Add a package</h2><p>Run this in the root of your project. GenPM shows the full plan and asks before writing anything.</p>'+cmd('genpm add @core/auth')+
    '<h2 id="d2"><span>2</span>See what changed</h2><p>The code is in <code>src/lib/auth</code>, the rules in <code>src/lib/auth/AGENTS.md</code>, and <code>genpm.lock</code> pins the commit.</p>'+
    '<div class="term"><div class="bar"><span>git status</span><span>your-app</span></div><pre><span class="t-code">new file:</span>   genpm.lock\n<span class="t-code">new file:</span>   src/lib/auth/AGENTS.md\n<span class="t-code">new file:</span>   src/lib/auth/index.ts\n<span class="t-code">new file:</span>   src/lib/auth/session.ts\n<span class="t-mut">… 16 more</span>\n<span class="t-ctx">modified:</span>   AGENTS.md          <span class="t-mut"># index of module rules</span>\n<span class="t-ctx">modified:</span>   .env.example</pre></div>'+
    '<h2 id="d3"><span>3</span>Let your AI take over</h2><p>Open your agent and ask it to wire the module in. It reads the module rules and follows the Integración section.</p><div class="prompts"><div>Integrate @core/auth following src/lib/auth/AGENTS.md. Add GitHub login.</div></div>'+
@@ -859,7 +859,7 @@ function openPal(){
   pq.addEventListener('keydown',function(e){
     if(e.key==='ArrowDown'){e.preventDefault();palIdx=Math.min(palIdx+1,palRes.length-1);draw()}
     else if(e.key==='ArrowUp'){e.preventDefault();palIdx=Math.max(palIdx-1,0);draw()}
-    else if(e.key==='Enter'&&palRes[palIdx]){e.preventDefault();var p=palRes[palIdx];if(e.metaKey||e.ctrlKey){copyText('npx genpm add '+p.n,null,'Install command copied');closePal()}else{closePal();go(p.slug)}}
+    else if(e.key==='Enter'&&palRes[palIdx]){e.preventDefault();var p=palRes[palIdx];if(e.metaKey||e.ctrlKey){copyText('genpm add '+p.n,null,'Install command copied');closePal()}else{closePal();go(p.slug)}}
   });
   document.getElementById('scrim').addEventListener('click',function(e){if(e.target.id==='scrim'||e.target.closest('a'))closePal()});
   draw();

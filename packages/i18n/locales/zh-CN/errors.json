@@ -165,7 +165,7 @@
   },
   "E_NODE_VERSION": {
     "message": "GenPM 需要 Node.js 20.11 或更高版本（当前为 {version}）。",
-    "fix": "请更新 Node.js。"
+    "fix": "请更新 Node.js，或安装无需 Node.js 的独立 genpm 二进制文件：genpm.net/docs/install"
   },
   "E_UPGRADE_UNSUPPORTED": {
     "message": "此 GenPM 副本是通过 {via} 安装的：genpm upgrade 只能更新独立二进制文件。",

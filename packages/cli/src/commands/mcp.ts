@@ -22,6 +22,14 @@ export const mcpCmd = (ctx: Ctx) =>
   defineCommand({
     meta: { name: 'mcp', description: ctx.t.t('cli.desc.mcp') },
     subCommands: {
+      // Servidor MCP por stdio dentro del propio CLI (ADR-025): con el binario nativo, el agente no necesita Node ni npx.
+      serve: defineCommand({
+        meta: { name: 'serve', description: ctx.t.t('cli.desc.mcpServe') },
+        async run() {
+          const { serveStdio } = await import('@genpm/mcp/serve');
+          await serveStdio();
+        },
+      }),
       setup: defineCommand({
         meta: { name: 'setup', description: ctx.t.t('cli.desc.mcpSetup') },
         args: {

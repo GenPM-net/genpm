@@ -27,8 +27,11 @@ One native binary, no Node.js needed (`genpm upgrade` keeps it current). Prefer 
 ## Use it from your AI
 
 ```bash
-claude mcp add genpm -- npx -y @genpm/mcp
+genpm mcp setup                                  # writes the config for the AI clients it detects
+claude mcp add genpm -- genpm mcp serve          # or register it by hand (Claude Code)
 ```
+
+The MCP server is built into the `genpm` binary. Without it, use `npx -y @genpm/mcp` (needs Node.js).
 
 Then ask: *"Add GitHub login to this project with genpm."* Your agent searches, shows you the plan and installs. Setup for Cursor, VS Code, Windsurf and Codex: [genpm.net/docs/mcp](https://genpm.net/docs/mcp).
 

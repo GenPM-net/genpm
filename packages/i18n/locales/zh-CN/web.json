@@ -133,6 +133,7 @@
   "clients": {
     "label": "客户端",
     "orSetup": "或者运行 {command}，GenPM 会为检测到的每个客户端写入配置。",
+    "npxAlt": "没有 {install} 二进制文件？改用 {command}（需要 Node.js）。",
     "thenAsk": "然后说",
     "p1": "用 genpm 给这个项目添加 GitHub 登录。",
     "p2": "找一个基于 Stripe 的计费模块，安装前先给我看它的规则。",

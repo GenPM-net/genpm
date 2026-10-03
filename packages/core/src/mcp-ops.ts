@@ -3,7 +3,7 @@
 
 import { homedir } from 'node:os';
 import { join } from 'node:path';
-import { type McpServerEntry, normalizeMcp, verifyManifest } from '@genpm/manifest';
+import { normalizeMcp, verifyManifest } from '@genpm/manifest';
 import { withLock } from './busy.js';
 import { loadRc, registryFor } from './config.js';
 import { detectClients, findRoot } from './detect.js';
@@ -15,9 +15,24 @@ import { keysFor } from './keys.js';
 import { readLock, writeLock } from './lock.js';
 import { RegistryClient } from './registry-client.js';
 import { revokedKeys } from './revocation.js';
+import { type InstallMethod, installMethod } from './self-update.js';
 
 export type SetupClient = 'claude' | 'cursor' | 'vscode' | 'windsurf' | 'codex';
-export const GENPM_MCP: McpServerEntry = { n: 'genpm', c: 'npx', a: ['-y', '@genpm/mcp'] };
+/** Servidor MCP local por stdio (forma que tiene siempre el servidor de GenPM). */
+export type StdioEntry = { n: string; c: string; a: string[] };
+
+/** Servidor MCP de GenPM vía npm (`@genpm/mcp`): necesita Node. */
+export const GENPM_MCP: StdioEntry = { n: 'genpm', c: 'npx', a: ['-y', '@genpm/mcp'] };
+/** El mismo servidor dentro del binario nativo (ADR-025): sin Node ni npx. */
+export const GENPM_MCP_BINARY: StdioEntry = { n: 'genpm', c: 'genpm', a: ['mcp', 'serve'] };
+
+/** Con el binario instalado se registra `genpm mcp serve`; desde npm/npx, `npx -y @genpm/mcp`. */
+export function genpmMcpEntry(method: InstallMethod = installMethod()): StdioEntry {
+  return method.kind === 'binary' ? GENPM_MCP_BINARY : GENPM_MCP;
+}
+
+/** `genpm mcp serve` / `npx -y @genpm/mcp` tal como se escribiría en una terminal. */
+const commandLine = (e: StdioEntry) => [e.c, ...e.a].join(' ');
 
 export type SetupTarget = {
   client: SetupClient;
@@ -25,6 +40,8 @@ export type SetupTarget = {
   file: string | null;
   command: string | null;
   format: 'json' | 'toml' | 'command';
+  /** Servidor que se registra (binario o npx). */
+  entry: StdioEntry;
 };
 
 /** Dónde se registra el servidor según cliente y alcance (cli-mcp-spec §B.7). */
@@ -33,12 +50,20 @@ export function setupTarget(
   scope: 'project' | 'user',
   root: string,
   home = homedir(),
+  entry: StdioEntry = genpmMcpEntry(),
 ): SetupTarget {
   switch (client) {
     case 'claude':
       return scope === 'project'
-        ? { client, scope, file: join(root, '.mcp.json'), command: null, format: 'json' }
-        : { client, scope, file: null, command: 'claude mcp add genpm -- npx -y @genpm/mcp', format: 'command' };
+        ? { client, scope, file: join(root, '.mcp.json'), command: null, format: 'json', entry }
+        : {
+            client,
+            scope,
+            file: null,
+            command: `claude mcp add genpm -- ${commandLine(entry)}`,
+            format: 'command',
+            entry,
+          };
     case 'cursor':
       return {
         client,
@@ -46,16 +71,18 @@ export function setupTarget(
         file: scope === 'project' ? join(root, '.cursor', 'mcp.json') : join(home, '.cursor', 'mcp.json'),
         command: null,
         format: 'json',
+        entry,
       };
     case 'vscode':
       return scope === 'project'
-        ? { client, scope, file: join(root, '.vscode', 'mcp.json'), command: null, format: 'json' }
+        ? { client, scope, file: join(root, '.vscode', 'mcp.json'), command: null, format: 'json', entry }
         : {
             client,
             scope,
             file: null,
-            command: 'code --add-mcp \'{"name":"genpm","command":"npx","args":["-y","@genpm/mcp"]}\'',
+            command: `code --add-mcp '${JSON.stringify({ name: 'genpm', command: entry.c, args: entry.a })}'`,
             format: 'command',
+            entry,
           };
     case 'windsurf':
       return {
@@ -64,18 +91,20 @@ export function setupTarget(
         file: join(home, '.codeium', 'windsurf', 'mcp_config.json'),
         command: null,
         format: 'json',
+        entry,
       };
     case 'codex':
-      return { client, scope: 'user', file: join(home, '.codex', 'config.toml'), command: null, format: 'toml' };
+      return { client, scope: 'user', file: join(home, '.codex', 'config.toml'), command: null, format: 'toml', entry };
   }
 }
 
 const targetKind = (c: SetupClient): McpTarget => (c === 'vscode' ? 'vscode' : c === 'claude' ? 'claude' : 'cursor');
 
-export function codexToml(current: string | null): { text: string; changed: boolean } {
+export function codexToml(current: string | null, entry: StdioEntry = GENPM_MCP): { text: string; changed: boolean } {
   const cur = current ?? '';
   if (/^\[mcp_servers\.genpm\]/m.test(cur)) return { text: cur, changed: false };
-  const block = '[mcp_servers.genpm]\ncommand = "npx"\nargs = ["-y", "@genpm/mcp"]\n';
+  const args = entry.a.map((a) => JSON.stringify(a)).join(', ');
+  const block = `[mcp_servers.genpm]\ncommand = ${JSON.stringify(entry.c)}\nargs = [${args}]\n`;
   return { text: cur ? `${cur.replace(/\n*$/, '\n\n')}${block}` : block, changed: true };
 }
 
@@ -86,10 +115,10 @@ export async function mcpSetupPreview(
   if (!t.file) return { before: null, after: t.command ?? '', changed: false };
   const before = await readTextOrNull(t.file);
   if (t.format === 'toml') {
-    const r = codexToml(before);
+    const r = codexToml(before, t.entry);
     return { before, after: r.text, changed: r.changed };
   }
-  const r = mergeMcpConfig(before, targetKind(t.client), [GENPM_MCP]);
+  const r = mergeMcpConfig(before, targetKind(t.client), [t.entry]);
   return { before, after: r.text, changed: r.changed };
 }
 

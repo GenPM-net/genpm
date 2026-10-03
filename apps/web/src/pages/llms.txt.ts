@@ -9,7 +9,7 @@ export const GET: APIRoute = async () => {
   const lines = [
     '# GenPM',
     '',
-    '> GenPM injects full source modules (code + AI rules + MCP config) into a project from immutable Git commits. Install the CLI with `curl -fsSL https://genpm.net/install.sh | sh` (Windows: `irm https://genpm.net/install.ps1 | iex`; or run it with `npx genpm`), then `genpm add <name>`; or use the MCP server `@genpm/mcp`.',
+    '> GenPM injects full source modules (code + AI rules + MCP config) into a project from immutable Git commits. Install the CLI with `curl -fsSL https://genpm.net/install.sh | sh` (Windows: `irm https://genpm.net/install.ps1 | iex`; or run it with `npx genpm`), then `genpm add <name>`. MCP server: `genpm mcp serve` (built into the binary; `npx -y @genpm/mcp` without it), set up with `genpm mcp setup`.',
     '',
     LEGEND,
     '',

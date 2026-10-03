@@ -18,6 +18,7 @@ export interface MessageParams {
   "cli.desc.logout": undefined;
   "cli.desc.whoami": undefined;
   "cli.desc.mcp": undefined;
+  "cli.desc.mcpServe": undefined;
   "cli.desc.mcpSetup": undefined;
   "cli.desc.mcpAdd": undefined;
   "cli.desc.mcpRemove": undefined;
@@ -376,6 +377,7 @@ export interface MessageParams {
   "web.home.termInjected": { count: number; seconds: number };
   "web.clients.label": undefined;
   "web.clients.orSetup": { command: string | number };
+  "web.clients.npxAlt": { install: string | number; command: string | number };
   "web.clients.thenAsk": undefined;
   "web.clients.p1": undefined;
   "web.clients.p2": undefined;

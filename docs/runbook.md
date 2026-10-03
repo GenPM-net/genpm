@@ -49,7 +49,7 @@ Sin purga, el 451 llega como mucho en ~6 minutos.
 
 ```bash
 curl -s -o /dev/null -w '%{http_code}\n' "https://api.genpm.net/v1/resolve/@acme/billing?range=latest"   # → 451
-npx genpm add @acme/billing --dry-run                                                                   # → E_QUARANTINED
+genpm add @acme/billing --dry-run                                                                       # → E_QUARANTINED
 ```
 
 ### 1.4 Advisory

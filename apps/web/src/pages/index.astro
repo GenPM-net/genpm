@@ -46,7 +46,7 @@ const jsonLd = {
           <CommandBlock command="genpm add @core/auth" pkg="@core/auth" />
           <a class="hint" href={href(locale, '/docs/install')}>{t.t('web.home.installMore')}</a>
         </div>
-        <div data-panel="mcp" hidden><CommandBlock command="claude mcp add genpm -- npx -y @genpm/mcp" event="mcp_setup_copy" /><p class="hint" style="margin-top:10px">{t.t('web.home.thenAsk')} <code>{t.t('web.home.askExample')}</code></p></div>
+        <div data-panel="mcp" hidden><CommandBlock command="genpm mcp setup" event="mcp_setup_copy" /><p class="hint" style="margin-top:10px">{t.t('web.home.thenAsk')} <code>{t.t('web.home.askExample')}</code></p></div>
         <button class="hint" type="button" data-open-pal style="justify-self:start;display:inline-flex;gap:8px;align-items:center;margin-top:4px"><Ico name="search" style="width:14px;height:14px" />{t.t('web.home.searchCta', { count: s.packages })} <span class="kbd">⌘K</span></button>
       </div>
       <div class="trust"><span><Ico name="commit" />{t.t('web.home.trustSha')}</span><span><Ico name="ban" />{t.t('web.home.trustScripts')}</span><span><Ico name="shield" />{t.t('web.home.trustScan')}</span></div>

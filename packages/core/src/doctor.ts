@@ -31,7 +31,7 @@ export async function doctor(opts: {
             id: 'node',
             status: 'fail',
             detail: `Node.js ${process.versions.node}`,
-            fix: 'Install Node.js 20.11 or later.',
+            fix: 'Install Node.js 20.11 or later, or the standalone binary (no Node.js needed): genpm.net/docs/install',
           },
   );
   const gv = await gitVersion();

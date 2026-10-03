@@ -17,6 +17,7 @@
     "logout": "Se déconnecter et révoquer le token",
     "whoami": "Afficher le compte connecté",
     "mcp": "Gérer la configuration MCP",
+    "mcpServe": "Lance le serveur MCP de GenPM via stdio (ce que démarre votre client IA)",
     "mcpSetup": "Enregistrer le serveur MCP de GenPM dans votre client IA",
     "mcpAdd": "Écrire les serveurs MCP déclarés par un paquet installé",
     "mcpRemove": "Supprimer les serveurs MCP déclarés par un paquet installé",

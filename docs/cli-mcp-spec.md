@@ -266,9 +266,14 @@ Diff unificado upstream `c_instalado..c_nuevo` remapeado a `d`; `--local` muestr
 
 Merge de 3 vías (ver [architecture §6.6](architecture.md#66-actualización-con-drift-diseño-v02)). Archivos con conflicto quedan con marcadores estándar y se listan; exit 4 si hubo conflictos.
 
+### `genpm mcp serve` ✅
+
+Servidor MCP por stdio (Parte B) dentro del CLI: es lo que lanzan los clientes de IA cuando GenPM está instalado como
+binario nativo, sin Node ni npx (ADR-025). Nunca escribe en stdout fuera del protocolo.
+
 ### `genpm mcp setup [--client <c>] [--scope project|user]` ✅
 
-Registra `@genpm/mcp` en el cliente IA (escritura de archivo con merge no destructivo; muestra diff y pide confirmación). Ver §B.7.
+Registra el servidor MCP de GenPM en el cliente IA (`genpm mcp serve` con el binario nativo; `npx -y @genpm/mcp` desde npm/npx) (escritura de archivo con merge no destructivo; muestra diff y pide confirmación). Ver §B.7.
 
 ### `genpm mcp add|remove <name>` ✅
 
@@ -326,7 +331,7 @@ Device flow de GitHub (ver [architecture §6.5](architecture.md#65-login-device-
 
 | Propiedad | Valor |
 |---|---|
-| Paquete npm | `@genpm/mcp` (bin `genpm-mcp`) |
+| Arranque | `genpm mcp serve` (binario nativo, opción por defecto) o `npx -y @genpm/mcp` (paquete npm, bin `genpm-mcp`); ambos llaman a `serveStdio()` de `@genpm/mcp/serve` |
 | Server info | `{ name: "genpm", version: <semver> }` |
 | Transporte | stdio (MVP). Streamable HTTP solo-lectura (search/info) en `mcp.genpm.net` ⏳ v0.3 |
 | SDK | `@modelcontextprotocol/sdk` (`McpServer`, `registerTool`, `outputSchema` + `structuredContent`) |
@@ -489,37 +494,39 @@ Annotations `readOnlyHint: true`. Input `{}`. Salida `{ p: [{n,v,c,d,drift:{modi
 
 ## B.7 Configuración en clientes
 
-`genpm mcp setup` automatiza todo esto. Manualmente:
+`genpm mcp setup` automatiza todo esto. Por defecto el servidor es el que lleva dentro el binario nativo
+(`genpm mcp serve`, ADR-025, sin Node). Cuando `genpm` corre desde npm/npx, `setup` registra `npx -y @genpm/mcp` en su
+lugar (mismo servidor, mismo código: `@genpm/mcp/serve`). Manualmente, con el binario:
 
 **Claude Code**
 ```bash
-claude mcp add genpm -- npx -y @genpm/mcp
+claude mcp add genpm -- genpm mcp serve
 ```
 o en el proyecto, `.mcp.json`:
 ```json
-{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }
+{ "mcpServers": { "genpm": { "command": "genpm", "args": ["mcp", "serve"] } } }
 ```
 
 **Cursor** — `.cursor/mcp.json` (proyecto) o `~/.cursor/mcp.json` (global):
 ```json
-{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }
+{ "mcpServers": { "genpm": { "command": "genpm", "args": ["mcp", "serve"] } } }
 ```
 
 **VS Code (Copilot)** — `.vscode/mcp.json`:
 ```json
-{ "servers": { "genpm": { "type": "stdio", "command": "npx", "args": ["-y", "@genpm/mcp"] } } }
+{ "servers": { "genpm": { "type": "stdio", "command": "genpm", "args": ["mcp", "serve"] } } }
 ```
 
 **Windsurf** — `~/.codeium/windsurf/mcp_config.json`:
 ```json
-{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }
+{ "mcpServers": { "genpm": { "command": "genpm", "args": ["mcp", "serve"] } } }
 ```
 
 **Codex CLI** — `~/.codex/config.toml`:
 ```toml
 [mcp_servers.genpm]
-command = "npx"
-args = ["-y", "@genpm/mcp"]
+command = "genpm"
+args = ["mcp", "serve"]
 ```
 
 > Los formatos de configuración de los clientes cambian con frecuencia: los adaptadores viven aislados en `core/inject/clients/*` y se verifican contra la documentación de cada cliente en el Día 5 del sprint.
@@ -528,4 +535,4 @@ args = ["-y", "@genpm/mcp"]
 
 - **Contrato:** `InMemoryTransport.createLinkedPair()` del SDK + cliente MCP en Vitest: lista de tools, validación de `inputSchema`/`outputSchema`, errores con `fix`.
 - **E2E:** proyecto fixture temporal + registry local (`wrangler dev`) + repos fixture en `file://` permitidos solo en modo test.
-- **Manual:** `npx @modelcontextprotocol/inspector npx -y @genpm/mcp` y sesiones reales en Claude Code y Cursor con el guion "Añade auth y billing a este proyecto".
+- **Manual:** `npx @modelcontextprotocol/inspector genpm mcp serve` y sesiones reales en Claude Code y Cursor con el guion "Añade auth y billing a este proyecto".

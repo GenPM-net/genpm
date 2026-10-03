@@ -17,6 +17,7 @@
     "logout": "退出登录并吊销令牌",
     "whoami": "显示当前登录的账号",
     "mcp": "管理 MCP 配置",
+    "mcpServe": "通过 stdio 运行 GenPM MCP 服务器（由你的 AI 客户端启动）",
     "mcpSetup": "在你的 AI 客户端中注册 GenPM 的 MCP 服务器",
     "mcpAdd": "写入已安装包声明的 MCP 服务器",
     "mcpRemove": "移除已安装包声明的 MCP 服务器",

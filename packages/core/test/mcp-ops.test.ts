@@ -3,7 +3,16 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { apply } from '../src/apply.js';
-import { codexToml, mcpAdd, mcpRemove, mcpSetupApply, mcpSetupPreview, setupTarget } from '../src/mcp-ops.js';
+import {
+  codexToml,
+  GENPM_MCP_BINARY,
+  genpmMcpEntry,
+  mcpAdd,
+  mcpRemove,
+  mcpSetupApply,
+  mcpSetupPreview,
+  setupTarget,
+} from '../src/mcp-ops.js';
 import { plan } from '../src/plan.js';
 import { FakeRegistry, REGISTRY } from './fake-registry.js';
 import { makeRepo } from './git-fixture.js';
@@ -67,5 +76,23 @@ describe('genpm mcp setup', () => {
       'model = "x"\n\n[mcp_servers.genpm]\ncommand = "npx"\nargs = ["-y", "@genpm/mcp"]\n',
     );
     expect(codexToml('[mcp_servers.genpm]\n').changed).toBe(false);
+  });
+
+  it('registers `genpm mcp serve` when GenPM runs as the native binary (no Node, ADR-025)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'genpm-setup-'));
+    const home = await mkdtemp(join(tmpdir(), 'genpm-sethome-'));
+    expect(genpmMcpEntry({ kind: 'binary', target: 'linux-x64', path: '/x/genpm' })).toBe(GENPM_MCP_BINARY);
+    expect(genpmMcpEntry({ kind: 'npm', command: 'npm i -g genpm@latest' }).c).toBe('npx');
+    const bin = GENPM_MCP_BINARY;
+    expect(setupTarget('claude', 'user', root, home, bin).command).toBe('claude mcp add genpm -- genpm mcp serve');
+    expect(setupTarget('vscode', 'user', root, home, bin).command).toBe(
+      `code --add-mcp '{"name":"genpm","command":"genpm","args":["mcp","serve"]}'`,
+    );
+    const cursor = setupTarget('cursor', 'project', root, home, bin);
+    expect(await mcpSetupApply(cursor, root)).toBe(true);
+    expect(JSON.parse(await readFile(join(root, '.cursor/mcp.json'), 'utf8'))).toEqual({
+      mcpServers: { genpm: { command: 'genpm', args: ['mcp', 'serve'] } },
+    });
+    expect(codexToml(null, bin).text).toBe('[mcp_servers.genpm]\ncommand = "genpm"\nargs = ["mcp", "serve"]\n');
   });
 });

@@ -1,23 +1,21 @@
 ---
 // Config MCP por cliente (cli-mcp-spec §B.7), con bloques copiables y deeplinks donde el cliente los admite.
-const t = Astro.locals.t;
-const server = { command: 'npx', args: ['-y', '@genpm/mcp'] };
+import { href } from '../lib/i18n.js';
+
+const { t, locale } = Astro.locals;
+// Por defecto, el servidor MCP que lleva dentro el binario nativo (ADR-025): sin Node ni npx.
+const server = { command: 'genpm', args: ['mcp', 'serve'] };
 const cursorLink = `cursor://anysphere.cursor-deeplink/mcp/install?name=genpm&config=${btoa(JSON.stringify(server))}`;
 const vscodeLink = `vscode:mcp/install?${encodeURIComponent(JSON.stringify({ name: 'genpm', ...server }))}`;
+const mcpServers = '{ "mcpServers": { "genpm": { "command": "genpm", "args": ["mcp", "serve"] } } }';
 const clients = [
-  { id: 'claude', name: 'Claude Code', file: 'CLI', kind: 'cmd', body: 'claude mcp add genpm -- npx -y @genpm/mcp' },
-  {
-    id: 'cursor',
-    name: 'Cursor',
-    file: '.cursor/mcp.json',
-    body: '{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }',
-    link: cursorLink,
-  },
+  { id: 'claude', name: 'Claude Code', file: 'CLI', kind: 'cmd', body: 'claude mcp add genpm -- genpm mcp serve' },
+  { id: 'cursor', name: 'Cursor', file: '.cursor/mcp.json', body: mcpServers, link: cursorLink },
   {
     id: 'vscode',
     name: 'VS Code',
     file: '.vscode/mcp.json',
-    body: '{ "servers": { "genpm": { "type": "stdio", "command": "npx", "args": ["-y", "@genpm/mcp"] } } }',
+    body: '{ "servers": { "genpm": { "type": "stdio", "command": "genpm", "args": ["mcp", "serve"] } } }',
     link: vscodeLink,
   },
   {
@@ -25,14 +23,14 @@ const clients = [
     name: 'Windsurf',
     file: 'mcp_config.json',
     path: '~/.codeium/windsurf/mcp_config.json',
-    body: '{ "mcpServers": { "genpm": { "command": "npx", "args": ["-y", "@genpm/mcp"] } } }',
+    body: mcpServers,
   },
   {
     id: 'codex',
     name: 'Codex',
     file: 'config.toml',
     path: '~/.codex/config.toml',
-    body: '[mcp_servers.genpm]\ncommand = "npx"\nargs = ["-y", "@genpm/mcp"]',
+    body: '[mcp_servers.genpm]\ncommand = "genpm"\nargs = ["mcp", "serve"]',
   },
 ];
 const setup = 'genpm mcp setup';
@@ -53,6 +51,7 @@ const setup = 'genpm mcp setup';
       </div>
     ))}
     <p set:html={t.t('web.clients.orSetup', { command: `<code>${setup}</code>` })} />
+    <p class="hint" set:html={t.t('web.clients.npxAlt', { install: `<a href="${href(locale, '/docs/install')}">genpm</a>`, command: '<code>npx -y @genpm/mcp</code>' })} />
     <div class="prompts"><span class="k" style="margin-bottom:4px">{t.t('web.clients.thenAsk')}</span><div>{t.t('web.clients.p1')}</div><div>{t.t('web.clients.p2')}</div><div>{t.t('web.clients.p3')}</div></div>
   </div>
 </div>

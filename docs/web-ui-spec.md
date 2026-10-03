@@ -82,7 +82,8 @@
 │  pinned to a commit.                                                 │
 │                                                                      │
 │  ┌──────────────────────────────────────────────┐                    │
-│  │ $ npx genpm add @core/auth            [Copy] │  [ CLI | MCP ]     │
+│  │ $ curl -fsSL https://genpm.net/install.sh | sh │  [ CLI | MCP ]   │
+│  │ $ genpm add @core/auth                [Copy] │  [macOS·Linux|Win] │
 │  └──────────────────────────────────────────────┘                    │
 │  [⌘K Search 128 packages…]                                           │
 │                                                                      │
@@ -105,7 +106,7 @@
 │  Stats: 128 packages · 12.4k installs · 41 publishers                 │
 └──────────────────────────────────────────────────────────────────────┘
 ```
-- Toggle **CLI | MCP** en el hero: cambia el bloque a `claude mcp add genpm -- npx -y @genpm/mcp` + ejemplo de prompt.
+- Toggle **CLI | MCP** en el hero. CLI: instalador del binario nativo según el SO (macOS · Linux con `install.sh`, Windows con `install.ps1`; Windows se preselecciona si el navegador lo indica) + `genpm add @core/auth` + enlace a `/docs/install` (ADR-025). MCP: `genpm mcp setup` + ejemplo de prompt.
 - Datos: `GET /v1/featured`, `GET /v1/search?sort=installs&limit=5`, `GET /v1/stats`. Caché edge 60 s.
 - Máx. 1 tarjeta patrocinada, al final de "Featured", con etiqueta.
 
@@ -121,7 +122,7 @@
 │ ○ billing     │ │ @core/billing  1.2.0  ✓verified                  │ │
 │ ○ email …     │ │ Stripe subscriptions, portal & webhooks          │ │
 │ License       │ │ [Code][Context][MCP]  billing · stripe   890/30d │ │
-│ ○ MIT …       │ │ $ npx genpm add @core/billing           [Copy]   │ │
+│ ○ MIT …       │ │ $ genpm add @core/billing               [Copy]   │ │
 │               │ └──────────────────────────────────────────────────┘ │
 │               │  …                              [Load more]          │
 └───────────────┴──────────────────────────────────────────────────────┘
@@ -141,7 +142,7 @@
 ├──────────────────────────────────────────────┬───────────────────────────┤
 │ [Overview] [AI Rules] [Files 23] [MCP]       │ Install                   │
 │ [Versions 7] [Dependencies] [Security]       │ [CLI | MCP prompt | Manual]│
-│──────────────────────────────────────────────│ $ npx genpm add           │
+│──────────────────────────────────────────────│ $ genpm add               │
 │                                              │   @core/billing   [Copy]  │
 │  (contenido de la tab)                       │                           │
 │                                              │ Injects into              │
@@ -171,7 +172,7 @@
 | **Security** | Estado del escaneo, hallazgos, verificación de SHA/tag, licencia detectada, cómo reportar | `security` |
 
 **Install panel (tabs):**
-- **CLI:** `npx genpm add @core/billing` (selector `npx | pnpm dlx | bunx`).
+- **CLI:** `genpm add @core/billing` (selector `genpm | npx | pnpm dlx | bunx`; `genpm` por defecto, ADR-025).
 - **MCP prompt:** `Install @core/billing with genpm and integrate it following its AGENTS.md` (copiable para pegar en el agente).
 - **Manual:** `git fetch` por SHA + lista de pasos (para quien no quiere instalar el CLI).
 

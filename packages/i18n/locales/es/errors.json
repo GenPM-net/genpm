@@ -165,7 +165,7 @@
   },
   "E_NODE_VERSION": {
     "message": "GenPM necesita Node.js 20.11 o posterior (encontrado {version}).",
-    "fix": "Actualiza Node.js."
+    "fix": "Actualiza Node.js o instala el binario independiente de genpm, que no lo necesita: genpm.net/docs/install"
   },
   "E_UPGRADE_UNSUPPORTED": {
     "message": "Esta copia de GenPM se instaló con {via}: genpm upgrade solo actualiza el binario independiente.",

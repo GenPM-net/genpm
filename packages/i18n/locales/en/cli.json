@@ -17,6 +17,7 @@
     "logout": "Log out and revoke the token",
     "whoami": "Show the logged-in account",
     "mcp": "Manage MCP configuration",
+    "mcpServe": "Run the GenPM MCP server over stdio (what your AI client launches)",
     "mcpSetup": "Register the GenPM MCP server in your AI client",
     "mcpAdd": "Write the MCP servers declared by an installed package",
     "mcpRemove": "Remove the MCP servers declared by an installed package",

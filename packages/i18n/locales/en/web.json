@@ -133,6 +133,7 @@
   "clients": {
     "label": "Client",
     "orSetup": "Or run {command} and GenPM writes the config for every client it detects.",
+    "npxAlt": "No {install} binary? Use {command} instead (needs Node.js).",
     "thenAsk": "Then ask",
     "p1": "Add GitHub login to this project with genpm.",
     "p2": "Find a billing module with Stripe and show me its rules before installing.",

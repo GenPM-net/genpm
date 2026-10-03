@@ -283,6 +283,11 @@ siguen funcionando como alternativas (mismo bundle) y `npx` queda para usos punt
   escritura, i18n) y los instaladores se prueban en su sistema (incluido Windows PowerShell 5.1).
 - **Instaladores:** fuente única en `scripts/install/`, servida por la web como texto plano. Detectan SO, arquitectura,
   Rosetta y musl, verifican el SHA-256, instalan en `~/.genpm/bin` sin `sudo` y añaden la carpeta al `PATH` (desactivable).
+- **MCP sin Node:** el binario incluye el servidor MCP (`genpm mcp serve`, mismo `serveStdio()` que `npx -y @genpm/mcp`).
+  `genpm mcp setup` registra `genpm mcp serve` cuando corre como binario y `npx -y @genpm/mcp` cuando corre desde npm/npx;
+  la web y la documentación muestran `genpm mcp serve` por defecto. Una config de proyecto compartida (`.mcp.json`) con
+  `genpm mcp serve` exige que cada persona del equipo tenga el binario, igual que necesita genpm para el lock.
+- **CI de los autores:** `genpm init --workflow` genera un workflow que instala el binario con `install.sh` en lugar de usar `npx`.
 - **Actualización:** `genpm upgrade [version] [--check]` en `core/self-update.ts` (cli-mcp-spec §A.5). Solo contacta con
   GitHub cuando el usuario lo ejecuta: sin avisos de versión en segundo plano (privacidad, §7 de security).
 
@@ -304,8 +309,7 @@ diferencias con Node que Bun); solo `npm i -g` (sigue exigiendo Node).
 **Consecuencias:** los releases solo se pueden descargar con el repo público (como la provenance de npm, ADR-016); hasta
 entonces el job de release compila y prueba en cada push a `main` pero no publica. Los runners ARM gratuitos de Linux y
 Windows solo existen en repos públicos: mientras tanto se prueban x64 y Apple silicon. Bun pasa a ser herramienta de build
-(fijada en `release.yml`), no dependencia del repo. El servidor MCP sigue necesitando Node (`npx -y @genpm/mcp`); un
-`genpm mcp serve` dentro del binario queda como mejora futura.
+(fijada en `release.yml`), no dependencia del repo.
 
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 

@@ -1,7 +1,7 @@
 // Smoke del binario nativo (ADR-025): ejecuta el ejecutable compilado con Bun —no el código fuente sobre Node— contra un
 // registry local, para detectar diferencias de runtime (Ed25519, fetch, git, fs, prompts) en cada plataforma del CI.
 // Solo corre con GENPM_BINARY=<ruta al binario>; release.yml lo lanza en macOS, Linux y Windows.
-import { execFile } from 'node:child_process';
+import { execFile, spawn } from 'node:child_process';
 import { cp, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { createServer, type Server } from 'node:http';
 import { tmpdir } from 'node:os';
@@ -112,5 +112,59 @@ describe.skipIf(!BINARY)('standalone binary', () => {
     // Sin releases publicados (repo privado) GitHub responde 404: se acepta E_NETWORK, nunca un fallo del runtime.
     const out = JSON.parse(u.stdout);
     expect(out.ok ? out.method : out.error.code).toMatch(/^(binary|E_NETWORK)$/);
+  });
+
+  it('serves MCP over stdio without Node (genpm mcp serve)', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'genpm-bin-'));
+    const child = spawn(BINARY!, ['mcp', 'serve'], {
+      cwd: dir,
+      env: {
+        PATH: process.env['PATH'],
+        SystemRoot: process.env['SystemRoot'],
+        HOME: dir,
+        USERPROFILE: dir,
+        GENPM_REGISTRY: registry,
+        GENPM_TELEMETRY: '0',
+      },
+    });
+    let out = '';
+    const reply = (id: number) =>
+      new Promise<Record<string, unknown>>((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error(`no MCP reply ${id}: ${out}`)), 15_000);
+        const check = () => {
+          for (const l of out.split('\n')) {
+            if (!l.trim()) continue;
+            const msg = JSON.parse(l) as { id?: number };
+            if (msg.id === id) {
+              clearTimeout(timer);
+              child.stdout.off('data', onData);
+              resolve(msg as Record<string, unknown>);
+              return;
+            }
+          }
+        };
+        const onData = (d: Buffer) => {
+          out += d.toString();
+          check();
+        };
+        child.stdout.on('data', onData);
+        check();
+      });
+    const send = (m: unknown) => child.stdin.write(`${JSON.stringify(m)}\n`);
+    try {
+      send({
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'initialize',
+        params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'smoke', version: '1' } },
+      });
+      expect(await reply(1)).toMatchObject({ result: { serverInfo: { name: 'genpm' } } });
+      send({ jsonrpc: '2.0', method: 'notifications/initialized' });
+      send({ jsonrpc: '2.0', id: 2, method: 'tools/list' });
+      const tools = (await reply(2)) as { result: { tools: Array<{ name: string }> } };
+      expect(tools.result.tools.map((t) => t.name)).toContain('genpm_add');
+    } finally {
+      child.kill();
+    }
   });
 });

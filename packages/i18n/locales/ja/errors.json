@@ -165,7 +165,7 @@
   },
   "E_NODE_VERSION": {
     "message": "GenPM には Node.js 20.11 以降が必要です（検出: {version}）。",
-    "fix": "Node.js を更新してください。"
+    "fix": "Node.js を更新するか、Node.js 不要のスタンドアロン genpm バイナリをインストールしてください: genpm.net/docs/install"
   },
   "E_UPGRADE_UNSUPPORTED": {
     "message": "この GenPM は {via} でインストールされています。genpm upgrade が更新できるのはスタンドアロンバイナリのみです。",

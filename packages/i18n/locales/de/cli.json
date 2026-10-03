@@ -17,6 +17,7 @@
     "logout": "Abmelden und den Token widerrufen",
     "whoami": "Das angemeldete Konto anzeigen",
     "mcp": "MCP-Konfiguration verwalten",
+    "mcpServe": "Startet den GenPM-MCP-Server über stdio (das, was dein KI-Client startet)",
     "mcpSetup": "Den GenPM-MCP-Server in deinem KI-Client registrieren",
     "mcpAdd": "Die von einem installierten Paket deklarierten MCP-Server schreiben",
     "mcpRemove": "Die von einem installierten Paket deklarierten MCP-Server entfernen",

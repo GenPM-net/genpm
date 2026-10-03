@@ -133,6 +133,7 @@
   "clients": {
     "label": "クライアント",
     "orSetup": "または {command} を実行すると、GenPM が検出したすべてのクライアントの設定を書き込みます。",
+    "npxAlt": "{install} バイナリがない場合は {command} を使ってください（Node.js が必要）。",
     "thenAsk": "あとは頼むだけ",
     "p1": "genpm でこのプロジェクトに GitHub ログインを追加して。",
     "p2": "Stripe を使った課金モジュールを探して、インストール前にルールを見せて。",

@@ -188,7 +188,11 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - run: npx -y genpm publish --ref "\${{ github.ref_name }}"
+      # Native genpm binary, no Node.js needed: https://genpm.net/docs/install
+      - run: curl -fsSL https://genpm.net/install.sh | sh
+        env:
+          GENPM_NO_MODIFY_PATH: '1'
+      - run: ~/.genpm/bin/genpm publish --ref "$GITHUB_REF_NAME"
         env:
           GENPM_TOKEN: \${{ secrets.GENPM_TOKEN }}
 `;

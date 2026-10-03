@@ -133,6 +133,7 @@
   "clients": {
     "label": "클라이언트",
     "orSetup": "또는 {command}을(를) 실행하면 GenPM이 감지한 모든 클라이언트의 설정을 기록합니다.",
+    "npxAlt": "{install} 바이너리가 없나요? 대신 {command}를 사용하세요(Node.js 필요).",
     "thenAsk": "그다음 요청하세요",
     "p1": "genpm으로 이 프로젝트에 GitHub 로그인을 추가해 줘.",
     "p2": "Stripe를 쓰는 결제 모듈을 찾아서 설치 전에 규칙을 보여 줘.",
