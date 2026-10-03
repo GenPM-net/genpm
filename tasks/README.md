@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **9 %** completado · 23/253 tareas · 782.5h estimadas pendientes
 
-TODO 209 · DOING 3 · DONE 23 · BLOCKED 18 · CUT 0
+TODO 209 · DOING 4 · DONE 23 · BLOCKED 17 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -93,6 +93,7 @@ TODO 209 · DOING 3 · DONE 23 · BLOCKED 18 · CUT 0
 
 - `D0-01` Registrar genpm.net, activar registrar lock y DNSSEC (DNS en Cloudflare) · F · 2h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-05` Crear la org de GitHub GenPM-net con 2FA obligatorio · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
+- `D0-08` Repo GenPM-net/genpm con protección de main y 5 repos vacíos para las semillas · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D2-A-08` Firma Ed25519 del manifiesto resuelto canónico y GET /v1/keys (INV-8) · A · 2h ([02-dia-2-registry-fetch.md](02-dia-2-registry-fetch.md))
 
 **Bloqueadas**
@@ -102,7 +103,6 @@ TODO 209 · DOING 3 · DONE 23 · BLOCKED 18 · CUT 0
 - `D0-04` Reservar handles @genpm en X, Discord, YouTube y LinkedIn (fallback genpmnet / genpm-net) · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-06` OAuth App de GitHub con Device Flow (login del CLI y de la web) · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-07` GitHub App de solo lectura para el registry (lectura de repos en publish) · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
-- `D0-08` Repo GenPM-net/genpm con protección de main y 5 repos vacíos para las semillas · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-09` Org de npm @genpm con 2FA, placeholder genpm@0.0.0 y trusted publishing para el monorepo · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-10` Cuenta Cloudflare Workers Paid con llaves FIDO2 · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-11` Crear D1 genpm-registry y genpm-registry-staging, dataset de Analytics Engine y Queue de escaneo · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))

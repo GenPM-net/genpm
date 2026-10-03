@@ -26,8 +26,9 @@
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
 - [ ] `D0-07` **BLOCKED** GitHub App de solo lectura para el registry (lectura de repos en publish) · F · 0.5h · deps: D0-05
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
-- [ ] `D0-08` **BLOCKED** Repo GenPM-net/genpm con protección de main y 5 repos vacíos para las semillas · F · 0.5h · deps: D0-05
+- [ ] `D0-08` **DOING** Repo GenPM-net/genpm con protección de main y 5 repos vacíos para las semillas · F · 0.5h · deps: D0-05
   - Decisión ADR-016: repo **privado** hasta el lanzamiento. Para proteger `main` en privado hace falta el plan Team de GitHub; semillas privadas hasta `D6-P-07`.
+  - ✅ `GenPM-net/genpm` creado (privado) y con el código subido el 2026-10-03. Pendiente: plan Team + protección de `main`, y los 5 repos vacíos de las semillas.
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
 - [ ] `D0-09` **BLOCKED** Org de npm @genpm con 2FA, placeholder genpm@0.0.0 y trusted publishing para el monorepo · F · 1h · deps: D0-08
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
