@@ -287,9 +287,6 @@
   "remove.kept": {
     "machine": true
   },
-  "remove.mcpLeft": {
-    "machine": true
-  },
   "outdated.none": {
     "machine": true
   },

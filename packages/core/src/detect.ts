@@ -2,7 +2,7 @@
 
 import { readdir } from 'node:fs/promises';
 import { homedir } from 'node:os';
-import { dirname, join, parse, resolve } from 'node:path';
+import { dirname, join, parse, resolve, sep } from 'node:path';
 import { fail } from './errors.js';
 import { exists, readTextOrNull } from './fs/io.js';
 
@@ -14,16 +14,21 @@ const ROOT_MARKERS = ['genpm.lock', '.git', 'package.json'] as const;
 
 /**
  * Busca la raíz hacia arriba desde `cwd` por prioridad de marcador: `genpm.lock` → `.git` → `package.json`.
- * No sube más allá del directorio personal ni de la raíz del disco.
+ * Nunca devuelve el directorio personal ni nada por encima: hay quien versiona `~` con git (dotfiles), y escribir
+ * `src/`, AGENTS.md o la config MCP global de Cursor ahí sería un desastre. Fuera de `~` (CI, /srv) sube hasta la
+ * raíz del disco.
  */
 export async function findRoot(cwd: string, home = homedir()): Promise<string> {
   const start = resolve(cwd);
   const stop = parse(start).root;
+  const homeDir = resolve(home);
+  const insideHome = start === homeDir || start.startsWith(`${homeDir}${sep}`);
   for (const marker of ROOT_MARKERS) {
     let dir = start;
     while (true) {
+      if (insideHome && dir === homeDir) break;
       if (await exists(join(dir, marker))) return dir;
-      if (dir === home || dir === stop) break;
+      if (dir === stop) break;
       const parent = dirname(dir);
       if (parent === dir) break;
       dir = parent;

@@ -11,6 +11,9 @@ import { type PlanInput, plan } from '../src/plan.js';
 import { FakeRegistry, REGISTRY } from './fake-registry.js';
 import { makeRepo } from './git-fixture.js';
 
+// Directorio personal ficticio, distinto del proyecto: findRoot nunca acepta el propio ~ como proyecto.
+const TEST_HOME = join(tmpdir(), 'genpm-test-home');
+
 const DB_RULES = '# @core/db — rules for agents\n\n## Purpose\nDrizzle client.\n';
 const AUTH_RULES = '# @core/auth — rules for agents\n\n## Purpose\nSessions.\n';
 let reg: FakeRegistry;
@@ -74,7 +77,7 @@ const input = (over: Partial<PlanInput> = {}): PlanInput => ({
   registry: REGISTRY,
   fetchImpl: reg.fetch as typeof fetch,
   fetch: { cacheDir, allowFileProtocol: true },
-  home: project,
+  home: TEST_HOME,
   ...over,
 });
 
@@ -160,6 +163,23 @@ describe('apply() · D2-G-02', () => {
       '${env:STRIPE_SECRET_KEY}',
     );
     expect(await read('genpm.lock')).toMatch(/"@core\/auth":\{[^\n]*"m":1,"by":"mcp"/);
+  });
+
+  it('remove undoes everything it added: MCP servers, emptied files and the lock', async () => {
+    // Caso real (2026-10-04): tras `genpm remove` quedaban .mcp.json, CLAUDE.md y .env.example vacíos y genpm.lock.
+    await writeFile(join(project, '.cursor/mcp.json'), JSON.stringify({ mcpServers: { mine: { url: 'https://x' } } }));
+    await apply(await plan(input()), { allowMcp: true, installNpmDeps: false, by: 'cli' });
+    const { remove } = await import('../src/ops.js');
+    const common = { cwd: project, registry: REGISTRY, fetchImpl: reg.fetch as typeof fetch, home: TEST_HOME };
+    const r = await remove({ ...common, name: '@core/auth' });
+    expect(r.mcpServers).toEqual(['stripe']);
+    expect(r.next).toEqual([]);
+    await remove({ ...common, name: '@core/db' });
+    // Lo creado solo por GenPM desaparece; lo del usuario queda intacto.
+    for (const gone of ['.mcp.json', 'genpm.lock', '.env.example', 'AGENTS.md'])
+      await expect(stat(join(project, gone))).rejects.toThrow();
+    expect(JSON.parse(await read('.cursor/mcp.json'))).toEqual({ mcpServers: { mine: { url: 'https://x' } } });
+    expect(await read('CLAUDE.md')).toBe('# My app\n\nOwn notes.\n');
   });
 
   it('is idempotent: re-adding skips', async () => {

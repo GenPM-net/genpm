@@ -17,6 +17,9 @@ import { plan } from '../src/plan.js';
 import { FakeRegistry, REGISTRY } from './fake-registry.js';
 import { makeRepo } from './git-fixture.js';
 
+// Directorio personal ficticio, distinto del proyecto: findRoot nunca acepta el propio ~ como proyecto.
+const TEST_HOME = join(tmpdir(), 'genpm-test-home');
+
 describe('genpm mcp add/remove (deferred consent)', () => {
   it('writes and removes the servers declared by an installed package', async () => {
     const project = await mkdtemp(join(tmpdir(), 'genpm-mcpops-'));
@@ -32,7 +35,7 @@ describe('genpm mcp add/remove (deferred consent)', () => {
       d: 'src/lib/billing',
       m: [{ n: 'stripe', c: 'npx', a: ['-y', '@stripe/mcp'], e: ['STRIPE_SECRET_KEY'] }],
     });
-    const common = { cwd: project, registry: REGISTRY, fetchImpl: reg.fetch as typeof fetch, home: project };
+    const common = { cwd: project, registry: REGISTRY, fetchImpl: reg.fetch as typeof fetch, home: TEST_HOME };
     await apply(
       await plan({
         ...common,

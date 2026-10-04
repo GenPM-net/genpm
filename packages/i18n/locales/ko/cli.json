@@ -113,7 +113,7 @@
   "remove": {
     "done": "{name}을(를) 제거했습니다",
     "kept": "코드는 {dest}에 남겨 두었습니다",
-    "mcpLeft": "MCP 설정은 변경되지 않았습니다: genpm mcp remove {name}"
+    "mcpRemoved": "MCP 서버를 제거했습니다: {servers}"
   },
   "outdated": {
     "none": "모두 최신 상태입니다."

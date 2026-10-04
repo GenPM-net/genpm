@@ -113,7 +113,7 @@
   "remove": {
     "done": "{name} removido",
     "kept": "Código mantido em {dest}",
-    "mcpLeft": "A config MCP não foi alterada: genpm mcp remove {name}"
+    "mcpRemoved": "Servidores MCP removidos: {servers}"
   },
   "outdated": {
     "none": "Tudo está atualizado."

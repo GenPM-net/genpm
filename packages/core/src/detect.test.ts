@@ -28,6 +28,16 @@ describe('findRoot', () => {
     await mkdir(join(dir, 'empty'));
     await expect(findRoot(join(dir, 'empty'), dir)).rejects.toMatchObject({ code: 'E_NOT_A_PROJECT' });
   });
+  it('never uses the home directory as the project, even if ~ is a git repo (dotfiles)', async () => {
+    // Caso real: ~/.git + `mkdir ~/code/pmtest && cd ~/code/pmtest && genpm add …` escribía en ~ (AGENTS.md, ~/.cursor).
+    await mkdir(join(dir, '.git'));
+    await writeFile(join(dir, 'package.json'), '{}');
+    await mkdir(join(dir, 'code/pmtest'), { recursive: true });
+    await expect(findRoot(join(dir, 'code/pmtest'), dir)).rejects.toMatchObject({ code: 'E_NOT_A_PROJECT' });
+    await expect(findRoot(dir, dir)).rejects.toMatchObject({ code: 'E_NOT_A_PROJECT' });
+    await writeFile(join(dir, 'code/pmtest/package.json'), '{}');
+    expect(await findRoot(join(dir, 'code/pmtest'), dir)).toBe(join(dir, 'code/pmtest'));
+  });
 });
 
 describe('detectClients', () => {
@@ -73,7 +83,7 @@ describe('detect', () => {
     await writeFile(join(dir, 'package.json'), '{}');
     await writeFile(join(dir, 'package-lock.json'), '{}');
     await mkdir(join(dir, '.claude'));
-    expect(await detect(dir, { home: dir })).toEqual({
+    expect(await detect(dir, { home: join(dir, '..', 'some-other-home') })).toEqual({
       root: dir,
       clients: ['agents', 'claude'],
       packageManager: 'npm',

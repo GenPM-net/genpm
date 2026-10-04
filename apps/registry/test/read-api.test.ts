@@ -35,7 +35,9 @@ describe('GET /v1/search (api-spec §4.1)', () => {
     // Un sinónimo (grupo OR) seguido de otro término: antes era un error de sintaxis FTS5 (500).
     const multi = await get('/v1/search?q=login+drizzle');
     expect(multi.status).toBe(200);
-    expect(((await multi.json()) as { results: Array<{ name: string }> }).results.map((r) => r.name)).toContain('@core/auth');
+    expect(((await multi.json()) as { results: Array<{ name: string }> }).results.map((r) => r.name)).toContain(
+      '@core/auth',
+    );
   });
   it('filters by keyword, mcp and scope and paginates with an opaque cursor', async () => {
     expect((await json<{ results: unknown[] }>('/v1/search?mcp=1')).body.results).toHaveLength(1);

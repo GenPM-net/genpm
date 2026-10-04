@@ -102,7 +102,7 @@ export interface MessageParams {
   "cli.list.drift": { count: number };
   "cli.remove.done": { name: string | number };
   "cli.remove.kept": { dest: string | number };
-  "cli.remove.mcpLeft": { name: string | number };
+  "cli.remove.mcpRemoved": { servers: string | number };
   "cli.outdated.none": undefined;
   "cli.audit.ok": { count: number };
   "cli.audit.problems": { count: number };

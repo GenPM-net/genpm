@@ -113,7 +113,7 @@
   "remove": {
     "done": "{name} を削除しました",
     "kept": "コードは {dest} に残しました",
-    "mcpLeft": "MCP 設定は変更されていません: genpm mcp remove {name}"
+    "mcpRemoved": "MCP サーバーを削除しました: {servers}"
   },
   "outdated": {
     "none": "すべて最新です。"

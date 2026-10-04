@@ -113,7 +113,7 @@
   "remove": {
     "done": "已移除 {name}",
     "kept": "代码保留在 {dest}",
-    "mcpLeft": "MCP 配置未更改：genpm mcp remove {name}"
+    "mcpRemoved": "已移除 MCP 服务器：{servers}"
   },
   "outdated": {
     "none": "一切都是最新的。"

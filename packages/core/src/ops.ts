@@ -1,6 +1,6 @@
 // Operaciones de consumidor sobre un proyecto (cli-mcp-spec §0, §A.5): list, remove, info, search, outdated, audit.
 
-import { readdir, readFile, rm } from 'node:fs/promises';
+import { readdir, readFile, rm, rmdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
   compareVersions,
@@ -21,6 +21,7 @@ import { safeDestPath, safePath } from './fs/safe-path.js';
 import { hasBlock, upsertBlock } from './inject/blocks.js';
 import { ADAPTERS, indexBody } from './inject/context.js';
 import { ENV_EXAMPLE } from './inject/env.js';
+import { MCP_FILES, removeFromMcpConfig } from './inject/mcp.js';
 import { keysFor } from './keys.js';
 import {
   type Drift,
@@ -165,13 +166,20 @@ export async function remove(input: RemoveInput): Promise<RemoveResult> {
     }
     delete lock.p[input.name];
     const all = Object.entries(lock.p).map(([n, e]) => ({ n, v: e.v, d: e.d }));
+    // Un archivo que solo contenía lo que añadió GenPM se borra en vez de dejarlo vacío.
+    const writeOrDelete = async (rel: string, abs: string, text: string) => {
+      if (text.trim() === '') {
+        await rm(abs, { force: true });
+        deleted.push(rel);
+      } else {
+        await writeFileAtomic(abs, text);
+        updated.push(rel);
+      }
+    };
     for (const file of ['AGENTS.md', 'CLAUDE.md']) {
       const abs = await safePath(root, file);
       const current = await readTextOrNull(abs);
-      if (hasBlock(current, 'index')) {
-        await writeFileAtomic(abs, upsertBlock(current, 'index', indexBody(all)));
-        updated.push(file);
-      }
+      if (hasBlock(current, 'index')) await writeOrDelete(file, abs, upsertBlock(current, 'index', indexBody(all)));
     }
     const envAbs = await safePath(root, ENV_EXAMPLE);
     const env = await readTextOrNull(envAbs);
@@ -180,12 +188,21 @@ export async function remove(input: RemoveInput): Promise<RemoveResult> {
       const cleaned = /# genpm:env:start\n# genpm:env:end\n?/.test(next)
         ? upsertBlock(next, 'env', null, 'hash')
         : next;
-      await writeFileAtomic(envAbs, cleaned);
-      updated.push(ENV_EXAMPLE);
+      await writeOrDelete(ENV_EXAMPLE, envAbs, cleaned);
     }
     await removeFilesIndex(root, input.name);
-    await writeLock(root, lock);
-    updated.push('genpm.lock');
+    if (Object.keys(lock.p).length) {
+      await writeLock(root, lock);
+      updated.push('genpm.lock');
+    } else {
+      // Último paquete: sin lock ni índice vacíos (la carpeta .genpm se conserva si guarda algo más, p. ej. caché).
+      await rm(await safePath(root, 'genpm.lock'), { force: true });
+      deleted.push('genpm.lock');
+      await rmdir(join(root, '.genpm', 'files')).catch(() => undefined);
+      const rest = await readdir(join(root, '.genpm')).catch(() => [] as string[]);
+      if (rest.every((f) => f === '.gitignore' || f === 'tmp' || f === '.lock'))
+        await rm(join(root, '.genpm', '.gitignore'), { force: true });
+    }
     let mcpServers: string[] = [];
     if (entry.m === 1) {
       try {
@@ -196,10 +213,29 @@ export async function remove(input: RemoveInput): Promise<RemoveResult> {
         mcpServers = [];
       }
     }
-    const next = mcpServers.length
-      ? [`MCP config was left untouched: genpm mcp remove ${input.name} (${mcpServers.join(', ')})`]
-      : [];
-    return { ok: true, removed: input.name, deleted, updated, keptCode: !!input.keepCode, mcpServers, next };
+    // Los servidores MCP que GenPM añadió (con consentimiento, INV-5) se quitan con el paquete: dejarlos apuntaría a
+    // un módulo que ya no está, y `genpm mcp remove` ya no podría encontrarlo.
+    const mcpRemoved = new Set<string>();
+    for (const target of ['claude', 'cursor', 'vscode'] as const) {
+      if (!mcpServers.length) break;
+      const rel = MCP_FILES[target];
+      const abs = await safePath(root, rel);
+      const r = removeFromMcpConfig(await readTextOrNull(abs), target, mcpServers);
+      if (!r.removed.length) continue;
+      for (const n of r.removed) mcpRemoved.add(n);
+      const left = JSON.parse(r.text) as Record<string, Record<string, unknown> | undefined>;
+      const emptyShell = Object.keys(left).length === 1 && Object.keys(Object.values(left)[0] ?? {}).length === 0;
+      await writeOrDelete(rel, abs, emptyShell ? '' : r.text);
+    }
+    return {
+      ok: true,
+      removed: input.name,
+      deleted,
+      updated,
+      keptCode: !!input.keepCode,
+      mcpServers: [...mcpRemoved],
+      next: [] as string[],
+    };
   });
 }
 

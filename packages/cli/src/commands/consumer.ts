@@ -156,7 +156,7 @@ export const removeCmd = (ctx: Ctx) =>
         line(ctx, `${ctx.c.green('✔')} ${ctx.t.t('cli.remove.done', { name: r.removed })}`);
         if (r.keptCode) line(ctx, `  ${ctx.t.t('cli.remove.kept', { dest: r.deleted[0] ?? '' })}`);
         if (r.mcpServers.length)
-          line(ctx, `  ${ctx.c.yellow('▲')} ${ctx.t.t('cli.remove.mcpLeft', { name: r.removed })}`);
+          line(ctx, `  ${ctx.c.green('✔')} ${ctx.t.t('cli.remove.mcpRemoved', { servers: r.mcpServers.join(', ') })}`);
       })(),
   });
 

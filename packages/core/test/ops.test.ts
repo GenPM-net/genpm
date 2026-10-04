@@ -12,6 +12,9 @@ import { plan } from '../src/plan.js';
 import { FakeRegistry, REGISTRY } from './fake-registry.js';
 import { makeRepo } from './git-fixture.js';
 
+// Directorio personal ficticio, distinto del proyecto: findRoot nunca acepta el propio ~ como proyecto.
+const TEST_HOME = join(tmpdir(), 'genpm-test-home');
+
 let reg: FakeRegistry;
 let cacheDir: string;
 let project: string;
@@ -47,7 +50,7 @@ const common = () => ({
   registry: REGISTRY,
   fetchImpl: reg.fetch as typeof fetch,
   fetch: { cacheDir, allowFileProtocol: true },
-  home: project,
+  home: TEST_HOME,
 });
 const install = async (spec: string) =>
   apply(await plan({ specs: [spec], ...common() }), { allowMcp: false, installNpmDeps: false, by: 'cli' });
@@ -90,7 +93,7 @@ describe('list & remove', () => {
     );
     await remove({ ...common(), name: '@core/db' });
     expect(await readFile(join(project, 'CLAUDE.md'), 'utf8')).toBe('# app\n');
-    expect(await readFile(join(project, '.env.example'), 'utf8')).toBe('');
+    await expect(stat(join(project, '.env.example'))).rejects.toThrow(); // vacío tras quitar el último paquete: se borra
     await expect(remove({ ...common(), name: '@core/db' })).rejects.toMatchObject({ code: 'E_NOT_FOUND' });
   });
 });
@@ -234,7 +237,7 @@ describe('doctor', () => {
     const checks = await doctor({
       cwd: project,
       registry: REGISTRY,
-      home: project,
+      home: TEST_HOME,
       fetchImpl: health,
       locale: { locale: 'es', source: 'LANG' },
     });
@@ -253,7 +256,7 @@ describe('doctor', () => {
     const down = (async () => {
       throw new TypeError('down');
     }) as unknown as typeof fetch;
-    const c2 = await doctor({ cwd: join(project, 'tmp'), registry: REGISTRY, home: project, fetchImpl: down });
+    const c2 = await doctor({ cwd: join(project, 'tmp'), registry: REGISTRY, home: TEST_HOME, fetchImpl: down });
     expect(c2.find((c) => c.id === 'registry')?.status).toBe('fail');
   });
 });
