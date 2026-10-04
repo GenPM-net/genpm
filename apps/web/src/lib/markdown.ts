@@ -21,6 +21,8 @@ export function slugify(text: string): string {
     .toLowerCase()
     .normalize('NFKD')
     .replace(/[̀-ͯ]/g, '')
+    // Recompone lo que no son tildes latinas: sílabas hangul y kana con dakuten (ド, ガ) no se parten en el id.
+    .normalize('NFC')
     .replace(/<[^>]*>/g, '')
     .replace(/[^\p{L}\p{N}]+/gu, '-')
     .replace(/^-+|-+$/g, '')

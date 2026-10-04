@@ -22,3 +22,18 @@ export function href(locale: Locale, path: string): string {
 export function htmlLang(locale: Locale): string {
   return locale;
 }
+
+// Archivos estáticos que no tienen versión por idioma.
+const UNLOCALIZED = /^\/(?:schema|install\.sh|install\.ps1|llms[^/]*\.txt|\.well-known)(?:[/?#.]|$)/;
+
+/**
+ * Enlaces internos del HTML de un Markdown propio (docs, legal) al idioma actual: `/privacy` → `/es/privacy`.
+ * `renderMarkdown` los devuelve absolutos (`https://genpm.net/…`); quedan relativos para que funcionen en staging.
+ * Respeta los que ya llevan idioma y los archivos estáticos.
+ */
+export function localizeLinks(html: string, locale: Locale): string {
+  return html.replace(/href="(?:https:\/\/genpm\.net)?(\/(?!\/)[^"]*)"/g, (_, path: string) => {
+    if (UNLOCALIZED.test(path) || splitLocale(path).locale !== 'en' || path.startsWith('/en/')) return `href="${path}"`;
+    return `href="${href(locale, path)}"`;
+  });
+}

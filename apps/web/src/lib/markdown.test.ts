@@ -47,3 +47,12 @@ describe('slugify', () => {
     expect(slugify('認証 の 設定')).toBe('認証-の-設定');
   });
 });
+
+describe('slugify for every locale', () => {
+  it('strips Latin accents but keeps CJK and Hangul intact', () => {
+    expect(slugify('6. Baja de la cuenta')).toBe('6-baja-de-la-cuenta');
+    expect(slugify('6. Fermeture de votre compte')).toBe('6-fermeture-de-votre-compte');
+    expect(slugify('6. 계정 해지')).toBe('6-계정-해지'.normalize('NFC'));
+    expect(slugify('6. アカウントのデータ')).toBe('6-アカウントのデータ');
+  });
+});

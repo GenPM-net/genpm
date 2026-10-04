@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { href, splitLocale } from './i18n.js';
+import { href, localizeLinks, splitLocale } from './i18n.js';
 
 describe('splitLocale', () => {
   it('reconoce los prefijos de los 8 idiomas', () => {
@@ -29,5 +29,21 @@ describe('href', () => {
     for (const loc of ['en', 'es', 'pt-BR', 'fr', 'de', 'ja', 'zh-CN', 'ko'] as const) {
       expect(splitLocale(href(loc, '/p/@core/auth'))).toEqual({ locale: loc, path: '/p/@core/auth' });
     }
+  });
+});
+
+describe('localizeLinks', () => {
+  it('lleva los enlaces internos al idioma actual y los deja relativos', () => {
+    expect(localizeLinks('<a href="https://genpm.net/privacy#6-x">', 'ko')).toBe('<a href="/ko/privacy#6-x">');
+    expect(localizeLinks('<a href="/docs/install">', 'es')).toBe('<a href="/es/docs/install">');
+    expect(localizeLinks('<a href="https://genpm.net/">', 'en')).toBe('<a href="/">');
+  });
+
+  it('respeta los que ya llevan idioma, los estáticos y los externos', () => {
+    expect(localizeLinks('<a href="https://genpm.net/es/docs/mcp">', 'es')).toBe('<a href="/es/docs/mcp">');
+    expect(localizeLinks('<a href="https://genpm.net/schema/v1/genpm.json">', 'fr')).toBe(
+      '<a href="/schema/v1/genpm.json">',
+    );
+    expect(localizeLinks('<a href="https://github.com/x">', 'de')).toBe('<a href="https://github.com/x">');
   });
 });

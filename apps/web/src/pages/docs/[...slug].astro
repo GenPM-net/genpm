@@ -2,7 +2,7 @@
 // /docs/* (web-ui-spec §5.5): navegación por secciones, "en esta página", copiar como Markdown y versión .md.
 import Base from '../../layouts/Base.astro';
 import { docPage, docPages } from '../../lib/docs.js';
-import { href } from '../../lib/i18n.js';
+import { href, localizeLinks } from '../../lib/i18n.js';
 import { renderMarkdown } from '../../lib/markdown.js';
 
 const { t, locale } = Astro.locals;
@@ -12,7 +12,7 @@ if (!page) return Astro.rewrite('/404');
 const pages = docPages(locale, t);
 const sections = [...new Set(pages.map((p) => p.section))];
 const headings: Array<{ depth: number; text: string; id: string }> = [];
-const html = renderMarkdown(page.body, { trusted: true, headings });
+const html = localizeLinks(renderMarkdown(page.body, { trusted: true, headings }), locale);
 const idx = pages.findIndex((p) => p.slug === page.slug);
 const prev = pages[idx - 1];
 const next = pages[idx + 1];

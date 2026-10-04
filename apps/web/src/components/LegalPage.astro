@@ -1,7 +1,7 @@
 ---
 import owner from '../content/legal/owner.json';
 import Base from '../layouts/Base.astro';
-import { urlPrefix } from '../lib/i18n.js';
+import { localizeLinks } from '../lib/i18n.js';
 import { renderMarkdown } from '../lib/markdown.js';
 
 interface Props {
@@ -21,7 +21,7 @@ const meta = Object.fromEntries(
 // Datos del titular (owner.json): un dato vacío se muestra como [campo] y bloquea el despliegue a producción.
 const body = m[2]!.replace(/\{\{(\w+)\}\}/g, (_, k: string) => (owner as Record<string, string>)[k] || `[${k}]`);
 // Enlaces internos al idioma actual: /privacy → /es/privacy.
-const html = renderMarkdown(body, { trusted: true }).replace(/href="\/(?!\/)/g, `href="${urlPrefix(locale)}/`);
+const html = localizeLinks(renderMarkdown(body, { trusted: true }), locale);
 Astro.response.headers.set('Cache-Control', 'public, max-age=86400');
 ---
 <Base title={meta['title']} canonical={`/${Astro.props.doc}`}>

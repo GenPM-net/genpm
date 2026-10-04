@@ -67,10 +67,11 @@ curl -fsSL https://genpm.net/install.sh | sh -s -- 0.2.0
 
 ## Verify a download by hand
 
-Every release publishes `SHA256SUMS` and a build provenance attestation signed by GitHub Actions. With the [GitHub CLI](https://cli.github.com):
+Every release publishes `SHA256SUMS`. The installer and `genpm upgrade` check it for you; to do it yourself:
 
 ```bash
-gh attestation verify genpm-linux-x64 --repo genpm-net/genpm
+curl -fsSLO https://github.com/genpm-net/genpm-releases/releases/latest/download/genpm-linux-x64
+curl -fsSL https://github.com/genpm-net/genpm-releases/releases/latest/download/SHA256SUMS | grep genpm-linux-x64 | shasum -a 256 -c
 ```
 
 ## With npm instead
