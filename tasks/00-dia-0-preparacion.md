@@ -45,8 +45,8 @@
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
   - ✅ 2026-10-03: D1 `genpm-registry` (`fd31f31d…`) y `genpm-registry-staging` (`b715994c…`) con las 4 migraciones; colas `genpm-scan` y `genpm-scan-staging`; datasets de Analytics Engine se crean al primer write.
 
-- [ ] `D0-12` **DOING** Generar claves de firma Ed25519 (k1 activa, k2 siguiente) y clave raíz de revocación guardada offline · F · 1h · deps: —
-  - ✅ 2026-10-03: k1/k2/root generadas en `~/genpm-keys-2026-10-03/`, públicas fijadas en `packages/core/src/keys.ts` y registradas en la D1 de producción; staging usa su propia clave `s1`. Pendiente fundador: mover `root.private` offline y borrarla del disco.
+- [x] `D0-12` **DONE** Generar claves de firma Ed25519 (k1 activa, k2 siguiente) y clave raíz de revocación guardada offline · F · 1h · deps: —
+  - ✅ 2026-10-03: k1/k2/root generadas en `~/genpm-keys-2026-10-03/`, públicas fijadas en `packages/core/src/keys.ts` y registradas en la D1 de producción; staging usa su propia clave `s1`. Privadas guardadas en el Llavero de macOS (genpm-signing-*.private) y borradas del disco.
 
 - [ ] `D0-13` **BLOCKED** Gestor de secretos del equipo con todos los secretos; ningún .env commiteado · F · 0.5h · deps: D0-12
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.

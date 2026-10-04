@@ -69,15 +69,15 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 ## Tablero
 
 <!-- board:start -->
-<!-- Generado por `pnpm tasks sync` · 2026-10-03. No editar a mano. -->
+<!-- Generado por `pnpm tasks sync` · 2026-10-04. No editar a mano. -->
 
-**58 %** completado · 149/258 tareas · 559h estimadas pendientes
+**58 %** completado · 150/258 tareas · 558h estimadas pendientes
 
-TODO 60 · DOING 5 · DONE 148 · BLOCKED 44 · CUT 1
+TODO 60 · DOING 4 · DONE 149 · BLOCKED 44 · CUT 1
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
-| [Día 0 · Preparación](00-dia-0-preparacion.md) | `▓▓░░░░░░░░░░` 19 % | 3/16 | 11h |
+| [Día 0 · Preparación](00-dia-0-preparacion.md) | `▓▓▓░░░░░░░░░` 25 % | 4/16 | 10h |
 | [Día 1 · Cimientos](01-dia-1-cimientos.md) | `▓▓▓▓▓▓▓▓▓▓░░` 81 % | 17/21 | 4h |
 | [Día 2 · Registry y motor de fetch](02-dia-2-registry-fetch.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 90 % | 19/21 | 1h |
 | [Día 3 · CLI y contexto](03-dia-3-cli-contexto.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 95 % | 21/22 | 1h |
@@ -94,7 +94,6 @@ TODO 60 · DOING 5 · DONE 148 · BLOCKED 44 · CUT 1
 - `D0-01` Registrar genpm.net, activar registrar lock y DNSSEC (DNS en Cloudflare) · F · 2h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-05` Crear la org de GitHub GenPM-net con 2FA obligatorio · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-10` Cuenta Cloudflare Workers Paid con llaves FIDO2 · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
-- `D0-12` Generar claves de firma Ed25519 (k1 activa, k2 siguiente) y clave raíz de revocación guardada offline · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `V011-02` Binario nativo de genpm para macOS, Linux y Windows con instaladores de una línea y genpm upgrade (ADR-025) · B · 8h ([10-post-mvp.md](10-post-mvp.md))
 
 **Bloqueadas**
