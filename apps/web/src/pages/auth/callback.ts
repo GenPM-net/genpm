@@ -22,8 +22,12 @@ export const GET: APIRoute = async ({ url, cookies, redirect }) => {
       redirect_uri: `${env.SITE_ORIGIN}/auth/callback`,
     }),
   }).catch(() => null);
-  const gh = res?.ok ? ((await res.json()) as { access_token?: string }) : null;
-  if (!gh?.access_token) return redirect('/login?error=github');
+  const gh = res?.ok ? ((await res.json()) as { access_token?: string; error?: string }) : null;
+  if (!gh?.access_token) {
+    // Solo el código de error de GitHub (p. ej. incorrect_client_credentials), nunca el código ni el secreto.
+    console.warn('oauth_exchange_failed', { status: res?.status ?? 0, error: gh?.error ?? null });
+    return redirect('/login?error=github');
+  }
   const ex = await registryFetch('/v1/auth/github/exchange', {
     method: 'POST',
     body: { githubToken: gh.access_token, name: 'web' },
