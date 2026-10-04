@@ -36,7 +36,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
       )}
     </section>
     <section class="sec"><div class="sec-h"><h2>{t.t('web.dashboard.activity')}</h2></div>
-      <ul class="checklist">{act.activity.map((a) => <li><code>{a.action}</code> {a.metadata && typeof a.metadata['n'] === 'string' ? `${a.metadata['n']}@${a.metadata['v'] ?? ''}` : ''} · {ago(locale, a.at)}</li>)}</ul>
+      <ul class="checklist">{act.activity.map((a) => <li><span><code>{a.action}</code>{a.metadata && typeof a.metadata['n'] === 'string' ? ` ${a.metadata['n']}@${a.metadata['v'] ?? ''}` : ''} · {ago(locale, a.at)}</span></li>)}</ul>
     </section>
   </div>
 </Base>
