@@ -7,6 +7,13 @@ export const POST: APIRoute = async (ctx) => {
   const str = (k: string) => (typeof b?.[k] === 'string' ? (b[k] as string).slice(0, 300) : '');
   return relay(ctx, '/v1/publish', {
     method: 'POST',
-    body: { name: str('name'), version: str('version'), repo: str('repo'), ref: str('ref') },
+    body: {
+      name: str('name'),
+      version: str('version'),
+      repo: str('repo'),
+      ref: str('ref'),
+      // Repos con varios paquetes (`<carpeta>/genpm.json`); por defecto, genpm.json en la raíz.
+      ...(str('manifestPath') ? { manifestPath: str('manifestPath') } : {}),
+    },
   });
 };
