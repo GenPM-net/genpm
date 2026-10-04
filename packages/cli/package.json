@@ -8,7 +8,7 @@
     "node": ">=20.11"
   },
   "bin": {
-    "genpm": "./dist/bin.mjs"
+    "genpm": "dist/bin.mjs"
   },
   "files": [
     "dist"

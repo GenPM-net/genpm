@@ -8,7 +8,7 @@
     "node": ">=20.11"
   },
   "bin": {
-    "genpm-mcp": "./dist/bin.mjs"
+    "genpm-mcp": "dist/bin.mjs"
   },
   "exports": {
     ".": {
