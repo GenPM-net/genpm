@@ -72,7 +72,7 @@ export async function removeToken(registry: string, home?: string): Promise<bool
 // ───────────── GitHub OAuth Device Flow (architecture §6.5) ─────────────
 
 /** client_id público de la OAuth App de GenPM (D0-06). Se puede sobrescribir con GENPM_GITHUB_CLIENT_ID. */
-export const GITHUB_CLIENT_ID = '';
+export const GITHUB_CLIENT_ID = 'Ov23liSiKhBNcDHqJrvI';
 
 export type DeviceCode = {
   device_code: string;
