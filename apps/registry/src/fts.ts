@@ -38,9 +38,10 @@ export function ftsMatch(
   if (cjk) {
     const ok = terms(q).filter((t) => [...t].length >= 3);
     if (!ok.length) return null;
-    return { match: ok.map((t) => quote(t, true)).join(' '), cjk };
+    return { match: ok.map((t) => quote(t, true)).join(' AND '), cjk };
   }
-  return list.length ? { match: list.join(' '), cjk } : null;
+  // AND explícito: FTS5 no acepta el AND implícito tras un grupo entre paréntesis (`(a OR b) c` → syntax error).
+  return list.length ? { match: list.join(' AND '), cjk } : null;
 }
 
 function quote(t: string, cjk: boolean): string {
