@@ -13,7 +13,8 @@ import { VERSION } from './version.js';
 /** Lo inyecta `bun build --define` en scripts/build-binaries.mjs; no existe en el paquete de npm. */
 declare const __GENPM_BINARY_TARGET__: string | undefined;
 
-export const RELEASES_URL = 'https://github.com/genpm-net/genpm/releases';
+// Repo público solo con los binarios mientras el código sea privado (ADR-016); tras abrirlo se puede volver a genpm-net/genpm.
+export const RELEASES_URL = 'https://github.com/genpm-net/genpm-releases/releases';
 
 export const BINARY_TARGETS = [
   'darwin-arm64',

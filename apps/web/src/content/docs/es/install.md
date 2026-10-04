@@ -17,7 +17,7 @@ curl -fsSL https://genpm.net/install.sh | sh
 irm https://genpm.net/install.ps1 | iex
 ```
 
-El instalador elige la compilación adecuada para tu sistema (Apple silicon o Intel, x64 o arm64, glibc o musl), la descarga de los [GitHub Releases](https://github.com/genpm-net/genpm/releases) del proyecto, **verifica su SHA-256** contra los checksums del release y la deja en `~/.genpm/bin` (`%USERPROFILE%\.genpm\bin` en Windows). Después añade esa carpeta a tu `PATH`. Nunca pide `sudo` ni permisos de administrador.
+El instalador elige la compilación adecuada para tu sistema (Apple silicon o Intel, x64 o arm64, glibc o musl), la descarga de los [GitHub Releases](https://github.com/genpm-net/genpm-releases/releases) del proyecto, **verifica su SHA-256** contra los checksums del release y la deja en `~/.genpm/bin` (`%USERPROFILE%\.genpm\bin` en Windows). Después añade esa carpeta a tu `PATH`. Nunca pide `sudo` ni permisos de administrador.
 
 Abre una terminal nueva y compruébalo:
 

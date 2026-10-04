@@ -233,7 +233,7 @@ describe('other commands', () => {
   it('upgrade --check reports a newer release; upgrading an npm/npx install points to its package manager', async () => {
     const regFetch = globalThis.fetch;
     globalThis.fetch = (async (input: string | URL, init?: RequestInit) =>
-      String(input) === 'https://github.com/genpm-net/genpm/releases/latest'
+      String(input) === 'https://github.com/genpm-net/genpm-releases/releases/latest'
         ? new Response(null, { status: 302, headers: { location: '/genpm-net/genpm/releases/tag/v99.0.0' } })
         : regFetch(input, init)) as typeof fetch;
     try {

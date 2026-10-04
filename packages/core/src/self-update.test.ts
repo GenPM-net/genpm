@@ -29,7 +29,7 @@ function releases(opts: { sums?: string; asset?: Uint8Array; latest?: string } =
       expect(init?.redirect).toBe('manual');
       return new Response(null, {
         status: 302,
-        headers: { location: `https://github.com/genpm-net/genpm/releases/tag/v${opts.latest ?? '9.9.9'}` },
+        headers: { location: `https://github.com/genpm-net/genpm-releases/releases/tag/v${opts.latest ?? '9.9.9'}` },
       });
     }
     const m = url.match(/\/download\/v9\.9\.9\/(.+)$/);

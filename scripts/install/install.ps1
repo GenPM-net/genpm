@@ -35,7 +35,7 @@ function Install-Genpm {
     default { Write-Error "Unsupported architecture: $arch (GenPM supports x64 and arm64)"; return }
   }
   $asset = "genpm-$target.exe"
-  $repo = 'https://github.com/genpm-net/genpm'
+  $repo = 'https://github.com/genpm-net/genpm-releases'
   $Version = "$Version".TrimStart('v')
   if ($env:GENPM_DOWNLOAD_URL) { $base = $env:GENPM_DOWNLOAD_URL.TrimEnd('/', '\') }
   elseif ($Version) { $base = "$repo/releases/download/v$Version" }
@@ -102,7 +102,7 @@ function Install-Genpm {
   if (-not (($env:Path -split ';') -contains $InstallDir)) { $env:Path = "$InstallDir;$env:Path" }
 
   Write-Host ''
-  Write-Host '  genpm add @core/auth     add your first module'
+  Write-Host '  genpm search auth        find a module to add'
   Write-Host '  genpm mcp setup          let your AI agent install modules'
   Write-Host '  genpm upgrade            update genpm later'
 }

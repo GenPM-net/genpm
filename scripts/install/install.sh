@@ -15,7 +15,7 @@
 # Messages are in English only: this runs before genpm (and its translations) exist on the machine.
 set -eu
 
-REPO_URL="https://github.com/genpm-net/genpm"
+REPO_URL="https://github.com/genpm-net/genpm-releases"
 
 if [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
   BOLD="$(printf '\033[1m')" DIM="$(printf '\033[2m')" GREEN="$(printf '\033[32m')" RED="$(printf '\033[31m')" RESET="$(printf '\033[0m')"
@@ -170,7 +170,7 @@ main() {
       ;;
   esac
   info ""
-  info "  ${BOLD}genpm add @core/auth${RESET}     add your first module"
+  info "  ${BOLD}genpm search auth${RESET}        find a module to add"
   info "  ${BOLD}genpm mcp setup${RESET}          let your AI agent install modules"
   info "  ${BOLD}genpm upgrade${RESET}            update genpm later"
 }

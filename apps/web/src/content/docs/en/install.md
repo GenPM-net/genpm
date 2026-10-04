@@ -17,7 +17,7 @@ curl -fsSL https://genpm.net/install.sh | sh
 irm https://genpm.net/install.ps1 | iex
 ```
 
-The installer picks the right build for your system (Apple silicon or Intel, x64 or arm64, glibc or musl), downloads it from the project's [GitHub Releases](https://github.com/genpm-net/genpm/releases), **verifies its SHA-256** against the release checksums and puts it in `~/.genpm/bin` (`%USERPROFILE%\.genpm\bin` on Windows). Then it adds that folder to your `PATH`. It never asks for `sudo` or admin rights.
+The installer picks the right build for your system (Apple silicon or Intel, x64 or arm64, glibc or musl), downloads it from the project's [GitHub Releases](https://github.com/genpm-net/genpm-releases/releases), **verifies its SHA-256** against the release checksums and puts it in `~/.genpm/bin` (`%USERPROFILE%\.genpm\bin` on Windows). Then it adds that folder to your `PATH`. It never asks for `sudo` or admin rights.
 
 Open a new terminal and check it:
 

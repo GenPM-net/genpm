@@ -288,7 +288,7 @@ Comprueba: runtime (binario nativo y su plataforma, o versión de Node), `git` d
 
 ### `genpm upgrade [version] [--check]` ✅
 
-Actualiza el binario nativo (ADR-025). `latest` se lee de la redirección de `github.com/genpm-net/genpm/releases/latest`
+Actualiza el binario nativo (ADR-025). `latest` se lee de la redirección de `github.com/genpm-net/genpm-releases/releases/latest`
 (sin gastar cuota de la API). Descarga `SHA256SUMS` y el binario de su plataforma (grabada en compilación), verifica el
 SHA-256 y reemplaza el ejecutable con `rename` atómico en su directorio; en Windows renombra el `.exe` en uso a `.old`
 (se borra en el siguiente arranque). Checksum distinto ⇒ `E_UPGRADE_INTEGRITY` sin tocar nada; sin permiso de escritura ⇒
