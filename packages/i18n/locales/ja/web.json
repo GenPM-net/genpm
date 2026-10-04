@@ -321,7 +321,6 @@
       "fDest": "利用者のプロジェクト内のフォルダー",
       "fLicense": "ライセンス",
       "fKeywords": "キーワード（カンマ区切り）",
-      "hintName": "{scope} で始める必要があります",
       "hintDest": "インストール時にコードが置かれる場所。例: src/lib/payments",
       "listTitle": "リポジトリに必要なもの",
       "commitHint": "各ボタンはファイルを用意した状態で GitHub を開きます。「Commit changes」を押して戻ってください。このページは自動で再確認します。",

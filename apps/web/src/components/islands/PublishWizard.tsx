@@ -18,7 +18,6 @@ export type WizardLabels = Record<
   | 'fDest'
   | 'fLicense'
   | 'fKeywords'
-  | 'hintName'
   | 'hintDest'
   | 'listTitle'
   | 'commitHint'
@@ -77,6 +76,19 @@ const nextPatch = (v: string) => {
   const m = v.match(/^(\d+)\.(\d+)\.(\d+)/);
   return m ? `${m[1]}.${m[2]}.${Number(m[3]) + 1}` : '1.0.0';
 };
+
+const LICENSES = [
+  'MIT',
+  'Apache-2.0',
+  'BSD-3-Clause',
+  'BSD-2-Clause',
+  'ISC',
+  'MPL-2.0',
+  'GPL-3.0-only',
+  'LGPL-3.0-only',
+  'AGPL-3.0-only',
+  'Unlicense',
+];
 
 const pretty = (o: unknown) => `${JSON.stringify(canonicalObject(o as Record<string, unknown>), null, 2)}\n`;
 
@@ -138,7 +150,7 @@ export default function PublishWizard({ labels: L, locale }: { labels: WizardLab
         const s = c.suggested;
         const summary = (s['s'] as Record<string, string> | undefined)?.['en'] ?? '';
         setForm({
-          n: String(s['n'] ?? ''),
+          n: String(s['n'] ?? '').split('/')[1] ?? '',
           v: String(s['v'] ?? '1.0.0'),
           s: summary,
           d: String(s['d'] ?? ''),
@@ -166,10 +178,11 @@ export default function PublishWizard({ labels: L, locale }: { labels: WizardLab
 
   const manifest = useMemo(() => {
     if (!check) return null;
+    // El scope lo fija el dueño del repo (ADR-006): solo se edita el nombre tras la barra.
     const o: Record<string, unknown> = {
       ...check.suggested,
       $: 1,
-      n: form.n.trim(),
+      n: `@${check.repo.owner.toLowerCase()}/${form.n.trim().toLowerCase()}`,
       v: form.v.trim(),
       d: form.d.trim(),
     };
@@ -367,13 +380,40 @@ export default function PublishWizard({ labels: L, locale }: { labels: WizardLab
         <form class="wz-form" onSubmit={(e) => e.preventDefault()} novalidate>
           <h3 class="h3">{L.formTitle}</h3>
           <div class="two">
-            {field('n', L.fName, fill(L.hintName, { scope: `@${repo.owner.toLowerCase()}/` }))}
+            <div class="field">
+              <label for="wz-n">{L.fName}</label>
+              <div class="wz-scoped" aria-invalid={errFor('n') ? 'true' : 'false'}>
+                <span>@{repo.owner.toLowerCase()}/</span>
+                <input
+                  id="wz-n"
+                  class="mono"
+                  value={form.n}
+                  onInput={(e) => setForm({ ...form, n: (e.target as HTMLInputElement).value })}
+                  aria-describedby="wz-e-n"
+                />
+              </div>
+              <span class="err" id="wz-e-n">
+                {errFor('n') ?? ''}
+              </span>
+            </div>
             {field('v', L.fVersion)}
           </div>
           {field('s', L.fSummary)}
           <div class="two">
             {field('d', L.fDest, L.hintDest)}
-            {field('l', L.fLicense)}
+            <div class="field">
+              <label for="wz-l">{L.fLicense}</label>
+              <select
+                id="wz-l"
+                value={form.l}
+                onChange={(e) => setForm({ ...form, l: (e.target as HTMLSelectElement).value })}
+              >
+                <option value="">—</option>
+                {[...new Set([...(form.l ? [form.l] : []), ...LICENSES])].map((l) => (
+                  <option value={l}>{l}</option>
+                ))}
+              </select>
+            </div>
           </div>
           {field('k', L.fKeywords)}
           <details class="wz-json">

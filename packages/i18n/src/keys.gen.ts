@@ -556,7 +556,6 @@ export interface MessageParams {
   "web.publish.wizard.fDest": undefined;
   "web.publish.wizard.fLicense": undefined;
   "web.publish.wizard.fKeywords": undefined;
-  "web.publish.wizard.hintName": { scope: string | number };
   "web.publish.wizard.hintDest": undefined;
   "web.publish.wizard.listTitle": undefined;
   "web.publish.wizard.commitHint": undefined;

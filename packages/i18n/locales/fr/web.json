@@ -321,7 +321,6 @@
       "fDest": "Dossier dans le projet de l’utilisateur",
       "fLicense": "Licence",
       "fKeywords": "Mots-clés, séparés par des virgules",
-      "hintName": "Doit commencer par {scope}",
       "hintDest": "Où le code arrive à l’installation, p. ex. src/lib/payments",
       "listTitle": "Ce dont votre dépôt a besoin",
       "commitHint": "Chaque bouton ouvre GitHub avec le fichier prêt : cliquez sur « Commit changes » puis revenez. Cette page revérifie automatiquement.",

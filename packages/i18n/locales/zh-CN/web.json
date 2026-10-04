@@ -321,7 +321,6 @@
       "fDest": "用户项目中的文件夹",
       "fLicense": "许可证",
       "fKeywords": "关键词，用逗号分隔",
-      "hintName": "必须以 {scope} 开头",
       "hintDest": "安装后代码所在的位置，例如 src/lib/payments",
       "listTitle": "你的仓库需要什么",
       "commitHint": "每个按钮都会打开已准备好文件的 GitHub 页面：点击“Commit changes”后返回。此页面会自动重新检查。",

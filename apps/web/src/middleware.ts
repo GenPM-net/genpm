@@ -41,8 +41,9 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
   res.headers.set('X-Frame-Options', 'DENY');
   if (env.ENVIRONMENT !== 'production') res.headers.set('X-Robots-Tag', 'noindex, nofollow');
   res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), interest-cohort=()');
-  if (!res.headers.has('Content-Language') && (res.headers.get('content-type') ?? '').includes('text/html')) {
-    res.headers.set('Content-Language', locale);
-  }
+  const html = (res.headers.get('content-type') ?? '').includes('text/html');
+  if (!res.headers.has('Content-Language') && html) res.headers.set('Content-Language', locale);
+  // Con sesión, el HTML lleva datos de la cuenta (menú, panel): nunca de una caché compartida ni sin revalidar.
+  if (session && html) res.headers.set('Cache-Control', 'private, no-cache');
   return res;
 });

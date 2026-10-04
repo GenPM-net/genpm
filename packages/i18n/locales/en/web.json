@@ -321,7 +321,6 @@
       "fDest": "Folder in the user's project",
       "fLicense": "License",
       "fKeywords": "Keywords, comma separated",
-      "hintName": "Must start with {scope}",
       "hintDest": "Where the code lands when someone installs it, e.g. src/lib/payments",
       "listTitle": "What your repository needs",
       "commitHint": "Each button opens GitHub with the file ready: click “Commit changes” and come back. This page checks again automatically.",

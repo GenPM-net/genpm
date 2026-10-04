@@ -321,7 +321,6 @@
       "fDest": "Ordner im Projekt des Nutzers",
       "fLicense": "Lizenz",
       "fKeywords": "Schlagwörter, durch Kommas getrennt",
-      "hintName": "Muss mit {scope} beginnen",
       "hintDest": "Wo der Code bei der Installation landet, z. B. src/lib/payments",
       "listTitle": "Was dein Repository braucht",
       "commitHint": "Jede Schaltfläche öffnet GitHub mit der fertigen Datei: Klicke auf „Commit changes“ und komm zurück. Diese Seite prüft automatisch erneut.",

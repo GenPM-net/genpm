@@ -321,7 +321,6 @@
       "fDest": "Carpeta en el proyecto de quien lo instale",
       "fLicense": "Licencia",
       "fKeywords": "Palabras clave, separadas por comas",
-      "hintName": "Debe empezar por {scope}",
       "hintDest": "Dónde queda el código al instalarlo, p. ej. src/lib/payments",
       "listTitle": "Lo que necesita tu repositorio",
       "commitHint": "Cada botón abre GitHub con el archivo listo: pulsa «Commit changes» y vuelve. Esta página vuelve a comprobar sola.",

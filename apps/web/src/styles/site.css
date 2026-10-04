@@ -2491,3 +2491,41 @@ table.tbl tr.y td:first-child {
     grid-template-columns: 1fr;
   }
 }
+.wz-scoped {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r);
+  background: var(--paper);
+  overflow: hidden;
+}
+.wz-scoped:focus-within {
+  border-color: var(--ink);
+}
+.wz-scoped[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.wz-scoped span {
+  display: flex;
+  align-items: center;
+  padding: 0 4px 0 10px;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  color: var(--ink-3);
+  background: var(--wash);
+  border-right: 1px solid var(--line);
+}
+.field .wz-scoped input {
+  border: 0;
+  border-radius: 0;
+}
+.field select {
+  height: 36px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r);
+  padding: 0 8px;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  background: var(--paper);
+  color: var(--ink);
+}
