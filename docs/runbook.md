@@ -172,3 +172,14 @@ pnpm --filter @genpm/web run deploy                                  # web produ
 GENPM_REGISTRY=https://api.staging.genpm.net \
 GENPM_PUBLIC_KEYS='{"s1":"HT1CBlCFIllWWGS8QUvAcEb_SMUL66MvnUfuOc0m6bc"}' genpm search db   # CLI contra staging
 ```
+
+### 4.1 Credenciales externas
+
+| Credencial | Dónde vive | Notas |
+|---|---|---|
+| OAuth App «GenPM» (client ID `Ov23liSiKhBNcDHqJrvI`) | Secretos `GITHUB_OAUTH_CLIENT_ID/SECRET` de `genpm-registry` y `genpm-web`; el ID también en `packages/core/src/credentials.ts` | Callback `https://genpm.net/auth/callback`, Device Flow activo. Rotar: generar secreto nuevo en GitHub, `wrangler secret put` en ambos Workers, borrar el viejo. |
+| GitHub App «GenPM Registry» (App ID `5185093`) | Secretos `GITHUB_APP_ID` y `GITHUB_APP_PRIVATE_KEY` (PKCS#8) de `genpm-registry` (prod y staging); copia en el Llavero (`genpm-github-app.private-key`) | Solo lectura (contents, metadata), instalada en GenPM-net. El Llavero devuelve los valores multilínea en hexadecimal: `security find-generic-password -a genpm -s genpm-github-app.private-key -w \| xxd -r -p`. |
+| Claves de firma k1/k2/root | Llavero (`genpm-signing-*.private`); k1/k2 también en `SIGNING_KEYS` | Ver §2. |
+
+Staging aún no tiene OAuth propio: el login web en `staging.genpm.net` no funciona hasta crear una OAuth App de staging
+(o añadir `https://staging.genpm.net/auth/callback` a la de producción) y cargar sus secretos con `--env staging`.

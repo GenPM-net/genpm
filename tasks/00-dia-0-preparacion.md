@@ -22,10 +22,12 @@
 - [ ] `D0-05` **DOING** Crear la org de GitHub GenPM-net con 2FA obligatorio · F · 0.5h · deps: —
   - ✅ Org creada 2026-10-03 (`github.com/GenPM-net`, plan Free). Verificado por API: `two_factor_requirement_enabled: false` → falta activarlo.
   - Pendiente (Settings): exigir 2FA · base permissions "No permission" · solo owners crean repos · Dependabot alerts y secret scanning con push protection para repos nuevos · verificar el dominio genpm.net (badge "Verified").
-- [ ] `D0-06` **BLOCKED** OAuth App de GitHub con Device Flow (login del CLI y de la web) · F · 0.5h · deps: D0-05
+- [x] `D0-06` **DONE** OAuth App de GitHub con Device Flow (login del CLI y de la web) · F · 0.5h · deps: D0-05
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
-- [ ] `D0-07` **BLOCKED** GitHub App de solo lectura para el registry (lectura de repos en publish) · F · 0.5h · deps: D0-05
+  - ✅ 2026-10-04: OAuth App «GenPM» (Device Flow) con secretos en `genpm-registry` y `genpm-web`; login web y `genpm login` verificados.
+- [x] `D0-07` **DONE** GitHub App de solo lectura para el registry (lectura de repos en publish) · F · 0.5h · deps: D0-05
   - Bloqueo: requiere acción del fundador fuera del repo (compras, cuentas, 2FA o contratación); un agente no puede hacerlo.
+  - ✅ 2026-10-04: GitHub App «GenPM Registry» (ID 5185093, contents+metadata lectura) instalada en GenPM-net; clave verificada contra la API de GitHub.
 - [x] `D0-08` **DONE** Repo GenPM-net/genpm con protección de main y 5 repos vacíos para las semillas · F · 0.5h · deps: D0-05
   - Decisión ADR-016: repo **privado** hasta el lanzamiento. Para proteger `main` en privado hace falta el plan Team de GitHub; semillas privadas hasta `D6-P-07`.
   - ✅ `GenPM-net/genpm` creado (privado) y con el código subido el 2026-10-03.

@@ -71,13 +71,13 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-04. No editar a mano. -->
 
-**58 %** completado · 150/258 tareas · 558h estimadas pendientes
+**59 %** completado · 152/258 tareas · 557h estimadas pendientes
 
-TODO 60 · DOING 4 · DONE 149 · BLOCKED 44 · CUT 1
+TODO 60 · DOING 4 · DONE 151 · BLOCKED 42 · CUT 1
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
-| [Día 0 · Preparación](00-dia-0-preparacion.md) | `▓▓▓░░░░░░░░░` 25 % | 4/16 | 10h |
+| [Día 0 · Preparación](00-dia-0-preparacion.md) | `▓▓▓▓▓░░░░░░░` 38 % | 6/16 | 9h |
 | [Día 1 · Cimientos](01-dia-1-cimientos.md) | `▓▓▓▓▓▓▓▓▓▓░░` 81 % | 17/21 | 4h |
 | [Día 2 · Registry y motor de fetch](02-dia-2-registry-fetch.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 90 % | 19/21 | 1h |
 | [Día 3 · CLI y contexto](03-dia-3-cli-contexto.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 95 % | 21/22 | 1h |
@@ -101,8 +101,6 @@ TODO 60 · DOING 4 · DONE 149 · BLOCKED 44 · CUT 1
 - `D0-02` Registrar genpm.dev como dominio defensivo con 301 a genpm.net · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-03` Búsqueda de marca registrada "GenPM" (USPTO, EUIPO, INPI Brasil, SAPI Venezuela, IMPI México) · F · 2h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-04` Reservar handles @genpm en X, Discord, YouTube y LinkedIn (fallback genpmnet / genpm-net) · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
-- `D0-06` OAuth App de GitHub con Device Flow (login del CLI y de la web) · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
-- `D0-07` GitHub App de solo lectura para el registry (lectura de repos en publish) · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-09` Org de npm @genpm con 2FA, placeholder genpm@0.0.0 y trusted publishing para el monorepo · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-13` Gestor de secretos del equipo con todos los secretos; ningún .env commiteado · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-14` Contratar revisor nativo de pt-BR para el Día 6 y buscar revisores de nivel 2 (ja, zh-CN, ko, fr, de) · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
