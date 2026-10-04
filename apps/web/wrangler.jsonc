@@ -14,10 +14,7 @@
   },
   "services": [{ "binding": "REGISTRY", "service": "genpm-registry" }],
   "analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "genpm_web_events" }],
-  "routes": [
-    { "pattern": "genpm.net", "custom_domain": true },
-    { "pattern": "www.genpm.net", "custom_domain": true }
-  ],
+  "routes": [{ "pattern": "genpm.net", "custom_domain": true }, { "pattern": "www.genpm.net", "custom_domain": true }],
   "env": {
     "staging": {
       "name": "genpm-web-staging",
