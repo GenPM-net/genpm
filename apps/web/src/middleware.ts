@@ -10,6 +10,10 @@ const SESSION = '__Host-genpm_session';
 
 export const onRequest = defineMiddleware(async (ctx, next) => {
   const url = new URL(ctx.request.url);
+  // www.genpm.net → genpm.net (una sola URL canónica por página).
+  if (url.hostname.startsWith('www.')) {
+    return Response.redirect(`https://${url.hostname.slice(4)}${url.pathname}${url.search}`, 301);
+  }
   // Tras `ctx.rewrite()` el middleware se vuelve a ejecutar con la ruta sin prefijo: se conserva el idioma ya resuelto.
   if (ctx.locals.t) return next();
   const { locale, path } = splitLocale(url.pathname);
