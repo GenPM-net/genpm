@@ -1429,12 +1429,23 @@ button {
 .pk-panel code {
   font-size: 0.9em;
 }
+/* Markdown renderizado (README, reglas, docs, legales): texto en sans como el resto de la web; mono solo en código. */
 .md {
-  font-family: var(--f-mono);
-  font-size: 12.5px;
-  line-height: 1.8;
+  font-family: var(--f-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+/* README y reglas del paquete: en una caja. Docs y legales (.dbody) van sin caja. */
+.md:not(.dbody) {
   border: 1px solid var(--line);
   border-radius: var(--r);
+  padding: 4px 20px;
+  overflow-x: auto;
+}
+.md pre {
+  font-size: 12.5px;
+  line-height: 1.75;
   overflow-x: auto;
 }
 .md pre {

@@ -393,6 +393,7 @@ export interface MessageParams {
   "web.search.hasMcp": undefined;
   "web.search.verifiedOnly": undefined;
   "web.search.keyword": undefined;
+  "web.search.anyKeyword": undefined;
   "web.search.sort": undefined;
   "web.search.relevance": undefined;
   "web.search.installs": undefined;

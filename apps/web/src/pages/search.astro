@@ -44,7 +44,7 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=30, stale-while-rev
           <input type="hidden" name="q" value={q} />
           <fieldset><legend class="k">{t.t('web.search.layers')}</legend><label><input type="checkbox" name="mcp" value="1" checked={mcp} />{t.t('web.search.hasMcp')}</label></fieldset>
           <fieldset><legend class="k">{t.t('web.search.keyword')}</legend>
-            <label><input type="radio" name="k" value="" checked={!k} />—</label>
+            <label><input type="radio" name="k" value="" checked={!k} />{t.t('web.search.anyKeyword')}</label>
             {keywords.map((kw) => <label><input type="radio" name="k" value={kw} checked={k === kw} />{kw}</label>)}
           </fieldset>
           <input type="hidden" name="sort" value={sort} />

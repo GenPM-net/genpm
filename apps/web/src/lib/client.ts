@@ -97,7 +97,10 @@ export function initSite() {
       for (const x of run.parentElement?.querySelectorAll('[data-run]') ?? [])
         x.setAttribute('aria-pressed', x === run ? 'true' : 'false');
       const code = document.querySelector<HTMLElement>('code[data-pkg]');
-      if (code) code.textContent = [run.dataset.run, 'genpm add', code.dataset.pkg].filter(Boolean).join(' ');
+      if (code)
+        code.textContent = run.dataset.run
+          ? `${run.dataset.run} @genpm-net/cli add ${code.dataset.pkg}`
+          : `genpm add ${code.dataset.pkg}`;
     }
     const os = el.closest<HTMLElement>('[data-os]');
     if (os) selectOs(os.closest('[data-os-box]'), os.dataset.os!);
