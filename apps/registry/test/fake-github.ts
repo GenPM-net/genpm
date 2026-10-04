@@ -4,6 +4,8 @@ export type FakeFile = string | { content: string; mode?: number; symlink?: stri
 export type FakeRepo = {
   id: number;
   private?: boolean;
+  archived?: boolean;
+  description?: string;
   license?: string;
   tags: Record<string, string>;
   branches?: Record<string, string>;
@@ -124,6 +126,26 @@ export class FakeGitHub {
           );
         return json({ id: user.id, login: user.login, avatar_url: user.avatar_url ?? null, email: user.email ?? null });
       }
+      // Listados de repos de un usuario u org (asistente de publicación web).
+      if ((parts[0] === 'users' || parts[0] === 'orgs') && parts[2] === 'repos') {
+        const owner = parts[1]!.toLowerCase();
+        return json(
+          [...this.repos.entries()]
+            .filter(([k]) => k.startsWith(`${owner}/`))
+            .map(([k, r]) => ({
+              name: k.split('/')[1],
+              full_name: k,
+              owner: { login: parts[1] },
+              description: r.description ?? null,
+              private: !!r.private,
+              fork: false,
+              archived: !!r.archived,
+              default_branch: 'main',
+              pushed_at: '2026-10-01T00:00:00Z',
+              html_url: `https://github.com/${k}`,
+            })),
+        );
+      }
       if (parts[0] !== 'repos') return notFound();
       const repo = this.repos.get(`${parts[1]}/${parts[2]}`.toLowerCase());
       if (!repo) return notFound();
@@ -136,7 +158,9 @@ export class FakeGitHub {
           private: !!repo.private,
           owner: { login: parts[1] },
           default_branch: 'main',
+          description: repo.description ?? null,
         });
+      if (rest[0] === 'tags') return json(Object.keys(repo.tags).map((name) => ({ name })));
       if (rest[0] === 'git' && rest[1] === 'ref' && rest[2] === 'tags') {
         const ref = rest.slice(3).join('/');
         return repo.tags[ref]

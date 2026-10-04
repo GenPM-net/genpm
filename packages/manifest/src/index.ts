@@ -9,4 +9,5 @@ export * from './schema.js';
 export * from './signature.js';
 export * from './spec.js';
 export * from './tar.js';
+export * from './templates.js';
 export * from './validators.js';

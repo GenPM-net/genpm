@@ -4,6 +4,7 @@
 import { lstat, readdir, readFile } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
 import {
+  agentsTemplate,
   checkRef,
   createFileFilter,
   DEFAULTS,
@@ -143,27 +144,7 @@ async function gitTopLevel(dir: string): Promise<string> {
 
 export type InitAnswers = { n: string; v?: string; s?: string; d: string; k?: string[]; l?: string };
 
-/** Plantilla de reglas para autores (manifest-spec §11). Texto para LLMs: inglés. */
-export function agentsTemplate(name: string): string {
-  return `# ${name} — rules for agents
-
-## Purpose
-What this module does in one or two sentences, and what it deliberately does not do.
-
-## Module map
-- \`index.ts\` — public API. Import only from here.
-
-## Integration (do this after installing)
-1. Configure the env vars listed in .env.example.
-2. Wire the module into the app (routes, middleware, migrations).
-
-## Conventions
-- Keep the public API in \`index.ts\`; internal files may change between versions.
-
-## Don't
-- Don't hardcode secrets; read them from the environment.
-`;
-}
+export { agentsTemplate };
 
 export const GENPMIGNORE_TEMPLATE = `# Files that GenPM never injects (gitignore syntax, relative to "i")
 tests/

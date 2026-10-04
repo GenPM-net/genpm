@@ -98,6 +98,7 @@ export class GitHub {
       owner: { login: string };
       default_branch: string;
       html_url: string;
+      description: string | null;
     }>(`/repos/${o}/${r}`);
   }
 

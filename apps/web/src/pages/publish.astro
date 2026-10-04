@@ -1,42 +1,86 @@
 ---
-// /publish (web-ui-spec §5.7): guía en 4 pasos, constructor de manifiesto validado en el navegador y checklist.
-import ManifestBuilder from '../components/islands/ManifestBuilder.tsx';
+// /publish (web-ui-spec §5.7): asistente web (elige repo → qué le falta → genpm.json editable → publicar) y, como
+// alternativa, los 4 pasos del CLI.
+import PublishWizard from '../components/islands/PublishWizard.tsx';
 import Base from '../layouts/Base.astro';
+import { href } from '../lib/i18n.js';
 
-const { t } = Astro.locals;
+const { t, locale, session, path } = Astro.locals;
 const keys = [
+  'reposTitle',
+  'reposFilter',
+  'reposEmpty',
+  'loading',
+  'publishedAs',
+  'back',
+  'recheck',
+  'formTitle',
   'fName',
   'fVersion',
   'fSummary',
   'fDest',
   'fLicense',
   'fKeywords',
-  'fDeps',
-  'fNpm',
-  'fEnv',
-  'fMcp',
-  'copyJson',
-  'valid',
-  'rulesTokens',
+  'hintName',
+  'hintDest',
+  'listTitle',
+  'commitHint',
+  'itemManifest',
+  'manifestMissing',
+  'manifestDiffers',
+  'manifestInvalid',
+  'manifestOk',
+  'actionCreate',
+  'actionUpdate',
+  'copiedOpen',
+  'itemRules',
+  'rulesOk',
+  'rulesMissing',
+  'itemLicense',
+  'licenseMissing',
+  'actionLicense',
+  'itemTag',
+  'tagMissing',
+  'tagWaiting',
+  'actionTag',
+  'versionTaken',
+  'actionBump',
+  'done',
+  'optional',
+  'publish',
+  'publishing',
+  'notReady',
+  'success',
+  'viewPackage',
+  'failed',
+  'formIssues',
 ] as const;
-const labels = Object.fromEntries(keys.map((k) => [k, t.raw(`web.publish.${k}`)])) as Record<string, string>;
-labels['issues'] = t.t('web.publish.issues', { count: 7 }).replace('7', '{count}');
-labels['issuesOne'] = t.t('web.publish.issues', { count: 1 });
-labels['rulesCount'] = t.t('web.publish.rulesCount', { count: '{count}' });
-labels['copied'] = t.t('web.common.copied');
-Astro.response.headers.set('Cache-Control', 'public, max-age=3600');
+// Las plantillas conservan sus {marcadores}: la isla los rellena en el navegador.
+const keep = Object.fromEntries(
+  ['owners', 'name', 'version', 'tokens', 'tag', 'detail', 'message', 'scope'].map((p) => [p, `{${p}}`]),
+);
+const labels = Object.fromEntries(keys.map((k) => [k, t.raw(`web.publish.wizard.${k}`, keep)]));
+Astro.response.headers.set('Cache-Control', session ? 'private, no-store' : 'public, max-age=3600');
 ---
 <Base title={t.t('web.nav.publish')} description={t.t('web.publish.lede')} nav="publish">
   <div class="wrap">
     <div class="phead"><span class="eyebrow" style="justify-self:start"><i></i>{t.t('web.publish.eyebrow')}</span><h1>{t.t('web.publish.title')}</h1><p>{t.t('web.publish.lede')}</p></div>
-    <div class="steps4">
-      <div><span class="no">1</span><h2 class="h3">{t.t('web.publish.s1')}</h2><p>{t.t('web.publish.s1Text')}</p><code class="chip">genpm init</code></div>
-      <div><span class="no">2</span><h2 class="h3">{t.t('web.publish.s2')}</h2><p>{t.t('web.publish.s2Text')}</p><code class="chip">AGENTS.md</code></div>
-      <div><span class="no">3</span><h2 class="h3">{t.t('web.publish.s3')}</h2><p>{t.t('web.publish.s3Text')}</p><code class="chip">git tag v1.0.0 && git push --tags</code></div>
-      <div><span class="no">4</span><h2 class="h3">{t.t('web.publish.s4')}</h2><p>{t.t('web.publish.s4Text')}</p><code class="chip">genpm publish</code></div>
-    </div>
-    <section class="sec" style="margin-top:56px"><div class="sec-h"><div><div class="k">{t.t('web.publish.builderKicker')}</div><h2>{t.t('web.publish.builderTitle')}</h2><p>{t.t('web.publish.builderText')}</p></div></div>
-      <ManifestBuilder client:load labels={labels as never} />
+    {session ? (
+      <PublishWizard client:load labels={labels as never} locale={locale} />
+    ) : (
+      <div class="empty wz-signin">
+        <h2 class="h3">{t.t('web.publish.wizard.signInTitle')}</h2>
+        <p>{t.t('web.publish.wizard.signInText')}</p>
+        <a class="btn primary" href={`${href(locale, '/login')}?next=${encodeURIComponent(path)}`}>{t.t('web.publish.wizard.signInCta')}</a>
+      </div>
+    )}
+    <section class="sec" style="margin-top:56px"><div class="sec-h"><div><div class="k">{t.t('web.publish.cliKicker')}</div><h2>{t.t('web.publish.cliTitle')}</h2></div></div>
+      <div class="steps4">
+        <div><span class="no">1</span><h3 class="h3">{t.t('web.publish.s1')}</h3><p>{t.t('web.publish.s1Text')}</p><code class="chip">genpm init</code></div>
+        <div><span class="no">2</span><h3 class="h3">{t.t('web.publish.s2')}</h3><p>{t.t('web.publish.s2Text')}</p><code class="chip">AGENTS.md</code></div>
+        <div><span class="no">3</span><h3 class="h3">{t.t('web.publish.s3')}</h3><p>{t.t('web.publish.s3Text')}</p><code class="chip">git tag v1.0.0 && git push --tags</code></div>
+        <div><span class="no">4</span><h3 class="h3">{t.t('web.publish.s4')}</h3><p>{t.t('web.publish.s4Text')}</p><code class="chip">genpm publish</code></div>
+      </div>
     </section>
     <section class="sec"><div class="sec-h"><div><div class="k">{t.t('web.publish.checklistKicker')}</div><h2>{t.t('web.publish.checklistTitle')}</h2></div></div>
       <ul class="checklist"><li>{t.t('web.publish.c1')}</li><li>{t.t('web.publish.c2')}</li><li>{t.t('web.publish.c3')}</li><li>{t.t('web.publish.c4')}</li><li>{t.t('web.publish.c5')}</li></ul>
