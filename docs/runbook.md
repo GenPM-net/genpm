@@ -153,17 +153,19 @@ Post-mortem público y sin culpables para toda incidencia alta o crítica.
 
 | Entorno | Web | API | D1 | Clave de firma |
 |---|---|---|---|---|
-| staging | https://genpm-web-staging.yohangelr.workers.dev | https://genpm-registry-staging.yohangelr.workers.dev | `genpm-registry-staging` | `s1` (solo staging) |
+| staging | https://staging.genpm.net (noindex) | https://api.staging.genpm.net | `genpm-registry-staging` | `s1` (solo staging) |
 | producción | https://genpm.net | https://api.genpm.net | `genpm-registry` | `k1` activa, `k2` siguiente |
 
-Staging vive en `workers.dev` (sin indexar: `robots.txt` y `X-Robots-Tag: noindex`) hasta que la zona `genpm.net` esté
-activa en Cloudflare. La zona ya está creada y espera a que el registrador (Piensa) apunte los nameservers a
-`malavika.ns.cloudflare.com` y `miles.ns.cloudflare.com`. Cuando esté activa: en ambos `wrangler.jsonc`, sustituir
-`workers_dev`/`routes: []` del entorno staging por los `custom_domain` de `staging.genpm.net` y `api.staging.genpm.net`.
+La zona `genpm.net` está en Cloudflare (plan Free) desde el 2026-10-04; el correo sigue en Piensa (`mx.buzondecorreo.com`)
+y sus registros MX/SPF/CNAME se gestionan ahora en el DNS de Cloudflare. La web de producción no se despliega hasta que
+`owner.json` tenga los datos del titular (`scripts/check-legal.mjs`); mientras, `genpm.net` sigue apuntando al hosting
+de Piensa. Al desplegarla hay que borrar antes los registros A de `genpm.net` y `www` (el custom domain del Worker los
+sustituye).
 
 ```bash
-pnpm --filter @genpm/registry exec wrangler deploy --env staging   # API
-pnpm --filter @genpm/web deploy:staging                            # web
-GENPM_REGISTRY=https://genpm-registry-staging.yohangelr.workers.dev \
+pnpm --filter @genpm/registry exec wrangler deploy [--env staging]   # API
+pnpm --filter @genpm/web deploy:staging                              # web staging
+pnpm --filter @genpm/web deploy                                      # web producción (exige owner.json completo)
+GENPM_REGISTRY=https://api.staging.genpm.net \
 GENPM_PUBLIC_KEYS='{"s1":"HT1CBlCFIllWWGS8QUvAcEb_SMUL66MvnUfuOc0m6bc"}' genpm search db   # CLI contra staging
 ```

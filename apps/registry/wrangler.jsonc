@@ -40,7 +40,7 @@
       "name": "genpm-registry-staging",
       "vars": {
         "ENVIRONMENT": "staging",
-        "WEB_ORIGIN": "https://genpm-web-staging.yohangelr.workers.dev",
+        "WEB_ORIGIN": "https://staging.genpm.net",
         "SIGNING_KEY_ID": "s1"
       },
       "d1_databases": [
@@ -63,10 +63,7 @@
         { "name": "RL_EXCHANGE", "namespace_id": "2004", "simple": { "limit": 10, "period": 60 } }
       ],
       "triggers": { "crons": ["0 * * * *", "15 3 * * *", "0 4 * * SUN"] },
-      // Mientras genpm.net no esté en Cloudflare (DNS en Piensa), staging vive en workers.dev. Al mover la zona:
-      // "routes": [{ "pattern": "api.staging.genpm.net", "custom_domain": true }] y WEB_ORIGIN → staging.genpm.net.
-      "workers_dev": true,
-      "routes": []
+      "routes": [{ "pattern": "api.staging.genpm.net", "custom_domain": true }]
     }
   }
 }
