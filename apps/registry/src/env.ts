@@ -14,6 +14,8 @@ export type Env = {
   /** `1` = modo solo lectura por incidente (runbook §3). */
   READ_ONLY?: string;
   WEB_ORIGIN: string;
+  /** Clave pública de IndexNow (vars de wrangler; vacía = desactivado). */
+  INDEXNOW_KEY?: string;
   /** Pepper del HMAC de tokens (security §5). */
   TOKEN_PEPPER?: string;
   /** Sal diaria para el hash de IPs. */

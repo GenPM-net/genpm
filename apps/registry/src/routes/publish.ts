@@ -35,6 +35,7 @@ import { newId } from '../ids.js';
 import { requireAuth } from '../middleware/auth.js';
 import { clientIp, rateLimit } from '../middleware/rate-limit.js';
 import { GitHub, parseGithubRepo } from '../services/github.js';
+import { indexNow } from '../services/indexnow.js';
 import { sign } from '../services/signing.js';
 import { hashIp } from '../services/tokens.js';
 import { repoOf } from './util.js';
@@ -452,6 +453,8 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
 
   // 12 · purga de caché + escaneo profundo en cola
   c.executionCtx.waitUntil(purgePackage(c, m.n));
+  // Paquete nuevo o versión nueva: que los buscadores (y los agentes que buscan en la web) lo vean ya.
+  c.executionCtx.waitUntil(indexNow(c.env, [`/p/${m.n}`, `/p/${m.n}.md`, '/llms.txt', '/search']));
   if (c.env.SCAN_QUEUE) c.executionCtx.waitUntil(c.env.SCAN_QUEUE.send({ versionId: verId, name: m.n, version: m.v }));
 
   return c.json(

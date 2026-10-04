@@ -14,6 +14,25 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
   if (url.hostname.startsWith('www.')) {
     return Response.redirect(`https://${url.hostname.slice(4)}${url.pathname}${url.search}`, 301);
   }
+  // Agentes de IA que piden Markdown (`Accept: text/markdown` antes que HTML): la versión en texto de la misma página.
+  const accept = ctx.request.headers.get('accept') ?? '';
+  const wantsMd = accept.indexOf('text/markdown');
+  const wantsHtml = accept.indexOf('text/html');
+  if (ctx.request.method === 'GET' && wantsMd !== -1 && (wantsHtml === -1 || wantsMd < wantsHtml)) {
+    const p = url.pathname.replace(/\/$/, '');
+    const target = p === '' ? '/llms.txt' : /^\/(p\/@[^/]+\/[^/.]+|docs\/[a-z0-9-]+)$/.test(p) ? `${p}.md` : null;
+    if (target) {
+      const res = await ctx.rewrite(target);
+      if (res.ok)
+        return new Response(res.body, {
+          headers: {
+            'content-type': 'text/markdown; charset=utf-8',
+            vary: 'Accept',
+            'cache-control': 'public, max-age=300',
+          },
+        });
+    }
+  }
   // Tras `ctx.rewrite()` el middleware se vuelve a ejecutar con la ruta sin prefijo: se conserva el idioma ya resuelto.
   if (ctx.locals.t) return next();
   const { locale, path } = splitLocale(url.pathname);
