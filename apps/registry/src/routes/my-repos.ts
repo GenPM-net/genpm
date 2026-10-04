@@ -116,7 +116,13 @@ export const myRepos = new Hono<AppEnv>()
     if (!sha) throw httpError('E_REF_NOT_FOUND', { ref: branch, repo: repoUrl });
 
     // genpm.json de la rama principal: falta, no es válido o es válido.
-    const raw = await gh.raw(owner, name, sha, 'genpm.json', 64 * 1024);
+    // Lo que no depende del genpm.json se pide en paralelo (cada llamada a GitHub suma ~150-300 ms).
+    const [raw, license, tagRows, agentsDefault] = await Promise.all([
+      gh.raw(owner, name, sha, 'genpm.json', 64 * 1024),
+      gh.license(owner, name),
+      gh.json<Array<{ name: string }>>(`/repos/${owner}/${name}/tags?per_page=30`),
+      gh.raw(owner, name, sha, 'AGENTS.md', LIMITS.contextBytes),
+    ]);
     let manifest: {
       status: 'missing' | 'invalid' | 'ok';
       data?: unknown;
@@ -139,14 +145,13 @@ export const myRepos = new Hono<AppEnv>()
     }
     const data = manifest.status === 'ok' ? (manifest.data as Record<string, unknown>) : null;
     const rulesPath = typeof data?.['x'] === 'string' ? (data['x'] as string) : 'AGENTS.md';
-    const rulesRaw = await gh.raw(owner, name, sha, rulesPath, LIMITS.contextBytes);
+    const rulesRaw =
+      rulesPath === 'AGENTS.md' ? agentsDefault : await gh.raw(owner, name, sha, rulesPath, LIMITS.contextBytes);
     const rules =
       rulesRaw.status === 'ok'
         ? { path: rulesPath, status: 'ok' as const, tokens: estimateTokens(rulesRaw.text) }
         : { path: rulesPath, status: rulesRaw.status };
-    const license = await gh.license(owner, name);
-    const tagRows = (await gh.json<Array<{ name: string }>>(`/repos/${owner}/${name}/tags?per_page=30`)) ?? [];
-    const tags = tagRows.map((t) => t.name);
+    const tags = (tagRows ?? []).map((t) => t.name);
 
     const pkgName = typeof data?.['n'] === 'string' ? (data['n'] as string) : suggestName(match.login, name);
     const pkg = await repoOf(c).packageByName(pkgName);
