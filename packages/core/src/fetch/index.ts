@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { gunzip, readTar, relativeToInclude, SHA_RE, tarGlobalComment } from '@genpm/manifest';
+import { checkRelativePath, gunzip, readTar, relativeToInclude, SHA_RE, tarGlobalComment } from '@genpm/manifest';
 import { fail } from '../errors.js';
 import { exists } from '../fs/io.js';
 import { type GitOptions, gitAtLeast, gitVersion, runGit } from './git.js';
@@ -117,6 +117,18 @@ async function viaGit(tmp: string, r: string, c: string, i: string, opts: FetchO
     await g(['sparse-checkout', 'set', '--no-cone', `/${i}/`]);
   }
   await g(['fetch', '-q', '--no-tags', '--depth', '1', ...(sparse ? ['--filter=blob:none'] : []), 'origin', c]);
+  // INV-3 antes de tocar el disco: un nombre inseguro (reservado de Windows, NFD, punto final…) se rechaza aquí con
+  // E_PATH_UNSAFE en todas las plataformas, en vez de dejar que el checkout falle (Windows) o lo escriba (macOS/Linux).
+  const names = (
+    await g(['ls-tree', '-r', '-z', '--name-only', '--full-tree', 'FETCH_HEAD', ...(sparse ? ['--', i] : [])])
+  ).stdout
+    .toString('utf8')
+    .split('\0')
+    .filter(Boolean);
+  for (const name of names) {
+    const problem = checkRelativePath(name);
+    if (problem) throw fail('E_PATH_UNSAFE', { path: name, reason: problem });
+  }
   await g(['checkout', '-q', '--detach', 'FETCH_HEAD']);
   const head = (await g(['rev-parse', 'HEAD'])).stdout.toString().trim();
   if (head !== c) throw fail('E_INTEGRITY', { name: r, detail: `HEAD ${head.slice(0, 12)} != ${c.slice(0, 12)}` });
