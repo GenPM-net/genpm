@@ -114,7 +114,10 @@ Los manifiestos se firman con Ed25519 (`security.md` §4.3). El cliente lleva fi
 Después del paso 2 (todo re-firmado), firma la lista de revocación **offline** con la clave raíz y publícala:
 
 ```bash
-node scripts/sign-revocation.mjs --root /media/offline/root.private --revoke k1 --previous ultima-lista.json
+# La clave raíz vive en el Llavero de macOS del fundador (entrada genpm-signing-root.private), nunca en disco:
+security find-generic-password -a genpm -s genpm-signing-root.private -w > /tmp/root.private
+node scripts/sign-revocation.mjs --root /tmp/root.private --revoke k1 --previous ultima-lista.json
+rm -P /tmp/root.private
 # → imprime la lista firmada y el INSERT para registry_meta
 npx wrangler d1 execute genpm-registry --remote --command "<INSERT impreso>"
 curl -s https://api.genpm.net/v1/keys | jq .revocation     # la lista nueva
