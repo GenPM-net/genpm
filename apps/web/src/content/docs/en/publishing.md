@@ -5,6 +5,10 @@ order: 20
 ---
 Your code stays on GitHub; the registry stores the manifest and the commit it points to.
 
+**From the web, no terminal:** sign in at [genpm.net/publish](/publish), pick one of your repositories and GenPM tells you what it needs. It generates the `genpm.json` for you, and every fix opens GitHub with the file ready to commit (GenPM never asks for write access). When everything is green, you publish from the same page.
+
+**From the terminal:**
+
 ```bash
 genpm init          # creates genpm.json, AGENTS.md and .genpmignore
 genpm validate      # same scanner as the registry

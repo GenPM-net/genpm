@@ -275,17 +275,60 @@ button {
   border-bottom: 1px solid var(--line);
   background: var(--paper);
 }
-.sheet .wrap {
+/* El menú móvil vive dentro de .hdr: anula el `.hdr .wrap` (fila flex de 56 px) que lo encogía y lo superponía al
+   contenido, y lo despliega como panel bajo la cabecera con fondo propio. */
+.hdr .sheet .wrap {
   display: grid;
-  padding-block: 8px 16px;
+  height: auto;
+  gap: 0;
+  align-items: stretch;
+  padding-block: 4px 16px;
 }
-.sheet a {
-  padding: 12px 0;
+.sheet {
+  max-height: calc(100dvh - 56px);
+  overflow-y: auto;
+}
+.sheet .wrap > a {
+  padding: 14px 0;
   border-bottom: 1px solid var(--line);
   font-size: 16px;
 }
-.sheet a:last-child {
-  border-bottom: 0;
+.sheet-tools {
+  display: grid;
+  gap: 10px;
+  padding-top: 14px;
+}
+.sheet-tools .k {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.sheet-langs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+}
+.sheet-langs a {
+  display: block;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  font-size: 14px;
+}
+.sheet-langs a[aria-current="true"] {
+  border-color: var(--ink);
+  font-weight: 600;
+}
+.sheet-tools .btn {
+  justify-self: start;
 }
 
 /* ——— Botones y piezas ——— */

@@ -19,7 +19,7 @@
     "menu": "菜单",
     "main": "主导航",
     "language": "语言",
-    "theme": "切换深色模式",
+    "theme": "浅色 / 深色主题",
     "beta": "测试版",
     "suggestLang": "此页面也提供{language}版本。",
     "switch": "切换",
@@ -97,7 +97,7 @@
     "featuredKicker": "精选",
     "featuredTitle": "从 @core 开始",
     "trendingKicker": "热门",
-    "trendingTitle": "安装量",
+    "trendingTitle": "安装最多",
     "howKicker": "工作原理",
     "howTitle": "搜索。检查。注入。",
     "step1": "搜索",
@@ -124,7 +124,7 @@
     "pubCta": "发布包",
     "statPackages": "个包",
     "statInstalls": "次安装",
-    "statPublishers": "位发布者",
+    "statPublishers": "发布者",
     "empty": "还没有包。来发布第一个吧。",
     "termInstalled": "已安装",
     "termAsks": "（会先询问）",
@@ -485,7 +485,27 @@
     "errorsTitle": "错误代码",
     "errorsSection": "参考",
     "errorsIntro": "每个错误都有固定的代码、消息和解决方法。代码永远不会被翻译。",
-    "fixLabel": "解决方法"
+    "fixLabel": "解决方法",
+    "pages": {
+      "install": "安装",
+      "quickstart": "快速开始",
+      "how-it-works": "GenPM 的工作原理",
+      "using-packages": "使用包",
+      "context": "上下文与 IDE",
+      "lockfile": "锁文件",
+      "publishing": "你的第一个包",
+      "manifest": "genpm.json 参考",
+      "writing-rules": "编写 AI 规则",
+      "mcp": "MCP 服务器",
+      "security": "安全模型"
+    },
+    "sections": {
+      "gettingStarted": "入门",
+      "usingPackages": "使用包",
+      "publishing": "发布",
+      "mcpServer": "MCP 服务器",
+      "security": "安全"
+    }
   },
   "legal": {
     "binding": "具有法律约束力的是西班牙语版本。",

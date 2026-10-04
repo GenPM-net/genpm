@@ -112,6 +112,15 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
           <a href={href(locale, '/mcp')}>{t.t('web.nav.mcp')}</a>
           <a href={href(locale, '/publish')}>{t.t('web.nav.publish')}</a>
           <a href={href(locale, session ? '/dashboard' : '/login')}>{session ? session.handle : t.t('web.nav.signIn')}</a>
+          <div class="sheet-tools">
+            <span class="k"><Ico name="globe" style="width:14px;height:14px" />{t.t('web.nav.language')}</span>
+            <ul class="sheet-langs">
+              {LOCALES.map((l) => (
+                <li><a href={href(l, path)} lang={l} hreflang={l} aria-current={l === locale ? 'true' : undefined}>{langName(l)}</a></li>
+              ))}
+            </ul>
+            <button class="btn sm" type="button" data-theme-toggle><Ico name="moon" style="width:15px;height:15px" />{t.t('web.nav.theme')}</button>
+          </div>
         </div>
       </div>
     </header>

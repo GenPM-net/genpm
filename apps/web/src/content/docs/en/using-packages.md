@@ -31,7 +31,7 @@ genpm list
 genpm remove @core/auth
 ```
 
-`list` compares every injected file with its recorded SHA-256 (drift). `remove` refuses to delete code you changed (`E_DRIFT`): use `--keep-code` to keep it or `--force` to delete it anyway. A package required by another one cannot be removed first (`E_REQUIRED_BY`).
+`list` compares every injected file with its recorded SHA-256 (drift). `remove` refuses to delete code you changed (`E_DRIFT`): use `--keep-code` to keep it or `--force` to delete it anyway. A package required by another one cannot be removed first (`E_REQUIRED_BY`). Removing a package also removes its MCP servers and any file GenPM created that ends up empty.
 
 ## outdated and audit
 
@@ -44,4 +44,4 @@ genpm audit   # add it to your CI as: npx genpm audit
 
 ## JSON output
 
-Every command accepts `--json` (one line, English, no prompts). Without a TTY, any unanswered question fails with `E_CONFIRM_REQUIRED` (exit 2).
+Every command accepts `--json` (one line, English, no prompts). Without a TTY, any unanswered question fails with `E_CONFIRM_REQUIRED` (exit 2) and nothing is written.

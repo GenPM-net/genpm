@@ -19,7 +19,7 @@
     "menu": "Menu",
     "main": "Principal",
     "language": "Idioma",
-    "theme": "Alternar modo escuro",
+    "theme": "Tema claro / escuro",
     "beta": "beta",
     "suggestLang": "Esta página também está disponível em {language}.",
     "switch": "Trocar",
@@ -43,7 +43,7 @@
     "privacy": "Privacidade",
     "policy": "Política de pacotes",
     "report": "Denunciar abuso",
-    "status": "Todos os sistemas normais",
+    "status": "Todos os sistemas funcionando",
     "beta": "Beta pública · Tradução automática (beta)",
     "legalNotice": "Aviso legal",
     "cookies": "Cookies"
@@ -97,7 +97,7 @@
     "featuredKicker": "Destaques",
     "featuredTitle": "Comece com @core",
     "trendingKicker": "Em alta",
-    "trendingTitle": "Instalações",
+    "trendingTitle": "Mais instalados",
     "howKicker": "Como funciona",
     "howTitle": "Pesquise. Inspecione. Injete.",
     "step1": "Pesquise",
@@ -485,7 +485,27 @@
     "errorsTitle": "Códigos de erro",
     "errorsSection": "Referência",
     "errorsIntro": "Cada erro tem um código estável, uma mensagem e uma solução. Os códigos nunca são traduzidos.",
-    "fixLabel": "Solução"
+    "fixLabel": "Solução",
+    "pages": {
+      "install": "Instalação",
+      "quickstart": "Início rápido",
+      "how-it-works": "Como o GenPM funciona",
+      "using-packages": "Usando pacotes",
+      "context": "Contexto e IDEs",
+      "lockfile": "Lockfile",
+      "publishing": "Seu primeiro pacote",
+      "manifest": "Referência do genpm.json",
+      "writing-rules": "Escrevendo regras de IA",
+      "mcp": "Servidor MCP",
+      "security": "Modelo de segurança"
+    },
+    "sections": {
+      "gettingStarted": "Primeiros passos",
+      "usingPackages": "Usando pacotes",
+      "publishing": "Publicação",
+      "mcpServer": "Servidor MCP",
+      "security": "Segurança"
+    }
   },
   "legal": {
     "binding": "A versão em espanhol é a juridicamente vinculante.",

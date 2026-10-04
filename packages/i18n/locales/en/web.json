@@ -19,7 +19,7 @@
     "menu": "Menu",
     "main": "Main",
     "language": "Language",
-    "theme": "Toggle dark mode",
+    "theme": "Light / dark theme",
     "beta": "beta",
     "suggestLang": "This page is also available in {language}.",
     "switch": "Switch",
@@ -44,7 +44,7 @@
     "policy": "Package policy",
     "report": "Report abuse",
     "status": "All systems normal",
-    "beta": "Public beta · Machine translation (beta)",
+    "beta": "Public beta",
     "legalNotice": "Legal notice",
     "cookies": "Cookies"
   },
@@ -97,7 +97,7 @@
     "featuredKicker": "Featured",
     "featuredTitle": "Start with @core",
     "trendingKicker": "Trending",
-    "trendingTitle": "Installs",
+    "trendingTitle": "Most installed",
     "howKicker": "How it works",
     "howTitle": "Search. Inspect. Inject.",
     "step1": "Search",
@@ -485,7 +485,27 @@
     "errorsTitle": "Error codes",
     "errorsSection": "Reference",
     "errorsIntro": "Every error has a stable code, a message and a fix. Codes are never translated.",
-    "fixLabel": "Fix"
+    "fixLabel": "Fix",
+    "pages": {
+      "install": "Install",
+      "quickstart": "Quickstart",
+      "how-it-works": "How GenPM works",
+      "using-packages": "Using packages",
+      "context": "Context & IDEs",
+      "lockfile": "Lockfile",
+      "publishing": "Your first package",
+      "manifest": "genpm.json reference",
+      "writing-rules": "Writing AI rules",
+      "mcp": "MCP server",
+      "security": "Security model"
+    },
+    "sections": {
+      "gettingStarted": "Getting started",
+      "usingPackages": "Using packages",
+      "publishing": "Publishing",
+      "mcpServer": "MCP server",
+      "security": "Security"
+    }
   },
   "legal": {
     "binding": "The Spanish version is the legally binding one.",

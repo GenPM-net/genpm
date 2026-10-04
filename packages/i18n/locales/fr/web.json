@@ -19,7 +19,7 @@
     "menu": "Menu",
     "main": "Principal",
     "language": "Langue",
-    "theme": "Basculer le mode sombre",
+    "theme": "Thème clair / sombre",
     "beta": "bêta",
     "suggestLang": "Cette page est aussi disponible en {language}.",
     "switch": "Changer",
@@ -97,7 +97,7 @@
     "featuredKicker": "À la une",
     "featuredTitle": "Commencez avec @core",
     "trendingKicker": "Tendances",
-    "trendingTitle": "Installations",
+    "trendingTitle": "Les plus installés",
     "howKicker": "Fonctionnement",
     "howTitle": "Recherchez. Inspectez. Injectez.",
     "step1": "Recherchez",
@@ -485,7 +485,27 @@
     "errorsTitle": "Codes d’erreur",
     "errorsSection": "Référence",
     "errorsIntro": "Chaque erreur a un code stable, un message et une solution. Les codes ne sont jamais traduits.",
-    "fixLabel": "Solution"
+    "fixLabel": "Solution",
+    "pages": {
+      "install": "Installation",
+      "quickstart": "Démarrage rapide",
+      "how-it-works": "Fonctionnement de GenPM",
+      "using-packages": "Utiliser des paquets",
+      "context": "Contexte et IDE",
+      "lockfile": "Lockfile",
+      "publishing": "Votre premier paquet",
+      "manifest": "Référence genpm.json",
+      "writing-rules": "Écrire des règles IA",
+      "mcp": "Serveur MCP",
+      "security": "Modèle de sécurité"
+    },
+    "sections": {
+      "gettingStarted": "Premiers pas",
+      "usingPackages": "Utiliser des paquets",
+      "publishing": "Publication",
+      "mcpServer": "Serveur MCP",
+      "security": "Sécurité"
+    }
   },
   "legal": {
     "binding": "Seule la version espagnole fait foi juridiquement.",

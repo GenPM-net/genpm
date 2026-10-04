@@ -54,12 +54,29 @@ function errorsPage(t: Translator): DocPage {
   };
 }
 
+const SECTION_KEYS: Record<string, string> = {
+  'Getting started': 'gettingStarted',
+  'Using packages': 'usingPackages',
+  Publishing: 'publishing',
+  'MCP server': 'mcpServer',
+  Security: 'security',
+};
+
 export function docPages(locale: string, t: Translator = enT): DocPage[] {
   const en = [...ALL.filter((d) => d.locale === 'en'), errorsPage(t)];
   return en
     .map((d) => {
       const tr = ALL.find((x) => x.locale === locale && x.slug === d.slug);
-      return tr ?? { ...d, translated: locale === 'en' };
+      if (tr) return tr;
+      // Página sin traducir: el cuerpo sale en inglés (con aviso), pero título y sección van en el idioma del lector
+      // para que el menú de la documentación no mezcle idiomas.
+      const sectionKey = SECTION_KEYS[d.section];
+      return {
+        ...d,
+        title: d.slug === 'errors' ? d.title : t.raw(`web.docs.pages.${d.slug}`),
+        section: sectionKey ? t.raw(`web.docs.sections.${sectionKey}`) : d.section,
+        translated: locale === 'en',
+      };
     })
     .sort((a, b) => a.order - b.order);
 }

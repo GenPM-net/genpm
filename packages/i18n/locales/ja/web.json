@@ -19,7 +19,7 @@
     "menu": "メニュー",
     "main": "メイン",
     "language": "言語",
-    "theme": "ダークモードを切り替え",
+    "theme": "ライト / ダークテーマ",
     "beta": "ベータ",
     "suggestLang": "このページは{language}でもご覧いただけます。",
     "switch": "切り替える",
@@ -97,7 +97,7 @@
     "featuredKicker": "注目",
     "featuredTitle": "@core から始めよう",
     "trendingKicker": "トレンド",
-    "trendingTitle": "インストール数",
+    "trendingTitle": "インストール数上位",
     "howKicker": "しくみ",
     "howTitle": "検索。確認。組み込み。",
     "step1": "検索",
@@ -485,7 +485,27 @@
     "errorsTitle": "エラーコード",
     "errorsSection": "リファレンス",
     "errorsIntro": "すべてのエラーには、固定のコード、メッセージ、対処方法があります。コードは翻訳されません。",
-    "fixLabel": "対処"
+    "fixLabel": "対処",
+    "pages": {
+      "install": "インストール",
+      "quickstart": "クイックスタート",
+      "how-it-works": "GenPM の仕組み",
+      "using-packages": "パッケージの使い方",
+      "context": "コンテキストと IDE",
+      "lockfile": "ロックファイル",
+      "publishing": "最初のパッケージ",
+      "manifest": "genpm.json リファレンス",
+      "writing-rules": "AI ルールの書き方",
+      "mcp": "MCP サーバー",
+      "security": "セキュリティモデル"
+    },
+    "sections": {
+      "gettingStarted": "はじめに",
+      "usingPackages": "パッケージを使う",
+      "publishing": "公開",
+      "mcpServer": "MCP サーバー",
+      "security": "セキュリティ"
+    }
   },
   "legal": {
     "binding": "法的拘束力を持つのはスペイン語版です。",

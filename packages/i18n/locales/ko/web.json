@@ -19,7 +19,7 @@
     "menu": "메뉴",
     "main": "주 메뉴",
     "language": "언어",
-    "theme": "다크 모드 전환",
+    "theme": "라이트 / 다크 테마",
     "beta": "베타",
     "suggestLang": "이 페이지는 {language}(으)로도 볼 수 있습니다.",
     "switch": "전환",
@@ -97,7 +97,7 @@
     "featuredKicker": "추천",
     "featuredTitle": "@core로 시작하세요",
     "trendingKicker": "인기",
-    "trendingTitle": "설치 수",
+    "trendingTitle": "가장 많이 설치됨",
     "howKicker": "작동 방식",
     "howTitle": "검색. 확인. 주입.",
     "step1": "검색",
@@ -485,7 +485,27 @@
     "errorsTitle": "오류 코드",
     "errorsSection": "참고",
     "errorsIntro": "모든 오류에는 고정된 코드, 메시지, 해결 방법이 있습니다. 코드는 번역되지 않습니다.",
-    "fixLabel": "해결"
+    "fixLabel": "해결",
+    "pages": {
+      "install": "설치",
+      "quickstart": "빠른 시작",
+      "how-it-works": "GenPM 작동 방식",
+      "using-packages": "패키지 사용하기",
+      "context": "컨텍스트와 IDE",
+      "lockfile": "잠금 파일",
+      "publishing": "첫 번째 패키지",
+      "manifest": "genpm.json 참조",
+      "writing-rules": "AI 규칙 작성하기",
+      "mcp": "MCP 서버",
+      "security": "보안 모델"
+    },
+    "sections": {
+      "gettingStarted": "시작하기",
+      "usingPackages": "패키지 사용하기",
+      "publishing": "게시하기",
+      "mcpServer": "MCP 서버",
+      "security": "보안"
+    }
   },
   "legal": {
     "binding": "법적 구속력은 스페인어 버전에만 있습니다.",

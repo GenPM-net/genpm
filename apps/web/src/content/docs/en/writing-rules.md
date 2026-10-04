@@ -3,7 +3,7 @@ title: Writing AI rules
 section: Publishing
 order: 22
 ---
-`AGENTS.md` is what your users' agents read before touching your module. Keep it between 300 and 1,500 tokens and in English.
+`AGENTS.md` is what your users' agents read before touching your module. Keep it between 300 and 1,500 tokens and in English: it costs fewer tokens and every contributor can read it.
 
 ```md
 # @acme/auth — rules for agents
@@ -26,5 +26,7 @@ Cookie sessions + OAuth (GitHub, Google). Authorization (roles) is out of scope.
 ## Don't
 - Don't store OAuth tokens in plain text.
 ```
+
+These five sections (purpose, map, integration, conventions and don'ts) are the ones agents follow best.
 
 The registry scans rules for prompt-injection phrases in eight languages, exfiltration instructions, `curl | sh`, encoded blobs and invisible Unicode. Flagged packages are quarantined for human review.
