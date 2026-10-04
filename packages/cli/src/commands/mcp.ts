@@ -17,7 +17,7 @@ import { json, line, reportError } from '../output.js';
 import { confirm } from '../prompt.js';
 import { globalArgs } from './shared.js';
 
-const CLIENTS: SetupClient[] = ['claude', 'cursor', 'vscode', 'windsurf', 'codex'];
+const CLIENTS: SetupClient[] = ['claude', 'cursor', 'vscode', 'windsurf', 'codex', 'gemini'];
 
 export const mcpCmd = (ctx: Ctx) =>
   defineCommand({

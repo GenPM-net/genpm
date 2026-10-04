@@ -56,7 +56,7 @@
     "ref": "公開するタグまたは完全な SHA",
     "distTag": "dist-tag（latest、プレリリースは next）",
     "reason": "取り下げる理由（必須）",
-    "client": "claude | cursor | vscode | windsurf | codex",
+    "client": "claude | cursor | vscode | windsurf | codex | gemini",
     "scope": "project | user",
     "workflow": "v* タグで公開する GitHub Actions ワークフローも作成する",
     "action": "dir | clean",

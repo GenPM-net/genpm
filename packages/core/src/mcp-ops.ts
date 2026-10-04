@@ -17,7 +17,7 @@ import { RegistryClient } from './registry-client.js';
 import { revokedKeys } from './revocation.js';
 import { type InstallMethod, installMethod } from './self-update.js';
 
-export type SetupClient = 'claude' | 'cursor' | 'vscode' | 'windsurf' | 'codex';
+export type SetupClient = 'claude' | 'cursor' | 'vscode' | 'windsurf' | 'codex' | 'gemini';
 /** Servidor MCP local por stdio (forma que tiene siempre el servidor de GenPM). */
 export type StdioEntry = { n: string; c: string; a: string[] };
 
@@ -95,6 +95,16 @@ export function setupTarget(
       };
     case 'codex':
       return { client, scope: 'user', file: join(home, '.codex', 'config.toml'), command: null, format: 'toml', entry };
+    case 'gemini':
+      // Gemini CLI: `mcpServers` en .gemini/settings.json (mismo formato que Cursor; el resto de ajustes se conserva).
+      return {
+        client,
+        scope,
+        file: scope === 'project' ? join(root, '.gemini', 'settings.json') : join(home, '.gemini', 'settings.json'),
+        command: null,
+        format: 'json',
+        entry,
+      };
   }
 }
 

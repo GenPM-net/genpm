@@ -96,6 +96,18 @@ args = ["mcp", "serve"]
 genpm mcp setup --client codex
 ```
 
+## Gemini CLI
+
+Proyecto: `.gemini/settings.json` · Usuario: `~/.gemini/settings.json`. Solo se toca `mcpServers`; el resto de tus ajustes de Gemini se queda igual.
+
+```json
+{ "mcpServers": { "genpm": { "command": "genpm", "args": ["mcp", "serve"] } } }
+```
+
+```bash
+genpm mcp setup --client gemini --scope project
+```
+
 ## Herramientas
 
 | Herramienta | Qué hace |

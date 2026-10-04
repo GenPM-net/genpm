@@ -56,7 +56,7 @@
     "ref": "Tag ou SHA complet à publier",
     "distTag": "Dist-tag (latest, ou next pour les préversions)",
     "reason": "Motif du retrait (obligatoire)",
-    "client": "claude | cursor | vscode | windsurf | codex",
+    "client": "claude | cursor | vscode | windsurf | codex | gemini",
     "scope": "project | user",
     "workflow": "Créer aussi un workflow GitHub Actions qui publie sur les tags v*",
     "action": "dir | clean",

@@ -56,7 +56,7 @@
     "ref": "Tag or full SHA to publish",
     "distTag": "Dist-tag (latest, or next for prereleases)",
     "reason": "Why it is withdrawn (required)",
-    "client": "claude | cursor | vscode | windsurf | codex",
+    "client": "claude | cursor | vscode | windsurf | codex | gemini",
     "scope": "project | user",
     "workflow": "Also create a GitHub Actions workflow that publishes on v* tags",
     "action": "dir | clean",

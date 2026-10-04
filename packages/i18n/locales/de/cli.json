@@ -56,7 +56,7 @@
     "ref": "Zu veröffentlichender Tag oder vollständiger SHA",
     "distTag": "Dist-Tag (latest, oder next für Vorabversionen)",
     "reason": "Grund für das Zurückziehen (erforderlich)",
-    "client": "claude | cursor | vscode | windsurf | codex",
+    "client": "claude | cursor | vscode | windsurf | codex | gemini",
     "scope": "project | user",
     "workflow": "Zusätzlich einen GitHub-Actions-Workflow anlegen, der bei v*-Tags veröffentlicht",
     "action": "dir | clean",

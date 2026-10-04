@@ -71,6 +71,17 @@ describe('genpm mcp setup', () => {
       servers: { genpm: { type: 'stdio', command: 'npx', args: ['-y', '@genpm/mcp'] } },
     });
     expect((await mcpSetupPreview(vs)).changed).toBe(false);
+    // Gemini CLI: .gemini/settings.json guarda más ajustes; se añade `genpm` sin tocar el resto.
+    const gem = setupTarget('gemini', 'project', root, home);
+    expect(gem.file).toBe(join(root, '.gemini', 'settings.json'));
+    await mkdir(join(root, '.gemini'), { recursive: true });
+    await writeFile(join(root, '.gemini/settings.json'), JSON.stringify({ theme: 'Dracula' }));
+    expect(await mcpSetupApply(gem, root)).toBe(true);
+    expect(JSON.parse(await readFile(join(root, '.gemini/settings.json'), 'utf8'))).toEqual({
+      theme: 'Dracula',
+      mcpServers: { genpm: { command: 'npx', args: ['-y', '@genpm/mcp'] } },
+    });
+    expect(setupTarget('gemini', 'user', root, home).file).toBe(join(home, '.gemini', 'settings.json'));
     const codex = setupTarget('codex', 'user', root, home);
     await mkdir(join(home, '.codex'), { recursive: true });
     await writeFile(join(home, '.codex/config.toml'), 'model = "x"\n');
