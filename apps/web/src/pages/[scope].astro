@@ -17,7 +17,11 @@ const res = await registryGet<{
   packages: SearchRow[];
   totals: { packages: number; installs30d: number };
 }>(`/v1/scopes/${scope}`, locale);
-if (!res.data) return Astro.rewrite('/404');
+if (!res.data) {
+  // 404 real del registry o fallo sin copia en caché (503): no confundir un scope inexistente con un registry caído.
+  Astro.response.status = res.status === 404 ? 404 : 503;
+  return Astro.rewrite(res.status === 404 ? '/404' : '/500');
+}
 const d = res.data;
 Astro.response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
 ---

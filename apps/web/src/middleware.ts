@@ -5,10 +5,13 @@ import { defineMiddleware } from 'astro:middleware';
 import { env } from 'cloudflare:workers';
 import { createT, PSEUDO } from '@genpm/i18n';
 import { splitLocale } from './lib/i18n.js';
+import { withRequest } from './lib/request-context.js';
 
 const SESSION = '__Host-genpm_session';
 
-export const onRequest = defineMiddleware(async (ctx, next) => {
+export const onRequest = defineMiddleware((ctx, next) => withRequest(ctx.request, () => handle(ctx, next)));
+
+const handle: Parameters<typeof defineMiddleware>[0] = async (ctx, next) => {
   const url = new URL(ctx.request.url);
   // www.genpm.net → genpm.net (una sola URL canónica por página).
   if (url.hostname.startsWith('www.')) {
@@ -65,4 +68,4 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
   // Con sesión, el HTML lleva datos de la cuenta (menú, panel): nunca de una caché compartida ni sin revalidar.
   if (session && html) res.headers.set('Cache-Control', 'private, no-cache');
   return res;
-});
+};

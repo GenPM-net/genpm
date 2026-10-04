@@ -1,6 +1,7 @@
 // Cliente del registry para la web (web-ui-spec §7): Service Binding en producción (latencia ~0), URL en desarrollo.
 // Caché edge con `stale-if-error`: si el registry cae, se sirve la última copia con un aviso discreto.
 import { env } from 'cloudflare:workers';
+import { visitorIp } from './request-context.js';
 
 export type Fetched<T> = { data: T; stale: boolean; status: number };
 
@@ -24,8 +25,12 @@ export async function registryFetch(
     body: init.body === undefined ? undefined : JSON.stringify(init.body),
   };
   // En desarrollo se usa la URL (el registry corre aparte con `wrangler dev`).
-  if (env.REGISTRY && env.ENVIRONMENT !== 'development')
+  if (env.REGISTRY && env.ENVIRONMENT !== 'development') {
+    // Por el Service Binding no llega la IP del visitante: sin ella, toda la web compartiría un único cupo de rate limit.
+    const ip = visitorIp();
+    if (ip) headers['x-genpm-client-ip'] = ip;
     return env.REGISTRY.fetch(new Request(`${ORIGIN}${path}`, req));
+  }
   return fetch(`${env.REGISTRY_URL ?? 'https://api.genpm.net'}${path}`, req);
 }
 

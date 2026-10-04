@@ -20,14 +20,14 @@ export async function loadPackage(
   name: string,
   version: string | null,
   locale: string,
-): Promise<PackageView | null | 'quarantined'> {
+): Promise<PackageView | null | 'quarantined' | 'unavailable'> {
   const [pkgRes, versRes] = await Promise.all([
     registryGet<PackageResponse>(`/v1/packages/${name}`, locale),
     registryGet<{ versions: VersionRow[] }>(`/v1/packages/${name}/versions?limit=50`, locale),
   ]);
   if (pkgRes.status === 451) return 'quarantined';
   const pkg = pkgRes.data;
-  if (!pkg) return null;
+  if (!pkg) return pkgRes.status === 404 ? null : 'unavailable';
   let manifest = pkg.latest;
   if (version && version !== manifest?.version) {
     const v = await registryGet<LongManifest>(`/v1/packages/${name}/versions/${version}`, locale);

@@ -62,3 +62,21 @@ describe('rate limiting (api-spec §3)', () => {
     expect(clientIp(new Request('https://x'))).toBe('0.0.0.0');
   });
 });
+
+describe('IP del visitante reenviada por la web', () => {
+  it('por el Service Binding cada visitante tiene su propio cupo', async () => {
+    const pub = limiter(1);
+    const fetch = app({ RL_PUBLIC: pub as unknown as RateLimit });
+    const via = (ip: string) => new Request('https://registry.internal/x', { headers: { 'x-genpm-client-ip': ip } });
+    expect((await fetch(via('198.51.100.1'))).status).toBe(200);
+    expect((await fetch(via('198.51.100.2'))).status).toBe(200);
+    expect((await fetch(via('198.51.100.1'))).status).toBe(429);
+  });
+
+  it('desde Internet la cabecera se ignora: no sirve para saltarse el límite', () => {
+    const spoof = new Request('https://api.genpm.net/x', {
+      headers: { 'cf-connecting-ip': '203.0.113.9', 'x-genpm-client-ip': '198.51.100.77' },
+    });
+    expect(clientIp(spoof)).toBe('203.0.113.9');
+  });
+});

@@ -14,7 +14,15 @@ const BINDING: Record<Klass, keyof Env> = {
   exchange: 'RL_EXCHANGE',
 };
 
+/** Host con el que la web llama al registry por Service Binding; desde Internet no se puede llegar con él. */
+export const BINDING_HOST = 'registry.internal';
+
 export function clientIp(req: Request): string {
+  // La web reenvía la IP del visitante; solo se acepta si la petición llegó por el binding.
+  if (new URL(req.url).hostname === BINDING_HOST) {
+    const forwarded = req.headers.get('x-genpm-client-ip');
+    if (forwarded) return forwarded;
+  }
   return req.headers.get('cf-connecting-ip') ?? req.headers.get('x-real-ip') ?? '0.0.0.0';
 }
 
