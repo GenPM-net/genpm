@@ -52,8 +52,8 @@ export function installMethod(
   const script = opts.argv1 ?? process.argv[1] ?? '';
   // npx/`npm exec` marcan npm_command=exec; pnpm dlx y npx ejecutan desde una caché temporal.
   if (env['npm_command'] === 'exec' || /[\\/](_npx|dlx-[^\\/]*)[\\/]/.test(script))
-    return { kind: 'npx', command: 'npx genpm@latest' };
-  return { kind: 'npm', command: 'npm i -g genpm@latest' };
+    return { kind: 'npx', command: 'npx @genpm/cli@latest' };
+  return { kind: 'npm', command: 'npm i -g @genpm/cli@latest' };
 }
 
 /** Formato de `sha256sum`: `<hex>  <archivo>` (o `<hex> *<archivo>` en modo binario). */

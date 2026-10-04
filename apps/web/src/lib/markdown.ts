@@ -17,16 +17,18 @@ function safeUrl(href: string, base?: string): string | null {
 }
 
 export function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFKD')
-    .replace(/[̀-ͯ]/g, '')
-    // Recompone lo que no son tildes latinas: sílabas hangul y kana con dakuten (ド, ガ) no se parten en el id.
-    .normalize('NFC')
-    .replace(/<[^>]*>/g, '')
-    .replace(/[^\p{L}\p{N}]+/gu, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 64);
+  return (
+    text
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[̀-ͯ]/g, '')
+      // Recompone lo que no son tildes latinas: sílabas hangul y kana con dakuten (ド, ガ) no se parten en el id.
+      .normalize('NFC')
+      .replace(/<[^>]*>/g, '')
+      .replace(/[^\p{L}\p{N}]+/gu, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 64)
+  );
 }
 
 export type RenderOptions = {

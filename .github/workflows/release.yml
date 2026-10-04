@@ -38,11 +38,11 @@ jobs:
       - run: pnpm test
         env:
           GENPM_TELEMETRY: '0'
-      - run: pnpm --filter genpm cold-start
+      - run: pnpm --filter @genpm/cli cold-start
       - name: Pack (sin dependencias workspace:*)
         run: |
           mkdir -p dist-pack
-          pnpm --filter genpm pack --pack-destination "$PWD/dist-pack"
+          pnpm --filter @genpm/cli pack --pack-destination "$PWD/dist-pack"
           pnpm --filter @genpm/mcp pack --pack-destination "$PWD/dist-pack"
           ls -l dist-pack
       - name: Dry-run con provenance
@@ -76,11 +76,11 @@ jobs:
         with:
           bun-version: 1.4.2
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter genpm... build
+      - run: pnpm --filter @genpm/cli... build
       - name: Versión del tag = versión del CLI
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
         run: test "v$(node -p "require('./packages/cli/package.json').version")" = "$GITHUB_REF_NAME"
-      - run: pnpm --filter genpm build:bin
+      - run: pnpm --filter @genpm/cli build:bin
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: genpm-binaries
@@ -121,12 +121,12 @@ jobs:
           name: genpm-binaries
           path: dist-bin
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter genpm... build
+      - run: pnpm --filter @genpm/cli... build
       - name: Smoke del binario
         shell: bash
         run: |
           chmod +x "dist-bin/genpm-${{ matrix.target }}"
-          GENPM_BINARY="$PWD/dist-bin/genpm-${{ matrix.target }}" pnpm --filter genpm exec vitest run test/binary.test.ts
+          GENPM_BINARY="$PWD/dist-bin/genpm-${{ matrix.target }}" pnpm --filter @genpm/cli exec vitest run test/binary.test.ts
       - name: install.sh
         if: ${{ runner.os != 'Windows' }}
         run: |

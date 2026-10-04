@@ -67,7 +67,7 @@ describe('install method', () => {
     );
     expect(installMethod({ target: null, env: {}, argv1: '/usr/local/lib/node_modules/genpm/dist/bin.mjs' })).toEqual({
       kind: 'npm',
-      command: 'npm i -g genpm@latest',
+      command: 'npm i -g @genpm/cli@latest',
     });
   });
 

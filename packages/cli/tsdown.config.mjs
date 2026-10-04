@@ -1,4 +1,4 @@
-// Bundle único para `npx genpm` (architecture §11, roadmap D5-B-04): todo el código (paquetes @genpm/* y dependencias)
+// Bundle único para `npx @genpm/cli` (architecture §11, roadmap D5-B-04): todo el código (paquetes @genpm/* y dependencias)
 // va dentro, así `npx` descarga un solo tarball sin árbol de dependencias. Solo `en` va en el chunk principal; el resto
 // de idiomas son chunks que se cargan bajo demanda (i18n §4.1). En .mjs para cargarse igual en Node 20 y 22.
 import { defineConfig } from 'tsdown';

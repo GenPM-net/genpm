@@ -1,5 +1,5 @@
 {
-  "name": "genpm",
+  "name": "@genpm/cli",
   "version": "0.1.2",
   "description": "Install architectures, not dependencies: inject code + AI rules + MCP config from immutable Git commits",
   "license": "MIT",

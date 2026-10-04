@@ -84,8 +84,8 @@ genpm add @core/auth
 Alternativas con Node ≥ 20.11 (mismo CLI, mismo bundle):
 
 ```bash
-npm i -g genpm                    # global
-npx genpm add @core/auth          # puntual, sin instalación (CI)
+npm i -g @genpm/cli                    # global
+npx @genpm/cli add @core/auth          # puntual, sin instalación (CI)
 ```
 
 | Plataforma | Binarios (GitHub Releases) |

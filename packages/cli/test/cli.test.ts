@@ -249,7 +249,7 @@ describe('other commands', () => {
       expect(u.code).toBe(8);
       expect(JSON.parse(u.stdout).error).toMatchObject({
         code: 'E_UPGRADE_UNSUPPORTED',
-        fix: expect.stringContaining('genpm@latest'),
+        fix: expect.stringContaining('@genpm/cli@latest'),
       });
     } finally {
       globalThis.fetch = regFetch;

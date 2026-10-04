@@ -37,7 +37,7 @@ genpm remove @core/auth
 
 ```bash
 genpm outdated
-genpm audit   # CI に追加する場合: npx genpm audit
+genpm audit   # CI に追加する場合: npx @genpm/cli audit
 ```
 
 `audit` はファイルの完全性、ロックの各エントリのレジストリ署名、セキュリティアドバイザリー、取り下げられたバージョン、隔離を検証します。重大度が高いまたは致命的な問題があると終了コード 6 で終わります。

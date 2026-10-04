@@ -37,7 +37,7 @@ genpm remove @core/auth
 
 ```bash
 genpm outdated
-genpm audit   # 在 CI 中使用：npx genpm audit
+genpm audit   # 在 CI 中使用：npx @genpm/cli audit
 ```
 
 `audit` 会验证文件完整性、锁文件中每个条目的注册表签名、安全公告、已撤回的版本和隔离状态。发现高危或严重问题时以退出码 6 结束。

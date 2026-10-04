@@ -18,7 +18,7 @@ irm https://genpm.net/install.ps1 | iex          # Windows (PowerShell)
 genpm add @core/auth
 ```
 
-One native binary, no Node.js needed (`genpm upgrade` keeps it current). Prefer npm? `npm i -g genpm` or `npx genpm …` work too. More options: [genpm.net/docs/install](https://genpm.net/docs/install).
+One native binary, no Node.js needed (`genpm upgrade` keeps it current). Prefer npm? `npm i -g @genpm/cli` or `npx @genpm/cli …` work too. More options: [genpm.net/docs/install](https://genpm.net/docs/install).
 
 - **Code** lands in `src/lib/auth`, not in `node_modules`. You see it in your diff and you own it.
 - **Context**: an `AGENTS.md` per module (plus Cursor, Copilot, Windsurf and Claude Code rule files), loaded only when your agent works in that folder.
@@ -65,7 +65,7 @@ docs/         design and specs (Spanish)
 tasks/        MVP plan and task board
 ```
 
-Requirements to develop: Node 22.12+ (tsdown and Astro), pnpm 10, git 2.25+. The published `genpm` and `@genpm/mcp` run on Node 20.11+ (CI tests them on Node 20 and 22); the native `genpm` binaries are built with Bun (`pnpm --filter genpm build:bin`, ADR-025).
+Requirements to develop: Node 22.12+ (tsdown and Astro), pnpm 10, git 2.25+. The published `genpm` and `@genpm/mcp` run on Node 20.11+ (CI tests them on Node 20 and 22); the native `genpm` binaries are built with Bun (`pnpm --filter @genpm/cli build:bin`, ADR-025).
 
 ```bash
 pnpm install

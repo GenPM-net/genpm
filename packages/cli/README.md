@@ -11,7 +11,7 @@ irm https://genpm.net/install.ps1 | iex          # Windows (PowerShell)
 genpm add @core/auth
 ```
 
-The recommended install is the native binary: no Node.js needed, and `genpm upgrade` keeps it current. This npm package is the same CLI for Node 20.11+ users: `npm i -g genpm`, or `npx genpm add @core/auth` without installing (handy in CI). git 2.25+ is recommended; without it GenPM falls back to GitHub tarballs.
+The recommended install is the native binary: no Node.js needed, and `genpm upgrade` keeps it current. This npm package is the same CLI for Node 20.11+ users: `npm i -g @genpm/cli`, or `npx @genpm/cli add @core/auth` without installing (handy in CI). git 2.25+ is recommended; without it GenPM falls back to GitHub tarballs.
 
 ## Commands
 

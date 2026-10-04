@@ -96,7 +96,7 @@ describe('genpm mcp setup', () => {
     const root = await mkdtemp(join(tmpdir(), 'genpm-setup-'));
     const home = await mkdtemp(join(tmpdir(), 'genpm-sethome-'));
     expect(genpmMcpEntry({ kind: 'binary', target: 'linux-x64', path: '/x/genpm' })).toBe(GENPM_MCP_BINARY);
-    expect(genpmMcpEntry({ kind: 'npm', command: 'npm i -g genpm@latest' }).c).toBe('npx');
+    expect(genpmMcpEntry({ kind: 'npm', command: 'npm i -g @genpm/cli@latest' }).c).toBe('npx');
     const bin = GENPM_MCP_BINARY;
     expect(setupTarget('claude', 'user', root, home, bin).command).toBe('claude mcp add genpm -- genpm mcp serve');
     expect(setupTarget('vscode', 'user', root, home, bin).command).toBe(

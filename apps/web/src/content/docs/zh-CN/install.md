@@ -79,8 +79,8 @@ curl -fsSL https://github.com/genpm-net/genpm-releases/releases/latest/download/
 如果你已经在用 Node.js 20.11+，也可以运行 npm 包，命令完全相同。
 
 ```bash
-npm i -g genpm             # 全局安装；用 npm i -g genpm@latest 更新
-npx genpm add @core/auth   # 一次性运行，不安装任何东西（适合 CI）
+npm i -g @genpm/cli             # 全局安装；用 npm i -g @genpm/cli@latest 更新
+npx @genpm/cli add @core/auth   # 一次性运行，不安装任何东西（适合 CI）
 ```
 
 ## 卸载

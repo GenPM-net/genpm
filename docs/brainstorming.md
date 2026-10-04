@@ -313,6 +313,15 @@ entonces el job de release compila y prueba en cada push a `main` pero no public
 Windows solo existen en repos públicos: mientras tanto se prueban x64 y Apple silicon. Bun pasa a ser herramienta de build
 (fijada en `release.yml`), no dependencia del repo.
 
+
+### ADR-026 · El paquete npm del CLI se llama `@genpm/cli` — ✅ Decidida (fundador, 2026-10-04)
+
+**Contexto:** npm rechaza publicar `genpm` (403: nombre demasiado parecido a `npm` y `pnpm`).
+
+**Decisión:** el CLI se publica como **`@genpm/cli`**, junto a `@genpm/mcp`, en la organización `genpm` de npm (del fundador).
+El comando sigue siendo `genpm` (`bin`). Vías npm: `npm i -g @genpm/cli` y `npx @genpm/cli …`; `genpm upgrade` propone
+`@genpm/cli@latest`. Sustituye a las menciones de `genpm` como nombre de paquete en ADR-025. La vía principal sigue siendo
+el binario nativo.
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

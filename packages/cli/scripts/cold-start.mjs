@@ -38,7 +38,9 @@ try {
     times.push(Math.round(performance.now() - start));
   }
   const ms = Math.min(...times);
-  console.log(`npx genpm --version → ${out.trim()} in ${ms} ms (best of ${times.join(', ')} ms; limit ${LIMIT_MS} ms)`);
+  console.log(
+    `npx @genpm/cli --version → ${out.trim()} in ${ms} ms (best of ${times.join(', ')} ms; limit ${LIMIT_MS} ms)`,
+  );
   if (ms > LIMIT_MS) process.exit(1);
 } finally {
   rmSync(dir, { recursive: true, force: true });
