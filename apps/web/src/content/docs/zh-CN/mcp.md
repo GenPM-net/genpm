@@ -13,7 +13,7 @@ genpm mcp setup
 
 它会显示确切的改动，并在写入前征求确认。用 `--client` 和 `--scope` 选择目标，或按下文手动配置。
 
-服务器内置在 [`genpm` 二进制文件](/docs/install)中：你的客户端启动 `genpm mcp serve`，无需 Node.js。没有二进制文件时，改用 npm 包：把下面示例中的 `genpm mcp serve` 换成 `npx -y @genpm/mcp`（`"command": "npx", "args": ["-y", "@genpm/mcp"]`）；通过 npm 或 npx 运行的 `genpm mcp setup` 会自动这样做。
+服务器内置在 [`genpm` 二进制文件](/docs/install)中：你的客户端启动 `genpm mcp serve`，无需 Node.js。没有二进制文件时，改用 npm 包：把下面示例中的 `genpm mcp serve` 换成 `npx -y @genpm-net/mcp`（`"command": "npx", "args": ["-y", "@genpm-net/mcp"]`）；通过 npm 或 npx 运行的 `genpm mcp setup` 会自动这样做。
 
 ## Claude Code
 

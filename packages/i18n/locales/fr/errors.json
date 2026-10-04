@@ -181,7 +181,7 @@
   },
   "E_MCP_SERVE_UNAVAILABLE": {
     "message": "genpm mcp serve n’est inclus que dans le binaire autonome de genpm.",
-    "fix": "Utilisez npx -y @genpm/mcp comme commande MCP (genpm mcp setup le fait pour vous) ou installez le binaire depuis genpm.net/docs/install."
+    "fix": "Utilisez npx -y @genpm-net/mcp comme commande MCP (genpm mcp setup le fait pour vous) ou installez le binaire depuis genpm.net/docs/install."
   },
   "E_NOT_A_PROJECT": {
     "message": "Aucun projet trouvé dans {path}.",

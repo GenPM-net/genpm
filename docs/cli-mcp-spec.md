@@ -1,4 +1,4 @@
-# Especificación del CLI (`genpm`) y del servidor MCP (`@genpm/mcp`)
+# Especificación del CLI (`genpm`) y del servidor MCP (`@genpm-net/mcp`)
 
 > Estado: **v1 (MVP)** · Fecha: 2026-10-02
 > Ambos son fachadas de `@genpm/core`: misma resolución, mismo plan, mismos errores. Lo único que cambia es la presentación.
@@ -84,8 +84,8 @@ genpm add @core/auth
 Alternativas con Node ≥ 20.11 (mismo CLI, mismo bundle):
 
 ```bash
-npm i -g @genpm/cli                    # global
-npx @genpm/cli add @core/auth          # puntual, sin instalación (CI)
+npm i -g @genpm-net/cli                    # global
+npx @genpm-net/cli add @core/auth          # puntual, sin instalación (CI)
 ```
 
 | Plataforma | Binarios (GitHub Releases) |
@@ -270,11 +270,11 @@ Merge de 3 vías (ver [architecture §6.6](architecture.md#66-actualización-con
 
 Servidor MCP por stdio (Parte B) dentro del CLI: es lo que lanzan los clientes de IA cuando GenPM está instalado como
 binario nativo, sin Node ni npx (ADR-025). Nunca escribe en stdout fuera del protocolo. Solo existe en el binario: el
-paquete de npm no lo incluye (~550 KB más en cada `npx` en frío) y responde `E_MCP_SERVE_UNAVAILABLE` con `npx -y @genpm/mcp` en `fix`.
+paquete de npm no lo incluye (~550 KB más en cada `npx` en frío) y responde `E_MCP_SERVE_UNAVAILABLE` con `npx -y @genpm-net/mcp` en `fix`.
 
 ### `genpm mcp setup [--client <c>] [--scope project|user]` ✅
 
-Registra el servidor MCP de GenPM en el cliente IA (`genpm mcp serve` con el binario nativo; `npx -y @genpm/mcp` desde npm/npx) (escritura de archivo con merge no destructivo; muestra diff y pide confirmación). Ver §B.7.
+Registra el servidor MCP de GenPM en el cliente IA (`genpm mcp serve` con el binario nativo; `npx -y @genpm-net/mcp` desde npm/npx) (escritura de archivo con merge no destructivo; muestra diff y pide confirmación). Ver §B.7.
 
 ### `genpm mcp add|remove <name>` ✅
 
@@ -326,13 +326,13 @@ Device flow de GitHub (ver [architecture §6.5](architecture.md#65-login-device-
 
 ---
 
-# Parte B — Servidor MCP (`@genpm/mcp`)
+# Parte B — Servidor MCP (`@genpm-net/mcp`)
 
 ## B.1 Identidad y transporte
 
 | Propiedad | Valor |
 |---|---|
-| Arranque | `genpm mcp serve` (binario nativo, opción por defecto) o `npx -y @genpm/mcp` (paquete npm, bin `genpm-mcp`); ambos llaman a `serveStdio()` de `@genpm/mcp/serve` |
+| Arranque | `genpm mcp serve` (binario nativo, opción por defecto) o `npx -y @genpm-net/mcp` (paquete npm, bin `genpm-mcp`); ambos llaman a `serveStdio()` de `@genpm-net/mcp/serve` |
 | Server info | `{ name: "genpm", version: <semver> }` |
 | Transporte | stdio (MVP). Streamable HTTP solo-lectura (search/info) en `mcp.genpm.net` ⏳ v0.3 |
 | SDK | `@modelcontextprotocol/sdk` (`McpServer`, `registerTool`, `outputSchema` + `structuredContent`) |
@@ -496,8 +496,8 @@ Annotations `readOnlyHint: true`. Input `{}`. Salida `{ p: [{n,v,c,d,drift:{modi
 ## B.7 Configuración en clientes
 
 `genpm mcp setup` automatiza todo esto. Por defecto el servidor es el que lleva dentro el binario nativo
-(`genpm mcp serve`, ADR-025, sin Node). Cuando `genpm` corre desde npm/npx, `setup` registra `npx -y @genpm/mcp` en su
-lugar (mismo servidor, mismo código: `@genpm/mcp/serve`). Manualmente, con el binario:
+(`genpm mcp serve`, ADR-025, sin Node). Cuando `genpm` corre desde npm/npx, `setup` registra `npx -y @genpm-net/mcp` en su
+lugar (mismo servidor, mismo código: `@genpm-net/mcp/serve`). Manualmente, con el binario:
 
 **Claude Code**
 ```bash

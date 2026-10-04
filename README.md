@@ -18,7 +18,7 @@ irm https://genpm.net/install.ps1 | iex          # Windows (PowerShell)
 genpm add @core/auth
 ```
 
-One native binary, no Node.js needed (`genpm upgrade` keeps it current). Prefer npm? `npm i -g @genpm/cli` or `npx @genpm/cli …` work too. More options: [genpm.net/docs/install](https://genpm.net/docs/install).
+One native binary, no Node.js needed (`genpm upgrade` keeps it current). Prefer npm? `npm i -g @genpm-net/cli` or `npx @genpm-net/cli …` work too. More options: [genpm.net/docs/install](https://genpm.net/docs/install).
 
 - **Code** lands in `src/lib/auth`, not in `node_modules`. You see it in your diff and you own it.
 - **Context**: an `AGENTS.md` per module (plus Cursor, Copilot, Windsurf and Claude Code rule files), loaded only when your agent works in that folder.
@@ -31,7 +31,7 @@ genpm mcp setup                                  # writes the config for the AI 
 claude mcp add genpm -- genpm mcp serve          # or register it by hand (Claude Code)
 ```
 
-The MCP server is built into the `genpm` binary. Without it, use `npx -y @genpm/mcp` (needs Node.js).
+The MCP server is built into the `genpm` binary. Without it, use `npx -y @genpm-net/mcp` (needs Node.js).
 
 Then ask: *"Add GitHub login to this project with genpm."* Your agent searches, shows you the plan and installs. Setup for Cursor, VS Code, Windsurf and Codex: [genpm.net/docs/mcp](https://genpm.net/docs/mcp).
 
@@ -59,13 +59,13 @@ packages/
   manifest/   @genpm/manifest — schema, canonical form, signatures, scanner (no I/O)
   core/       @genpm/core — resolve, fetch, plan, apply, inject, lockfile
   cli/        genpm — the CLI (thin facade over core)
-  mcp/        @genpm/mcp — the MCP server (thin facade over core)
+  mcp/        @genpm-net/mcp — the MCP server (thin facade over core)
   i18n/       @genpm/i18n — ICU catalogs for en, es, pt-BR, fr, de, ja, zh-CN, ko
 docs/         design and specs (Spanish)
 tasks/        MVP plan and task board
 ```
 
-Requirements to develop: Node 22.12+ (tsdown and Astro), pnpm 10, git 2.25+. The published `genpm` and `@genpm/mcp` run on Node 20.11+ (CI tests them on Node 20 and 22); the native `genpm` binaries are built with Bun (`pnpm --filter @genpm/cli build:bin`, ADR-025).
+Requirements to develop: Node 22.12+ (tsdown and Astro), pnpm 10, git 2.25+. The published `genpm` and `@genpm-net/mcp` run on Node 20.11+ (CI tests them on Node 20 and 22); the native `genpm` binaries are built with Bun (`pnpm --filter @genpm-net/cli build:bin`, ADR-025).
 
 ```bash
 pnpm install
@@ -79,4 +79,4 @@ Contributor rules (architecture, invariants, i18n) live in [AGENTS.md](AGENTS.md
 
 ## License
 
-The client packages (`packages/*`: `genpm`, `@genpm/mcp`, `@genpm/core`, `@genpm/manifest`, `@genpm/i18n`) are MIT-licensed. The registry (`apps/registry`) and the website (`apps/web`) are © GenPM, all rights reserved.
+The client packages (`packages/*`: `genpm`, `@genpm-net/mcp`, `@genpm/core`, `@genpm/manifest`, `@genpm/i18n`) are MIT-licensed. The registry (`apps/registry`) and the website (`apps/web`) are © GenPM, all rights reserved.

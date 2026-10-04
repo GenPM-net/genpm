@@ -27,6 +27,6 @@ You can delete or block cookies and local storage in your browser settings ([Chr
 
 ## The CLI and the MCP server
 
-The `genpm` CLI and the `@genpm/mcp` server use no cookies. For install telemetry and how to turn it off, see the [Privacy Policy](/privacy).
+The `genpm` CLI and the `@genpm-net/mcp` server use no cookies. For install telemetry and how to turn it off, see the [Privacy Policy](/privacy).
 
 If we ever add cookies that need your consent, we will ask before using them and update this policy.

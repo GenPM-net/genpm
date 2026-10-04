@@ -2,7 +2,7 @@
 title: Política de Privacidade
 updated: 2026-10-03
 ---
-Esta política explica quais dados pessoais o GenPM (genpm.net, a API `api.genpm.net`, o CLI `genpm` e o servidor `@genpm/mcp`) trata, para quê, com qual base legal e quais são os seus direitos. Ela cumpre o Regulamento (UE) 2016/679 (RGPD) e a Lei Orgânica espanhola 3/2018 (LOPDGDD) e, para titulares no Brasil, a Lei 13.709/2018 (LGPD). Em caso de divergência, prevalece a versão em espanhol.
+Esta política explica quais dados pessoais o GenPM (genpm.net, a API `api.genpm.net`, o CLI `genpm` e o servidor `@genpm-net/mcp`) trata, para quê, com qual base legal e quais são os seus direitos. Ela cumpre o Regulamento (UE) 2016/679 (RGPD) e a Lei Orgânica espanhola 3/2018 (LOPDGDD) e, para titulares no Brasil, a Lei 13.709/2018 (LGPD). Em caso de divergência, prevalece a versão em espanhol.
 
 ## 1. Controlador
 

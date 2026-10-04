@@ -46,4 +46,4 @@ jobs:
       - run: pnpm test
         env:
           GENPM_TELEMETRY: '0'
-      - run: pnpm --filter @genpm/cli cold-start
+      - run: pnpm --filter @genpm-net/cli cold-start

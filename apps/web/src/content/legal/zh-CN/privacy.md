@@ -2,7 +2,7 @@
 title: 隐私政策
 updated: 2026-10-03
 ---
-本政策说明 GenPM（genpm.net、`api.genpm.net` API、`genpm` CLI 和 `@genpm/mcp` 服务器）处理哪些个人数据、为什么处理、依据什么法律基础，以及你享有哪些权利。本政策符合条例（EU）2016/679（GDPR）和西班牙第 3/2018 号组织法（LOPDGDD）。如有不一致，以西班牙语版本为准。
+本政策说明 GenPM（genpm.net、`api.genpm.net` API、`genpm` CLI 和 `@genpm-net/mcp` 服务器）处理哪些个人数据、为什么处理、依据什么法律基础，以及你享有哪些权利。本政策符合条例（EU）2016/679（GDPR）和西班牙第 3/2018 号组织法（LOPDGDD）。如有不一致，以西班牙语版本为准。
 
 ## 1. 数据控制者
 

@@ -143,6 +143,9 @@ importers:
       '@clack/prompts':
         specifier: ^1.8.0
         version: 1.8.1
+      '@genpm-net/mcp':
+        specifier: workspace:*
+        version: link:../mcp
       '@genpm/core':
         specifier: workspace:*
         version: link:../core
@@ -152,9 +155,6 @@ importers:
       '@genpm/manifest':
         specifier: workspace:*
         version: link:../manifest
-      '@genpm/mcp':
-        specifier: workspace:*
-        version: link:../mcp
       '@genpm/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig

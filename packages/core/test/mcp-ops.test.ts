@@ -60,7 +60,7 @@ describe('genpm mcp setup', () => {
     const home = await mkdtemp(join(tmpdir(), 'genpm-sethome-'));
     expect(setupTarget('claude', 'user', root, home)).toMatchObject({
       file: null,
-      command: 'claude mcp add genpm -- npx -y @genpm/mcp',
+      command: 'claude mcp add genpm -- npx -y @genpm-net/mcp',
     });
     expect(setupTarget('windsurf', 'project', root, home).file).toBe(
       join(home, '.codeium', 'windsurf', 'mcp_config.json'),
@@ -68,7 +68,7 @@ describe('genpm mcp setup', () => {
     const vs = setupTarget('vscode', 'project', root, home);
     expect(await mcpSetupApply(vs, root)).toBe(true);
     expect(JSON.parse(await readFile(join(root, '.vscode/mcp.json'), 'utf8'))).toEqual({
-      servers: { genpm: { type: 'stdio', command: 'npx', args: ['-y', '@genpm/mcp'] } },
+      servers: { genpm: { type: 'stdio', command: 'npx', args: ['-y', '@genpm-net/mcp'] } },
     });
     expect((await mcpSetupPreview(vs)).changed).toBe(false);
     // Gemini CLI: .gemini/settings.json guarda más ajustes; se añade `genpm` sin tocar el resto.
@@ -79,7 +79,7 @@ describe('genpm mcp setup', () => {
     expect(await mcpSetupApply(gem, root)).toBe(true);
     expect(JSON.parse(await readFile(join(root, '.gemini/settings.json'), 'utf8'))).toEqual({
       theme: 'Dracula',
-      mcpServers: { genpm: { command: 'npx', args: ['-y', '@genpm/mcp'] } },
+      mcpServers: { genpm: { command: 'npx', args: ['-y', '@genpm-net/mcp'] } },
     });
     expect(setupTarget('gemini', 'user', root, home).file).toBe(join(home, '.gemini', 'settings.json'));
     const codex = setupTarget('codex', 'user', root, home);
@@ -87,7 +87,7 @@ describe('genpm mcp setup', () => {
     await writeFile(join(home, '.codex/config.toml'), 'model = "x"\n');
     expect(await mcpSetupApply(codex, root)).toBe(true);
     expect(await readFile(join(home, '.codex/config.toml'), 'utf8')).toBe(
-      'model = "x"\n\n[mcp_servers.genpm]\ncommand = "npx"\nargs = ["-y", "@genpm/mcp"]\n',
+      'model = "x"\n\n[mcp_servers.genpm]\ncommand = "npx"\nargs = ["-y", "@genpm-net/mcp"]\n',
     );
     expect(codexToml('[mcp_servers.genpm]\n').changed).toBe(false);
   });
@@ -96,7 +96,7 @@ describe('genpm mcp setup', () => {
     const root = await mkdtemp(join(tmpdir(), 'genpm-setup-'));
     const home = await mkdtemp(join(tmpdir(), 'genpm-sethome-'));
     expect(genpmMcpEntry({ kind: 'binary', target: 'linux-x64', path: '/x/genpm' })).toBe(GENPM_MCP_BINARY);
-    expect(genpmMcpEntry({ kind: 'npm', command: 'npm i -g @genpm/cli@latest' }).c).toBe('npx');
+    expect(genpmMcpEntry({ kind: 'npm', command: 'npm i -g @genpm-net/cli@latest' }).c).toBe('npx');
     const bin = GENPM_MCP_BINARY;
     expect(setupTarget('claude', 'user', root, home, bin).command).toBe('claude mcp add genpm -- genpm mcp serve');
     expect(setupTarget('vscode', 'user', root, home, bin).command).toBe(

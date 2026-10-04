@@ -13,7 +13,7 @@ genpm mcp setup
 
 Muestra el cambio exacto y pregunta antes de escribir. Usa `--client` y `--scope` para elegir uno, o configúralo a mano como se indica abajo.
 
-El servidor va dentro del [binario `genpm`](/docs/install): tu cliente lanza `genpm mcp serve`, sin Node.js. Sin el binario, usa el paquete de npm: cambia `genpm mcp serve` por `npx -y @genpm/mcp` (`"command": "npx", "args": ["-y", "@genpm/mcp"]`) en cualquiera de los ejemplos; `genpm mcp setup` ejecutado con npm o npx lo hace por ti.
+El servidor va dentro del [binario `genpm`](/docs/install): tu cliente lanza `genpm mcp serve`, sin Node.js. Sin el binario, usa el paquete de npm: cambia `genpm mcp serve` por `npx -y @genpm-net/mcp` (`"command": "npx", "args": ["-y", "@genpm-net/mcp"]`) en cualquiera de los ejemplos; `genpm mcp setup` ejecutado con npm o npx lo hace por ti.
 
 ## Claude Code
 

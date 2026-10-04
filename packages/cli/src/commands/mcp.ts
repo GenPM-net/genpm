@@ -28,9 +28,9 @@ export const mcpCmd = (ctx: Ctx) =>
         meta: { name: 'serve', description: ctx.t.t('cli.desc.mcpServe') },
         async run() {
           // Solo el binario lleva el servidor dentro; en el paquete de npm es un import externo que no se instala.
-          let serve: typeof import('@genpm/mcp/serve');
+          let serve: typeof import('@genpm-net/mcp/serve');
           try {
-            serve = await import('@genpm/mcp/serve');
+            serve = await import('@genpm-net/mcp/serve');
           } catch {
             return reportError(ctx, fail('E_MCP_SERVE_UNAVAILABLE'));
           }

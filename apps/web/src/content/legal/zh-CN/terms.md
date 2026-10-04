@@ -2,7 +2,7 @@
 title: 服务条款
 updated: 2026-10-03
 ---
-本条款适用于由 {{name}}（完整信息见[法律声明](/legal)）提供的 genpm.net、注册表 API（`api.genpm.net`）、`genpm` CLI 和 `@genpm/mcp` 服务器（统称“GenPM”）。创建账户或发布包即表示你接受本条款。搜索和安装包无需账户。GenPM 处于**公开测试阶段**，免费提供。
+本条款适用于由 {{name}}（完整信息见[法律声明](/legal)）提供的 genpm.net、注册表 API（`api.genpm.net`）、`genpm` CLI 和 `@genpm-net/mcp` 服务器（统称“GenPM”）。创建账户或发布包即表示你接受本条款。搜索和安装包无需账户。GenPM 处于**公开测试阶段**，免费提供。
 
 ## 1. GenPM 的功能
 

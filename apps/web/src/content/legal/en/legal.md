@@ -18,7 +18,7 @@ For the purposes of articles 11 and 12 of Regulation (EU) 2022/2065 (Digital Ser
 
 ## Intellectual and industrial property
 
-The GenPM name and logo, the website design, its texts and the registry code belong to the owner or are used under license. The code of published packages belongs to its authors and is governed by each package's license; the open-source code of the `genpm` and `@genpm/mcp` clients is governed by its own license.
+The GenPM name and logo, the website design, its texts and the registry code belong to the owner or are used under license. The code of published packages belongs to its authors and is governed by each package's license; the open-source code of the `genpm` and `@genpm-net/mcp` clients is governed by its own license.
 
 ## Terms of use
 

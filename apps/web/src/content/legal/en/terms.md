@@ -2,7 +2,7 @@
 title: Terms of Service
 updated: 2026-10-03
 ---
-These terms govern the use of genpm.net, the registry API (`api.genpm.net`), the `genpm` CLI and the `@genpm/mcp` server (together, "GenPM"), provided by {{name}} (full details in the [Legal Notice](/legal)). By creating an account or publishing a package you accept them. Searching and installing packages needs no account. GenPM is in **public beta** and free of charge.
+These terms govern the use of genpm.net, the registry API (`api.genpm.net`), the `genpm` CLI and the `@genpm-net/mcp` server (together, "GenPM"), provided by {{name}} (full details in the [Legal Notice](/legal)). By creating an account or publishing a package you accept them. Searching and installing packages needs no account. GenPM is in **public beta** and free of charge.
 
 ## 1. What GenPM does
 

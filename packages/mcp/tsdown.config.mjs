@@ -1,4 +1,4 @@
-// Bundle de `npx -y @genpm/mcp` (D5-B-04): servidor stdio con todo dentro para arrancar rápido en el cliente de IA.
+// Bundle de `npx -y @genpm-net/mcp` (D5-B-04): servidor stdio con todo dentro para arrancar rápido en el cliente de IA.
 // `server` se publica también como librería (con tipos) para quien quiera montarlo en otro transporte; `serve` es el
 // arranque por stdio que reutiliza `genpm mcp serve` (ADR-025).
 import { defineConfig } from 'tsdown';

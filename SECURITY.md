@@ -28,5 +28,5 @@ it before disclosure.
 
 ## Scope
 
-The `genpm` CLI, `@genpm/mcp`, the registry API (`api.genpm.net`) and genpm.net. Packages published by third parties
+The `genpm` CLI, `@genpm-net/mcp`, the registry API (`api.genpm.net`) and genpm.net. Packages published by third parties
 should be reported with the **Report** button on the package page.

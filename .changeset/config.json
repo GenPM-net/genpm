@@ -3,7 +3,7 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [],
-  "linked": [["genpm", "@genpm/mcp", "@genpm/core", "@genpm/manifest", "@genpm/i18n"]],
+  "linked": [["genpm", "@genpm-net/mcp", "@genpm/core", "@genpm/manifest", "@genpm/i18n"]],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",

@@ -18,7 +18,7 @@ Im Sinne der Artikel 11 und 12 der Verordnung (EU) 2022/2065 über digitale Dien
 
 ## Geistiges und gewerbliches Eigentum
 
-Name und Logo von GenPM, das Design der Website, ihre Texte und der Code der Registry gehören dem Inhaber oder werden unter Lizenz genutzt. Der Code veröffentlichter Pakete gehört ihren Autoren und unterliegt der Lizenz des jeweiligen Pakets; der Open-Source-Code der Clients `genpm` und `@genpm/mcp` unterliegt seiner eigenen Lizenz.
+Name und Logo von GenPM, das Design der Website, ihre Texte und der Code der Registry gehören dem Inhaber oder werden unter Lizenz genutzt. Der Code veröffentlichter Pakete gehört ihren Autoren und unterliegt der Lizenz des jeweiligen Pakets; der Open-Source-Code der Clients `genpm` und `@genpm-net/mcp` unterliegt seiner eigenen Lizenz.
 
 ## Nutzungsbedingungen
 

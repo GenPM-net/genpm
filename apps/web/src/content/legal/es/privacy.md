@@ -2,7 +2,7 @@
 title: Política de privacidad
 updated: 2026-10-03
 ---
-Esta política explica qué datos personales trata GenPM (genpm.net, la API `api.genpm.net`, el CLI `genpm` y el servidor `@genpm/mcp`), para qué, con qué base jurídica y qué derechos tienes. Cumple el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
+Esta política explica qué datos personales trata GenPM (genpm.net, la API `api.genpm.net`, el CLI `genpm` y el servidor `@genpm-net/mcp`), para qué, con qué base jurídica y qué derechos tienes. Cumple el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
 
 ## 1. Responsable del tratamiento
 

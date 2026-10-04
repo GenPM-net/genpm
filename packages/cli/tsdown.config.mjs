@@ -1,4 +1,4 @@
-// Bundle único para `npx @genpm/cli` (architecture §11, roadmap D5-B-04): todo el código (paquetes @genpm/* y dependencias)
+// Bundle único para `npx @genpm-net/cli` (architecture §11, roadmap D5-B-04): todo el código (paquetes @genpm/* y dependencias)
 // va dentro, así `npx` descarga un solo tarball sin árbol de dependencias. Solo `en` va en el chunk principal; el resto
 // de idiomas son chunks que se cargan bajo demanda (i18n §4.1). En .mjs para cargarse igual en Node 20 y 22.
 import { defineConfig } from 'tsdown';
@@ -17,7 +17,7 @@ export const stubCatalogs = (pattern) => ({
 
 // GENPM_STANDALONE=1 (scripts/build-binaries.mjs): bundle del binario nativo en dist-standalone/, con el servidor MCP
 // dentro (`genpm mcp serve`, ADR-025). El paquete de npm lo deja fuera (pesa ~550 KB y alarga el `npx` en frío); desde
-// npm/npx, `genpm mcp setup` registra `npx -y @genpm/mcp`, que es el mismo servidor.
+// npm/npx, `genpm mcp setup` registra `npx -y @genpm-net/mcp`, que es el mismo servidor.
 const standalone = process.env.GENPM_STANDALONE === '1';
 
 export default defineConfig({
@@ -32,6 +32,6 @@ export default defineConfig({
   minify: true,
   deps: standalone
     ? { alwaysBundle: [/.*/] }
-    : { alwaysBundle: [/^(?!@genpm\/mcp\/serve$)/], neverBundle: ['@genpm/mcp/serve'] },
+    : { alwaysBundle: [/^(?!@genpm-net\/mcp\/serve$)/], neverBundle: ['@genpm-net/mcp/serve'] },
   plugins: [stubCatalogs(/[\\/]locales[\\/][^\\/]+[\\/]web\.json$/)],
 });

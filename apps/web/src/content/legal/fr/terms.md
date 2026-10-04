@@ -2,7 +2,7 @@
 title: Conditions d’utilisation
 updated: 2026-10-03
 ---
-Ces conditions régissent l’utilisation de genpm.net, de l’API du registry (`api.genpm.net`), du CLI `genpm` et du serveur `@genpm/mcp` (ensemble, « GenPM »), fournis par {{name}} (informations complètes dans les [Mentions légales](/legal)). En créant un compte ou en publiant un paquet, vous les acceptez. Chercher et installer des paquets ne nécessite aucun compte. GenPM est en **bêta publique** et gratuit.
+Ces conditions régissent l’utilisation de genpm.net, de l’API du registry (`api.genpm.net`), du CLI `genpm` et du serveur `@genpm-net/mcp` (ensemble, « GenPM »), fournis par {{name}} (informations complètes dans les [Mentions légales](/legal)). En créant un compte ou en publiant un paquet, vous les acceptez. Chercher et installer des paquets ne nécessite aucun compte. GenPM est en **bêta publique** et gratuit.
 
 ## 1. Ce que fait GenPM
 

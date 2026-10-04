@@ -1,4 +1,4 @@
-// @genpm/mcp — servidor MCP (stdio) sobre @genpm/core (cli-mcp-spec parte B). Todo el texto dirigido al LLM está en
+// @genpm-net/mcp — servidor MCP (stdio) sobre @genpm/core (cli-mcp-spec parte B). Todo el texto dirigido al LLM está en
 // inglés (i18n principio 4). Seguridad (B.6, security §4.5): sin `force`, sin publish/login, consentimiento explícito
 // para MCP y npm, confinado a la raíz que declara el cliente, reglas de paquetes delimitadas como contenido de terceros.
 

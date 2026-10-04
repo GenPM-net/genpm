@@ -2,7 +2,7 @@
 title: Términos del servicio
 updated: 2026-10-03
 ---
-Estos términos regulan el uso de genpm.net, la API del registro (`api.genpm.net`), el CLI `genpm` y el servidor `@genpm/mcp` (en conjunto, «GenPM»), que presta {{name}} (datos completos en el [Aviso legal](/legal)). Al crear una cuenta o publicar un paquete los aceptas. Buscar e instalar paquetes no requiere cuenta. GenPM está en **beta pública** y es gratuito.
+Estos términos regulan el uso de genpm.net, la API del registro (`api.genpm.net`), el CLI `genpm` y el servidor `@genpm-net/mcp` (en conjunto, «GenPM»), que presta {{name}} (datos completos en el [Aviso legal](/legal)). Al crear una cuenta o publicar un paquete los aceptas. Buscar e instalar paquetes no requiere cuenta. GenPM está en **beta pública** y es gratuito.
 
 ## 1. Qué hace GenPM
 

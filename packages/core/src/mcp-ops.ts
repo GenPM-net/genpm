@@ -1,4 +1,4 @@
-// `genpm mcp setup | add | remove` (cli-mcp-spec §A.5, §B.7): registra @genpm/mcp en el cliente IA y escribe o quita
+// `genpm mcp setup | add | remove` (cli-mcp-spec §A.5, §B.7): registra @genpm-net/mcp en el cliente IA y escribe o quita
 // (consentimiento diferido) los servidores MCP que declara un paquete instalado. Merge no destructivo siempre.
 
 import { homedir } from 'node:os';
@@ -21,17 +21,17 @@ export type SetupClient = 'claude' | 'cursor' | 'vscode' | 'windsurf' | 'codex' 
 /** Servidor MCP local por stdio (forma que tiene siempre el servidor de GenPM). */
 export type StdioEntry = { n: string; c: string; a: string[] };
 
-/** Servidor MCP de GenPM vía npm (`@genpm/mcp`): necesita Node. */
-export const GENPM_MCP: StdioEntry = { n: 'genpm', c: 'npx', a: ['-y', '@genpm/mcp'] };
+/** Servidor MCP de GenPM vía npm (`@genpm-net/mcp`): necesita Node. */
+export const GENPM_MCP: StdioEntry = { n: 'genpm', c: 'npx', a: ['-y', '@genpm-net/mcp'] };
 /** El mismo servidor dentro del binario nativo (ADR-025): sin Node ni npx. */
 export const GENPM_MCP_BINARY: StdioEntry = { n: 'genpm', c: 'genpm', a: ['mcp', 'serve'] };
 
-/** Con el binario instalado se registra `genpm mcp serve`; desde npm/npx, `npx -y @genpm/mcp`. */
+/** Con el binario instalado se registra `genpm mcp serve`; desde npm/npx, `npx -y @genpm-net/mcp`. */
 export function genpmMcpEntry(method: InstallMethod = installMethod()): StdioEntry {
   return method.kind === 'binary' ? GENPM_MCP_BINARY : GENPM_MCP;
 }
 
-/** `genpm mcp serve` / `npx -y @genpm/mcp` tal como se escribiría en una terminal. */
+/** `genpm mcp serve` / `npx -y @genpm-net/mcp` tal como se escribiría en una terminal. */
 const commandLine = (e: StdioEntry) => [e.c, ...e.a].join(' ');
 
 export type SetupTarget = {

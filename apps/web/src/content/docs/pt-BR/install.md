@@ -79,8 +79,8 @@ curl -fsSL https://github.com/genpm-net/genpm-releases/releases/latest/download/
 Se você já usa Node.js 20.11+, também pode rodar o pacote do npm. Os comandos são os mesmos.
 
 ```bash
-npm i -g @genpm/cli             # instalação global; atualize com npm i -g @genpm/cli@latest
-npx @genpm/cli add @core/auth   # uso pontual, sem instalar nada (útil em CI)
+npm i -g @genpm-net/cli             # instalação global; atualize com npm i -g @genpm-net/cli@latest
+npx @genpm-net/cli add @core/auth   # uso pontual, sem instalar nada (útil em CI)
 ```
 
 ## Desinstalar

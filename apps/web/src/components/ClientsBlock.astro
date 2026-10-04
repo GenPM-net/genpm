@@ -51,7 +51,7 @@ const setup = 'genpm mcp setup';
       </div>
     ))}
     <p set:html={t.t('web.clients.orSetup', { command: `<code>${setup}</code>` })} />
-    <p class="hint" set:html={t.t('web.clients.npxAlt', { install: `<a href="${href(locale, '/docs/install')}">genpm</a>`, command: '<code>npx -y @genpm/mcp</code>' })} />
+    <p class="hint" set:html={t.t('web.clients.npxAlt', { install: `<a href="${href(locale, '/docs/install')}">genpm</a>`, command: '<code>npx -y @genpm-net/mcp</code>' })} />
     <div class="prompts"><span class="k" style="margin-bottom:4px">{t.t('web.clients.thenAsk')}</span><div>{t.t('web.clients.p1')}</div><div>{t.t('web.clients.p2')}</div><div>{t.t('web.clients.p3')}</div></div>
   </div>
 </div>

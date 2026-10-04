@@ -29,7 +29,7 @@ const TARGETS = {
   'windows-arm64': 'bun-windows-arm64',
 };
 
-// Mismo tsdown.config.mjs que npm, en modo standalone (incluye @genpm/mcp/serve).
+// Mismo tsdown.config.mjs que npm, en modo standalone (incluye @genpm-net/mcp/serve).
 execFileSync(process.execPath, [join(ROOT, 'node_modules', 'tsdown', 'dist', 'run.mjs'), '--config-loader', 'native'], {
   cwd: ROOT,
   env: { ...process.env, GENPM_STANDALONE: '1' },

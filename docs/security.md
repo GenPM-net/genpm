@@ -123,7 +123,7 @@ Como la telemetría es anónima, **no sabemos quién instaló una versión vulne
 
 ### 4.4 Lockfile y repositorio del usuario
 - Un PR malicioso que cambie `genpm.lock` no ejecuta nada (no existe `genpm install`). `genpm audit` en CI detecta entradas sin firma válida o hashes que no cuadran.
-- Recomendación en docs: añadir `genpm audit` al CI del proyecto (en CI vale `npx @genpm/cli audit` o el binario con `install.sh`).
+- Recomendación en docs: añadir `genpm audit` al CI del proyecto (en CI vale `npx @genpm-net/cli audit` o el binario con `install.sh`).
 
 ### 4.5 Servidor MCP
 - Sin `force`, sin `publish`, sin acceso a credenciales.
@@ -150,7 +150,7 @@ Como la telemetría es anónima, **no sabemos quién instaló una versión vulne
 
 ## 6. Cadena de suministro de GenPM
 
-Objetivo: **SLSA Build Level 3** para `genpm` y `@genpm/mcp`.
+Objetivo: **SLSA Build Level 3** para `genpm` y `@genpm-net/mcp`.
 
 | Control | Detalle |
 |---|---|

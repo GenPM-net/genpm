@@ -283,10 +283,10 @@ siguen funcionando como alternativas (mismo bundle) y `npx` queda para usos punt
   escritura, i18n) y los instaladores se prueban en su sistema (incluido Windows PowerShell 5.1).
 - **Instaladores:** fuente única en `scripts/install/`, servida por la web como texto plano. Detectan SO, arquitectura,
   Rosetta y musl, verifican el SHA-256, instalan en `~/.genpm/bin` sin `sudo` y añaden la carpeta al `PATH` (desactivable).
-- **MCP sin Node:** el binario incluye el servidor MCP (`genpm mcp serve`, mismo `serveStdio()` que `npx -y @genpm/mcp`);
+- **MCP sin Node:** el binario incluye el servidor MCP (`genpm mcp serve`, mismo `serveStdio()` que `npx -y @genpm-net/mcp`);
   el paquete de npm no (duplicaría su tamaño y el `npx` en frío pasaría de 2 s): el binario sale de un segundo bundle
   de tsdown (`GENPM_STANDALONE=1`, `dist-standalone/`).
-  `genpm mcp setup` registra `genpm mcp serve` cuando corre como binario y `npx -y @genpm/mcp` cuando corre desde npm/npx;
+  `genpm mcp setup` registra `genpm mcp serve` cuando corre como binario y `npx -y @genpm-net/mcp` cuando corre desde npm/npx;
   la web y la documentación muestran `genpm mcp serve` por defecto. Una config de proyecto compartida (`.mcp.json`) con
   `genpm mcp serve` exige que cada persona del equipo tenga el binario, igual que necesita genpm para el lock.
 - **CI de los autores:** `genpm init --workflow` genera un workflow que instala el binario con `install.sh` en lugar de usar `npx`.
@@ -314,14 +314,16 @@ Windows solo existen en repos públicos: mientras tanto se prueban x64 y Apple s
 (fijada en `release.yml`), no dependencia del repo.
 
 
-### ADR-026 · El paquete npm del CLI se llama `@genpm/cli` — ✅ Decidida (fundador, 2026-10-04)
+### ADR-026 · Los paquetes npm se publican bajo `@genpm-net` — ✅ Decidida (fundador, 2026-10-04)
 
-**Contexto:** npm rechaza publicar `genpm` (403: nombre demasiado parecido a `npm` y `pnpm`).
+**Contexto:** npm rechaza publicar `genpm` (403: nombre demasiado parecido a `npm` y `pnpm`), y el scope `@genpm` de npm
+pertenece a otro usuario desde enero de 2025.
 
-**Decisión:** el CLI se publica como **`@genpm/cli`**, junto a `@genpm/mcp`, en la organización `genpm` de npm (del fundador).
-El comando sigue siendo `genpm` (`bin`). Vías npm: `npm i -g @genpm/cli` y `npx @genpm/cli …`; `genpm upgrade` propone
-`@genpm/cli@latest`. Sustituye a las menciones de `genpm` como nombre de paquete en ADR-025. La vía principal sigue siendo
-el binario nativo.
+**Decisión:** el CLI se publica como **`@genpm-net/cli`** y el servidor MCP como **`@genpm-net/mcp`**, en la organización
+`genpm-net` de npm (la misma que en GitHub). El comando sigue siendo `genpm` (`bin`). Vías npm: `npm i -g @genpm-net/cli`,
+`npx @genpm-net/cli …` y `npx -y @genpm-net/mcp`; `genpm upgrade` propone `@genpm-net/cli@latest`. Sustituye a los nombres
+de paquete npm de ADR-025 y anteriores. Los paquetes internos del monorepo (`@genpm/core`, `@genpm/manifest`…) no se
+publican y conservan su nombre. La vía principal sigue siendo el binario nativo.
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

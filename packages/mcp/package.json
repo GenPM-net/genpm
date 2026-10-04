@@ -1,5 +1,5 @@
 {
-  "name": "@genpm/mcp",
+  "name": "@genpm-net/mcp",
   "version": "0.1.2",
   "description": "GenPM MCP server: lets AI agents search, inspect and inject architecture modules (code + AI rules + MCP)",
   "license": "MIT",

@@ -1,9 +1,9 @@
-# @genpm/mcp
+# @genpm-net/mcp
 
 The GenPM MCP server: lets your AI agent search, inspect and inject architecture modules (source code + AI rules + MCP config) from immutable Git commits — with the same engine as the `genpm` CLI.
 
 ```bash
-claude mcp add genpm -- npx -y @genpm/mcp
+claude mcp add genpm -- npx -y @genpm-net/mcp
 ```
 
 Don't want Node.js? The same server is built into the native `genpm` binary ([genpm.net/docs/install](https://genpm.net/docs/install)): register `genpm mcp serve` instead, or run `genpm mcp setup` and it writes the config for you. Cursor, VS Code, Windsurf and Codex: see [genpm.net/docs/mcp](https://genpm.net/docs/mcp).

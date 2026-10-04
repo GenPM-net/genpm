@@ -181,7 +181,7 @@
   },
   "E_MCP_SERVE_UNAVAILABLE": {
     "message": "genpm mcp serve はスタンドアロンの genpm バイナリにのみ含まれています。",
-    "fix": "MCP コマンドとして npx -y @genpm/mcp を使うか（genpm mcp setup が設定します）、genpm.net/docs/install からバイナリをインストールしてください。"
+    "fix": "MCP コマンドとして npx -y @genpm-net/mcp を使うか（genpm mcp setup が設定します）、genpm.net/docs/install からバイナリをインストールしてください。"
   },
   "E_NOT_A_PROJECT": {
     "message": "{path} にプロジェクトが見つかりません。",

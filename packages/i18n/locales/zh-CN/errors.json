@@ -181,7 +181,7 @@
   },
   "E_MCP_SERVE_UNAVAILABLE": {
     "message": "genpm mcp serve 仅包含在独立的 genpm 二进制文件中。",
-    "fix": "请使用 npx -y @genpm/mcp 作为 MCP 命令（genpm mcp setup 会自动配置），或从 genpm.net/docs/install 安装二进制文件。"
+    "fix": "请使用 npx -y @genpm-net/mcp 作为 MCP 命令（genpm mcp setup 会自动配置），或从 genpm.net/docs/install 安装二进制文件。"
   },
   "E_NOT_A_PROJECT": {
     "message": "在 {path} 中未找到项目。",

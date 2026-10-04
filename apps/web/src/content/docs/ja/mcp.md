@@ -13,7 +13,7 @@ genpm mcp setup
 
 変更内容を正確に表示し、書き込む前に確認します。`--client` と `--scope` で対象を選ぶか、以下の手順で手動設定してください。
 
-サーバーは [`genpm` バイナリ](/docs/install)に組み込まれており、クライアントは `genpm mcp serve` を起動します（Node.js 不要）。バイナリがない場合は npm パッケージを使います。以下の例の `genpm mcp serve` を `npx -y @genpm/mcp`（`"command": "npx", "args": ["-y", "@genpm/mcp"]`）に置き換えてください。npm や npx 経由で実行した `genpm mcp setup` は自動でそうします。
+サーバーは [`genpm` バイナリ](/docs/install)に組み込まれており、クライアントは `genpm mcp serve` を起動します（Node.js 不要）。バイナリがない場合は npm パッケージを使います。以下の例の `genpm mcp serve` を `npx -y @genpm-net/mcp`（`"command": "npx", "args": ["-y", "@genpm-net/mcp"]`）に置き換えてください。npm や npx 経由で実行した `genpm mcp setup` は自動でそうします。
 
 ## Claude Code
 

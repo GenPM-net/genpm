@@ -181,7 +181,7 @@
   },
   "E_MCP_SERVE_UNAVAILABLE": {
     "message": "genpm mcp serve ist nur im eigenständigen genpm-Binary enthalten.",
-    "fix": "Nutze npx -y @genpm/mcp als MCP-Befehl (genpm mcp setup erledigt das für dich) oder installiere das Binary über genpm.net/docs/install."
+    "fix": "Nutze npx -y @genpm-net/mcp als MCP-Befehl (genpm mcp setup erledigt das für dich) oder installiere das Binary über genpm.net/docs/install."
   },
   "E_NOT_A_PROJECT": {
     "message": "Kein Projekt in {path} gefunden.",

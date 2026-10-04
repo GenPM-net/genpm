@@ -18,7 +18,7 @@ Aux fins des articles 11 et 12 du règlement (UE) 2022/2065 sur les services num
 
 ## Propriété intellectuelle et industrielle
 
-Le nom et le logo GenPM, le design du site, ses textes et le code du registry appartiennent au titulaire ou sont utilisés sous licence. Le code des paquets publiés appartient à leurs auteurs et est régi par la licence de chaque paquet ; le code open source des clients `genpm` et `@genpm/mcp` est régi par sa propre licence.
+Le nom et le logo GenPM, le design du site, ses textes et le code du registry appartiennent au titulaire ou sont utilisés sous licence. Le code des paquets publiés appartient à leurs auteurs et est régi par la licence de chaque paquet ; le code open source des clients `genpm` et `@genpm-net/mcp` est régi par sa propre licence.
 
 ## Conditions d’utilisation
 

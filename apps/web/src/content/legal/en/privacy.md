@@ -2,7 +2,7 @@
 title: Privacy Policy
 updated: 2026-10-03
 ---
-This policy explains which personal data GenPM (genpm.net, the `api.genpm.net` API, the `genpm` CLI and the `@genpm/mcp` server) processes, why, on what legal basis and what your rights are. It complies with Regulation (EU) 2016/679 (GDPR) and Spanish Organic Law 3/2018 (LOPDGDD). The Spanish version prevails in case of discrepancy.
+This policy explains which personal data GenPM (genpm.net, the `api.genpm.net` API, the `genpm` CLI and the `@genpm-net/mcp` server) processes, why, on what legal basis and what your rights are. It complies with Regulation (EU) 2016/679 (GDPR) and Spanish Organic Law 3/2018 (LOPDGDD). The Spanish version prevails in case of discrepancy.
 
 ## 1. Data controller
 

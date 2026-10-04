@@ -225,10 +225,10 @@ describe('other commands', () => {
     const s = await cli('mcp', 'setup', '--client', 'cursor', '--yes', '--json');
     expect(JSON.parse(s.stdout).results[0]).toMatchObject({ client: 'cursor', written: true });
     expect(JSON.parse(await readFile(join(project, '.cursor/mcp.json'), 'utf8'))).toEqual({
-      mcpServers: { genpm: { command: 'npx', args: ['-y', '@genpm/mcp'] } },
+      mcpServers: { genpm: { command: 'npx', args: ['-y', '@genpm-net/mcp'] } },
     });
     const s2 = await cli('mcp', 'setup', '--client', 'claude', '--scope', 'user', '--json');
-    expect(JSON.parse(s2.stdout).results[0].command).toBe('claude mcp add genpm -- npx -y @genpm/mcp');
+    expect(JSON.parse(s2.stdout).results[0].command).toBe('claude mcp add genpm -- npx -y @genpm-net/mcp');
   });
   it('upgrade --check reports a newer release; upgrading an npm/npx install points to its package manager', async () => {
     const regFetch = globalThis.fetch;
@@ -249,7 +249,7 @@ describe('other commands', () => {
       expect(u.code).toBe(8);
       expect(JSON.parse(u.stdout).error).toMatchObject({
         code: 'E_UPGRADE_UNSUPPORTED',
-        fix: expect.stringContaining('@genpm/cli@latest'),
+        fix: expect.stringContaining('@genpm-net/cli@latest'),
       });
     } finally {
       globalThis.fetch = regFetch;

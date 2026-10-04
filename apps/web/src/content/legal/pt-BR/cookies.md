@@ -27,6 +27,6 @@ Você pode apagar ou bloquear cookies e o armazenamento local nas configuraçõe
 
 ## O CLI e o servidor MCP
 
-O CLI `genpm` e o servidor `@genpm/mcp` não usam cookies. Sobre a telemetria de instalações e como desativá-la, veja a [Política de privacidade](/privacy).
+O CLI `genpm` e o servidor `@genpm-net/mcp` não usam cookies. Sobre a telemetria de instalações e como desativá-la, veja a [Política de privacidade](/privacy).
 
 Se um dia adicionarmos cookies que exijam seu consentimento, pediremos antes de usá-los e atualizaremos esta política.

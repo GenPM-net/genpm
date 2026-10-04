@@ -11,7 +11,7 @@ irm https://genpm.net/install.ps1 | iex          # Windows (PowerShell)
 genpm add @core/auth
 ```
 
-The recommended install is the native binary: no Node.js needed, and `genpm upgrade` keeps it current. This npm package is the same CLI for Node 20.11+ users: `npm i -g @genpm/cli`, or `npx @genpm/cli add @core/auth` without installing (handy in CI). git 2.25+ is recommended; without it GenPM falls back to GitHub tarballs.
+The recommended install is the native binary: no Node.js needed, and `genpm upgrade` keeps it current. This npm package is the same CLI for Node 20.11+ users: `npm i -g @genpm-net/cli`, or `npx @genpm-net/cli add @core/auth` without installing (handy in CI). git 2.25+ is recommended; without it GenPM falls back to GitHub tarballs.
 
 ## Commands
 
@@ -26,7 +26,7 @@ The recommended install is the native binary: no Node.js needed, and `genpm upgr
 | `genpm audit` | Integrity, signatures, advisories and yanked versions. |
 | `genpm doctor` | Check your environment and project. |
 | `genpm mcp setup` | Register the GenPM MCP server in your AI client. |
-| `genpm mcp serve` | Run the MCP server over stdio (native binary only; from npm use `npx -y @genpm/mcp`). |
+| `genpm mcp serve` | Run the MCP server over stdio (native binary only; from npm use `npx -y @genpm-net/mcp`). |
 | `genpm upgrade` | Update the native binary (`--check` to only look). |
 | `genpm init` · `validate` · `publish` · `yank` | Author a package. |
 

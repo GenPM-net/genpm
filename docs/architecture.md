@@ -49,7 +49,7 @@ y dos fachadas sobre ese motor: el **CLI** y el **servidor MCP**. Una **web** (g
 flowchart LR
   dev([Desarrollador]) -->|genpm add / search| CLI[genpm CLI]
   dev -->|"instala auth" en lenguaje natural| IDE[IDE con agente IA<br/>Cursor · Claude Code · VS Code]
-  IDE -->|MCP stdio| MCP[@genpm/mcp]
+  IDE -->|MCP stdio| MCP[@genpm-net/mcp]
   CLI --> CORE[@genpm/core]
   MCP --> CORE
   CORE -->|HTTPS JSON| REG[GenPM Registry<br/>Cloudflare Workers + D1]
@@ -61,7 +61,7 @@ flowchart LR
   WEB -->|Service Binding| REG
 ```
 
-**Explicación en texto.** El desarrollador interactúa por terminal (CLI) o conversando con su IDE (que habla MCP con `@genpm/mcp`).
+**Explicación en texto.** El desarrollador interactúa por terminal (CLI) o conversando con su IDE (que habla MCP con `@genpm-net/mcp`).
 Ambas fachadas delegan en `@genpm/core`, que consulta el registry para *resolver* un nombre a un manifiesto con SHA, y después
 descarga el código **directamente del host Git** — el registry nunca está en el camino de los bytes del código. El autor publica
 creando un tag en Git y llamando a `genpm publish`; el registry verifica en el servidor (leyendo GitHub) que el manifiesto existe en ese
@@ -88,7 +88,7 @@ commit. La web lee el mismo registry por Service Binding (latencia ~0, sin pasar
       ▲                         │               │              │
 @genpm/core ◄── genpm (cli)     │          apps/registry   apps/web
       ▲                         │
-      └──── @genpm/mcp ─────────┘
+      └──── @genpm-net/mcp ─────────┘
 ```
 Regla: `manifest` no depende de nada del monorepo; `core` solo de `manifest`; `apps/*` nunca dependen de `core`
 (el registry no clona repos; la web no escribe disco).

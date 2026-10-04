@@ -18,7 +18,7 @@ A efectos de los artículos 11 y 12 del Reglamento (UE) 2022/2065 de Servicios D
 
 ## Propiedad intelectual e industrial
 
-La marca y el logotipo de GenPM, el diseño de la web, sus textos y el código del registro pertenecen a su titular o se usan con licencia. El código de los paquetes publicados pertenece a sus autores y se rige por la licencia de cada paquete; el código abierto de los clientes `genpm` y `@genpm/mcp` se rige por su propia licencia.
+La marca y el logotipo de GenPM, el diseño de la web, sus textos y el código del registro pertenecen a su titular o se usan con licencia. El código de los paquetes publicados pertenece a sus autores y se rige por la licencia de cada paquete; el código abierto de los clientes `genpm` y `@genpm-net/mcp` se rige por su propia licencia.
 
 ## Condiciones de uso
 

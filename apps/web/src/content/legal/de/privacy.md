@@ -2,7 +2,7 @@
 title: Datenschutzerklärung
 updated: 2026-10-03
 ---
-Diese Erklärung beschreibt, welche personenbezogenen Daten GenPM (genpm.net, die API `api.genpm.net`, der CLI `genpm` und der Server `@genpm/mcp`) verarbeitet, warum, auf welcher Rechtsgrundlage und welche Rechte du hast. Sie entspricht der Verordnung (EU) 2016/679 (DSGVO) und dem spanischen Organgesetz 3/2018 (LOPDGDD). Bei Abweichungen ist die spanische Fassung maßgeblich.
+Diese Erklärung beschreibt, welche personenbezogenen Daten GenPM (genpm.net, die API `api.genpm.net`, der CLI `genpm` und der Server `@genpm-net/mcp`) verarbeitet, warum, auf welcher Rechtsgrundlage und welche Rechte du hast. Sie entspricht der Verordnung (EU) 2016/679 (DSGVO) und dem spanischen Organgesetz 3/2018 (LOPDGDD). Bei Abweichungen ist die spanische Fassung maßgeblich.
 
 ## 1. Verantwortlicher
 

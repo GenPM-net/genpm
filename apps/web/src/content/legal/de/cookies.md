@@ -27,6 +27,6 @@ Du kannst Cookies und lokalen Speicher in den Einstellungen deines Browsers lös
 
 ## CLI und MCP-Server
 
-Der CLI `genpm` und der Server `@genpm/mcp` verwenden keine Cookies. Zur Installations-Telemetrie und wie du sie abschaltest, siehe die [Datenschutzerklärung](/privacy).
+Der CLI `genpm` und der Server `@genpm-net/mcp` verwenden keine Cookies. Zur Installations-Telemetrie und wie du sie abschaltest, siehe die [Datenschutzerklärung](/privacy).
 
 Sollten wir jemals Cookies hinzufügen, die deine Einwilligung erfordern, fragen wir dich vor der Nutzung und aktualisieren diese Richtlinie.

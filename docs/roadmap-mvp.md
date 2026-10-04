@@ -20,7 +20,7 @@ con reglas de contexto con alcance, y cablea el resultado siguiendo las reglas �
 ### Definición de éxito (demo final, grabada)
 1. `genpm search auth` devuelve resultados del registry en producción en < 1 s.
 2. `genpm add @core/billing` instala billing + auth + db (dependencias), escribe contexto para Cursor y Claude Code, propone `pnpm add` y no escribe MCP sin consentimiento.
-3. En Cursor y Claude Code, la instalación conversacional vía `@genpm/mcp` funciona con el guion anterior.
+3. En Cursor y Claude Code, la instalación conversacional vía `@genpm-net/mcp` funciona con el guion anterior.
 4. `genpm publish` de un paquete nuevo desde un repo de GitHub aparece en `genpm.net` en < 1 minuto.
 5. Los 5 paquetes semilla están publicados, con escaneo `passed`.
 
@@ -86,7 +86,7 @@ Decisiones ya tomadas: ver [brainstorming §2](brainstorming.md#2-decisiones-del
 | Track | Tareas |
 |---|---|
 | A | Cron triggers (rollup Analytics Engine → D1, popularidad, patrocinios, auditoría de tags) · `/v1/featured`, `/v1/stats`, `/v1/badge` · tests de seguridad: path traversal vía `d`, ref de rama, typosquatting, payloads grandes, FTS injection, suite cross-tenant (INV-10). · `/v1/advisories`. · Bot de traducción + checks de i18n en CI; generar `pt-BR` y nivel 2. |
-| B | `@genpm/mcp`: tools (`search`, `info`, `add` con `dryRun`/`planId`, `list`, `remove`, `outdated`, `audit`, `validate`), reglas delimitadas como contenido de terceros, `instructions`, resources, prompts, raíces vía `roots/list`, candado `.genpm/.lock`. Tests de contrato con `InMemoryTransport`. · `genpm mcp setup/add/remove` (adaptadores por cliente). · Pruebas reales en **Claude Code** y **Cursor**. |
+| B | `@genpm-net/mcp`: tools (`search`, `info`, `add` con `dryRun`/`planId`, `list`, `remove`, `outdated`, `audit`, `validate`), reglas delimitadas como contenido de terceros, `instructions`, resources, prompts, raíces vía `roots/list`, candado `.genpm/.lock`. Tests de contrato con `InMemoryTransport`. · `genpm mcp setup/add/remove` (adaptadores por cliente). · Pruebas reales en **Claude Code** y **Cursor**. |
 | C | `@core/billing` (con `m` de Stripe) y `@core/email` terminados; `@core/ai` en progreso. Scaffold de `apps/web` (Astro + Tailwind con tokens de [branding](branding.md)). |
 
 **DoD:** en Claude Code y Cursor, el prompt "añade login con GitHub" termina con el módulo instalado y la tool `genpm_add` llamada primero con `dryRun:true` · respuestas de tools < 1 500 tokens (test automatizado con un tokenizador aproximado).
@@ -106,7 +106,7 @@ Decisiones ya tomadas: ver [brainstorming §2](brainstorming.md#2-decisiones-del
 - **Idiomas**: revisión nativa de `pt-BR`, legal y `security.txt` en nivel 1, capturas con pseudo-locale.
 - Producción: migraciones D1 prod, dominios `api.genpm.net` / `genpm.net`, secretos, rate limits, alertas (errores 5xx > 1 %, latencia p95).
 - Publicar las 5 semillas en **prod** con el CLI; marcar `@core/*` como featured y el scope como verificado.
-- `npm publish` de `genpm@0.1.0` y `@genpm/mcp@0.1.0` (con provenance).
+- `npm publish` de `genpm@0.1.0` y `@genpm-net/mcp@0.1.0` (con provenance).
 - Docs: README, Quickstart (60 s), Guía de publicación, Referencia del manifiesto, Config MCP por cliente.
 
 **DoD:** checklist de seguridad sin ítems abiertos de severidad alta · instalación desde npm público funciona en máquina limpia.

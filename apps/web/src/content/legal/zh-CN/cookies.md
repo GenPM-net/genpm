@@ -27,6 +27,6 @@ genpm.net **只使用技术性 Cookie 和你自己选择的偏好设置**，它�
 
 ## CLI 和 MCP 服务器
 
-`genpm` CLI 和 `@genpm/mcp` 服务器不使用 Cookie。关于安装遥测及如何关闭，请参阅[隐私政策](/privacy)。
+`genpm` CLI 和 `@genpm-net/mcp` 服务器不使用 Cookie。关于安装遥测及如何关闭，请参阅[隐私政策](/privacy)。
 
 如果今后添加需要你同意的 Cookie，我们会在使用前征求你的同意，并更新本政策。

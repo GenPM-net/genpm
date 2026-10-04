@@ -37,7 +37,7 @@ genpm remove @core/auth
 
 ```bash
 genpm outdated
-genpm audit   # add it to your CI as: npx @genpm/cli audit
+genpm audit   # add it to your CI as: npx @genpm-net/cli audit
 ```
 
 `audit` verifies file integrity, the registry signature of every lock entry, security advisories, yanked versions and quarantines. It exits with code 6 on high or critical findings.

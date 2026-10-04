@@ -1,6 +1,6 @@
 # @genpm/core
 
-Motor de GenPM. Lo consumen `genpm` (CLI) y `@genpm/mcp` por igual.
+Motor de GenPM. Lo consumen `genpm` (CLI) y `@genpm-net/mcp` por igual.
 
 Módulos previstos:
 ```

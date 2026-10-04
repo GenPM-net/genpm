@@ -1,5 +1,5 @@
 {
-  "name": "@genpm/cli",
+  "name": "@genpm-net/cli",
   "version": "0.1.2",
   "description": "Install architectures, not dependencies: inject code + AI rules + MCP config from immutable Git commits",
   "license": "MIT",
@@ -39,7 +39,7 @@
     "@genpm/core": "workspace:*",
     "@genpm/i18n": "workspace:*",
     "@genpm/manifest": "workspace:*",
-    "@genpm/mcp": "workspace:*",
+    "@genpm-net/mcp": "workspace:*",
     "@genpm/tsconfig": "workspace:*",
     "@types/node": "^22.0.0",
     "citty": "^0.2.0",
