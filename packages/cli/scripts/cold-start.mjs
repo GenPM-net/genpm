@@ -7,7 +7,8 @@ import { mkdtempSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-const LIMIT_MS = Number(process.env.GENPM_COLD_LIMIT_MS ?? 2000);
+// En Windows, `npx` arranca a través de cmd.exe y el antivirus del runner: solo eso ya cuesta ~2,5 s.
+const LIMIT_MS = Number(process.env.GENPM_COLD_LIMIT_MS ?? (process.platform === 'win32' ? 4000 : 2000));
 const dir = mkdtempSync(join(tmpdir(), 'genpm-cold-'));
 const shell = process.platform === 'win32';
 try {
