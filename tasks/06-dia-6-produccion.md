@@ -40,7 +40,8 @@
 - [ ] `D6-P-02` **TODO** Dominios api.genpm.net y genpm.net apuntando a los Workers de producción · A · 1h · deps: D0-01, D5-W-23
 - [ ] `D6-P-03` **TODO** Secretos de producción y rate limits configurados · A · 1h · deps: D6-P-01
 - [ ] `D6-P-04` **TODO** Alertas: errores 5xx > 1 % y latencia p95 · A · 1h · deps: D6-P-02
-- [ ] `D6-P-05` **TODO** Publicar las 5 semillas en prod con el CLI, marcar @core/* como featured y el scope como verificado · A · 1h · deps: D6-P-03, D6-S-05
+- [x] `D6-P-05` **DONE** Publicar las 5 semillas en prod con el CLI, marcar @core/* como featured y el scope como verificado · A · 1h · deps: D6-P-03, D6-S-05
+  - ✅ 2026-10-04: repos GenPM-net/{db,auth,billing,email,ai} públicos (1 commit cada uno, sin secretos), las 5 publicadas en v1.0.0 desde la web, destacadas en la home (auth, db, billing, ai, email) y verificadas (scope de acc_system). Yohangel es staff (membresía manual en acc_system).
 - [ ] `D6-P-06` **TODO** npm publish de genpm@0.1.0 y @genpm/mcp@0.1.0 con provenance · B · 1h · deps: D5-B-05, D6-03
 - [ ] `D6-P-07` **TODO** Apertura del código (ADR-016): semillas públicas, paquetes cliente públicos con licencia, registry y web según decisión del fundador · F · 1h · deps: D6-P-05
 - [ ] `D6-P-08` **TODO** Datos del titular (nombre, NIF, domicilio, ciudad) en apps/web/src/content/legal/owner.json y revisión legal (ADR-024) · F · 0.5h · deps: D5-W-19

@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-04. No editar a mano. -->
 
-**59 %** completado · 152/258 tareas · 557h estimadas pendientes
+**59 %** completado · 153/258 tareas · 556h estimadas pendientes
 
-TODO 60 · DOING 4 · DONE 151 · BLOCKED 42 · CUT 1
+TODO 59 · DOING 4 · DONE 152 · BLOCKED 42 · CUT 1
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -83,7 +83,7 @@ TODO 60 · DOING 4 · DONE 151 · BLOCKED 42 · CUT 1
 | [Día 3 · CLI y contexto](03-dia-3-cli-contexto.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 95 % | 21/22 | 1h |
 | [Día 4 · Servidor MCP](04-dia-4-mcp.md) | `▓▓▓▓▓▓▓▓▓▓░░` 82 % | 14/17 | 3h |
 | [Día 5 · Web MVP y pulido del cliente](05-dia-5-web.md) | `▓▓▓▓▓▓▓▓▓▓░░` 87 % | 26/30 | 4.5h |
-| [Día 6 · Integración, seguridad y producción](06-dia-6-produccion.md) | `▓▓▓▓░░░░░░░░` 33 % | 10/30 | 24h |
+| [Día 6 · Integración, seguridad y producción](06-dia-6-produccion.md) | `▓▓▓▓░░░░░░░░` 37 % | 11/30 | 23h |
 | [Día 7 · Lanzamiento](07-dia-7-lanzamiento.md) | `░░░░░░░░░░░░` 0 % | 0/11 | 18.5h |
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓░░░░░░` 52 % | 22/42 | 10h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 16/17 | 2h |
@@ -143,6 +143,7 @@ TODO 60 · DOING 4 · DONE 151 · BLOCKED 42 · CUT 1
 
 **Siguientes disponibles** (TODO con todas sus dependencias cerradas)
 
+- `D6-P-07` Apertura del código (ADR-016): semillas públicas, paquetes cliente públicos con licencia, registry y web según decisión del fundador · F · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 - `D6-P-08` Datos del titular (nombre, NIF, domicilio, ciudad) en apps/web/src/content/legal/owner.json y revisión legal (ADR-024) · F · 0.5h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 
 <!-- board:end -->
