@@ -168,7 +168,7 @@ sustituye).
 ```bash
 pnpm --filter @genpm/registry exec wrangler deploy [--env staging]   # API
 pnpm --filter @genpm/web deploy:staging                              # web staging
-pnpm --filter @genpm/web deploy                                      # web producción (exige owner.json completo)
+pnpm --filter @genpm/web run deploy                                  # web producción (exige owner.json completo)
 GENPM_REGISTRY=https://api.staging.genpm.net \
 GENPM_PUBLIC_KEYS='{"s1":"HT1CBlCFIllWWGS8QUvAcEb_SMUL66MvnUfuOc0m6bc"}' genpm search db   # CLI contra staging
 ```
