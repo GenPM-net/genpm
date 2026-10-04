@@ -71,19 +71,19 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-04. No editar a mano. -->
 
-**59 %** completado · 153/258 tareas · 556h estimadas pendientes
+**62 %** completado · 161/258 tareas · 549h estimadas pendientes
 
-TODO 59 · DOING 4 · DONE 152 · BLOCKED 42 · CUT 1
+TODO 56 · DOING 4 · DONE 160 · BLOCKED 37 · CUT 1
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
 | [Día 0 · Preparación](00-dia-0-preparacion.md) | `▓▓▓▓▓░░░░░░░` 38 % | 6/16 | 9h |
-| [Día 1 · Cimientos](01-dia-1-cimientos.md) | `▓▓▓▓▓▓▓▓▓▓░░` 81 % | 17/21 | 4h |
-| [Día 2 · Registry y motor de fetch](02-dia-2-registry-fetch.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 90 % | 19/21 | 1h |
+| [Día 1 · Cimientos](01-dia-1-cimientos.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 95 % | 20/21 | 0.5h |
+| [Día 2 · Registry y motor de fetch](02-dia-2-registry-fetch.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 95 % | 20/21 | 0.5h |
 | [Día 3 · CLI y contexto](03-dia-3-cli-contexto.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 95 % | 21/22 | 1h |
 | [Día 4 · Servidor MCP](04-dia-4-mcp.md) | `▓▓▓▓▓▓▓▓▓▓░░` 82 % | 14/17 | 3h |
-| [Día 5 · Web MVP y pulido del cliente](05-dia-5-web.md) | `▓▓▓▓▓▓▓▓▓▓░░` 87 % | 26/30 | 4.5h |
-| [Día 6 · Integración, seguridad y producción](06-dia-6-produccion.md) | `▓▓▓▓░░░░░░░░` 37 % | 11/30 | 23h |
+| [Día 5 · Web MVP y pulido del cliente](05-dia-5-web.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 90 % | 27/30 | 3.5h |
+| [Día 6 · Integración, seguridad y producción](06-dia-6-produccion.md) | `▓▓▓▓▓▓░░░░░░` 47 % | 14/30 | 21h |
 | [Día 7 · Lanzamiento](07-dia-7-lanzamiento.md) | `░░░░░░░░░░░░` 0 % | 0/11 | 18.5h |
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓░░░░░░` 52 % | 22/42 | 10h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 16/17 | 2h |
@@ -105,17 +105,12 @@ TODO 59 · DOING 4 · DONE 152 · BLOCKED 42 · CUT 1
 - `D0-13` Gestor de secretos del equipo con todos los secretos; ningún .env commiteado · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-14` Contratar revisor nativo de pt-BR para el Día 6 y buscar revisores de nivel 2 (ja, zh-CN, ko, fr, de) · F · 1h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-G-01` M0: todas las cuentas con 2FA/FIDO2 y accesos repartidos al equipo · T · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
-- `D1-A-05` Migración 0001_init.sql (api-spec §5.3) aplicada en staging · A · 2h ([01-dia-1-cimientos.md](01-dia-1-cimientos.md))
-- `D1-A-07` GET /v1/health y deploy a staging · A · 1h ([01-dia-1-cimientos.md](01-dia-1-cimientos.md))
 - `D1-G-01` CI verde en macOS, Linux y Windows · T · 0.5h ([01-dia-1-cimientos.md](01-dia-1-cimientos.md))
-- `D1-G-02` GET /v1/health responde en staging · T · 0.5h ([01-dia-1-cimientos.md](01-dia-1-cimientos.md))
 - `D2-G-01` Publicar por curl un fixture en staging y obtener su SHA vía resolve · T · 0.5h ([02-dia-2-registry-fetch.md](02-dia-2-registry-fetch.md))
-- `D2-G-04` Caché caliente del registry < 100 ms · T · 0.5h ([02-dia-2-registry-fetch.md](02-dia-2-registry-fetch.md))
 - `D3-G-01` genpm add @core/auth instala auth + db desde staging en macOS, Linux y Windows (CI) · T · 1h ([03-dia-3-cli-contexto.md](03-dia-3-cli-contexto.md))
 - `D4-B-07` Prueba real en Claude Code con el guion "Añade auth y billing a este proyecto" · B · 1h ([04-dia-4-mcp.md](04-dia-4-mcp.md))
 - `D4-B-08` Prueba real en Cursor con el mismo guion · B · 1h ([04-dia-4-mcp.md](04-dia-4-mcp.md))
 - `D4-G-01` En Claude Code y Cursor, "añade login con GitHub" instala el módulo llamando primero a genpm_add con dryRun:true · T · 1h ([04-dia-4-mcp.md](04-dia-4-mcp.md))
-- `D5-W-23` Deploy de apps/web a staging con Service Binding al registry · W · 1h ([05-dia-5-web.md](05-dia-5-web.md))
 - `D5-B-03` Rendimiento: add en frío < 5 s · B · 2h ([05-dia-5-web.md](05-dia-5-web.md))
 - `D5-B-05` npm publish --provenance en dry-run desde CI · B · 1h ([05-dia-5-web.md](05-dia-5-web.md))
 - `D6-S-01` INV-1 a INV-10 con tests verdes en macOS, Linux y Windows · T · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
@@ -143,7 +138,14 @@ TODO 59 · DOING 4 · DONE 152 · BLOCKED 42 · CUT 1
 
 **Siguientes disponibles** (TODO con todas sus dependencias cerradas)
 
+- `D6-P-03` Secretos de producción y rate limits configurados · A · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
+- `D6-P-04` Alertas: errores 5xx > 1 % y latencia p95 · A · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 - `D6-P-07` Apertura del código (ADR-016): semillas públicas, paquetes cliente públicos con licencia, registry y web según decisión del fundador · F · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 - `D6-P-08` Datos del titular (nombre, NIF, domicilio, ciudad) en apps/web/src/content/legal/owner.json y revisión legal (ADR-024) · F · 0.5h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
+- `D6-G-03` genpm publish de un paquete nuevo aparece en genpm.net en < 1 minuto · T · 0.5h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
+- `D7-01` Vídeo demo de 90–120 s con el guion del objetivo (PLAN §1) · T · 3h ([07-dia-7-lanzamiento.md](07-dia-7-lanzamiento.md))
+- `BR-16` Test de 5 segundos de la home con 5 desarrolladores: ¿entienden qué hace GenPM? · F · 2h ([09-marca-diseno.md](09-marca-diseno.md))
+- `V02-07` Web P1: dashboard del autor, perfil, sponsors y enterprise (landing + waitlist con POST /v1/leads) · W · 16h ([10-post-mvp.md](10-post-mvp.md))
+- `V02-09` Modo oscuro opcional de la web con los tokens dark de tokens.json · W · 4h ([10-post-mvp.md](10-post-mvp.md))
 
 <!-- board:end -->

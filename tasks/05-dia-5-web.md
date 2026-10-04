@@ -37,7 +37,7 @@
 - [x] `D5-W-20` **DONE** 404 con búsqueda sugerida, 500, sitemap.xml, robots.txt y canonical · W · 1h · deps: D5-W-01
 - [x] `D5-W-21` **DONE** Reportar paquete: modal con login y POST /v1/reports · W · 2h · deps: D5-W-06, D5-W-12
 - [x] `D5-W-22` **DONE** CSP estricta, proxy de imágenes de GitHub, Turnstile y analítica sin cookies (copy_install, search, tab_view…) · W · 2h · deps: D5-W-01
-- [ ] `D5-W-23` **BLOCKED** Deploy de apps/web a staging con Service Binding al registry · W · 1h · deps: D5-W-04, D5-W-05, D5-W-06
+- [x] `D5-W-23` **DONE** Deploy de apps/web a staging con Service Binding al registry · W · 1h · deps: D5-W-04, D5-W-05, D5-W-06
   - Bloqueo: necesita cuenta Cloudflare (D0-10). Comando: `pnpm --filter @genpm/web deploy:staging` (wrangler usa dist/server/wrangler.json).
 
 ## Track B · Pulido del cliente

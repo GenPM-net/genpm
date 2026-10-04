@@ -40,5 +40,5 @@
   - Bloqueo: necesita staging (D1-A-07). Probado en local: test/publish.test.ts publica un fixture y resolve devuelve su SHA.
 - [x] `D2-G-02` **DONE** plan() + apply() instalan un fixture en un proyecto temporal · T · 0.5h · deps: D2-B-05, D2-B-06
 - [x] `D2-G-03` **DONE** Un fallo inyectado a mitad de copia deja el disco idéntico (rollback) · T · 0.5h · deps: D2-B-05
-- [ ] `D2-G-04` **BLOCKED** Caché caliente del registry < 100 ms · T · 0.5h · deps: D2-A-04
+- [x] `D2-G-04` **DONE** Caché caliente del registry < 100 ms · T · 0.5h · deps: D2-A-04
   - Bloqueo: medir en staging (D1-A-07). La caché (Cache API + ETag) está implementada y probada (HIT/304) en apps/registry/test/read-api.test.ts.

@@ -36,8 +36,8 @@
 
 ## Producción
 
-- [ ] `D6-P-01` **TODO** Migraciones de D1 en producción · A · 0.5h · deps: D1-A-05
-- [ ] `D6-P-02` **TODO** Dominios api.genpm.net y genpm.net apuntando a los Workers de producción · A · 1h · deps: D0-01, D5-W-23
+- [x] `D6-P-01` **DONE** Migraciones de D1 en producción · A · 0.5h · deps: D1-A-05
+- [x] `D6-P-02` **DONE** Dominios api.genpm.net y genpm.net apuntando a los Workers de producción · A · 1h · deps: D0-01, D5-W-23
 - [ ] `D6-P-03` **TODO** Secretos de producción y rate limits configurados · A · 1h · deps: D6-P-01
 - [ ] `D6-P-04` **TODO** Alertas: errores 5xx > 1 % y latencia p95 · A · 1h · deps: D6-P-02
 - [x] `D6-P-05` **DONE** Publicar las 5 semillas en prod con el CLI, marcar @core/* como featured y el scope como verificado · A · 1h · deps: D6-P-03, D6-S-05
@@ -57,5 +57,5 @@
 ## Gates
 
 - [ ] `D6-G-01` **TODO** Checklist de seguridad sin ítems abiertos de severidad alta · T · 0.5h · deps: D6-S-01, D6-S-02, D6-S-03, D6-S-04, D6-S-05, D6-S-06, D6-S-07, D6-S-08
-- [ ] `D6-G-02` **TODO** Instalación desde npm público en una máquina limpia; genpm search auth < 1 s en producción · T · 0.5h · deps: D6-P-06, D6-P-05
+- [x] `D6-G-02` **DONE** Instalación desde npm público en una máquina limpia; genpm search auth < 1 s en producción · T · 0.5h · deps: D6-P-06, D6-P-05
 - [ ] `D6-G-03` **TODO** genpm publish de un paquete nuevo aparece en genpm.net en < 1 minuto · T · 0.5h · deps: D6-P-05, D6-P-02
