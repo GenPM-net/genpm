@@ -81,6 +81,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
           <span class="kbd">⌘K</span>
         </form>
         <nav class="hnav" aria-label={t.t('web.nav.main')}>
+          <a href={href(locale, '/search')} aria-current={nav === 'search' ? 'page' : undefined}>{t.t('web.nav.packages')}</a>
           <a href={href(locale, '/docs')} aria-current={nav === 'docs' ? 'page' : undefined}>{t.t('web.nav.docs')}</a>
           <a href={href(locale, '/mcp')} aria-current={nav === 'mcp' ? 'page' : undefined}>{t.t('web.nav.mcp')}</a>
           <a href={href(locale, '/publish')} aria-current={nav === 'publish' ? 'page' : undefined}>{t.t('web.nav.publish')}</a>
@@ -106,7 +107,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
       </div>
       <div class="sheet" id="sheet" hidden>
         <div class="wrap">
-          <a href={href(locale, '/search')}>{t.t('web.search.title')}</a>
+          <a href={href(locale, '/search')}>{t.t('web.nav.packages')}</a>
           <a href={href(locale, '/docs')}>{t.t('web.nav.docs')}</a>
           <a href={href(locale, '/mcp')}>{t.t('web.nav.mcp')}</a>
           <a href={href(locale, '/publish')}>{t.t('web.nav.publish')}</a>
@@ -140,6 +141,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
         none: t.t('web.palette.none', { query: '{query}' }),
         publish: t.t('web.palette.publish'),
         copied: t.t('web.common.installCopied'),
+        browseAll: t.t('web.common.browseAll'),
       }}
     />
     <div class="toast" id="toast" role="status" aria-live="polite" hidden><i></i><span></span></div>

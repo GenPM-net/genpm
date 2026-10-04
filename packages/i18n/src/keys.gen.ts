@@ -278,6 +278,7 @@ export interface MessageParams {
   "web.nav.suggestLang": { language: string | number };
   "web.nav.switch": undefined;
   "web.nav.dismiss": undefined;
+  "web.nav.packages": undefined;
   "web.footer.tagline": undefined;
   "web.footer.product": undefined;
   "web.footer.company": undefined;

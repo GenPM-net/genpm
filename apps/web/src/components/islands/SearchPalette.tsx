@@ -11,6 +11,7 @@ type Labels = {
   none: string;
   publish: string;
   copied: string;
+  browseAll: string;
 };
 
 export default function SearchPalette(props: { locale: string; prefix: string; labels: Labels }) {
@@ -36,11 +37,23 @@ export default function SearchPalette(props: { locale: string; prefix: string; l
         setOpen(true);
       }
     };
+    // La caja de búsqueda de la cabecera abre la paleta al enfocarla: resultados mientras escribes, sin Enter.
+    const onFocusIn = (e: FocusEvent) => {
+      const el = e.target as HTMLInputElement | null;
+      if (!el?.matches?.('[data-open-pal-input]')) return;
+      // No se le devuelve el foco al cerrar: volvería a abrir la paleta.
+      last.current = null;
+      setQ(el.value);
+      el.blur();
+      setOpen(true);
+    };
     document.addEventListener('keydown', onKey);
     document.addEventListener('click', onClick);
+    document.addEventListener('focusin', onFocusIn);
     return () => {
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('click', onClick);
+      document.removeEventListener('focusin', onFocusIn);
     };
   }, []);
 
@@ -54,14 +67,14 @@ export default function SearchPalette(props: { locale: string; prefix: string; l
     const ctrl = new AbortController();
     const h = setTimeout(async () => {
       try {
-        const res = await fetch(`/search.json?q=${encodeURIComponent(q)}&limit=5`, { signal: ctrl.signal });
+        const res = await fetch(`/search.json?q=${encodeURIComponent(q.trim())}&limit=8`, { signal: ctrl.signal });
         const j = (await res.json()) as { r: Row[] };
         setRows(j.r ?? []);
         setIdx(0);
       } catch {
         /* abortado o sin red */
       }
-    }, 150);
+    }, 200);
     return () => {
       clearTimeout(h);
       ctrl.abort();
@@ -88,8 +101,9 @@ export default function SearchPalette(props: { locale: string; prefix: string; l
     }
   };
   return (
-    // biome-ignore lint/a11y/noStaticElementInteractions lint/a11y/useKeyWithClickEvents: el fondo solo es un atajo de ratón; Escape (keydown global) cierra la paleta
-    <div class="scrim" onClick={(e) => (e.target as HTMLElement).classList.contains('scrim') && setOpen(false)}>
+    // Cierra solo si el clic EMPIEZA en el fondo: el clic que abre la paleta desde la caja de la cabecera termina
+    // (mouseup/click) encima del fondo recién pintado y, con onClick, la cerraba al instante.
+    <div class="scrim" onPointerDown={(e) => (e.target as HTMLElement).classList.contains('scrim') && setOpen(false)}>
       <div class="pal" role="dialog" aria-modal="true" aria-label={props.labels.label}>
         <div class="in">
           <svg class="ico" aria-hidden="true">
@@ -125,6 +139,9 @@ export default function SearchPalette(props: { locale: string; prefix: string; l
             </div>
           )}
         </div>
+        <a class="all" href={`${props.prefix}/search${q.trim() ? `?q=${encodeURIComponent(q.trim())}` : ''}`}>
+          {props.labels.browseAll} →
+        </a>
         <div class="ft">
           <span>{props.labels.move}</span>
           <span>{props.labels.open}</span>

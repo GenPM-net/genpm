@@ -33,7 +33,7 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=30, stale-while-rev
   <div class="wrap">
     <div class="phead" style="padding-bottom:24px">
       <h1>{t.t('web.search.title')}</h1>
-      <form class="hsearch" style="display:flex;max-width:560px;height:44px" action={href(locale, '/search')} method="get" role="search">
+      <form class="hsearch" style="display:flex;max-width:560px;height:44px" action={href(locale, '/search')} method="get" role="search" data-live>
         <Ico name="search" /><input name="q" type="search" placeholder={t.t('web.search.placeholder')} value={q} autocomplete="off" aria-label={t.t('web.nav.searchLabel')} />
         {mcp && <input type="hidden" name="mcp" value="1" />}{k && <input type="hidden" name="k" value={k} />}
       </form>
@@ -87,5 +87,41 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=30, stale-while-rev
   <script>
     for (const s of document.querySelectorAll('select[data-autosubmit]')) s.addEventListener('change', () => s.closest('form')?.submit());
     document.getElementById('ff')?.addEventListener('change', (e) => (e.currentTarget as HTMLFormElement).submit());
+
+    // Búsqueda en vivo: al dejar de escribir (300 ms) se piden los resultados y se sustituyen sin recargar ni pulsar
+    // Enter. El HTML es el mismo del servidor (SSR), así que sin JS el formulario sigue funcionando con Enter.
+    const live = document.querySelector<HTMLFormElement>('form[data-live]');
+    const box = live?.querySelector<HTMLInputElement>('input[name="q"]');
+    let timer = 0;
+    let ctrl: AbortController | null = null;
+    box?.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = window.setTimeout(async () => {
+        const url = new URL(live!.action, location.href);
+        const params = new URLSearchParams(location.search);
+        params.delete('cursor');
+        const q = box.value.trim();
+        if (q) params.set('q', q);
+        else params.delete('q');
+        url.search = params.toString();
+        ctrl?.abort();
+        ctrl = new AbortController();
+        try {
+          const html = await (await fetch(url, { signal: ctrl.signal })).text();
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          for (const sel of ['#results', '.filters']) {
+            const next = doc.querySelector(sel);
+            const cur = document.querySelector(sel);
+            if (next && cur) cur.replaceWith(next);
+          }
+          document.title = doc.title;
+          history.replaceState(null, '', url);
+          document.getElementById('ff')?.addEventListener('change', (e) => (e.currentTarget as HTMLFormElement).submit());
+          for (const s of document.querySelectorAll('select[data-autosubmit]')) s.addEventListener('change', () => s.closest('form')?.submit());
+        } catch {
+          /* abortada por una tecla posterior, o sin red: el Enter sigue funcionando */
+        }
+      }, 300);
+    });
   </script>
 </Base>

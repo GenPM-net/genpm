@@ -23,7 +23,8 @@
     "beta": "ベータ",
     "suggestLang": "このページは{language}でもご覧いただけます。",
     "switch": "切り替える",
-    "dismiss": "閉じる"
+    "dismiss": "閉じる",
+    "packages": "パッケージ"
   },
   "footer": {
     "tagline": "依存関係ではなく、アーキテクチャをインストール。",

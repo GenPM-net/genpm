@@ -23,7 +23,8 @@
     "beta": "beta",
     "suggestLang": "Esta página también está disponible en {language}.",
     "switch": "Cambiar",
-    "dismiss": "Descartar"
+    "dismiss": "Descartar",
+    "packages": "Paquetes"
   },
   "footer": {
     "tagline": "Instala arquitecturas, no dependencias.",

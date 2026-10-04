@@ -23,7 +23,8 @@
     "beta": "베타",
     "suggestLang": "이 페이지는 {language}(으)로도 볼 수 있습니다.",
     "switch": "전환",
-    "dismiss": "닫기"
+    "dismiss": "닫기",
+    "packages": "패키지"
   },
   "footer": {
     "tagline": "의존성이 아닌 아키텍처를 설치하세요.",

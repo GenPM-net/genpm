@@ -23,7 +23,8 @@
     "beta": "测试版",
     "suggestLang": "此页面也提供{language}版本。",
     "switch": "切换",
-    "dismiss": "关闭"
+    "dismiss": "关闭",
+    "packages": "包"
   },
   "footer": {
     "tagline": "安装架构，而不是依赖。",

@@ -23,7 +23,8 @@
     "beta": "beta",
     "suggestLang": "This page is also available in {language}.",
     "switch": "Switch",
-    "dismiss": "Dismiss"
+    "dismiss": "Dismiss",
+    "packages": "Packages"
   },
   "footer": {
     "tagline": "Install architectures, not dependencies.",

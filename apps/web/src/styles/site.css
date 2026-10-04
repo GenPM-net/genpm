@@ -2048,6 +2048,18 @@ table.tbl tr.y td:first-child {
   background: var(--wash);
   box-shadow: inset 2px 0 0 var(--ink);
 }
+.pal .all {
+  display: block;
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.pal .all:hover,
+.pal .all:focus-visible {
+  background: var(--wash);
+  color: var(--ink);
+}
 .pal .ft {
   display: flex;
   gap: 16px;
