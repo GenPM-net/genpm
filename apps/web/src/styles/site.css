@@ -1939,6 +1939,9 @@ table.tbl tr.y td:first-child {
   font-size: 14px;
   color: var(--ink-2);
 }
+.checklist .when {
+  color: var(--ink-3);
+}
 .checklist li::before {
   content: "◇";
   font-family: var(--f-mono);

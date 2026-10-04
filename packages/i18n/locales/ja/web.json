@@ -351,7 +351,16 @@
     "myPackages": "マイパッケージ",
     "activity": "最近のアクティビティ",
     "empty": "まだパッケージを公開していません。",
-    "emptyCta": "最初のパッケージを公開"
+    "emptyCta": "最初のパッケージを公開",
+    "events": {
+      "authLogin": "{client, select, web {genpm.net にサインインしました} other {ターミナルからサインインしました}}",
+      "tokenCreate": "API トークン「{subject}」を作成しました",
+      "tokenRevoke": "API トークン「{subject}」を取り消しました",
+      "packagePublish": "{subject} を公開しました",
+      "versionYank": "{subject} を取り下げました",
+      "versionTagMoved": "{subject} のタグがリポジトリで変更されました",
+      "packageSourceUnavailable": "{subject} のリポジトリは利用できなくなりました"
+    }
   },
   "publisher": {
     "packages": "{count, plural, other {# パッケージ}}",

@@ -351,7 +351,16 @@
     "myPackages": "我的包",
     "activity": "最近动态",
     "empty": "你还没有发布任何包。",
-    "emptyCta": "发布你的第一个包"
+    "emptyCta": "发布你的第一个包",
+    "events": {
+      "authLogin": "{client, select, web {已登录 genpm.net} other {已从终端登录}}",
+      "tokenCreate": "已创建 API 令牌“{subject}”",
+      "tokenRevoke": "已撤销 API 令牌“{subject}”",
+      "packagePublish": "已发布 {subject}",
+      "versionYank": "已撤回 {subject}",
+      "versionTagMoved": "{subject} 的标签在其仓库中被更改",
+      "packageSourceUnavailable": "{subject} 的仓库已不可用"
+    }
   },
   "publisher": {
     "packages": "{count, plural, other {# 个包}}",

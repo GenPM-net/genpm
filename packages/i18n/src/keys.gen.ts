@@ -582,6 +582,13 @@ export interface MessageParams {
   "web.dashboard.activity": undefined;
   "web.dashboard.empty": undefined;
   "web.dashboard.emptyCta": undefined;
+  "web.dashboard.events.authLogin": { client: string };
+  "web.dashboard.events.tokenCreate": { subject: string | number };
+  "web.dashboard.events.tokenRevoke": { subject: string | number };
+  "web.dashboard.events.packagePublish": { subject: string | number };
+  "web.dashboard.events.versionYank": { subject: string | number };
+  "web.dashboard.events.versionTagMoved": { subject: string | number };
+  "web.dashboard.events.packageSourceUnavailable": { subject: string | number };
   "web.publisher.packages": { count: number };
   "web.publisher.installs": { count: string | number };
   "web.publisher.reserved": undefined;

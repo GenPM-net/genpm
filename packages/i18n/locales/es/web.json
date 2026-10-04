@@ -351,7 +351,16 @@
     "myPackages": "Mis paquetes",
     "activity": "Actividad reciente",
     "empty": "Aún no has publicado ningún paquete.",
-    "emptyCta": "Publica tu primer paquete"
+    "emptyCta": "Publica tu primer paquete",
+    "events": {
+      "authLogin": "{client, select, web {Iniciaste sesión en genpm.net} other {Iniciaste sesión desde la terminal}}",
+      "tokenCreate": "Creaste el token de API «{subject}»",
+      "tokenRevoke": "Revocaste el token de API «{subject}»",
+      "packagePublish": "Publicaste {subject}",
+      "versionYank": "Retiraste {subject}",
+      "versionTagMoved": "El tag de {subject} cambió en su repositorio",
+      "packageSourceUnavailable": "El repositorio de {subject} ya no está disponible"
+    }
   },
   "publisher": {
     "packages": "{count, plural, one {# paquete} other {# paquetes}}",

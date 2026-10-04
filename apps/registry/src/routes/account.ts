@@ -84,12 +84,18 @@ export const tokens = new Hono<AppEnv>()
   })
   .delete('/:id{tok_[0-9A-Z]{26}}', requireAuth('web'), async (c) => {
     const actor = c.get('actor')!;
+    const now = Date.now();
     const r = await c.env.DB.prepare(
       'UPDATE api_tokens SET revoked_at = ?1 WHERE id = ?2 AND account_id = ?3 AND revoked_at IS NULL',
     )
-      .bind(Date.now(), c.req.param('id'), actor.accountId)
+      .bind(now, c.req.param('id'), actor.accountId)
       .run();
     if (!r.meta.changes) throw httpError('E_NOT_FOUND', { name: c.req.param('id') });
+    await c.env.DB.prepare(
+      "INSERT INTO audit_log (id, registry_id, actor_id, action, target_type, target_id, created_at) VALUES (?1, ?2, ?3, 'token.revoke', 'token', ?4, ?5)",
+    )
+      .bind(newId('aud'), c.get('tenant').registryId, actor.accountId, c.req.param('id'), now)
+      .run();
     return c.json({ ok: true });
   });
 
@@ -108,14 +114,28 @@ export const myPackages = new Hono<AppEnv>()
   })
   .get('/activity', requireAuth(), async (c) => {
     const { results } = await c.env.DB.prepare(
-      'SELECT action, target_type, metadata, created_at FROM audit_log WHERE actor_id = ?1 ORDER BY created_at DESC LIMIT 30',
+      // `subject`: lo que un humano reconoce del objetivo (paquete@versión, paquete o nombre del token).
+      `SELECT a.action, a.target_type, a.metadata, a.created_at,
+         CASE a.target_type
+           WHEN 'version' THEN (SELECT p.full_name || '@' || v.version FROM package_versions v JOIN packages p ON p.id = v.package_id WHERE v.id = a.target_id)
+           WHEN 'package' THEN (SELECT full_name FROM packages WHERE id = a.target_id)
+           WHEN 'token' THEN (SELECT name FROM api_tokens WHERE id = a.target_id)
+         END AS subject
+       FROM audit_log a WHERE a.actor_id = ?1 ORDER BY a.created_at DESC LIMIT 30`,
     )
       .bind(c.get('actor')!.accountId)
-      .all<{ action: string; target_type: string; metadata: string | null; created_at: number }>();
+      .all<{
+        action: string;
+        target_type: string;
+        metadata: string | null;
+        created_at: number;
+        subject: string | null;
+      }>();
     return c.json({
       activity: results.map((r) => ({
         action: r.action,
         target: r.target_type,
+        subject: r.subject,
         metadata: r.metadata ? JSON.parse(r.metadata) : null,
         at: new Date(r.created_at).toISOString(),
       })),

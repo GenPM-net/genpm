@@ -128,7 +128,7 @@ export const auth = new Hono<AppEnv>()
     stmts.push(
       db
         .prepare(
-          "INSERT INTO audit_log (id, registry_id, actor_id, action, target_type, target_id, ip_hash, created_at) VALUES (?1, ?2, ?3, 'token.create', 'token', ?4, ?5, ?6)",
+          "INSERT INTO audit_log (id, registry_id, actor_id, action, target_type, target_id, ip_hash, metadata, created_at) VALUES (?1, ?2, ?3, 'auth.login', 'token', ?4, ?5, ?6, ?7)",
         )
         .bind(
           newId('aud'),
@@ -136,6 +136,7 @@ export const auth = new Hono<AppEnv>()
           accountId,
           tokenId,
           c.env.IP_SALT ? await hashIp(c.env.IP_SALT, clientIp(c.req.raw)) : null,
+          JSON.stringify({ client: parsed.data.name === 'web' ? 'web' : 'cli' }),
           now,
         ),
     );

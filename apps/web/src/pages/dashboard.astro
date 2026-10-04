@@ -18,10 +18,33 @@ const [pk, act] = await Promise.all([
   registryFetch('/v1/me/activity', { token: session!.token, locale }).then((r) =>
     r.ok ? r.json() : { activity: [] },
   ) as Promise<{
-    activity: Array<{ action: string; target: string; metadata: Record<string, unknown> | null; at: string }>;
+    activity: Array<{
+      action: string;
+      target: string;
+      subject: string | null;
+      metadata: Record<string, unknown> | null;
+      at: string;
+    }>;
   }>,
 ]);
 Astro.response.headers.set('Cache-Control', 'private, no-store');
+
+// Acción de auditoría → frase legible; las desconocidas se muestran con su código.
+const EVENTS: Record<string, string> = {
+  'auth.login': 'authLogin',
+  'token.create': 'tokenCreate',
+  'token.revoke': 'tokenRevoke',
+  'package.publish': 'packagePublish',
+  'version.yank': 'versionYank',
+  'version.tag_moved': 'versionTagMoved',
+  'package.source_unavailable': 'packageSourceUnavailable',
+};
+function describe(a: { action: string; subject: string | null; metadata: Record<string, unknown> | null }): string {
+  const key = EVENTS[a.action];
+  if (!key) return a.action;
+  const client = a.metadata?.['client'] === 'web' ? 'web' : 'cli';
+  return t.raw(`web.dashboard.events.${key}`, { subject: a.subject ?? '…', client });
+}
 ---
 <Base title={t.t('web.dashboard.title')} noindex>
   <div class="wrap">
@@ -36,7 +59,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
       )}
     </section>
     <section class="sec"><div class="sec-h"><h2>{t.t('web.dashboard.activity')}</h2></div>
-      <ul class="checklist">{act.activity.map((a) => <li><span><code>{a.action}</code>{a.metadata && typeof a.metadata['n'] === 'string' ? ` ${a.metadata['n']}@${a.metadata['v'] ?? ''}` : ''} · {ago(locale, a.at)}</span></li>)}</ul>
+      <ul class="checklist">{act.activity.map((a) => <li><span>{describe(a)} <span class="when">· {ago(locale, a.at)}</span></span></li>)}</ul>
     </section>
   </div>
 </Base>

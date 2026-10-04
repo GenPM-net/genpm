@@ -351,7 +351,16 @@
     "myPackages": "내 패키지",
     "activity": "최근 활동",
     "empty": "아직 게시한 패키지가 없습니다.",
-    "emptyCta": "첫 패키지 게시하기"
+    "emptyCta": "첫 패키지 게시하기",
+    "events": {
+      "authLogin": "{client, select, web {genpm.net에 로그인함} other {터미널에서 로그인함}}",
+      "tokenCreate": "API 토큰 “{subject}”을(를) 만듦",
+      "tokenRevoke": "API 토큰 “{subject}”을(를) 취소함",
+      "packagePublish": "{subject} 게시함",
+      "versionYank": "{subject} 철회함",
+      "versionTagMoved": "{subject}의 태그가 저장소에서 변경됨",
+      "packageSourceUnavailable": "{subject}의 저장소를 더 이상 사용할 수 없음"
+    }
   },
   "publisher": {
     "packages": "{count, plural, other {패키지 #개}}",
