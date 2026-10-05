@@ -9,6 +9,7 @@ import { rateLimit } from './middleware/rate-limit.js';
 import { tenant } from './middleware/tenant.js';
 import { leads, myPackages, reports, tokens } from './routes/account.js';
 import { admin } from './routes/admin.js';
+import { archive } from './routes/archive.js';
 import { auth, me } from './routes/auth.js';
 import { advisories, badge, featured, scopes, stats } from './routes/discovery.js';
 import { health } from './routes/health.js';
@@ -55,6 +56,7 @@ export function createApp() {
   app.route('/v1/keys', keys);
   app.route('/v1/search', search);
   app.route('/v1/resolve', resolve);
+  app.route('/v1/archive', archive);
   app.route('/v1/packages', yank);
   app.route('/v1/packages', deprecate);
   app.route('/v1/packages', compare);

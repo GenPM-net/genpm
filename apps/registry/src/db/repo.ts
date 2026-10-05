@@ -60,6 +60,9 @@ export type VersionRow = {
   published_at: number;
   yanked_at: number | null;
   yank_reason: string | null;
+  archive_sha256?: string | null;
+  archive_size?: number | null;
+  archive_sig?: string | null;
   signature: string | null;
 };
 

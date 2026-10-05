@@ -5,6 +5,8 @@ import type { Translator } from '@genpm/i18n';
 export type Env = {
   DB: D1Database;
   INSTALLS?: AnalyticsEngineDataset;
+  /** Verified Archive (V03-02): tarballs de cada versión publicada. */
+  ARCHIVE?: R2Bucket;
   SCAN_QUEUE?: Queue<ScanJob>;
   RL_PUBLIC?: RateLimit;
   RL_AUTH?: RateLimit;

@@ -383,5 +383,5 @@ y la semántica de propiedad. Por eso: PK `TEXT` ULID, unicidad `(registry_id, f
 | Rate limit de GitHub en git fetch masivo (CI) | Baja | Medio | Caché local; credenciales del usuario; fallback tarball |
 | Limitaciones de D1 con tablas virtuales FTS5 en export/backup | Media | Bajo | El índice FTS es derivado: se reconstruye desde `packages` con un script |
 | Fragmentación de formatos de reglas por IDE | Alta | Medio | Adaptadores aislados en `core/inject/clients/*`, fáciles de actualizar |
-| Repos que desaparecen | Media | Medio | ADR-007 (mirror R2 en v0.3) |
+| Repos que desaparecen | Media | Medio | ADR-007: Verified Archive en R2 (✅ V03-02). Al publicar se guarda el tar.gz del commit y una firma del registry sobre su sha256; el CLI lo usa solo si Git y codeload fallan por red o repo inaccesible, y exige firma, sha256 y commit en el comentario pax |
 | Windows: rutas y permisos | Media | Medio | CI en matriz macOS/Linux/Windows desde el día 1 |

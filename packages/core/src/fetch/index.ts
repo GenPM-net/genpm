@@ -25,11 +25,16 @@ export type FetchedSource = {
   /** Entradas bajo `i`, con rutas relativas a `i`. */
   entries: TreeEntry[];
   c: string;
-  via: 'cache' | 'git' | 'tarball';
+  via: 'cache' | 'git' | 'tarball' | 'archive';
 };
 
 export type FetchOptions = GitOptions & {
   cacheDir?: string;
+  /**
+   * Último recurso (Verified Archive, V03-02): tar.gz del commit ya verificado por el llamador (firma del registry y
+   * sha256). Se usa solo si Git y codeload fallan por red o por un repo que ya no existe.
+   */
+  mirror?: () => Promise<Uint8Array | null>;
   /** Forzar una estrategia (tests). */
   strategy?: 'auto' | 'git' | 'tarball';
   fetchImpl?: typeof fetch;
@@ -172,7 +177,11 @@ async function viaTarball(tmp: string, r: string, c: string, i: string, opts: Fe
     throw fail('E_NETWORK', { host: 'codeload.github.com' });
   }
   if (!res.ok || !res.body) throw fail('E_UPSTREAM_GIT', { detail: `codeload ${res.status}` });
-  const tar = await gunzip(res.body, 200 * 1024 * 1024);
+  return extractTarball(tmp, r, c, i, await gunzip(res.body, 200 * 1024 * 1024));
+}
+
+/** Extrae un tar (de codeload o del Verified Archive) comprobando que su comentario pax es el commit esperado. */
+async function extractTarball(tmp: string, r: string, c: string, i: string, tar: Uint8Array): Promise<TreeEntry[]> {
   const comment = tarGlobalComment(tar);
   if (comment !== c) throw fail('E_INTEGRITY', { name: r, detail: 'tarball commit mismatch' });
   const entries: TreeEntry[] = [];
@@ -221,34 +230,48 @@ export async function fetchSource(
   const tmp = await mkdtemp(join(dirname(final), '.tmp-'));
   try {
     let entries: TreeEntry[];
-    let via: 'git' | 'tarball';
+    let via: FetchedSource['via'];
     const strategy = opts.strategy ?? 'auto';
-    if (strategy === 'tarball') {
-      entries = await viaTarball(tmp, r, c, i, opts);
-      via = 'tarball';
-    } else {
+    const primary = async (): Promise<[TreeEntry[], 'git' | 'tarball']> => {
+      if (strategy === 'tarball') return [await viaTarball(tmp, r, c, i, opts), 'tarball'];
       const v = strategy === 'git' ? '9.9.9' : await gitVersion();
-      if (gitAtLeast(v)) {
-        try {
-          entries = await viaGit(tmp, r, c, i, opts);
-          via = 'git';
-        } catch (e) {
-          // Fallback tarball solo si el host no permite fetch por SHA o falla la red; nunca ante un fallo de integridad.
-          if (
-            strategy === 'git' ||
-            (e as { code?: string }).code !== 'E_UPSTREAM_GIT' ||
-            !r.startsWith('https://github.com/')
-          )
-            throw e;
-          await rm(tmp, { recursive: true, force: true });
-          await mkdir(tmp, { recursive: true });
-          entries = await viaTarball(tmp, r, c, i, opts);
-          via = 'tarball';
-        }
-      } else {
-        entries = await viaTarball(tmp, r, c, i, opts);
-        via = 'tarball';
+      if (!gitAtLeast(v)) return [await viaTarball(tmp, r, c, i, opts), 'tarball'];
+      try {
+        return [await viaGit(tmp, r, c, i, opts), 'git'];
+      } catch (e) {
+        // Fallback tarball solo si el host no permite fetch por SHA o falla la red; nunca ante un fallo de integridad.
+        if (
+          strategy === 'git' ||
+          (e as { code?: string }).code !== 'E_UPSTREAM_GIT' ||
+          !r.startsWith('https://github.com/')
+        )
+          throw e;
+        await rm(tmp, { recursive: true, force: true });
+        await mkdir(tmp, { recursive: true });
+        return [await viaTarball(tmp, r, c, i, opts), 'tarball'];
       }
+    };
+    try {
+      [entries, via] = await primary();
+    } catch (e) {
+      // Verified Archive: solo ante red o repo inaccesible (E_NETWORK/E_UPSTREAM_GIT/E_GIT_MISSING), nunca ante un fallo
+      // de integridad o de ruta. Los bytes ya vienen verificados (firma del registry + sha256) y aquí se exige además
+      // que el comentario pax del tar sea el commit esperado.
+      const code = (e as { code?: string }).code;
+      if (!opts.mirror || !['E_NETWORK', 'E_UPSTREAM_GIT', 'E_GIT_MISSING'].includes(code ?? '')) throw e;
+      const gz = await opts.mirror();
+      if (!gz) throw e;
+      await rm(tmp, { recursive: true, force: true });
+      await mkdir(tmp, { recursive: true });
+      opts.log?.(`verified archive for ${r}@${c.slice(0, 12)}`);
+      entries = await extractTarball(
+        tmp,
+        r,
+        c,
+        i,
+        await gunzip(new Blob([gz]).stream() as ReadableStream<Uint8Array>, 200 * 1024 * 1024),
+      );
+      via = 'archive';
     }
     await writeFile(join(tmp, TREE_FILE), JSON.stringify({ c, i, entries }), { mode: 0o644 });
     try {

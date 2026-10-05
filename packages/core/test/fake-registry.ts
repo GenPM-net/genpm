@@ -1,10 +1,13 @@
 // Registry falso para tests del motor: sirve /v1/resolve con manifiestos firmados con la clave de desarrollo.
 import {
+  archiveRecord,
   canonicalize,
   importPrivateKey,
   maxSatisfying,
   type ResolvedManifest,
   satisfies,
+  sha256Hex,
+  signatureHeader,
   signManifest,
 } from '@genpm/manifest';
 
@@ -24,6 +27,8 @@ export class FakeRegistry {
   requests: string[] = [];
   tamper: ((m: ResolvedManifest & { sg?: string }) => void) | null = null;
   scan: Record<string, string> = {};
+  /** Verified Archive (`name@version` → tar.gz); `claimHash` simula una copia manipulada (la firma no cuadra). */
+  archives = new Map<string, { gz: Uint8Array; c: string; claimHash?: string }>();
   /** Lista de revocación servida en GET /v1/keys (security §4.3). */
   revocation: unknown = null;
 
@@ -87,6 +92,20 @@ export class FakeRegistry {
           vf: 1,
         }));
       return ok({ r, nx: null });
+    }
+    const ar = url.pathname.match(/^\/v1\/archive\/(@[^/]+\/[^/]+)\/([^/]+)$/);
+    if (ar) {
+      const a = this.archives.get(`${ar[1]}@${ar[2]}`);
+      if (!a) return new Response('{}', { status: 404 });
+      const h = await sha256Hex(a.gz);
+      const sg = await signManifest(
+        archiveRecord({ n: ar[1]!, v: ar[2]!, c: a.c, h: a.claimHash ?? h }),
+        'dev1',
+        await importPrivateKey(DEV_PRIVATE),
+      );
+      return new Response(a.gz, {
+        headers: { 'genpm-archive-sha256': h, 'genpm-commit': a.c, 'genpm-archive-signature': signatureHeader(sg) },
+      });
     }
     const v = url.pathname.match(/^\/v1\/packages\/(@[^/]+\/[^/]+)\/versions\/([^/]+)$/);
     if (v) {

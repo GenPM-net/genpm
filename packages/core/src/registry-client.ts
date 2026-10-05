@@ -2,7 +2,15 @@
 // timeouts (10 s conexión / 60 s total) y límites de tamaño de respuesta (security §4.1).
 
 import type { ResolvedManifest } from '@genpm/manifest';
-import { type ErrorCode, GenpmError, isErrorCode } from '@genpm/manifest';
+import {
+  archiveRecord,
+  type ErrorCode,
+  GenpmError,
+  isErrorCode,
+  parseSignatureHeader,
+  sha256Hex,
+  verifyManifest,
+} from '@genpm/manifest';
 import { fail } from './errors.js';
 import { isLocalRegistry } from './keys.js';
 import { VERSION } from './version.js';
@@ -112,6 +120,37 @@ export class RegistryClient {
     }
     if (!res.ok) throw problemToError(res.status, json, new URL(this.base).host);
     return { data: json as T, headers: res.headers };
+  }
+
+  /**
+   * Verified Archive (V03-02): tar.gz del commit de `name@version` desde la copia del registry, solo si el sha256 de
+   * los bytes coincide y la firma del registry sobre {n, v, c, sha256} es válida con `keys`. Si no, `null`.
+   */
+  async archive(
+    name: string,
+    version: string,
+    commit: string,
+    keys: Readonly<Record<string, string>>,
+    revoked: readonly string[] = [],
+  ): Promise<Uint8Array | null> {
+    const doFetch = this.opts.fetchImpl ?? fetch;
+    const url = `${this.base}/v1/archive/${name}/${version}`;
+    this.opts.log?.(`GET ${url}`);
+    let res: Response;
+    try {
+      res = await doFetch(url, { redirect: 'error', signal: AbortSignal.timeout(this.opts.timeoutMs ?? 60_000) });
+    } catch {
+      return null;
+    }
+    if (!res.ok) return null;
+    const bytes = new Uint8Array(await res.arrayBuffer());
+    if (bytes.byteLength > 64 * 1024 * 1024) return null;
+    const h = await sha256Hex(bytes);
+    if (h !== res.headers.get('genpm-archive-sha256') || res.headers.get('genpm-commit') !== commit) return null;
+    const sg = parseSignatureHeader(res.headers.get('genpm-archive-signature'));
+    if (!sg) return null;
+    const verdict = await verifyManifest(archiveRecord({ n: name, v: version, c: commit, h }), sg, keys, revoked);
+    return verdict.ok ? bytes : null;
   }
 
   private clientParam(): string {

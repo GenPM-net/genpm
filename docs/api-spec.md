@@ -79,6 +79,7 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | POST | `/v1/reports` | token/cookie | ✅ | Reportar paquete (abuso/malware) |
 | POST | `/v1/leads` | — (Turnstile) | ⏳ P1 | Formularios de `/sponsors` y `/enterprise` |
 | GET | `/v1/admin/analytics?days=1..90` | token/cookie (staff; resto ⇒ 404) | ✅ | Panel `/admin/analytics` (ADR-027): Analytics Engine (web e instalaciones) + D1 (publicaciones, logins, cuentas). `private, no-store` |
+| GET | `/v1/archive/:scope/:name/:version` | — | ✅ | Verified Archive (V03-02): tar.gz del commit desde R2 con `genpm-archive-sha256`, `genpm-commit` y `genpm-archive-signature` (firma de `{$:'archive',n,v,c,_sha256}`); inmutable |
 | GET | `/v1/badge/:scope/:name.svg` | — | ✅ | Badge para READMEs |
 | GET | `/v1/advisories?p=@core/auth@1.2.0,…` | — | ✅ | `genpm audit`: advisories, versiones retiradas y cuarentenas para una lista de paquetes |
 | GET | `/v1/keys` | — | ✅ | Claves públicas de firma vigentes + lista de revocación firmada |

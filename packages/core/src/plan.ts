@@ -238,6 +238,7 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
   const resign: string[] = [];
   const warnings: InstallPlan['warnings'] = [];
   const items: PlanInternal['items'] = [];
+  const mirrors = new Map<string, () => Promise<Uint8Array | null>>();
   const seen = new Set<string>();
   let registryUsed = registryFor(null, rc, input.registry);
 
@@ -283,6 +284,8 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
     for (const w of res.w) warnings.push({ code: w.code, detail: `${w.n}: ${w.msg}` });
     const keys = keysFor(registry);
     const revoked = await revokedKeys({ registry, client, cacheDir: input.fetch?.cacheDir });
+    // Verified Archive (V03-02): copia firmada del registry si GitHub no responde o el repo ya no existe.
+    for (const x of [res.root, ...res.deps]) mirrors.set(x.n, () => client.archive(x.n, x.v, x.c, keys, revoked));
     for (const [m, role] of [[res.root, 'root'], ...res.deps.map((d) => [d, 'dep'] as const)] as Array<
       [ResolvedManifest & { sg?: string }, 'root' | 'dep']
     >) {
@@ -380,7 +383,12 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
     const m = it.manifest;
     it.source ??= await fetchSource(
       { r: m.r, c: m.c, i: m.i },
-      { ...input.fetch, fetchImpl: input.fetchImpl ?? input.fetch?.fetchImpl, log: input.log },
+      {
+        ...input.fetch,
+        fetchImpl: input.fetchImpl ?? input.fetch?.fetchImpl,
+        log: input.log,
+        ...(mirrors.has(m.n) ? { mirror: mirrors.get(m.n) } : {}),
+      },
     );
     const ignoreText = await readTextOrNull(sourcePath(it.source, m.i, '.genpmignore'));
     const included = createFileFilter(ignoreText);

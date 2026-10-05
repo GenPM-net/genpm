@@ -43,6 +43,15 @@ export async function signManifest(
   return `${keyId}:${await signBytes(privateKey, canonicalize(manifest))}`;
 }
 
+/**
+ * Registro firmado de la copia en R2 de una versión (Verified Archive, V03-02): `h` = sha256 hex del tar.gz.
+ * Se firma y verifica igual que un manifiesto (forma canónica), con un `$` distinto para que no se confundan.
+ */
+export function archiveRecord(a: { n: string; v: string; c: string; h: string }): Record<string, unknown> {
+  // La forma canónica solo conserva las claves del manifiesto y las `_*`: el hash va en `_sha256` para quedar firmado.
+  return { $: 'archive', n: a.n, v: a.v, c: a.c, _sha256: a.h };
+}
+
 export function parseSignature(sg: string): { keyId: string; sig: string } | null {
   const m = sg.match(/^([a-z0-9][a-z0-9_-]{0,31}):([A-Za-z0-9_-]{40,200})$/);
   return m ? { keyId: m[1]!, sig: m[2]! } : null;

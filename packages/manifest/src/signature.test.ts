@@ -72,3 +72,16 @@ describe('Ed25519 manifest signatures (INV-8)', () => {
     expect(await verifyRevocationList({ ...list, revoked: [], sig }, root.raw)).toBe(false);
   });
 });
+
+describe('archiveRecord', () => {
+  it('signs the tarball hash (a different hash does not verify)', async () => {
+    const { archiveRecord, signManifest, verifyManifest, importPrivateKey } = await import('./index.js');
+    const { DEV_KEY } = await import('../../../apps/registry/scripts/dev-key.mjs');
+    const key = await importPrivateKey(DEV_KEY.private);
+    const rec = archiveRecord({ n: '@a/b', v: '1.0.0', c: 'c'.repeat(40), h: 'a'.repeat(64) });
+    const sg = await signManifest(rec, DEV_KEY.id, key);
+    const keys = { [DEV_KEY.id]: DEV_KEY.public };
+    expect((await verifyManifest(rec, sg, keys)).ok).toBe(true);
+    expect((await verifyManifest({ ...rec, _sha256: 'b'.repeat(64) }, sg, keys)).ok).toBe(false);
+  });
+});

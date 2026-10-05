@@ -35,6 +35,7 @@ import { httpError } from '../http.js';
 import { newId } from '../ids.js';
 import { requireAuth, tokenAllows } from '../middleware/auth.js';
 import { clientIp, rateLimit } from '../middleware/rate-limit.js';
+import { archiveVersion } from '../services/archive.js';
 import { GitHub, parseGithubRepo } from '../services/github.js';
 import { indexNow } from '../services/indexnow.js';
 import { recomputeQuality } from '../services/quality.js';
@@ -119,9 +120,11 @@ async function scanCommit(
   sha: string,
   include: string,
   contextPath: string,
-): Promise<{ report: ScanReport; rules: string | null; allPaths: string[] }> {
+): Promise<{ report: ScanReport; rules: string | null; allPaths: string[]; gz: Uint8Array }> {
+  // Bytes del tar.gz tal cual: se escanean y, si hay bucket, se guardan como Verified Archive (V03-02).
+  const gz = new Uint8Array(await new Response(await gh.tarball(owner, repo, sha)).arrayBuffer());
   const tar = readTar(
-    await gunzip(await gh.tarball(owner, repo, sha), LIMITS.packageBytes * 4),
+    await gunzip(new Blob([gz]).stream() as ReadableStream<Uint8Array>, LIMITS.packageBytes * 4),
     (_p, size) => size <= LIMITS.fileBytes,
   );
   // codeload antepone `<repo>-<sha>/` a cada ruta.
@@ -143,7 +146,7 @@ async function scanCommit(
   const report = scanTree(files, { contextPath });
   const ctx = files.find((f) => f.path === contextPath);
   const rules = ctx?.content ? new TextDecoder().decode(ctx.content as Uint8Array) : null;
-  return { report, rules, allPaths };
+  return { report, rules, allPaths, gz };
 }
 
 export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requireAuth('publish'), async (c) => {
@@ -233,7 +236,7 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   // 8 · reglas `x` y escaneo del árbol del commit
   const include = m.i ?? '.';
   const contextPath = m.x ?? 'AGENTS.md';
-  const { report, rules, allPaths } = await scanCommit(github, gh.owner, gh.repo, sha, include, contextPath);
+  const { report, rules, allPaths, gz } = await scanCommit(github, gh.owner, gh.repo, sha, include, contextPath);
   const warnings: Array<{ code: string; detail: string }> = [];
   if (rules === null) {
     if (m.x) throw httpError('E_CONTEXT_MISSING', { path: contextPath });
@@ -467,6 +470,7 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   // Paquete nuevo o versión nueva: que los buscadores (y los agentes que buscan en la web) lo vean ya.
   c.executionCtx.waitUntil(indexNow(c.env, [`/p/${m.n}`, `/p/${m.n}.md`, '/llms.txt', '/search']));
   c.executionCtx.waitUntil(recomputeQuality(c.env, pkgId).catch(() => 0));
+  c.executionCtx.waitUntil(archiveVersion(c.env, { verId, n: m.n, v: m.v, c: sha, gz }).catch(() => undefined));
   if (c.env.SCAN_QUEUE) c.executionCtx.waitUntil(c.env.SCAN_QUEUE.send({ versionId: verId, name: m.n, version: m.v }));
 
   return c.json(
