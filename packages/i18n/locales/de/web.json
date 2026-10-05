@@ -736,5 +736,19 @@
     "empty": "Im Registry gibt es noch keine Rezepte.",
     "localTitle": "Dein eigenes Rezept",
     "local": "Ein Rezept kann auch eine JSON-Datei in deinem Repository sein: Teile den Stack deines Teams und installiere ihn überall."
+  },
+  "registries": {
+    "title": "Private Registries",
+    "lede": "Veröffentliche Pakete aus privaten Repositories, die nur dein Team sehen und installieren kann. Mitglieder lesen interne Pakete; private brauchen eine ausdrückliche Berechtigung.",
+    "none": "Du bist noch in keinem privaten Registry Mitglied.",
+    "role": "Deine Rolle: {role}",
+    "member": "Mitglied (Nutzer oder Organisation)",
+    "memberRole": "Rolle",
+    "addMember": "Mitglied hinzufügen oder ändern",
+    "create": "Registry anlegen",
+    "slug": "Name",
+    "owner": "Besitzer",
+    "saved": "Gespeichert.",
+    "cli": "Teams und Berechtigungen pro Paket: genpm team und genpm access im CLI."
   }
 }

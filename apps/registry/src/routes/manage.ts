@@ -25,7 +25,7 @@ export const deprecate = new Hono<AppEnv>().post(`${PKG}/deprecate`, requireAuth
   if (!parsed.success) throw httpError('E_BAD_REQUEST', { detail: 'message' });
   const name = fullName(c);
   const pkg = await repoOf(c).packageByName(name);
-  if (!pkg || !tokenAllows(actor, name) || !(await canWrite(c, actor, pkg.owner_id)))
+  if (!pkg || !tokenAllows(actor, name) || !(await canWrite(c, actor, pkg.owner_id, pkg.id)))
     throw httpError('E_NOT_FOUND', { name });
   const now = Date.now();
   const message = parsed.data.message;

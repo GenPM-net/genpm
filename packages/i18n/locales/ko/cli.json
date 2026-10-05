@@ -25,7 +25,24 @@
     "upgrade": "독립 실행형 genpm 바이너리를 최신 릴리스로 업데이트합니다",
     "diff": "설치된 버전 이후 upstream 변경 사항을 보여줍니다(unified diff)",
     "update": "설치된 패키지를 업데이트하고 upstream 변경과 내 변경을 병합합니다",
-    "compose": "레시피(레지스트리 이름 또는 로컬 JSON 파일)의 모든 패키지를 한 번에 설치합니다"
+    "compose": "레시피(레지스트리 이름 또는 로컬 JSON 파일)의 모든 패키지를 한 번에 설치합니다",
+    "registry": "비공개 레지스트리: 목록, 생성, 멤버 관리",
+    "registryLs": "속한 비공개 레지스트리를 나열합니다",
+    "registryCreate": "내 계정이나 관리하는 조직의 비공개 레지스트리를 만듭니다",
+    "registryShow": "레지스트리와 멤버를 표시합니다",
+    "registryAdd": "멤버(사용자 또는 조직)를 추가하거나 역할을 변경합니다",
+    "registryRm": "멤버를 제거합니다",
+    "team": "조직의 팀",
+    "teamLs": "조직의 팀을 나열합니다",
+    "teamCreate": "팀을 만듭니다(<org>/<team>)",
+    "teamRm": "팀을 삭제합니다",
+    "teamAdd": "팀에 멤버를 추가하거나 역할을 변경합니다",
+    "teamRemove": "팀에서 멤버를 제거합니다",
+    "access": "비공개 레지스트리 패키지의 공개 범위와 권한",
+    "accessLs": "패키지의 공개 범위와 권한을 표시합니다",
+    "accessSet": "공개 범위 설정: internal 또는 private",
+    "accessGrant": "user:<핸들> 또는 team:<org>/<team>에 read, write, admin 권한을 부여합니다",
+    "accessRevoke": "권한을 회수합니다"
   },
   "arg": {
     "cwd": "작업 디렉터리",
@@ -69,7 +86,19 @@
     "to": "대상 버전 또는 범위(기본값: latest)",
     "local": "로컬 변경(drift)도 표시합니다",
     "recipe": "레시피 이름(예: saas-starter) 또는 레시피 JSON 파일 경로",
-    "listRecipes": "레지스트리에 게시된 레시피를 나열합니다"
+    "listRecipes": "레지스트리에 게시된 레시피를 나열합니다",
+    "rbac": {
+      "slug": "레지스트리 이름(예: acme)",
+      "handle": "GitHub 사용자 또는 조직",
+      "org": "조직",
+      "team": "<org>/<team> 형식의 팀",
+      "principal": "user:<핸들> 또는 team:<org>/<team>",
+      "permission": "read, write 또는 admin",
+      "visibility": "internal 또는 private",
+      "owner": "소유자: 내 핸들 또는 관리하는 조직",
+      "role": "역할: admin, publisher 또는 reader",
+      "teamRole": "팀 역할: maintainer 또는 member"
+    }
   },
   "label": {
     "resolved": "확인됨",
@@ -217,5 +246,11 @@
   "compose": {
     "none": "이 레지스트리에는 아직 레시피가 없습니다.",
     "hint": "설치하려면: genpm compose <이름> --dry-run"
+  },
+  "rbac": {
+    "done": "완료했습니다.",
+    "none": "아직 아무것도 없습니다.",
+    "created": "레지스트리 {slug}를 만들었습니다: {url}",
+    "configHint": ".genpmrc에서 scope를 이 레지스트리로 지정하고 genpm login --registry <url>로 로그인하세요:"
   }
 }

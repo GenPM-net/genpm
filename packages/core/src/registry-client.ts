@@ -175,6 +175,11 @@ export class RegistryClient {
     return this.request<ResolveResponse>('GET', `/v1/resolve/${name}?${p}`).then((r) => r.data);
   }
 
+  /** Llamada autenticada genérica para la gestión (V10-01: registros, equipos, accesos). */
+  api<T>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', path: string, body?: unknown) {
+    return this.request<T>(method, path, body).then((r) => r.data);
+  }
+
   /** Receta compose (V03-05) por slug. */
   recipe(slug: string) {
     return this.request<{ name: string; summary: string | null; p: string[] }>(

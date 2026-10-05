@@ -76,7 +76,8 @@
 
 ## v1.0 · SaaS · +3 meses
 
-- [ ] `V10-01` **TODO** Registros privados (shared tenancy) con RBAC: teams y package_grants (migración aditiva api-spec §5.4) · A · 60h · deps: V03-01
+- [x] `V10-01` **DONE** Registros privados (shared tenancy) con RBAC: teams y package_grants (migración aditiva api-spec §5.4) · A · 60h · deps: V03-01
+  - ✅ 2026-10-05 (ADR-029): migración 0009, tenant privado en el middleware (404 a no miembros, `private, no-store`), `/r/:slug`, visibilidad `internal`/`private` con grants en Repo, publicación de repos privados con la App por dueño, rutas `/v1/registries`, `/v1/orgs/:org/teams`, `/v1/packages/…/access|grants`; CLI `genpm registry|team|access`; web `/settings/registries`; docs en 8 idiomas. Pendiente fundador: aplicar la migración en producción.
 - [ ] `V10-02` **TODO** SSO · A · 24h · deps: V10-01
 - [ ] `V10-03` **TODO** Dominio propio por registro · A · 12h · deps: V10-01
 - [ ] `V10-04` **TODO** Auditoría exportable · A · 12h · deps: V10-01

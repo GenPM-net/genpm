@@ -2,6 +2,7 @@
 // siendo inmutable, no se puede re-publicar, `resolve` con rango la ignora y con versión exacta avisa con W_YANKED.
 
 import { compareVersions } from '@genpm/manifest';
+import type { Context } from 'hono';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { purgePackage } from '../cache.js';
@@ -9,17 +10,23 @@ import type { AppEnv } from '../env.js';
 import { httpError } from '../http.js';
 import { newId } from '../ids.js';
 import { requireAuth, tokenAllows } from '../middleware/auth.js';
+import { atLeast, grantOf } from '../services/access.js';
 import { fullName, repoOf } from './util.js';
 
 const Body = z.strictObject({ reason: z.string().trim().min(3).max(280) });
 
 /** ¿Puede el actor escribir en el paquete? (owner, o rol de escritura en la org dueña; staff en scopes reservados). */
 export async function canWrite(
-  c: { env: AppEnv['Bindings'] },
+  c: Context<AppEnv>,
   actor: NonNullable<AppEnv['Variables']['actor']>,
   ownerId: string,
+  packageId?: string,
 ): Promise<boolean> {
   if (ownerId === actor.accountId) return true;
+  // Registros privados (V10-01): admins del registro y grants `write`/`admin` sobre el paquete.
+  const priv = c.get('tenant')?.private;
+  if (priv?.role === 'admin') return true;
+  if (priv && packageId && atLeast(await grantOf(c.env.DB, packageId, priv.principals), 'write')) return true;
   const m = await c.env.DB.prepare('SELECT role FROM memberships WHERE org_id = ?1 AND user_id = ?2')
     .bind(ownerId, actor.accountId)
     .first<{ role: string }>();
@@ -37,7 +44,7 @@ export const yank = new Hono<AppEnv>().post(
     const name = fullName(c);
     const pkg = await repo.packageByName(name);
     // Sin permiso ⇒ 404, no 403: no se revela la existencia de recursos inaccesibles (security §5).
-    if (!pkg || !tokenAllows(actor, name) || !(await canWrite(c, actor, pkg.owner_id)))
+    if (!pkg || !tokenAllows(actor, name) || !(await canWrite(c, actor, pkg.owner_id, pkg.id)))
       throw httpError('E_NOT_FOUND', { name });
     const v = await repo.version(pkg.id, c.req.param('version'));
     if (!v) throw httpError('E_NO_MATCHING_VERSION', { name, range: c.req.param('version') });

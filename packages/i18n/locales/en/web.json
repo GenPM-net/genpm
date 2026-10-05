@@ -736,5 +736,19 @@
     "empty": "There are no recipes in the registry yet.",
     "localTitle": "Your own recipe",
     "local": "A recipe can also be a JSON file in your repository: share your team's stack and install it anywhere."
+  },
+  "registries": {
+    "title": "Private registries",
+    "lede": "Publish packages from private repositories that only your team can see and install. Members read internal packages; private ones need an explicit grant.",
+    "none": "You are not a member of any private registry yet.",
+    "role": "Your role: {role}",
+    "member": "Member (user or organization)",
+    "memberRole": "Role",
+    "addMember": "Add or update member",
+    "create": "Create registry",
+    "slug": "Name",
+    "owner": "Owner",
+    "saved": "Saved.",
+    "cli": "Teams and per-package grants: genpm team and genpm access in the CLI."
   }
 }

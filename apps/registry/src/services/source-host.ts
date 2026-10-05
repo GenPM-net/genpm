@@ -34,8 +34,8 @@ export type SourceHost = {
 export function sourceHost(env: Env, url: string): SourceHost | null {
   const gh = parseGithubRepo(url);
   if (gh) {
-    const api = new GitHub(env);
     const { owner, repo } = gh;
+    const api = new GitHub(env, { owner, repo });
     return {
       kind: 'github',
       host: 'github.com',

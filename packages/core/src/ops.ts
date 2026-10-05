@@ -50,7 +50,7 @@ export type CommonOptions = {
   log?: (line: string) => void;
 };
 
-async function clientFor(
+export async function clientFor(
   opts: CommonOptions,
   name: string | null,
 ): Promise<{ client: RegistryClient; registry: string }> {

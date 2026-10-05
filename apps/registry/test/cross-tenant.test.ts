@@ -5,7 +5,8 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { buildSeed, FIXTURES } from '../scripts/seed-lib.mjs';
 import { account, call, DEV_KEY } from './helpers.js';
 
-const ACME = { 'genpm-registry': 'acme' };
+// `acme` es privado (V10-01): se lee como miembro; sin serlo, el registro no existe (404).
+const ACME: Record<string, string> = { 'genpm-registry': 'acme' };
 
 beforeAll(async () => {
   // Registry público con los fixtures y registry `acme` con paquetes espejo de otro nombre y SHA.
@@ -29,6 +30,11 @@ beforeAll(async () => {
     ...pub.map((s) => env.DB.prepare(s)),
     ...acme.map((s) => env.DB.prepare(s)),
   ]);
+  const member = await account({ login: 'acmereader' });
+  await env.DB.prepare("INSERT INTO registry_members (registry_id, account_id, role) VALUES ('reg_acme', ?1, 'reader')")
+    .bind(member.id)
+    .run();
+  ACME['authorization'] = `Bearer ${member.token}`;
 });
 
 const ENDPOINTS = [
@@ -68,6 +74,15 @@ describe('INV-10 · tenant isolation', () => {
       else expect(text).not.toMatch(/"@core\/(db|auth|billing)"/);
     });
   }
+  it('hides a private registry from anonymous users and non-members', async () => {
+    expect((await call('/v1/search?q=core&z=1', { headers: { 'genpm-registry': 'acme' } })).status).toBe(404);
+    const outsider = await account({ login: 'acmeoutsider' });
+    const res = await call('/v1/stats?z=2', {
+      headers: { 'genpm-registry': 'acme', authorization: `Bearer ${outsider.token}` },
+    });
+    expect(res.status).toBe(404);
+    expect((await call('/v1/stats?z=3', { headers: ACME })).headers.get('cache-control')).toBe('private, no-store');
+  });
   it('counts only the current tenant', async () => {
     const pub = (await (await call('/v1/stats?x=1')).json()) as { packages: number };
     const acme = (await (await call('/v1/stats?x=1', { headers: ACME })).json()) as { packages: number };

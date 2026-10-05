@@ -1,0 +1,98 @@
+---
+// /settings/registries (V10-01): registros privados de los que eres miembro, crear uno (tuyo o de una org que
+// administras) y, si eres admin, gestionar sus miembros. Equipos y permisos por paquete: CLI (`genpm team`, `genpm access`).
+import Base from '../../layouts/Base.astro';
+import { requireSession, sessionExpired } from '../../lib/auth.js';
+import { registryFetch } from '../../lib/registry.js';
+
+const gate = requireSession(Astro);
+if (gate) return gate;
+const { t, locale, session } = Astro.locals;
+const token = session!.token;
+type Registry = {
+  slug: string;
+  plan: string;
+  role: 'admin' | 'publisher' | 'reader';
+  url: string;
+  owner?: string | null;
+  members?: Array<{ handle: string; kind: string; role: string }>;
+};
+let notice: { ok: boolean; text: string } | null = null;
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const action = String(f.get('action') ?? '');
+  const slug = String(f.get('slug') ?? '').trim();
+  const handle = String(f.get('handle') ?? '')
+    .trim()
+    .replace(/^@/, '');
+  const res =
+    action === 'create'
+      ? await registryFetch('/v1/registries', {
+          method: 'POST',
+          token,
+          body: { slug, owner: String(f.get('owner') ?? '') },
+        })
+      : action === 'member' && /^[A-Za-z0-9-]{1,39}$/.test(handle)
+        ? await registryFetch(`/v1/registries/${slug}/members/${handle}`, {
+            method: 'PUT',
+            token,
+            body: { role: String(f.get('role') ?? 'reader') },
+          })
+        : action === 'remove' && /^[A-Za-z0-9-]{1,39}$/.test(handle)
+          ? await registryFetch(`/v1/registries/${slug}/members/${handle}`, { method: 'DELETE', token })
+          : null;
+  if (res?.status === 401) return sessionExpired(Astro);
+  if (res)
+    notice = res.ok
+      ? { ok: true, text: t.t('web.registries.saved') }
+      : { ok: false, text: ((await res.json().catch(() => ({}))) as { title?: string }).title ?? 'Error' };
+}
+const meRes = await registryFetch('/v1/me', { token, locale });
+if (meRes.status === 401) return sessionExpired(Astro);
+const me = (await meRes.json()) as { handle: string; orgs: Array<{ handle: string; role: string }> };
+const owners = [me.handle, ...me.orgs.filter((o) => o.role === 'owner' || o.role === 'admin').map((o) => o.handle)];
+const listRes = await registryFetch('/v1/registries', { token, locale });
+const list = listRes.ok ? ((await listRes.json()) as { registries: Registry[] }).registries : [];
+const regs = await Promise.all(
+  list.map(async (r) => {
+    if (r.role !== 'admin') return r;
+    const d = await registryFetch(`/v1/registries/${r.slug}`, { token, locale });
+    return d.ok ? ((await d.json()) as Registry) : r;
+  }),
+);
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+---
+<Base title={t.t('web.registries.title')} noindex>
+  <div class="wrap" style="max-width:860px">
+    <div class="phead"><h1>{t.t('web.registries.title')}</h1><p>{t.t('web.registries.lede')}</p></div>
+    {notice && <div class="banner" style={`--c:${notice.ok ? 'var(--code-ink)' : 'var(--danger)'}`}><b>{notice.ok ? '✔' : '!'}</b><span>{notice.text}</span></div>}
+    {regs.length === 0 && <p class="hint">{t.t('web.registries.none')}</p>}
+    {regs.map((r) => (
+      <section class="sec"><div class="sec-h"><div><h2 class="mono">{r.slug}</h2><p>{t.t('web.registries.role', { role: r.role })} · <span class="mono">{r.url}</span></p></div></div>
+        <div class="term"><div class="bar"><span>.genpmrc</span></div><pre>{JSON.stringify({ scopes: { [r.owner ?? r.slug]: r.url } }, null, 2)}</pre></div>
+        {r.members && (
+          <>
+            <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.registries.member')}</th><th>{t.t('web.registries.memberRole')}</th><th><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
+              {r.members.map((m) => <tr><td class="mono">{m.handle}</td><td>{m.role}</td><td><form method="post"><input type="hidden" name="action" value="remove" /><input type="hidden" name="slug" value={r.slug} /><input type="hidden" name="handle" value={m.handle} /><button class="btn sm ghost" type="submit">{t.t('web.trusted.remove')}</button></form></td></tr>)}
+            </tbody></table></div>
+            <form method="post" class="builder" style="margin-top:16px">
+              <input type="hidden" name="action" value="member" /><input type="hidden" name="slug" value={r.slug} />
+              <label class="field">{t.t('web.registries.member')}<input name="handle" required pattern="@?[A-Za-z0-9\-]{1,39}" /></label>
+              <label class="field">{t.t('web.registries.memberRole')}<select name="role"><option value="reader">reader</option><option value="publisher">publisher</option><option value="admin">admin</option></select></label>
+              <button class="btn primary" type="submit">{t.t('web.registries.addMember')}</button>
+            </form>
+          </>
+        )}
+      </section>
+    ))}
+    <section class="sec"><div class="sec-h"><h2>{t.t('web.registries.create')}</h2></div>
+      <form method="post" class="builder">
+        <input type="hidden" name="action" value="create" />
+        <label class="field">{t.t('web.registries.slug')}<input name="slug" required pattern="[a-z0-9][a-z0-9\-]{1,38}" placeholder="acme" /></label>
+        <label class="field">{t.t('web.registries.owner')}<select name="owner">{owners.map((o) => <option value={o}>{o}</option>)}</select></label>
+        <button class="btn primary" type="submit">{t.t('web.registries.create')}</button>
+      </form>
+      <p class="hint" style="margin-top:12px">{t.t('web.registries.cli')}</p>
+    </section>
+  </div>
+</Base>

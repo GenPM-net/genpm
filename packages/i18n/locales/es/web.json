@@ -736,5 +736,19 @@
     "empty": "Todavía no hay recetas en el registry.",
     "localTitle": "Tu propia receta",
     "local": "Una receta también puede ser un archivo JSON en tu repositorio: comparte el stack de tu equipo e instálalo en cualquier proyecto."
+  },
+  "registries": {
+    "title": "Registros privados",
+    "lede": "Publica paquetes desde repositorios privados que solo tu equipo puede ver e instalar. Los miembros leen los paquetes internos; los privados necesitan un permiso explícito.",
+    "none": "Todavía no eres miembro de ningún registro privado.",
+    "role": "Tu rol: {role}",
+    "member": "Miembro (usuario u organización)",
+    "memberRole": "Rol",
+    "addMember": "Añadir o actualizar miembro",
+    "create": "Crear registro",
+    "slug": "Nombre",
+    "owner": "Dueño",
+    "saved": "Guardado.",
+    "cli": "Equipos y permisos por paquete: genpm team y genpm access en el CLI."
   }
 }

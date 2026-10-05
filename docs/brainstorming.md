@@ -375,6 +375,28 @@ SHA) y, sin git, con el tar.gz del API anclado al SHA y verificado por su coment
 **Consecuencias:** sustituye a Q7 para GitLab (Bitbucket sigue fuera). `scopes.git_host` sigue siendo `github.com`:
 el scope pertenece a una cuenta de GitHub aunque publique desde GitLab. Sin GitLab autoalojado (solo gitlab.com).
 
+### ADR-029 · Registros privados: tenant por ruta, `internal` por defecto y App de GitHub por dueño — ✅ Decidida (Tech Lead, 2026-10-05)
+
+**Contexto:** V10-01 abre los registros privados (shared tenancy, api-spec §5.4). Hacía falta decidir cómo los
+direcciona el CLI, qué ve cada miembro y cómo lee el registry repos privados.
+
+**Decisión:**
+- **Direccionamiento:** `https://api.genpm.net/r/<slug>` ≡ cabecera `genpm-registry: <slug>`. Es la URL que va en
+  `.genpmrc` (`scopes`) y en `genpm login --registry`; el CLI no sabe nada de tenants. Dominio propio en V10-03.
+- **Existencia:** un registro privado responde 404 a quien no es miembro (también con token válido de otra cuenta).
+  Rol = el mayor entre `registry_members` (cuenta u org completa) y el rol en la org dueña (owner/admin ⇒ admin,
+  publisher ⇒ publisher, resto ⇒ reader). Nada de un registro privado se cachea fuera del cliente (`private, no-store`).
+- **Visibilidad:** `internal` por defecto (todos los miembros), `private` = admins + grants (`read`/`write`/`admin`)
+  a usuarios o equipos. Los `private` con grant se instalan por nombre pero solo salen en listados para admins (el
+  filtro de listados sigue siendo SQL estático). En el registro público todo es `public` y no se admiten repos privados.
+- **Publicación:** admins y publishers del registro (o `write` sobre el paquete); los scopes son del dueño del registro
+  y sus repos deben ser del login de GitHub de ese dueño (misma regla que ADR-018). Repos privados con el token de la
+  instalación de la GitHub App en ese dueño (`/repos/:o/:r/installation`). Sin typosquatting contra el público ni
+  IndexNow.
+
+**Consecuencias:** migración 0009 aditiva (teams, team_members, package_grants, registry_members). CLI `genpm registry`,
+`genpm team`, `genpm access`; web `/settings/registries`.
+
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

@@ -25,7 +25,24 @@
     "upgrade": "Update the standalone genpm binary to the latest release",
     "diff": "Show what changed upstream since the installed version (unified diff)",
     "update": "Update installed packages, merging upstream changes with yours",
-    "compose": "Install every package of a recipe (registry name or local JSON file) in one go"
+    "compose": "Install every package of a recipe (registry name or local JSON file) in one go",
+    "registry": "Private registries: list, create and manage members",
+    "registryLs": "List the private registries you belong to",
+    "registryCreate": "Create a private registry owned by you or one of your organizations",
+    "registryShow": "Show a registry and its members",
+    "registryAdd": "Add a member (user or organization) or change their role",
+    "registryRm": "Remove a member",
+    "team": "Teams of an organization",
+    "teamLs": "List the teams of an organization",
+    "teamCreate": "Create a team (<org>/<team>)",
+    "teamRm": "Delete a team",
+    "teamAdd": "Add a member to a team or change their role",
+    "teamRemove": "Remove a member from a team",
+    "access": "Visibility and grants of a package in a private registry",
+    "accessLs": "Show the visibility and grants of a package",
+    "accessSet": "Set the visibility: internal or private",
+    "accessGrant": "Grant read, write or admin to user:<handle> or team:<org>/<team>",
+    "accessRevoke": "Revoke a grant"
   },
   "arg": {
     "cwd": "Working directory",
@@ -69,7 +86,19 @@
     "to": "Target version or range (default: latest)",
     "local": "Also list your local changes (drift)",
     "recipe": "Recipe name (e.g. saas-starter) or path to a recipe JSON file",
-    "listRecipes": "List the recipes published in the registry"
+    "listRecipes": "List the recipes published in the registry",
+    "rbac": {
+      "slug": "Registry name (e.g. acme)",
+      "handle": "GitHub user or organization handle",
+      "org": "Organization handle",
+      "team": "Team as <org>/<team>",
+      "principal": "user:<handle> or team:<org>/<team>",
+      "permission": "read, write or admin",
+      "visibility": "internal or private",
+      "owner": "Owner: your handle or an organization you administer",
+      "role": "Role: admin, publisher or reader",
+      "teamRole": "Team role: maintainer or member"
+    }
   },
   "label": {
     "resolved": "Resolved",
@@ -217,5 +246,11 @@
   "compose": {
     "none": "No recipes in this registry yet.",
     "hint": "Install one with: genpm compose <name> --dry-run"
+  },
+  "rbac": {
+    "done": "Done.",
+    "none": "Nothing here yet.",
+    "created": "Registry {slug} created: {url}",
+    "configHint": "Point your scope to it in .genpmrc and sign in with genpm login --registry <url>:"
   }
 }

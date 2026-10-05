@@ -70,3 +70,17 @@ genpm compose ./stack.json
 ```json
 { "name": "my-stack", "p": ["@core/db", "@core/auth@^1.2"] }
 ```
+
+## Registres privés
+
+Les équipes peuvent garder les paquets de dépôts privés dans un registre privé (`genpm registry create acme --owner mon-org`, ou [Paramètres › Registres privés](/settings/registries)). Il n’existe pas pour qui n’est pas membre. Faites pointer votre scope vers lui dans `.genpmrc` et connectez-vous à lui ; `genpm add` fonctionne de la même façon. Les membres lisent les paquets `internal` ; les `private` exigent un droit (`genpm access grant @acme/api team:mon-org/backend read`). L’application GitHub de GenPM doit être installée sur l’organisation pour que le registre lise ses dépôts privés.
+
+```json
+// .genpmrc
+{ "scopes": { "acme": "https://api.genpm.net/r/acme" } }
+```
+
+```bash
+genpm login --registry https://api.genpm.net/r/acme
+genpm add @acme/payments
+```

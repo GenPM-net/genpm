@@ -23,6 +23,7 @@ export * from './mcp-ops.js';
 export { gitMergeFile, type MergeOutcome, type MergePlan, planMerge, unifiedDiff } from './merge.js';
 export * from './ops.js';
 export * from './plan.js';
+export * from './rbac.js';
 export * from './registry-client.js';
 export * from './revocation.js';
 export * from './self-update.js';

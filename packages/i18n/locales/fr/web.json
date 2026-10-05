@@ -736,5 +736,19 @@
     "empty": "Le registre ne contient encore aucune recette.",
     "localTitle": "Votre propre recette",
     "local": "Une recette peut aussi être un fichier JSON dans votre dépôt : partagez la stack de votre équipe et installez-la partout."
+  },
+  "registries": {
+    "title": "Registres privés",
+    "lede": "Publiez des paquets depuis des dépôts privés que seule votre équipe peut voir et installer. Les membres lisent les paquets internes ; les privés exigent un droit explicite.",
+    "none": "Vous n’êtes membre d’aucun registre privé pour l’instant.",
+    "role": "Votre rôle : {role}",
+    "member": "Membre (utilisateur ou organisation)",
+    "memberRole": "Rôle",
+    "addMember": "Ajouter ou modifier un membre",
+    "create": "Créer un registre",
+    "slug": "Nom",
+    "owner": "Propriétaire",
+    "saved": "Enregistré.",
+    "cli": "Équipes et droits par paquet : genpm team et genpm access dans le CLI."
   }
 }

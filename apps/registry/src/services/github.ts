@@ -10,6 +10,8 @@ const ALLOWED_HOSTS = new Set(['api.github.com', 'raw.githubusercontent.com', 'c
 const UA = 'genpm-registry';
 
 let appToken: { token: string; exp: number } | null = null;
+/** Tokens por instalación del dueño del repo (V10-01: repos privados de registros privados). */
+const ownerTokens = new Map<string, { token: string; exp: number } | null>();
 
 function pemToPkcs8(pem: string): Uint8Array {
   const b64 = pem.replace(/-----[^-]+-----/g, '').replace(/\s+/g, '');
@@ -32,6 +34,38 @@ async function appJwt(env: Env): Promise<string> {
   return `${unsigned}.${bytesToBase64Url(new Uint8Array(sig))}`;
 }
 
+/**
+ * Token de la instalación de la GitHub App en el dueño de `owner/repo` (para leer sus repos privados). Sin instalación
+ * ahí, el token por defecto: con él solo se leen repos públicos.
+ */
+async function installationTokenFor(env: Env, owner: string, repo: string): Promise<string | null> {
+  if (env.GITHUB_TOKEN || !env.GITHUB_APP_ID || !env.GITHUB_APP_PRIVATE_KEY) return installationToken(env);
+  const key = owner.toLowerCase();
+  const hit = ownerTokens.get(key);
+  if (hit && hit.exp > Date.now() + 60_000) return hit.token;
+  if (hit === null) return installationToken(env);
+  const jwt = await appJwt(env);
+  const headers = { authorization: `Bearer ${jwt}`, accept: 'application/vnd.github+json', 'user-agent': UA };
+  const inst = await fetch(`https://api.github.com/repos/${owner}/${repo}/installation`, {
+    headers,
+    redirect: 'manual',
+  });
+  if (!inst.ok) {
+    ownerTokens.set(key, null);
+    return installationToken(env);
+  }
+  const { id } = (await inst.json()) as { id: number };
+  const res = await fetch(`https://api.github.com/app/installations/${id}/access_tokens`, {
+    method: 'POST',
+    headers,
+    redirect: 'manual',
+  });
+  if (!res.ok) return installationToken(env);
+  const body = (await res.json()) as { token: string; expires_at: string };
+  ownerTokens.set(key, { token: body.token, exp: Date.parse(body.expires_at) });
+  return body.token;
+}
+
 async function installationToken(env: Env): Promise<string | null> {
   if (env.GITHUB_TOKEN) return env.GITHUB_TOKEN;
   if (!env.GITHUB_APP_ID || !env.GITHUB_APP_PRIVATE_KEY) return null;
@@ -52,7 +86,10 @@ async function installationToken(env: Env): Promise<string | null> {
 }
 
 export class GitHub {
-  constructor(private readonly env: Env) {}
+  constructor(
+    private readonly env: Env,
+    private readonly target?: { owner: string; repo: string },
+  ) {}
 
   private base(kind: 'api' | 'raw' | 'codeload'): string {
     if (kind === 'api') return this.env.GITHUB_API_BASE ?? 'https://api.github.com';
@@ -68,7 +105,9 @@ export class GitHub {
     const url = new URL(this.base(kind) + path);
     if (!this.env.GITHUB_API_BASE && !ALLOWED_HOSTS.has(url.hostname))
       throw httpError('E_UPSTREAM_GIT', { detail: 'host not allowed' });
-    const token = await installationToken(this.env);
+    const token = this.target
+      ? await installationTokenFor(this.env, this.target.owner, this.target.repo)
+      : await installationToken(this.env);
     const headers: Record<string, string> = { accept, 'user-agent': UA, 'x-github-api-version': '2022-11-28' };
     if (token) headers['authorization'] = `Bearer ${token}`;
     let res: Response;

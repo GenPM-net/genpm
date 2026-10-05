@@ -42,7 +42,7 @@ const langName = (l: string) => t.raw(`common.languages.${l}`);
   <div class="wrap" style="max-width:760px">
     <div class="phead">
       <h1>{t.t('web.profile.title')}</h1>
-      <div class="row"><a class="btn sm" href={href(locale, '/dashboard')}>{t.t('web.dashboard.title')}</a><a class="btn sm" href={href(locale, '/settings/tokens')}>{t.t('web.nav.tokens')}</a><a class="btn sm" href={href(locale, '/settings/publishing')}>{t.t('web.trusted.title')}</a>{me.staff && <a class="btn sm" href={href(locale, '/admin')}>{t.t('web.admin.queueTitle')}</a>}</div>
+      <div class="row"><a class="btn sm" href={href(locale, '/dashboard')}>{t.t('web.dashboard.title')}</a><a class="btn sm" href={href(locale, '/settings/tokens')}>{t.t('web.nav.tokens')}</a><a class="btn sm" href={href(locale, '/settings/publishing')}>{t.t('web.trusted.title')}</a><a class="btn sm" href={href(locale, '/settings/registries')}>{t.t('web.registries.title')}</a>{me.staff && <a class="btn sm" href={href(locale, '/admin')}>{t.t('web.admin.queueTitle')}</a>}</div>
     </div>
     {saved && <div class="banner" style="--c:var(--code-ink)"><b>✔</b><span>{t.t('web.profile.saved')}</span></div>}
     <section class="sec">

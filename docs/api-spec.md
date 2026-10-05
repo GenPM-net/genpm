@@ -71,6 +71,14 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | PATCH | `/v1/me` | token/cookie | ✅ | Preferencias de la cuenta (`{locale}`) |
 | GET | `/v1/status` | — | ✅ | Página /status: componentes y última ejecución de cada cron (`registry_meta` `cron:<expr>`) |
 | POST | `/v1/auth/github/exchange` | — | ✅ | `genpm login` (device flow) |
+| GET/POST | `/v1/registries` | token | ✅ | Registros privados (V10-01, ADR-029): listar los tuyos / crear `{ slug, owner }` (owner/admin de la org) |
+| GET | `/v1/registries/:slug` | token (miembro) | ✅ | Rol, plan, URL (`/r/:slug`) y, para admins, miembros |
+| PUT/DELETE | `/v1/registries/:slug/members/:handle` | token (admin) | ✅ | `{ role: admin\|publisher\|reader }`; cuenta u org completa |
+| GET/POST/DELETE | `/v1/orgs/:org/teams[/:team]` | token (miembro / owner-admin) | ✅ | Equipos de una org |
+| PUT/DELETE | `/v1/orgs/:org/teams/:team/members/:handle` | token (owner/admin o maintainer) | ✅ | `{ role: maintainer\|member }`; solo miembros de la org |
+| GET/PUT | `/v1/packages/:scope/:name/access` | token (admin del paquete) | ✅ | Visibilidad (`internal`\|`private`) y grants; solo registros privados |
+| PUT/DELETE | `/v1/packages/:scope/:name/grants` | token (admin del paquete) | ✅ | `{ principal: user:<h>\|team:<org>/<team>, permission }`; DELETE con `?principal=` |
+| * | `/r/:slug/v1/…` | según la ruta | ✅ | Igual que `/v1/…` con `genpm-registry: <slug>` |
 | GET | `/v1/recipes`, `/v1/recipes/:slug` | — | ✅ | Recetas compose (V03-05): `{ name, summary, p: [specs] }`. Staff: `PUT/DELETE /v1/admin/recipes/:slug` con `{ s?, p }` (cada paquete debe existir) |
 | POST | `/mcp` (y raíz de `mcp.genpm.net`) | — | ✅ | MCP remoto de solo lectura (V03-04): JSON-RPC Streamable HTTP sin estado, tools `genpm_search` y `genpm_info` |
 | POST | `/v1/auth/oidc/exchange` | — (JWT OIDC de GitHub Actions o GitLab CI) | ✅ | Trusted publishing (V03-01, GitLab V03-03/ADR-028): token `publish` de 15 min, restringido al scope y al repo (`owner/repo` o `gitlab.com/<ruta>`) |
@@ -569,7 +577,7 @@ INSERT INTO scopes (id, registry_id, name, owner_id, git_host, git_owner, is_res
 -- Regla de publish: is_reserved = 1 ⇒ solo cuentas con rol en acc_system (staff) pueden publicar o transferir el scope.
 ```
 
-### 5.4 Migración futura `000N_rbac.sql` (puramente aditiva — referencia, NO en el MVP)
+### 5.4 Migración `0009_rbac.sql` (puramente aditiva — ✅ V10-01, ADR-029)
 
 ```sql
 CREATE TABLE teams (

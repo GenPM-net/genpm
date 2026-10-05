@@ -25,7 +25,24 @@
     "upgrade": "スタンドアロンの genpm バイナリを最新リリースに更新します",
     "diff": "インストール済みバージョン以降の upstream の変更を表示します（unified diff）",
     "update": "インストール済みパッケージを更新し、upstream の変更とあなたの変更をマージします",
-    "compose": "レシピ（レジストリ上の名前またはローカルの JSON ファイル）のパッケージをまとめてインストールします"
+    "compose": "レシピ（レジストリ上の名前またはローカルの JSON ファイル）のパッケージをまとめてインストールします",
+    "registry": "プライベートレジストリ: 一覧、作成、メンバー管理",
+    "registryLs": "所属しているプライベートレジストリを一覧表示します",
+    "registryCreate": "自分または管理している組織のプライベートレジストリを作成します",
+    "registryShow": "レジストリとそのメンバーを表示します",
+    "registryAdd": "メンバー（ユーザーまたは組織）を追加、またはロールを変更します",
+    "registryRm": "メンバーを削除します",
+    "team": "組織のチーム",
+    "teamLs": "組織のチームを一覧表示します",
+    "teamCreate": "チームを作成します（<org>/<team>）",
+    "teamRm": "チームを削除します",
+    "teamAdd": "チームにメンバーを追加、またはロールを変更します",
+    "teamRemove": "チームからメンバーを外します",
+    "access": "プライベートレジストリ内のパッケージの公開範囲と権限",
+    "accessLs": "パッケージの公開範囲と権限を表示します",
+    "accessSet": "公開範囲を設定します: internal または private",
+    "accessGrant": "user:<ハンドル> または team:<org>/<team> に read、write、admin を付与します",
+    "accessRevoke": "権限を取り消します"
   },
   "arg": {
     "cwd": "作業ディレクトリ",
@@ -69,7 +86,19 @@
     "to": "更新先のバージョンまたは範囲（既定: latest）",
     "local": "ローカルの変更（drift）も表示します",
     "recipe": "レシピ名（例: saas-starter）またはレシピ JSON ファイルのパス",
-    "listRecipes": "レジストリで公開されているレシピを一覧表示します"
+    "listRecipes": "レジストリで公開されているレシピを一覧表示します",
+    "rbac": {
+      "slug": "レジストリ名（例: acme）",
+      "handle": "GitHub のユーザーまたは組織",
+      "org": "組織",
+      "team": "<org>/<team> 形式のチーム",
+      "principal": "user:<ハンドル> または team:<org>/<team>",
+      "permission": "read、write、admin のいずれか",
+      "visibility": "internal または private",
+      "owner": "所有者: 自分のハンドル、または管理している組織",
+      "role": "ロール: admin、publisher、reader",
+      "teamRole": "チームのロール: maintainer または member"
+    }
   },
   "label": {
     "resolved": "解決済み",
@@ -217,5 +246,11 @@
   "compose": {
     "none": "このレジストリにはまだレシピがありません。",
     "hint": "インストールするには: genpm compose <名前> --dry-run"
+  },
+  "rbac": {
+    "done": "完了しました。",
+    "none": "まだ何もありません。",
+    "created": "レジストリ {slug} を作成しました: {url}",
+    "configHint": ".genpmrc で scope をこのレジストリに向け、genpm login --registry <url> でサインインします:"
   }
 }

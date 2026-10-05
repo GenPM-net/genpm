@@ -56,7 +56,12 @@ export type Actor = {
 };
 
 /** Contexto de tenant obligatorio en la capa de datos (INV-10). */
-export type Tenant = { registryId: string; slug: string };
+export type Tenant = {
+  registryId: string;
+  slug: string;
+  /** Registros privados (V10-01): dueño, y rol + principales (cuenta y equipos) de quien pide. */
+  private?: { ownerId: string | null; role: 'admin' | 'publisher' | 'reader'; principals: string[] };
+};
 
 export type Vars = {
   requestId: string;

@@ -70,3 +70,17 @@ genpm compose ./stack.json
 ```json
 { "name": "my-stack", "p": ["@core/db", "@core/auth@^1.2"] }
 ```
+
+## 비공개 레지스트리
+
+팀은 비공개 저장소의 패키지를 비공개 레지스트리에 둘 수 있습니다(`genpm registry create acme --owner my-org` 또는 [설정 › 비공개 레지스트리](/settings/registries)). 멤버가 아니면 존재하지 않는 것처럼 보입니다. `.genpmrc`에서 scope를 이 레지스트리로 지정하고 로그인하면 `genpm add`는 그대로 동작합니다. 멤버는 `internal` 패키지를 읽을 수 있고 `private` 패키지는 권한이 필요합니다(`genpm access grant @acme/api team:my-org/backend read`). 레지스트리가 비공개 저장소를 읽으려면 조직에 GenPM GitHub App이 설치되어 있어야 합니다.
+
+```json
+// .genpmrc
+{ "scopes": { "acme": "https://api.genpm.net/r/acme" } }
+```
+
+```bash
+genpm login --registry https://api.genpm.net/r/acme
+genpm add @acme/payments
+```

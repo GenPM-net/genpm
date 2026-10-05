@@ -25,7 +25,24 @@
     "upgrade": "Actualiza el binario independiente de genpm a la última versión",
     "diff": "Muestra qué cambió upstream desde la versión instalada (diff unificado)",
     "update": "Actualiza paquetes instalados fusionando los cambios upstream con los tuyos",
-    "compose": "Instala de una vez todos los paquetes de una receta (nombre del registry o archivo JSON local)"
+    "compose": "Instala de una vez todos los paquetes de una receta (nombre del registry o archivo JSON local)",
+    "registry": "Registros privados: listar, crear y gestionar miembros",
+    "registryLs": "Lista los registros privados de los que eres miembro",
+    "registryCreate": "Crea un registro privado tuyo o de una de tus organizaciones",
+    "registryShow": "Muestra un registro y sus miembros",
+    "registryAdd": "Añade un miembro (usuario u organización) o cambia su rol",
+    "registryRm": "Quita un miembro",
+    "team": "Equipos de una organización",
+    "teamLs": "Lista los equipos de una organización",
+    "teamCreate": "Crea un equipo (<org>/<equipo>)",
+    "teamRm": "Borra un equipo",
+    "teamAdd": "Añade un miembro a un equipo o cambia su rol",
+    "teamRemove": "Quita un miembro de un equipo",
+    "access": "Visibilidad y permisos de un paquete en un registro privado",
+    "accessLs": "Muestra la visibilidad y los permisos de un paquete",
+    "accessSet": "Cambia la visibilidad: internal o private",
+    "accessGrant": "Da read, write o admin a user:<usuario> o team:<org>/<equipo>",
+    "accessRevoke": "Retira un permiso"
   },
   "arg": {
     "cwd": "Directorio de trabajo",
@@ -69,7 +86,19 @@
     "to": "Versión o rango destino (por defecto: latest)",
     "local": "Lista también tus cambios locales (drift)",
     "recipe": "Nombre de la receta (p. ej. saas-starter) o ruta a un archivo JSON de receta",
-    "listRecipes": "Lista las recetas publicadas en el registry"
+    "listRecipes": "Lista las recetas publicadas en el registry",
+    "rbac": {
+      "slug": "Nombre del registro (p. ej. acme)",
+      "handle": "Usuario u organización de GitHub",
+      "org": "Organización",
+      "team": "Equipo como <org>/<equipo>",
+      "principal": "user:<usuario> o team:<org>/<equipo>",
+      "permission": "read, write o admin",
+      "visibility": "internal o private",
+      "owner": "Dueño: tu usuario o una organización que administras",
+      "role": "Rol: admin, publisher o reader",
+      "teamRole": "Rol en el equipo: maintainer o member"
+    }
   },
   "label": {
     "resolved": "Resuelto",
@@ -217,5 +246,11 @@
   "compose": {
     "none": "Todavía no hay recetas en este registry.",
     "hint": "Instala una con: genpm compose <nombre> --dry-run"
+  },
+  "rbac": {
+    "done": "Hecho.",
+    "none": "Todavía no hay nada aquí.",
+    "created": "Registro {slug} creado: {url}",
+    "configHint": "Apunta tu scope a él en .genpmrc e inicia sesión con genpm login --registry <url>:"
   }
 }

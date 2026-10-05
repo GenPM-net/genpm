@@ -43,7 +43,7 @@ export function cached(opts: {
   key?: (c: Context<AppEnv>) => string;
 }): MiddlewareHandler<AppEnv> {
   return async (c, next) => {
-    if (c.req.method !== 'GET' || c.req.header('authorization')) {
+    if (c.req.method !== 'GET' || c.req.header('authorization') || c.get('tenant')?.private) {
       await next();
       return;
     }

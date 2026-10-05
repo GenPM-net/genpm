@@ -736,5 +736,19 @@
     "empty": "Ainda não há receitas no registry.",
     "localTitle": "Sua própria receita",
     "local": "Uma receita também pode ser um arquivo JSON no seu repositório: compartilhe a stack do seu time e instale em qualquer projeto."
+  },
+  "registries": {
+    "title": "Registries privados",
+    "lede": "Publique pacotes de repositórios privados que só o seu time pode ver e instalar. Membros leem pacotes internos; os privados precisam de permissão explícita.",
+    "none": "Você ainda não é membro de nenhum registry privado.",
+    "role": "Seu papel: {role}",
+    "member": "Membro (usuário ou organização)",
+    "memberRole": "Papel",
+    "addMember": "Adicionar ou atualizar membro",
+    "create": "Criar registry",
+    "slug": "Nome",
+    "owner": "Dono",
+    "saved": "Salvo.",
+    "cli": "Times e permissões por pacote: genpm team e genpm access no CLI."
   }
 }

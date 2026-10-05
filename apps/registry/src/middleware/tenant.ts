@@ -4,6 +4,8 @@
 import type { MiddlewareHandler } from 'hono';
 import type { AppEnv } from '../env.js';
 import { httpError } from '../http.js';
+import { principalsOf, registryRole } from '../services/access.js';
+import { actorFromRequest } from './auth.js';
 
 export const tenant: MiddlewareHandler<AppEnv> = async (c, next) => {
   const slug = (c.req.header('genpm-registry') ?? 'public').toLowerCase();
@@ -11,10 +13,27 @@ export const tenant: MiddlewareHandler<AppEnv> = async (c, next) => {
   if (slug === 'public') {
     c.set('tenant', { registryId: 'reg_public', slug });
   } else {
-    const row = await c.env.DB.prepare('SELECT id FROM registries WHERE slug = ?1').bind(slug).first<{ id: string }>();
+    const row = await c.env.DB.prepare('SELECT id, owner_id, is_public FROM registries WHERE slug = ?1')
+      .bind(slug)
+      .first<{ id: string; owner_id: string | null; is_public: number }>();
     // Un registry inexistente o privado sin acceso responde 404, no 403 (no revelar existencia).
     if (!row) throw httpError('E_NOT_FOUND', { name: slug });
-    c.set('tenant', { registryId: row.id, slug });
+    if (row.is_public) {
+      c.set('tenant', { registryId: row.id, slug });
+    } else {
+      // V10-01: solo miembros. Un token inválido sigue siendo 401; sin token o sin rol, 404.
+      const actor = await actorFromRequest(c);
+      const role = actor ? await registryRole(c.env.DB, row, actor.accountId) : null;
+      if (!actor || !role) throw httpError('E_NOT_FOUND', { name: slug });
+      c.set('actor', actor);
+      c.set('tenant', {
+        registryId: row.id,
+        slug,
+        private: { ownerId: row.owner_id, role, principals: await principalsOf(c.env.DB, actor.accountId) },
+      });
+    }
   }
   await next();
+  // Nada de un registro privado se cachea fuera del cliente, aunque la ruta pida caché pública.
+  if (c.get('tenant')?.private) c.res.headers.set('Cache-Control', 'private, no-store');
 };

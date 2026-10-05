@@ -3,6 +3,7 @@
 // Solo sentencias preparadas con bind(); nunca plantillas en prepare() (security §5, regla de Semgrep).
 
 import type { Tenant } from '../env.js';
+import { grantedIds } from '../services/access.js';
 
 export type PackageRow = {
   id: string;
@@ -72,6 +73,10 @@ export type PublisherRow = { handle: string; kind: 'user' | 'org'; is_verified: 
 // prepare() es siempre texto estático (regla Semgrep d1-prepare-no-template, security §5). La búsqueda compone su
 // WHERE con esta constante.
 const PUBLIC = "p.visibility = 'public' AND p.status != 'removed'";
+// Registros privados (V10-01): los miembros ven `public` e `internal`; los `private` con grant se leen por nombre pero
+// no aparecen en listados; los admins del registro lo ven todo.
+const MEMBER = "p.visibility != 'private' AND p.status != 'removed'";
+const ADMIN = "p.status != 'removed'";
 
 export class Repo {
   constructor(
@@ -83,26 +88,42 @@ export class Repo {
     return this.tenant.registryId;
   }
 
+  /** Filtro de listados según el visitante (constante: el SQL de prepare() sigue siendo texto estático). */
+  private get vis(): string {
+    const p = this.tenant.private;
+    if (!p) return PUBLIC;
+    return p.role === 'admin' ? ADMIN : MEMBER;
+  }
+
+  /** Lectura por nombre: además del filtro de listados, `private` con grant del visitante o de uno de sus equipos. */
+  private async readable(rows: PackageRow[]): Promise<PackageRow[]> {
+    const p = this.tenant.private;
+    if (!p) return rows.filter((r) => r.visibility === 'public');
+    if (p.role === 'admin') return rows;
+    const priv = rows.filter((r) => r.visibility === 'private').map((r) => r.id);
+    const granted = await grantedIds(this.db, priv, p.principals);
+    return rows.filter((r) => r.visibility !== 'private' || granted.has(r.id));
+  }
+
   // ───────────── Paquetes ─────────────
 
   async packageByName(fullName: string): Promise<PackageRow | null> {
-    return this.db
-      .prepare(
-        `SELECT p.* FROM packages p WHERE p.registry_id = ?1 AND p.full_name = ?2 AND p.visibility = 'public' AND p.status != 'removed'`,
-      )
+    const row = await this.db
+      .prepare(`SELECT p.* FROM packages p WHERE p.registry_id = ?1 AND p.full_name = ?2 AND p.status != 'removed'`)
       .bind(this.rid, fullName)
       .first<PackageRow>();
+    return row ? ((await this.readable([row]))[0] ?? null) : null;
   }
 
   async packagesByNames(names: readonly string[]): Promise<PackageRow[]> {
     if (names.length === 0) return [];
     const { results } = await this.db
       .prepare(
-        `SELECT p.* FROM packages p WHERE p.registry_id = ?1 AND p.visibility = 'public' AND p.status != 'removed' AND p.full_name IN (SELECT value FROM json_each(?2))`,
+        `SELECT p.* FROM packages p WHERE p.registry_id = ?1 AND p.status != 'removed' AND p.full_name IN (SELECT value FROM json_each(?2))`,
       )
       .bind(this.rid, JSON.stringify(names))
       .all<PackageRow>();
-    return results;
+    return this.readable(results);
   }
 
   async publisherOf(pkg: Pick<PackageRow, 'owner_id'>): Promise<PublisherRow | null> {
@@ -143,7 +164,7 @@ export class Repo {
          JOIN package_versions v ON v.id = d.version_id
          JOIN packages p ON p.latest_version_id = v.id
          LEFT JOIN accounts a ON a.id = p.owner_id
-         WHERE d.kind = 'genpm' AND d.dep_name = ?2 AND p.registry_id = ?1 AND ${PUBLIC} AND p.status = 'active'
+         WHERE d.kind = 'genpm' AND d.dep_name = ?2 AND p.registry_id = ?1 AND ${this.vis} AND p.status = 'active'
          ORDER BY p.installs_30d DESC, p.full_name LIMIT ?3 OFFSET ?4`,
       )
       .bind(this.rid, name, limit, offset)
@@ -156,7 +177,7 @@ export class Repo {
       .prepare(
         `SELECT count(*) AS n FROM package_dependencies d
          JOIN packages p ON p.latest_version_id = d.version_id
-         WHERE d.kind = 'genpm' AND d.dep_name = ?2 AND p.registry_id = ?1 AND ${PUBLIC} AND p.status = 'active'`,
+         WHERE d.kind = 'genpm' AND d.dep_name = ?2 AND p.registry_id = ?1 AND ${this.vis} AND p.status = 'active'`,
       )
       .bind(this.rid, name)
       .first<{ n: number }>();
@@ -198,7 +219,7 @@ export class Repo {
     limit: number;
     offset: number;
   }): Promise<{ rows: Array<PackageRow & { is_verified: number; publisher: string; rel: number }>; total: number }> {
-    const where = [`p.registry_id = ?1`, PUBLIC, "p.status = 'active'", 'p.latest_version IS NOT NULL'];
+    const where = [`p.registry_id = ?1`, this.vis, "p.status = 'active'", 'p.latest_version IS NOT NULL'];
     const binds: unknown[] = [this.rid];
     let from = 'packages p';
     let rel = '0.0';

@@ -736,5 +736,19 @@
     "empty": "注册表中还没有配方。",
     "localTitle": "你自己的配方",
     "local": "配方也可以是仓库中的一个 JSON 文件：共享团队的技术栈，在任何项目中安装。"
+  },
+  "registries": {
+    "title": "私有注册表",
+    "lede": "发布来自私有仓库、只有你的团队能看到和安装的软件包。成员可以读取 internal 软件包；private 软件包需要明确授权。",
+    "none": "你还不是任何私有注册表的成员。",
+    "role": "你的角色：{role}",
+    "member": "成员（用户或组织）",
+    "memberRole": "角色",
+    "addMember": "添加或更新成员",
+    "create": "创建注册表",
+    "slug": "名称",
+    "owner": "所有者",
+    "saved": "已保存。",
+    "cli": "团队和按软件包的权限：使用 CLI 中的 genpm team 和 genpm access。"
   }
 }

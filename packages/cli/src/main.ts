@@ -16,6 +16,7 @@ import {
   searchCmd,
 } from './commands/consumer.js';
 import { mcpCmd } from './commands/mcp.js';
+import { accessCmd, registryCmd, teamCmd } from './commands/rbac.js';
 import { diffCmd, updateCmd } from './commands/update.js';
 import { upgradeCmd } from './commands/upgrade.js';
 import { type Ctx, createContext } from './context.js';
@@ -27,6 +28,9 @@ export function buildCli(ctx: Ctx) {
     subCommands: {
       add: add(ctx),
       compose: composeCmd(ctx),
+      registry: registryCmd(ctx),
+      team: teamCmd(ctx),
+      access: accessCmd(ctx),
       search: searchCmd(ctx),
       info: infoCmd(ctx),
       list: listCmd(ctx),

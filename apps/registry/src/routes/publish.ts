@@ -35,6 +35,7 @@ import { httpError } from '../http.js';
 import { newId } from '../ids.js';
 import { requireAuth, tokenAllows } from '../middleware/auth.js';
 import { clientIp, rateLimit } from '../middleware/rate-limit.js';
+import { atLeast, grantOf } from '../services/access.js';
 import { archiveVersion } from '../services/archive.js';
 import { indexNow } from '../services/indexnow.js';
 import { recomputeQuality } from '../services/quality.js';
@@ -51,6 +52,8 @@ const Body = z.strictObject({
   manifestPath: z.string().max(200).default('genpm.json'),
   distTag: z.string().regex(DIST_TAG_RE).optional(),
   dryRun: z.boolean().default(false),
+  /** V10-01: solo en registros privados (`internal` por defecto); el público siempre es `public`. */
+  visibility: z.enum(['public', 'internal', 'private']).optional(),
 });
 
 const WRITE_ROLES = ['owner', 'admin', 'publisher'];
@@ -63,9 +66,35 @@ async function authorizeScope(
   c: Context<AppEnv>,
   actor: Actor,
   scopeName: string,
+  pkgName: string,
 ): Promise<{ scope: Scope; claim: Scope | null }> {
   const db = c.env.DB;
   const existing = await repoOf(c).scope(scopeName);
+  const priv = c.get('tenant').private;
+  if (priv) {
+    // Registro privado (V10-01): publican sus admins y publishers; los scopes son del dueño del registro y sus repos
+    // tienen que ser del login de GitHub de ese dueño (misma regla ADR-018).
+    if (priv.role !== 'admin' && priv.role !== 'publisher') {
+      // Un reader con grant `write` sobre el paquete puede publicar versiones nuevas de ese paquete.
+      const pkg = existing ? await repoOf(c).packageByName(pkgName) : null;
+      if (!pkg || !atLeast(await grantOf(db, pkg.id, priv.principals), 'write'))
+        throw httpError('E_FORBIDDEN_SCOPE', { scope: scopeName });
+    }
+    if (existing) return { scope: existing, claim: null };
+    const owner = await db
+      .prepare('SELECT id, github_login FROM accounts WHERE id = ?1')
+      .bind(priv.ownerId ?? '')
+      .first<{ id: string; github_login: string | null }>();
+    if (!owner?.github_login) throw httpError('E_FORBIDDEN_SCOPE', { scope: scopeName });
+    const claim: Scope = {
+      id: newId('scp'),
+      name: scopeName,
+      owner_id: owner.id,
+      git_owner: owner.github_login,
+      is_reserved: 0,
+    };
+    return { scope: claim, claim };
+  }
   if (existing) {
     if (existing.is_reserved) {
       // Scopes reservados: solo staff (miembros con rol de escritura de la cuenta de sistema).
@@ -172,7 +201,7 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   if (!parts) throw httpError('E_BAD_REQUEST', { detail: 'name' });
   // Tokens restringidos (`allowed_packages`, trusted publishing): fuera de su lista no pueden publicar.
   if (!tokenAllows(actor, body.name)) throw httpError('E_FORBIDDEN_SCOPE', { scope: parts.scope });
-  const { scope, claim } = await authorizeScope(c, actor, parts.scope);
+  const { scope, claim } = await authorizeScope(c, actor, parts.scope, body.name);
 
   // 3 · el repo pertenece al owner de GitHub del scope; GitLab (V03-03, ADR-028) solo vía trusted publishing, porque
   // la autorización del proyecto la dio el dueño del scope al registrarlo como editor de confianza.
@@ -185,7 +214,11 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   if (actor.repository && actor.repository.toLowerCase() !== src.identity.toLowerCase()) throw repoNotAllowed();
   const info = await src.repo();
   if (!info) throw httpError('E_REF_NOT_FOUND', { ref: body.ref, repo: body.repo });
-  if (info.private) throw httpError('E_REPO_NOT_ALLOWED', { repo: body.repo, scope: parts.scope });
+  // Repos privados solo en registros privados (V10-01), leídos con la instalación de la GitHub App del dueño.
+  if (info.private && !tenant.private) throw repoNotAllowed();
+  const visibility = tenant.private ? (body.visibility ?? 'internal') : 'public';
+  if (tenant.private ? visibility === 'public' : body.visibility && body.visibility !== 'public')
+    throw httpError('E_BAD_REQUEST', { detail: 'visibility' });
 
   // 4 · ref inmutable: tag existente o SHA de 40; nunca rama
   if (checkRef(body.ref)) throw httpError('E_REF_MUTABLE', { ref: body.ref });
@@ -270,10 +303,12 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
     )
     .bind(tenant.registryId)
     .all<{ full_name: string }>();
-  const squats = typosquatMatches(
-    m.n,
-    top.map((t) => t.full_name),
-  );
+  const squats = tenant.private
+    ? []
+    : typosquatMatches(
+        m.n,
+        top.map((t) => t.full_name),
+      );
   const findings = [...report.findings];
   if (squats.length) findings.push({ rule: 'typosquat', severity: 'flag', detail: `${squats.join(', ')}` });
   const scanStatus = statusOf(findings);
@@ -328,7 +363,7 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
         .prepare(
           `INSERT INTO packages (id, registry_id, scope_id, name, full_name, owner_id, created_by, visibility, summary, repo_url, git_repo_id, license,
              latest_version_id, latest_version, has_mcp, status, created_at, updated_at)
-           VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, 'public', ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?16)`,
+           VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?17, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?16)`,
         )
         .bind(
           pkgId,
@@ -347,6 +382,7 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
           hasMcp,
           'active',
           now,
+          visibility,
         ),
     );
   } else if (becomesLatest) {
@@ -469,7 +505,7 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   // 12 · purga de caché + escaneo profundo en cola
   c.executionCtx.waitUntil(purgePackage(c, m.n));
   // Paquete nuevo o versión nueva: que los buscadores (y los agentes que buscan en la web) lo vean ya.
-  c.executionCtx.waitUntil(indexNow(c.env, [`/p/${m.n}`, `/p/${m.n}.md`, '/llms.txt', '/search']));
+  if (!tenant.private) c.executionCtx.waitUntil(indexNow(c.env, [`/p/${m.n}`, `/p/${m.n}.md`, '/llms.txt', '/search']));
   c.executionCtx.waitUntil(recomputeQuality(c.env, pkgId).catch(() => 0));
   c.executionCtx.waitUntil(archiveVersion(c.env, { verId, n: m.n, v: m.v, c: sha, gz }).catch(() => undefined));
   if (c.env.SCAN_QUEUE) c.executionCtx.waitUntil(c.env.SCAN_QUEUE.send({ versionId: verId, name: m.n, version: m.v }));

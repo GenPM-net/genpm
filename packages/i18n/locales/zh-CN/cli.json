@@ -25,7 +25,24 @@
     "upgrade": "将独立的 genpm 二进制文件更新到最新版本",
     "diff": "显示自已安装版本以来上游的变更（统一 diff）",
     "update": "更新已安装的软件包，将上游变更与你的修改合并",
-    "compose": "一次性安装某个配方中的全部软件包（注册表中的名称或本地 JSON 文件）"
+    "compose": "一次性安装某个配方中的全部软件包（注册表中的名称或本地 JSON 文件）",
+    "registry": "私有注册表：列出、创建并管理成员",
+    "registryLs": "列出你所属的私有注册表",
+    "registryCreate": "为你自己或你管理的组织创建私有注册表",
+    "registryShow": "显示注册表及其成员",
+    "registryAdd": "添加成员（用户或组织）或修改其角色",
+    "registryRm": "移除成员",
+    "team": "组织的团队",
+    "teamLs": "列出组织的团队",
+    "teamCreate": "创建团队（<org>/<team>）",
+    "teamRm": "删除团队",
+    "teamAdd": "向团队添加成员或修改其角色",
+    "teamRemove": "从团队移除成员",
+    "access": "私有注册表中软件包的可见性和权限",
+    "accessLs": "显示软件包的可见性和权限",
+    "accessSet": "设置可见性：internal 或 private",
+    "accessGrant": "为 user:<用户名> 或 team:<org>/<team> 授予 read、write 或 admin",
+    "accessRevoke": "撤销权限"
   },
   "arg": {
     "cwd": "工作目录",
@@ -69,7 +86,19 @@
     "to": "目标版本或范围（默认：latest）",
     "local": "同时列出你的本地修改（drift）",
     "recipe": "配方名称（例如 saas-starter）或配方 JSON 文件路径",
-    "listRecipes": "列出注册表中发布的配方"
+    "listRecipes": "列出注册表中发布的配方",
+    "rbac": {
+      "slug": "注册表名称（例如 acme）",
+      "handle": "GitHub 用户或组织",
+      "org": "组织",
+      "team": "团队，格式为 <org>/<team>",
+      "principal": "user:<用户名> 或 team:<org>/<team>",
+      "permission": "read、write 或 admin",
+      "visibility": "internal 或 private",
+      "owner": "所有者：你的用户名或你管理的组织",
+      "role": "角色：admin、publisher 或 reader",
+      "teamRole": "团队角色：maintainer 或 member"
+    }
   },
   "label": {
     "resolved": "已解析",
@@ -217,5 +246,11 @@
   "compose": {
     "none": "此注册表中还没有配方。",
     "hint": "安装方式：genpm compose <名称> --dry-run"
+  },
+  "rbac": {
+    "done": "已完成。",
+    "none": "这里还没有内容。",
+    "created": "已创建注册表 {slug}：{url}",
+    "configHint": "在 .genpmrc 中把你的 scope 指向它，并用 genpm login --registry <url> 登录："
   }
 }

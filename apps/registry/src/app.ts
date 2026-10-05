@@ -19,6 +19,7 @@ import { mcpRoutes } from './routes/mcp.js';
 import { myRepos } from './routes/my-repos.js';
 import { packages } from './routes/packages.js';
 import { publish } from './routes/publish.js';
+import { access, registries, teams } from './routes/rbac.js';
 import { recipes } from './routes/recipes.js';
 import { resolve } from './routes/resolve.js';
 import { search } from './routes/search.js';
@@ -45,6 +46,17 @@ export function createApp() {
       if (v) headers.set(h, v);
     }
     return Promise.resolve(app.request(new URL(path, c.req.url).toString(), { headers }, c.env, c.executionCtx));
+  });
+  // Registros privados por ruta (V10-01): `https://api.genpm.net/r/acme/v1/…` ≡ `genpm-registry: acme`. Es la URL que
+  // va en `.genpmrc`, así el CLI no necesita saber nada de tenants.
+  app.use('/r/*', async (c) => {
+    const url = new URL(c.req.url);
+    const m = url.pathname.match(/^\/r\/([a-z0-9][a-z0-9-]{0,38})(\/.*)?$/);
+    if (!m || m[1] === 'public') throw httpError('E_NOT_FOUND', { name: url.pathname });
+    url.pathname = m[2] ?? '/';
+    const headers = new Headers(c.req.raw.headers);
+    headers.set('genpm-registry', m[1]!);
+    return app.fetch(new Request(url, { method: c.req.method, headers, body: c.req.raw.body }), c.env, c.executionCtx);
   });
   app.use('*', async (c, next) => {
     const url = new URL(c.req.url);
@@ -82,12 +94,15 @@ export function createApp() {
   app.route('/v1/packages', yank);
   app.route('/v1/packages', deprecate);
   app.route('/v1/packages', compare);
+  app.route('/v1/packages', access);
   app.route('/v1/packages', packages);
   app.route('/v1/publish', publish);
   app.route('/v1/auth', auth);
   app.route('/v1/auth', oidc);
   app.route('/v1/scopes', trusted);
   app.route('/v1/recipes', recipes);
+  app.route('/v1/registries', registries);
+  app.route('/v1/orgs', teams);
   app.route('/v1/featured', featured);
   app.route('/v1/stats', stats);
   app.route('/v1/scopes', scopes);

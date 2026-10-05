@@ -70,3 +70,17 @@ genpm compose ./stack.json
 ```json
 { "name": "my-stack", "p": ["@core/db", "@core/auth@^1.2"] }
 ```
+
+## Registries privados
+
+Times podem manter pacotes de repositórios privados em um registry privado (`genpm registry create acme --owner minha-org`, ou [Configurações › Registries privados](/settings/registries)). Ele não existe para quem não é membro. Aponte seu scope para ele no `.genpmrc` e entre nele; o `genpm add` funciona igual. Membros leem pacotes `internal`; os `private` precisam de permissão (`genpm access grant @acme/api team:minha-org/backend read`). A GitHub App do GenPM precisa estar instalada na organização para o registry ler os repositórios privados.
+
+```json
+// .genpmrc
+{ "scopes": { "acme": "https://api.genpm.net/r/acme" } }
+```
+
+```bash
+genpm login --registry https://api.genpm.net/r/acme
+genpm add @acme/payments
+```
