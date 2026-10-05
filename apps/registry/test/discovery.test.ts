@@ -112,6 +112,31 @@ describe('cron triggers', () => {
       status: 'ended',
     });
   });
+  it('counts only cli/mcp and rewrites whole days of the window', async () => {
+    const now = Date.UTC(2026, 9, 5, 10);
+    await env.DB.prepare(
+      "INSERT INTO install_stats_daily (package_id, day, installs, via_mcp) VALUES ('pkg_fixture02', '2026-10-04', 99, 0), ('pkg_fixture02', '2026-10-03', 7, 0)",
+    ).run();
+    await rollupInstalls(
+      env,
+      fetch,
+      [
+        { name: '@core/auth', client: 'web', day: '2026-10-04', n: 30 },
+        { name: '@core/auth', client: 'cli', day: '2026-10-05', n: 2 },
+        { name: '@core/auth', client: 'cli', day: '2026-10-03', n: 1 },
+      ],
+      2,
+      now,
+    );
+    const { results } = await env.DB.prepare(
+      "SELECT day, installs FROM install_stats_daily WHERE package_id = 'pkg_fixture02' ORDER BY day",
+    ).all();
+    // 10-03 queda fuera de la ventana (se conserva); 10-04 solo tenía lecturas web ⇒ desaparece; 10-05 = 2.
+    expect(results).toEqual([
+      { day: '2026-10-03', installs: 7 },
+      { day: '2026-10-05', installs: 2 },
+    ]);
+  });
   it('without CF_AE_TOKEN skips the rollup and keeps the counters', async () => {
     const before = await env.DB.prepare("SELECT installs_30d FROM packages WHERE id = 'pkg_fixture01'").first();
     expect(await rollupInstalls({ ...env, CF_AE_TOKEN: undefined }, fetch)).toBe(0);

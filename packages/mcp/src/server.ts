@@ -299,7 +299,14 @@ export function createServer(options: ServerOptions = {}): McpServer {
       try {
         const spec = args.version ? `${args.name}@${args.version}` : args.name;
         // Sin `force` en el MCP: sobrescribir código del usuario exige el CLI (B.6).
-        const p = await plan({ ...(await common(args.name)), specs: [spec], dest: args.dest });
+        const base = await common(args.name);
+        // Una vista previa no es una instalación: el apply posterior es el que cuenta (ADR-027).
+        const p = await plan({
+          ...base,
+          telemetry: base.telemetry && !args.dryRun,
+          specs: [spec],
+          dest: args.dest,
+        });
         if (args.dryRun) return ok(planText(p), compactPlan(p) as unknown as Record<string, unknown>);
         if (args.planId && args.planId !== p.id) {
           const { fail } = await import('@genpm/core');

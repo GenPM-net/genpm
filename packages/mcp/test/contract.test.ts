@@ -118,11 +118,14 @@ describe('tools', () => {
 
     const dry = await call('genpm_add', { name: '@core/auth', dryRun: true });
     const planId = (dry.structuredContent as { id: string }).id;
+    // La vista previa no cuenta como instalación; el apply sí (ADR-027).
+    expect(reg.requests.filter((u) => u.startsWith('/v1/resolve/')).at(-1)).toContain('client=none');
     expect((dry.content[0] as { text: string }).text).toContain('MCP (needs consent): "stripe-mcp" npx -y @stripe/mcp');
     await expect(readFile(join(project, 'genpm.lock'), 'utf8')).rejects.toThrow();
 
     const done = await call('genpm_add', { name: '@core/auth', planId });
     expect(done.isError).toBeFalsy();
+    expect(reg.requests.filter((u) => u.startsWith('/v1/resolve/')).at(-1)).toContain('client=mcp');
     const out = done.structuredContent as {
       pendingMcp: unknown[];
       pendingNpm: string | null;

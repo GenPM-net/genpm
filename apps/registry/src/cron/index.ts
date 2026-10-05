@@ -18,14 +18,14 @@ type Row = { name: string; client: string; day: string; n: number | string };
  * Consulta la SQL API de Analytics Engine (solo producción/staging). Sin credenciales no puede leer nada: lo avisa en
  * los logs del Worker, porque si no los contadores se quedan en 0 sin ninguna señal (pasó en el lanzamiento).
  */
-async function aeRows(env: Env, fetchImpl: typeof fetch, days: number): Promise<Row[] | null> {
+async function aeRows(env: Env, fetchImpl: typeof fetch, since: string): Promise<Row[] | null> {
   if (!env.CF_ACCOUNT_ID || !env.CF_AE_TOKEN) {
     if (env.ENVIRONMENT === 'production' || env.ENVIRONMENT === 'staging')
       console.warn(JSON.stringify({ level: 'alert', event: 'installs_rollup_skipped', reason: 'missing CF_AE_TOKEN' }));
     return null;
   }
   const dataset = env.ENVIRONMENT === 'staging' ? 'genpm_installs_staging' : 'genpm_installs';
-  const sql = `SELECT blob1 AS name, blob3 AS client, formatDateTime(timestamp, '%Y-%m-%d') AS day, SUM(_sample_interval) AS n FROM ${dataset} WHERE timestamp > NOW() - INTERVAL '${Math.trunc(days)}' DAY GROUP BY name, client, day FORMAT JSON`;
+  const sql = `SELECT blob1 AS name, blob3 AS client, formatDateTime(timestamp, '%Y-%m-%d') AS day, SUM(_sample_interval) AS n FROM ${dataset} WHERE timestamp >= toDateTime('${since} 00:00:00') AND blob3 IN ('cli', 'mcp') GROUP BY name, client, day FORMAT JSON`;
   const res = await fetchImpl(
     `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/analytics_engine/sql`,
     {
@@ -38,25 +38,42 @@ async function aeRows(env: Env, fetchImpl: typeof fetch, days: number): Promise<
   return ((await res.json()) as { data: Row[] }).data;
 }
 
+/** Clientes que instalan. `web` (lecturas del .md antes de ADR-027) no es una instalación. */
+const INSTALL_CLIENTS = new Set(['cli', 'mcp']);
+
+/**
+ * Recalcula `install_stats_daily` para los últimos `days` días naturales (UTC) completos, hoy incluido. La ventana
+ * empieza siempre a medianoche: con `NOW() - 2 días` el día más antiguo quedaba parcial y el upsert le restaba
+ * instalaciones cada hora. Los días de la ventana se borran y se reescriben, así un día sin filas vuelve a 0.
+ */
 export async function rollupInstalls(
   env: Env,
   fetchImpl: typeof fetch = fetch,
   rows?: Row[],
   days = 2,
+  now = Date.now(),
 ): Promise<number> {
-  const data = rows ?? (await aeRows(env, fetchImpl, days));
+  const since = new Date(now - (days - 1) * DAY).toISOString().slice(0, 10);
+  const data = rows ?? (await aeRows(env, fetchImpl, since));
   // Sin lectura de AE no se toca D1: recalcular installs_30d con datos incompletos solo borraría cifras buenas.
   if (!data) return 0;
   const db = env.DB;
   const agg = new Map<string, { name: string; day: string; installs: number; mcp: number }>();
   for (const r of data) {
+    if (!INSTALL_CLIENTS.has(r.client) || r.day < since) continue;
     const key = `${r.name}|${r.day}`;
     const cur = agg.get(key) ?? { name: r.name, day: r.day, installs: 0, mcp: 0 };
     cur.installs += Number(r.n);
     if (r.client === 'mcp') cur.mcp += Number(r.n);
     agg.set(key, cur);
   }
-  const stmts: D1PreparedStatement[] = [];
+  const stmts: D1PreparedStatement[] = [
+    db
+      .prepare(
+        "DELETE FROM install_stats_daily WHERE day >= ?1 AND package_id IN (SELECT id FROM packages WHERE registry_id = 'reg_public')",
+      )
+      .bind(since),
+  ];
   for (const a of agg.values()) {
     stmts.push(
       db

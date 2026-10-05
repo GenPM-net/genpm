@@ -106,6 +106,8 @@ describe('genpm add', () => {
   it('prints the plan on --dry-run without writing', async () => {
     const r = await cli('add', '@core/auth', '--dry-run');
     expect(r.code).toBe(0);
+    // Una simulación no suma al contador de instalaciones (ADR-027).
+    expect(reg.requests.filter((u) => u.startsWith('/v1/resolve/')).at(-1)).toContain('client=none');
     expect(r.stdout).toMatchSnapshot();
     expect(await readFile(join(project, 'genpm.lock'), 'utf8').catch(() => null)).toBeNull();
   });

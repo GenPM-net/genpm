@@ -104,9 +104,12 @@ export const add = (ctx: Ctx) =>
       const started = Date.now();
       try {
         const specs = [args.spec, ...args._.filter((a) => a !== args.spec)].filter(Boolean) as string[];
+        const opts = await coreOptions(ctx, registryName(specs[0]));
         const pl = await plan({
           specs,
-          ...(await coreOptions(ctx, registryName(specs[0]))),
+          ...opts,
+          // --dry-run no instala: no suma al contador (ADR-027).
+          telemetry: opts.telemetry && !args['dry-run'],
           dest: args.dest,
           clients: args.clients?.split(',').map((s) => s.trim()),
           force: args.force,
