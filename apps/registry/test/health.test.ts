@@ -1,5 +1,6 @@
-import { SELF } from 'cloudflare:test';
+import { env, SELF } from 'cloudflare:test';
 import { describe, expect, it } from 'vitest';
+import { createApp } from '../src/app.js';
 
 describe('GET /v1/health', () => {
   it('responds ok with the D1 binding and a request id', async () => {
@@ -8,6 +9,17 @@ describe('GET /v1/health', () => {
     expect(res.headers.get('genpm-request-id')).toMatch(/^[0-9A-Z]{26}$/);
     expect(res.headers.get('strict-transport-security')).toContain('max-age');
     expect(await res.json()).toMatchObject({ ok: true, db: 'ok', env: 'test' });
+  });
+});
+
+describe('HTTPS redirect', () => {
+  it('sends http://*.genpm.net to https, except under wrangler dev (no 301 loop on localhost)', async () => {
+    const res = await SELF.fetch('http://api.genpm.net/v1/health', { redirect: 'manual' });
+    expect(res.status).toBe(301);
+    expect(res.headers.get('location')).toBe('https://api.genpm.net/v1/health');
+    // `wrangler dev` reescribe la URL al host de la primera ruta (http://api.genpm.net) aunque se llame a localhost.
+    const dev = await createApp().request('http://api.genpm.net/v1/health', {}, { ...env, ENVIRONMENT: 'development' });
+    expect(dev.status).toBe(200);
   });
 });
 

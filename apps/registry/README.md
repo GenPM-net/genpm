@@ -18,3 +18,17 @@ src/
 migrations/             # 0001_init.sql … (wrangler d1 migrations)
 test/                   # vitest + @cloudflare/vitest-pool-workers
 ```
+
+## Desarrollo local
+
+```bash
+cp .dev.vars.example .dev.vars          # rellena SIGNING_KEYS (node ../../scripts/gen-signing-keys.mjs --dev)
+pnpm migrate:local
+npx wrangler d1 execute DB --local --file seeds/fixtures.sql   # fixtures firmados con dev1 (SHA ficticios: search/info/resolve, no instalan)
+pnpm dev                                # http://localhost:8787 (ENVIRONMENT=development)
+GENPM_REGISTRY=http://localhost:8787 genpm search auth
+```
+
+El CLI acepta la clave `dev1` solo contra registries locales (`localhost`). `pnpm dev` fuerza `ENVIRONMENT=development`:
+`wrangler dev` reescribe la URL al host de la primera ruta (`http://api.genpm.net`), y sin eso la redirección a HTTPS
+de `src/app.ts` respondería 301 en bucle.
