@@ -2,7 +2,7 @@
 # - En cada push a main: dry-run de `npm publish --provenance` de genpm y @genpm-net/mcp (comprueba bundle, files y firma OIDC)
 #   y compilación + smoke de los binarios nativos y de los instaladores en macOS, Linux y Windows.
 # - Con un tag v*: publicación real en npm y GitHub Release con los binarios, SHA256SUMS y attestation de procedencia
-#   (requiere el secreto NPM_TOKEN de la org @genpm y repo público: npm solo genera provenance, y los instaladores solo
+#   (requiere el secreto NPM_TOKEN de la org @genpm-net de npm y repo público: npm solo genera provenance, y los instaladores solo
 #   pueden descargar releases, desde repos públicos; se activa tras la apertura del código, D6-P-07 / ADR-016).
 name: release
 
