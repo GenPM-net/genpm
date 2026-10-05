@@ -28,9 +28,8 @@
   // Tenancy dedicada (ENT-01, runbook §3.4): descomentar tras `wrangler dispatch-namespace create genpm-tenants`
   // (requiere Workers for Platforms). Sin el binding, un registro dedicado responde 500 (falla cerrado).
   // "dispatch_namespaces": [{ "binding": "DISPATCHER", "namespace": "genpm-tenants" }],
-  // Verified Archive (V03-02): activar R2 en el panel de Cloudflare, `wrangler r2 bucket create genpm-archive`
-  // (y -staging) y descomentar. Sin el binding, publicar e instalar funcionan igual; solo no se guarda la copia.
-  // "r2_buckets": [{ "binding": "ARCHIVE", "bucket_name": "genpm-archive" }],
+  // Verified Archive (V03-02): crear una vez con `wrangler r2 bucket create genpm-archive` (y -staging).
+  "r2_buckets": [{ "binding": "ARCHIVE", "bucket_name": "genpm-archive" }],
   // Cola del escaneo profundo de publish (security §3.1): el Worker de la API produce y él mismo consume.
   "queues": {
     "producers": [{ "binding": "SCAN_QUEUE", "queue": "genpm-scan" }],
@@ -68,7 +67,7 @@
         }
       ],
       "analytics_engine_datasets": [{ "binding": "INSTALLS", "dataset": "genpm_installs_staging" }],
-      // "r2_buckets": [{ "binding": "ARCHIVE", "bucket_name": "genpm-archive-staging" }],
+      "r2_buckets": [{ "binding": "ARCHIVE", "bucket_name": "genpm-archive-staging" }],
       "queues": {
         "producers": [{ "binding": "SCAN_QUEUE", "queue": "genpm-scan-staging" }],
         "consumers": [{ "queue": "genpm-scan-staging", "max_batch_size": 5, "max_retries": 3 }]
