@@ -45,6 +45,8 @@
         "ENVIRONMENT": "staging",
         "WEB_ORIGIN": "https://staging.genpm.net",
         "SIGNING_KEY_ID": "s3",
+        // Vacía a propósito: staging no avisa a los buscadores (IndexNow desactivado).
+        "INDEXNOW_KEY": "",
         "CF_ACCOUNT_ID": "f88afb06c6eea1879507e01c7d16e56d"
       },
       "d1_databases": [
