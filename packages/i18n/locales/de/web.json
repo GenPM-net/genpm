@@ -405,8 +405,22 @@
       "packagePublish": "{subject} veröffentlicht",
       "versionYank": "{subject} zurückgezogen",
       "versionTagMoved": "Der Tag von {subject} hat sich im Repository geändert",
-      "packageSourceUnavailable": "Das Repository von {subject} ist nicht mehr verfügbar"
-    }
+      "packageSourceUnavailable": "Das Repository von {subject} ist nicht mehr verfügbar",
+      "packageDeprecate": "Du hast {subject} als veraltet markiert",
+      "packageUndeprecate": "Du hast die Veraltet-Markierung von {subject} aufgehoben"
+    },
+    "deprecated": "{name} ist jetzt als veraltet markiert.",
+    "undeprecated": "{name} ist nicht mehr als veraltet markiert.",
+    "chart": "Letzte 30 Tage",
+    "actions": "Aktionen",
+    "deprecatedBadge": "veraltet",
+    "split": "CLI {cli, number} · MCP {mcp, number}",
+    "undeprecate": "Markierung aufheben",
+    "deprecate": "Als veraltet markieren",
+    "deprecateMessage": "Hinweis für Nutzer",
+    "deprecatePlaceholder": "Nutze stattdessen @scope/anderes",
+    "deprecateConfirm": "Als veraltet markieren",
+    "legend": "Dunkle Balken: Installationen über die CLI. Farbige Balken: Installationen über einen KI-Agenten (MCP)."
   },
   "publisher": {
     "packages": "{count, plural, one {# Paket} other {# Pakete}}",
@@ -577,7 +591,37 @@
     "searches": "Suchen",
     "noResults": "keine Ergebnisse",
     "empty": "Noch keine Daten.",
-    "footnote": "Eine Installation ist ein resolve-Aufruf aus CLI oder MCP, der keine Vorschau ist (--dry-run oder dryRun). Bei hohem Volumen kann Analytics Engine Stichproben bilden. Direkte Besuche haben keine Herkunft."
+    "footnote": "Eine Installation ist ein resolve-Aufruf aus CLI oder MCP, der keine Vorschau ist (--dry-run oder dryRun). Bei hohem Volumen kann Analytics Engine Stichproben bilden. Direkte Besuche haben keine Herkunft.",
+    "queueTitle": "Moderation",
+    "done": "Erledigt.",
+    "versions": "Zu prüfende Versionen ({count, number})",
+    "findings": "Befunde",
+    "release": "Freigeben",
+    "quarantine": "Quarantäne",
+    "reports": "Offene Meldungen ({count, number})",
+    "reason": "Grund",
+    "details": "Details",
+    "reportStatus": {
+      "triaged": "Sichten",
+      "actioned": "Erledigt",
+      "dismissed": "Verwerfen"
+    },
+    "featured": "Auf der Startseite hervorgehoben",
+    "rank": "Position",
+    "save": "Speichern",
+    "featuredHint": "Lass die Position leer, um ein Paket nicht mehr hervorzuheben.",
+    "sponsorships": "Sponsorings ({count, number})",
+    "placement": "Platzierung",
+    "period": "Zeitraum",
+    "performance": "Leistung",
+    "perf": "{views, number} Impressionen · {clicks, number} Klicks",
+    "leads": "Leads ({count, number})",
+    "contact": "Kontakt",
+    "leadStatus": {
+      "contacted": "Kontaktiert",
+      "won": "Gewonnen",
+      "lost": "Verloren"
+    }
   },
   "quality": {
     "license": "Anerkannte Lizenz",
@@ -591,5 +635,79 @@
     "described": "Zusammenfassung und Schlagwörter",
     "passed": "erfüllt",
     "missing": "fehlt"
+  },
+  "profile": {
+    "title": "Profil",
+    "saved": "Einstellungen gespeichert.",
+    "orgs": "Organisationen",
+    "noOrgs": "Du bist in keiner synchronisierten GitHub-Organisation Mitglied.",
+    "org": "Organisation",
+    "role": "Deine Rolle",
+    "roles": {
+      "owner": "Inhaber",
+      "admin": "Admin",
+      "publisher": "Darf veröffentlichen",
+      "member": "Mitglied",
+      "reader": "Nur lesen"
+    },
+    "orgsHint": "Wird bei der Anmeldung und wöchentlich von GitHub synchronisiert. Rollen änderst du in GitHub.",
+    "preferences": "Einstellungen",
+    "language": "Sprache für E-Mails und Hinweise",
+    "languageAuto": "Wie die Website",
+    "languageHint": "Die Sprache der Website wählst du in der Kopfzeile.",
+    "save": "Speichern",
+    "data": "Deine Daten",
+    "dataText": "Um deine Daten herunterzuladen oder zu löschen, schreibe an hello@genpm.net von der E-Mail deines GitHub-Kontos. Veröffentlichte Versionen bleiben öffentlich und unveränderlich; siehe"
+  },
+  "compare": {
+    "title": "Versionen von {name} vergleichen",
+    "heading": "{from} → {to}",
+    "from": "Von",
+    "to": "Bis",
+    "submit": "Vergleichen",
+    "same": "Wähle zwei verschiedene Versionen.",
+    "unavailable": "Der Vergleich ist gerade nicht verfügbar. Versuche es in einer Minute erneut.",
+    "summary": "{files, plural, one {# Datei geändert} other {# Dateien geändert}} · +{added, number} −{removed, number}",
+    "cli": "Um diese Änderungen zu übernehmen und deine Anpassungen zu behalten, führe in deinem Projekt aus:",
+    "noChanges": "Keine Änderungen im Paket.",
+    "status": {
+      "added": "hinzugefügt",
+      "removed": "entfernt",
+      "renamed": "umbenannt",
+      "modified": "geändert"
+    },
+    "noPatch": "Diff zu groß oder Binärdatei: öffne sie auf GitHub.",
+    "link": "Versionen vergleichen"
+  },
+  "status": {
+    "title": "Status",
+    "lede": "Live-Status von genpm.net, der Registry-API und dem Veröffentlichen.",
+    "overall": {
+      "operational": "Alle Systeme laufen",
+      "degraded": "Einige Systeme sind beeinträchtigt",
+      "outage": "Es gibt einen Ausfall"
+    },
+    "components": {
+      "web": "Website",
+      "api": "Registry-API",
+      "database": "Datenbank",
+      "publishing": "Veröffentlichen"
+    },
+    "state": {
+      "operational": "In Betrieb",
+      "degraded": "Beeinträchtigt",
+      "outage": "Ausfall"
+    },
+    "latency": "Antwortzeit: API {api, number} ms · Datenbank {db, number} ms",
+    "jobs": "Geplante Aufgaben",
+    "cron": {
+      "hourly": "Installationszähler (stündlich)",
+      "daily": "Qualität, Beliebtheit und Tag-Audit (täglich)",
+      "weekly": "Synchronisation der GitHub-Organisationen (wöchentlich)"
+    },
+    "ranOk": "Erfolgreich gelaufen",
+    "ranFailed": "Fehlgeschlagen",
+    "never": "Noch kein Lauf erfasst",
+    "report": "Stimmt etwas nicht? Schreib an"
   }
 }

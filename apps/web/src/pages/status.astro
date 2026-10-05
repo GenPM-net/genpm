@@ -1,0 +1,62 @@
+---
+// /status (V02-08): estado de la web, la API, la base de datos y la publicación, y última ejecución de cada tarea
+// programada. Sin caché larga: lo que ve la persona es el estado de ahora.
+import Base from '../layouts/Base.astro';
+import { ago } from '../lib/format.js';
+import { registryFetch } from '../lib/registry.js';
+
+const { t, locale } = Astro.locals;
+type Status = {
+  ok: boolean;
+  version: string;
+  components: Record<'api' | 'database' | 'publishing', 'operational' | 'degraded' | 'outage'>;
+  dbMs: number;
+  crons: Record<string, { at: string; ok: boolean }>;
+};
+const started = Date.now();
+const res = await registryFetch('/v1/status', { locale }).catch(() => null);
+const s = res?.ok ? ((await res.json()) as Status) : null;
+const apiMs = Date.now() - started;
+const components: Array<[string, 'operational' | 'degraded' | 'outage']> = [
+  ['web', 'operational'],
+  ['api', s ? s.components.api : 'outage'],
+  ['database', s ? s.components.database : 'outage'],
+  ['publishing', s ? s.components.publishing : 'outage'],
+];
+const overall = components.some(([, v]) => v === 'outage')
+  ? 'outage'
+  : components.some(([, v]) => v === 'degraded')
+    ? 'degraded'
+    : 'operational';
+const CRONS: Record<string, string> = { '0 * * * *': 'hourly', '15 3 * * *': 'daily', '0 4 * * SUN': 'weekly' };
+Astro.response.headers.set('Cache-Control', 'public, max-age=30');
+---
+<Base title={t.t('web.status.title')} description={t.t('web.status.lede')}>
+  <div class="wrap" style="max-width:760px">
+    <div class="phead"><h1>{t.t('web.status.title')}</h1><p class={`stat-${overall}`}><i class="dot"></i>{t.t(`web.status.overall.${overall}` as 'web.status.overall.operational')}</p></div>
+    <section class="sec">
+      <ul class="stat-list">
+        {components.map(([k, v]) => <li><span>{t.t(`web.status.components.${k}` as 'web.status.components.api')}</span><span class={`stat-${v}`}><i class="dot"></i>{t.t(`web.status.state.${v}` as 'web.status.state.operational')}</span></li>)}
+      </ul>
+      {s && <p class="hint">{t.t('web.status.latency', { api: apiMs, db: s.dbMs })} · v{s.version}</p>}
+    </section>
+    <section class="sec"><div class="sec-h"><h2>{t.t('web.status.jobs')}</h2></div>
+      <ul class="stat-list">
+        {Object.entries(CRONS).map(([expr, key]) => {
+          const run = s?.crons[expr];
+          return <li><span>{t.t(`web.status.cron.${key}` as 'web.status.cron.hourly')}</span><span class={run ? (run.ok ? 'stat-operational' : 'stat-degraded') : 'stat-unknown'}><i class="dot"></i>{run ? `${run.ok ? t.t('web.status.ranOk') : t.t('web.status.ranFailed')} · ${ago(locale, run.at)}` : t.t('web.status.never')}</span></li>;
+        })}
+      </ul>
+    </section>
+    <p class="hint">{t.t('web.status.report')} <a href="mailto:hello@genpm.net">hello@genpm.net</a></p>
+  </div>
+</Base>
+<style>
+  .stat-list { list-style: none; padding: 0; margin: 0; border: 1px solid var(--line); }
+  .stat-list li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-top: 1px solid var(--line); }
+  .stat-list li:first-child { border-top: 0; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; background: var(--ink-3); vertical-align: middle; }
+  .stat-operational .dot { background: var(--code-ink); }
+  .stat-degraded .dot { background: var(--warn); }
+  .stat-outage .dot { background: var(--danger); }
+</style>

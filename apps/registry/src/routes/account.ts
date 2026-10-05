@@ -103,14 +103,34 @@ export const myPackages = new Hono<AppEnv>()
   .get('/packages', requireAuth(), async (c) => {
     const actor = c.get('actor')!;
     const { results } = await c.env.DB.prepare(
-      `SELECT p.full_name AS name, p.latest_version AS version, p.installs_30d AS installs30d, p.status, v.scan_status AS scan
+      `SELECT p.id, p.full_name AS name, p.latest_version AS version, p.installs_30d AS installs30d, p.status, v.scan_status AS scan,
+              p.is_deprecated AS deprecated, p.deprecation_msg AS deprecationMessage, p.quality_score AS quality
        FROM packages p LEFT JOIN package_versions v ON v.id = p.latest_version_id
        WHERE p.registry_id = ?1 AND (p.owner_id = ?2 OR p.owner_id IN (SELECT org_id FROM memberships WHERE user_id = ?2 AND role IN ('owner','admin','publisher')))
        ORDER BY p.updated_at DESC LIMIT 100`,
     )
       .bind(c.get('tenant').registryId, actor.accountId)
-      .all();
-    return c.json({ packages: results });
+      .all<{ id: string; name: string }>();
+    // Serie diaria de 30 días por paquete, separando CLI y MCP (web-ui-spec §5.9).
+    const series = results.length
+      ? (
+          await c.env.DB.prepare(
+            `SELECT p.full_name AS name, s.day, s.installs, s.via_mcp AS mcp FROM install_stats_daily s
+             JOIN packages p ON p.id = s.package_id
+             WHERE s.package_id IN (SELECT value FROM json_each(?1)) AND s.day >= date('now', '-30 days') ORDER BY s.day`,
+          )
+            .bind(JSON.stringify(results.map((r) => r.id)))
+            .all<{ name: string; day: string; installs: number; mcp: number }>()
+        ).results
+      : [];
+    return c.json({
+      packages: results.map(({ id: _id, ...r }) => ({
+        ...r,
+        daily: series
+          .filter((s) => s.name === r.name)
+          .map((s) => ({ day: s.day, cli: s.installs - s.mcp, mcp: s.mcp })),
+      })),
+    });
   })
   .get('/activity', requireAuth(), async (c) => {
     const { results } = await c.env.DB.prepare(

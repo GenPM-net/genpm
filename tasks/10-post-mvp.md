@@ -51,8 +51,10 @@
 - [ ] `V02-05` **TODO** Revisión nativa del nivel 2 de idiomas y retirada del banner beta · F · 8h · deps: D7-06
 - [x] `V02-06` **DONE** Docs completas en pt-BR · C · 8h · deps: D6-I-01
   - Hecho el 2026-10-04: las 11 páginas de docs en los 8 idiomas (pendiente la revisión nativa de D6-I-01).
-- [ ] `V02-07` **TODO** Web P1: dashboard del autor, perfil, sponsors y enterprise (landing + waitlist con POST /v1/leads) · W · 16h · deps: D5-W-23
-- [ ] `V02-08` **TODO** Web P2: comparador de versiones (diff visual), status page y cola de admin · W · 16h · deps: V02-01
+- [x] `V02-07` **DONE** Web P1: dashboard del autor, perfil, sponsors y enterprise (landing + waitlist con POST /v1/leads) · W · 16h · deps: D5-W-23
+  - ✅ 2026-10-05: dashboard con barras CLI/MCP de 30 días, calidad y deprecar/revertir (`POST /v1/packages/…/deprecate`); `/settings/profile` (orgs y rol, idioma de avisos con `PATCH /v1/me`, derechos RGPD); sponsors y enterprise ya tenían landing + `POST /v1/leads`. Miembros de org en /@scope: no se publican (GitHub no expone qué membresías son públicas).
+- [x] `V02-08` **DONE** Web P2: comparador de versiones (diff visual), status page y cola de admin · W · 16h · deps: V02-01
+  - ✅ 2026-10-05: `/p/@scope/name/compare` (API `compare` sobre GitHub, inmutable en caché), `/status` (componentes + último cron) y `/admin` (cuarentena, reportes, destacados, patrocinios, leads; todo en audit_log). 8 idiomas; revisado en Chromium con wrangler dev.
 - [x] `V02-09` **DONE** Modo oscuro opcional de la web con los tokens dark de tokens.json · W · 4h · deps: D5-W-23
   - Ya en producción: botón de tema en la cabecera y en el menú móvil (claro por defecto, branding §8).
 - [x] `V02-10` **DONE** genpm add: aceptar el plan sin instalar las dependencias de npm ni preguntar (`--no-install-deps`), para CI y demos · B · 1h · deps: D7-10

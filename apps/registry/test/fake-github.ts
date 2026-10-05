@@ -102,6 +102,9 @@ export class FakeGitHub {
     return repo.tags[ref] ?? repo.branches?.[ref] ?? null;
   }
 
+  /** Respuesta de /repos/:o/:r/compare por repo (`owner/repo`). */
+  compareFiles: Record<string, unknown[]> = {};
+
   async fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
     const req = new Request(input, init);
     const url = new URL(req.url);
@@ -111,6 +114,8 @@ export class FakeGitHub {
     const notFound = () => json({ message: 'Not Found' }, 404);
     const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
     if (url.host === 'api.github.com') {
+      if (parts[0] === 'repos' && parts[3] === 'compare')
+        return json({ files: this.compareFiles[`${parts[1]}/${parts[2]}`] ?? [] });
       const token = req.headers.get('authorization')?.replace(/^(Bearer|token)\s+/i, '') ?? '';
       if (parts[0] === 'user') {
         const user = this.users.get(token);

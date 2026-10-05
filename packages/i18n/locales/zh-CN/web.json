@@ -405,8 +405,22 @@
       "packagePublish": "已发布 {subject}",
       "versionYank": "已撤回 {subject}",
       "versionTagMoved": "{subject} 的标签在其仓库中被更改",
-      "packageSourceUnavailable": "{subject} 的仓库已不可用"
-    }
+      "packageSourceUnavailable": "{subject} 的仓库已不可用",
+      "packageDeprecate": "你弃用了 {subject}",
+      "packageUndeprecate": "你取消了 {subject} 的弃用"
+    },
+    "deprecated": "{name} 已标记为弃用。",
+    "undeprecated": "{name} 已取消弃用。",
+    "chart": "最近 30 天",
+    "actions": "操作",
+    "deprecatedBadge": "已弃用",
+    "split": "CLI {cli, number} · MCP {mcp, number}",
+    "undeprecate": "取消弃用",
+    "deprecate": "弃用",
+    "deprecateMessage": "向用户显示的提示",
+    "deprecatePlaceholder": "请改用 @scope/other",
+    "deprecateConfirm": "标记为弃用",
+    "legend": "深色柱：通过 CLI 安装。彩色柱：通过 AI 代理（MCP）安装。"
   },
   "publisher": {
     "packages": "{count, plural, other {# 个包}}",
@@ -577,7 +591,37 @@
     "searches": "搜索",
     "noResults": "无结果",
     "empty": "暂无数据。",
-    "footnote": "安装是指来自 CLI 或 MCP、且不是预览（--dry-run 或 dryRun）的 resolve 调用。数据量大时 Analytics Engine 可能会抽样计数。直接访问没有来源。"
+    "footnote": "安装是指来自 CLI 或 MCP、且不是预览（--dry-run 或 dryRun）的 resolve 调用。数据量大时 Analytics Engine 可能会抽样计数。直接访问没有来源。",
+    "queueTitle": "审核",
+    "done": "已完成。",
+    "versions": "待审核版本（{count, number}）",
+    "findings": "发现",
+    "release": "放行",
+    "quarantine": "隔离",
+    "reports": "未处理举报（{count, number}）",
+    "reason": "原因",
+    "details": "详情",
+    "reportStatus": {
+      "triaged": "分诊",
+      "actioned": "已处理",
+      "dismissed": "驳回"
+    },
+    "featured": "首页推荐",
+    "rank": "位置",
+    "save": "保存",
+    "featuredHint": "清空位置即可取消推荐。",
+    "sponsorships": "赞助（{count, number}）",
+    "placement": "展示位",
+    "period": "周期",
+    "performance": "效果",
+    "perf": "展示 {views, number} · 点击 {clicks, number}",
+    "leads": "销售线索（{count, number}）",
+    "contact": "联系方式",
+    "leadStatus": {
+      "contacted": "已联系",
+      "won": "成交",
+      "lost": "流失"
+    }
   },
   "quality": {
     "license": "可识别的许可证",
@@ -591,5 +635,79 @@
     "described": "摘要和关键词",
     "passed": "已满足",
     "missing": "未满足"
+  },
+  "profile": {
+    "title": "个人资料",
+    "saved": "偏好已保存。",
+    "orgs": "组织",
+    "noOrgs": "你不是任何已同步 GitHub 组织的成员。",
+    "org": "组织",
+    "role": "你的角色",
+    "roles": {
+      "owner": "所有者",
+      "admin": "管理员",
+      "publisher": "可发布",
+      "member": "成员",
+      "reader": "只读"
+    },
+    "orgsHint": "登录时和每周从 GitHub 同步。如需更改角色，请在 GitHub 中修改。",
+    "preferences": "偏好",
+    "language": "邮件和通知语言",
+    "languageAuto": "与网站相同",
+    "languageHint": "网站语言在页头中选择。",
+    "save": "保存",
+    "data": "你的数据",
+    "dataText": "如需下载或删除你的数据，请用 GitHub 账号的邮箱写信至 hello@genpm.net。已发布的版本仍保持公开且不可变；详见"
+  },
+  "compare": {
+    "title": "比较 {name} 的版本",
+    "heading": "{from} → {to}",
+    "from": "从",
+    "to": "到",
+    "submit": "比较",
+    "same": "请选择两个不同的版本。",
+    "unavailable": "暂时无法比较，请一分钟后重试。",
+    "summary": "{files, plural, other {# 个文件变更}} · +{added, number} −{removed, number}",
+    "cli": "要在保留你的修改的同时应用这些变更，请在项目中运行：",
+    "noChanges": "软件包内没有变更。",
+    "status": {
+      "added": "新增",
+      "removed": "删除",
+      "renamed": "重命名",
+      "modified": "修改"
+    },
+    "noPatch": "差异过大或为二进制文件：请在 GitHub 上查看。",
+    "link": "比较版本"
+  },
+  "status": {
+    "title": "状态",
+    "lede": "genpm.net、registry API 和发布功能的实时状态。",
+    "overall": {
+      "operational": "所有系统运行正常",
+      "degraded": "部分系统性能下降",
+      "outage": "发生故障"
+    },
+    "components": {
+      "web": "网站",
+      "api": "Registry API",
+      "database": "数据库",
+      "publishing": "发布"
+    },
+    "state": {
+      "operational": "正常",
+      "degraded": "性能下降",
+      "outage": "故障"
+    },
+    "latency": "响应时间：API {api, number} ms · 数据库 {db, number} ms",
+    "jobs": "定时任务",
+    "cron": {
+      "hourly": "安装计数（每小时）",
+      "daily": "质量、热度和标签审计（每天）",
+      "weekly": "GitHub 组织同步（每周）"
+    },
+    "ranOk": "运行正常",
+    "ranFailed": "失败",
+    "never": "尚无运行记录",
+    "report": "有问题？请写信至"
   }
 }

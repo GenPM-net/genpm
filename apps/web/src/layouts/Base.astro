@@ -150,7 +150,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
         <div><h2>{t.t('web.footer.community')}</h2><ul><li><a href="https://github.com/genpm-net/genpm" rel="noopener">GitHub</a></li><li><a href="/llms.txt">llms.txt</a></li></ul></div>
         <div><h2>{t.t('web.footer.legal')}</h2><ul><li><a href={href(locale, '/terms')}>{t.t('web.footer.terms')}</a></li><li><a href={href(locale, '/privacy')}>{t.t('web.footer.privacy')}</a></li><li><a href={href(locale, '/policy')}>{t.t('web.footer.policy')}</a></li><li><a href={href(locale, '/cookies')}>{t.t('web.footer.cookies')}</a></li>{env.POSTHOG_KEY && <li><button class="linkbtn" type="button" data-consent-open>{t.t('web.consent.settings')}</button></li>}<li><a href={href(locale, '/legal')}>{t.t('web.footer.legalNotice')}</a></li><li><a href={`${href(locale, '/security')}#report`}>{t.t('web.footer.report')}</a></li></ul></div>
       </div>
-      <div class="base"><span>© 2026 GenPM · {t.t('web.footer.beta')} · <span set:html={t.t('web.footer.madeBy', { name: '<a href="https://yohangel.com" rel="author noopener" target="_blank" class="made-by">Yohangel Ramos</a>' })} /></span><span class="status"><i></i>{t.t('web.footer.status')}</span></div>
+      <div class="base"><span>© 2026 GenPM · {t.t('web.footer.beta')} · <span set:html={t.t('web.footer.madeBy', { name: '<a href="https://yohangel.com" rel="author noopener" target="_blank" class="made-by">Yohangel Ramos</a>' })} /></span><a class="status" href={href(locale, '/status')}><i></i>{t.t('web.footer.status')}</a></div>
     </footer>
     <SearchPalette
       client:idle

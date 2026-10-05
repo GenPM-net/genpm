@@ -1,5 +1,6 @@
 ---
-// /dashboard (web-ui-spec §5.9): mis paquetes y actividad reciente.
+// /dashboard (web-ui-spec §5.9): mis paquetes (instalaciones CLI vs MCP de 30 días, deprecar), actividad reciente.
+// Formularios POST: Astro verifica el Origin (CSRF).
 import Base from '../layouts/Base.astro';
 import { requireSession, sessionExpired } from '../lib/auth.js';
 import { ago, compact } from '../lib/format.js';
@@ -9,13 +10,40 @@ import { registryFetch } from '../lib/registry.js';
 const gate = requireSession(Astro);
 if (gate) return gate;
 const { t, locale, session } = Astro.locals;
+let notice: { ok: boolean; text: string } | null = null;
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const name = String(form.get('name') ?? '');
+  if (/^@[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*$/.test(name)) {
+    const message = form.get('action') === 'undeprecate' ? null : String(form.get('message') ?? '').trim();
+    const res = await registryFetch(`/v1/packages/${name}/deprecate`, {
+      method: 'POST',
+      token: session!.token,
+      body: { message },
+    });
+    if (res.status === 401) return sessionExpired(Astro);
+    notice = res.ok
+      ? { ok: true, text: t.t(message ? 'web.dashboard.deprecated' : 'web.dashboard.undeprecated', { name }) }
+      : { ok: false, text: ((await res.json().catch(() => ({}))) as { title?: string }).title ?? 'Error' };
+  }
+}
 const [pkRes, actRes] = await Promise.all([
   registryFetch('/v1/me/packages', { token: session!.token, locale }),
   registryFetch('/v1/me/activity', { token: session!.token, locale }),
 ]);
 if (pkRes.status === 401 || actRes.status === 401) return sessionExpired(Astro);
 const pk = (pkRes.ok ? await pkRes.json() : { packages: [] }) as {
-  packages: Array<{ name: string; version: string | null; installs30d: number; scan: string | null; status: string }>;
+  packages: Array<{
+    name: string;
+    version: string | null;
+    installs30d: number;
+    scan: string | null;
+    status: string;
+    deprecated?: number;
+    deprecationMessage?: string | null;
+    quality?: number;
+    daily?: Array<{ day: string; cli: number; mcp: number }>;
+  }>;
 };
 const act = (actRes.ok ? await actRes.json() : { activity: [] }) as {
   activity: Array<{
@@ -28,6 +56,29 @@ const act = (actRes.ok ? await actRes.json() : { activity: [] }) as {
 };
 Astro.response.headers.set('Cache-Control', 'private, no-store');
 
+// Barras apiladas CLI (tinta) + MCP (color MCP) de los últimos 30 días; SVG en línea sin JS.
+const days = Array.from({ length: 30 }, (_, i) =>
+  new Date(Date.now() - (29 - i) * 86_400_000).toISOString().slice(0, 10),
+);
+function chart(daily: Array<{ day: string; cli: number; mcp: number }> = []): string {
+  const by = new Map(daily.map((d) => [d.day, d]));
+  const max = Math.max(1, ...daily.map((d) => d.cli + d.mcp));
+  const w = 4;
+  const h = 28;
+  const bars = days
+    .map((d, i) => {
+      const x = by.get(d);
+      if (!x) return '';
+      const hc = (x.cli / max) * h;
+      const hm = (x.mcp / max) * h;
+      return `<rect x="${i * (w + 1)}" y="${h - hc - hm}" width="${w}" height="${hm}" fill="var(--mcp)"/><rect x="${i * (w + 1)}" y="${h - hc}" width="${w}" height="${hc}" fill="var(--ink)"/>`;
+    })
+    .join('');
+  return `<svg width="${days.length * (w + 1)}" height="${h}" viewBox="0 0 ${days.length * (w + 1)} ${h}" aria-hidden="true">${bars}</svg>`;
+}
+const totals = (d: Array<{ cli: number; mcp: number }> = []) =>
+  d.reduce((a, x) => ({ cli: a.cli + x.cli, mcp: a.mcp + x.mcp }), { cli: 0, mcp: 0 });
+
 // Acción de auditoría → frase legible; las desconocidas se muestran con su código.
 const EVENTS: Record<string, string> = {
   'auth.login': 'authLogin',
@@ -37,6 +88,8 @@ const EVENTS: Record<string, string> = {
   'version.yank': 'versionYank',
   'version.tag_moved': 'versionTagMoved',
   'package.source_unavailable': 'packageSourceUnavailable',
+  'package.deprecate': 'packageDeprecate',
+  'package.undeprecate': 'packageUndeprecate',
 };
 function describe(a: { action: string; subject: string | null; metadata: Record<string, unknown> | null }): string {
   const key = EVENTS[a.action];
@@ -47,14 +100,35 @@ function describe(a: { action: string; subject: string | null; metadata: Record<
 ---
 <Base title={t.t('web.dashboard.title')} noindex>
   <div class="wrap">
-    <div class="phead"><h1>{t.t('web.dashboard.title')}</h1><div class="row"><a class="btn sm" href={href(locale, '/settings/tokens')}>{t.t('web.nav.tokens')}</a><form method="post" action="/logout"><button class="btn sm ghost" type="submit">{t.t('web.nav.signOut')}</button></form></div></div>
+    <div class="phead"><h1>{t.t('web.dashboard.title')}</h1><div class="row"><a class="btn sm" href={href(locale, '/settings/profile')}>{t.t('web.profile.title')}</a><a class="btn sm" href={href(locale, '/settings/tokens')}>{t.t('web.nav.tokens')}</a><form method="post" action="/logout"><button class="btn sm ghost" type="submit">{t.t('web.nav.signOut')}</button></form></div></div>
+    {notice && <div class="banner" style={`--c:${notice.ok ? 'var(--code-ink)' : 'var(--danger)'}`}><b>{notice.ok ? '✔' : '!'}</b><span>{notice.text}</span></div>}
     <section class="sec"><div class="sec-h"><h2>{t.t('web.dashboard.myPackages')}</h2></div>
       {pk.packages.length === 0 ? (
         <div class="empty"><p>{t.t('web.dashboard.empty')}</p><a class="btn primary" href={href(locale, '/publish')}>{t.t('web.dashboard.emptyCta')}</a></div>
       ) : (
-        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.pkg.version')}</th><th>{t.t('web.pkg.scan')}</th><th>{t.t('web.pkg.installs')}</th></tr></thead><tbody>
-          {pk.packages.map((p) => <tr><td><a href={href(locale, `/p/${p.name}`)}>{p.name}</a></td><td>{p.version ?? '—'}</td><td>{p.scan ?? '—'}</td><td class="tnum">{compact(locale, p.installs30d)}</td></tr>)}
+        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.pkg.version')}</th><th>{t.t('web.pkg.scan')}</th><th>{t.t('web.pkg.quality')}</th><th>{t.t('web.dashboard.chart')}</th><th>{t.t('web.pkg.installs')}</th><th><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
+          {pk.packages.map((p) => {
+            const tt = totals(p.daily);
+            return (
+              <tr>
+                <td><a href={href(locale, `/p/${p.name}`)}>{p.name}</a>{p.deprecated ? <span class="badge" style="margin-left:8px">{t.t('web.dashboard.deprecatedBadge')}</span> : null}</td>
+                <td>{p.version ?? '—'}</td>
+                <td>{p.scan ?? '—'}</td>
+                <td class="tnum">{p.quality ?? '—'}</td>
+                <td><Fragment set:html={chart(p.daily)} /><div class="hint">{t.t('web.dashboard.split', { cli: tt.cli, mcp: tt.mcp })}</div></td>
+                <td class="tnum">{compact(locale, p.installs30d)}</td>
+                <td>
+                  {p.deprecated ? (
+                    <form method="post"><input type="hidden" name="name" value={p.name} /><input type="hidden" name="action" value="undeprecate" /><button class="btn sm ghost" type="submit">{t.t('web.dashboard.undeprecate')}</button></form>
+                  ) : (
+                    <details><summary class="btn sm ghost">{t.t('web.dashboard.deprecate')}</summary><form method="post" class="builder" style="grid-template-columns:1fr;min-width:260px;margin-top:8px"><input type="hidden" name="name" value={p.name} /><label class="field">{t.t('web.dashboard.deprecateMessage')}<input name="message" required minlength="3" maxlength="280" placeholder={t.t('web.dashboard.deprecatePlaceholder')} /></label><button class="btn sm" type="submit">{t.t('web.dashboard.deprecateConfirm')}</button></form></details>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
         </tbody></table></div>
+        <p class="hint" style="margin-top:8px">{t.t('web.dashboard.legend')}</p>
       )}
     </section>
     <section class="sec"><div class="sec-h"><h2>{t.t('web.dashboard.activity')}</h2></div>

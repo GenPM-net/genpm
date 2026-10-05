@@ -176,6 +176,7 @@ const badgeMd = `[![genpm](https://api.genpm.net/v1/badge/${name}.svg)](https://
             </div>
 
             <div class="pk-panel" data-panel="versions" hidden>
+              {v.versions.length > 1 && <p style="margin-bottom:12px"><a class="btn sm" href={`${href(locale, latestPath)}/compare?from=${v.versions[1]!.v}&to=${v.versions[0]!.v}`}>{t.t('web.compare.link')}</a></p>}
               <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.version')}</th><th>{t.t('web.pkg.commit')}</th><th>{t.t('web.pkg.published')}</th><th>{t.t('web.pkg.scan')}</th></tr></thead><tbody>
                 {v.versions.map((x) => <tr class={x.yanked ? 'y' : undefined}><td><a href={`${href(locale, latestPath)}?v=${x.v}`}>{x.v}</a></td><td><span class="sha">{shortSha(x.c)}</span></td><td>{ago(locale, x.publishedAt)}</td><td style={`color:${x.yanked ? 'var(--danger)' : x.scanStatus === 'passed' ? 'var(--code-ink)' : 'var(--warn)'}`}>{x.yanked ? `✖ ${t.t('web.pkg.yanked')}${x.yankReason ? ` · ${x.yankReason}` : ''}` : `${x.scanStatus === 'passed' ? '✔' : '▲'} ${t.t(`common.scan.${x.scanStatus}` as 'common.scan.passed')}`}</td></tr>)}
               </tbody></table></div>

@@ -66,7 +66,10 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | GET | `/v1/stats` | — | ✅ | Contadores públicos de la home |
 | POST | `/v1/publish` | token `publish` | ✅ | `genpm publish` |
 | POST | `/v1/packages/:scope/:name/versions/:version/yank` | token `publish` | ✅ | Retirar versión |
-| POST | `/v1/packages/:scope/:name/deprecate` | token `publish` | ⏳ | Deprecar paquete |
+| POST | `/v1/packages/:scope/:name/deprecate` | token `publish` | ✅ | Deprecar (`{message}`) o revertir (`{message:null}`); solo quien puede escribir en el paquete (resto ⇒ 404) |
+| GET | `/v1/packages/:scope/:name/compare?from=&to=` | — | ✅ | Diff entre dos versiones publicadas vía la API de GitHub, limitado a `i` (V02-08). Inmutable en caché |
+| PATCH | `/v1/me` | token/cookie | ✅ | Preferencias de la cuenta (`{locale}`) |
+| GET | `/v1/status` | — | ✅ | Página /status: componentes y última ejecución de cada cron (`registry_meta` `cron:<expr>`) |
 | POST | `/v1/auth/github/exchange` | — | ✅ | `genpm login` (device flow) |
 | GET | `/v1/auth/github/callback` | — | ✅ | Login web (OAuth web flow) |
 | GET | `/v1/me` | token/cookie | ✅ | `genpm whoami`, dashboard |
@@ -77,7 +80,7 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | GET | `/v1/badge/:scope/:name.svg` | — | ✅ | Badge para READMEs |
 | GET | `/v1/advisories?p=@core/auth@1.2.0,…` | — | ✅ | `genpm audit`: advisories, versiones retiradas y cuarentenas para una lista de paquetes |
 | GET | `/v1/keys` | — | ✅ | Claves públicas de firma vigentes + lista de revocación firmada |
-| * | `/v1/admin/*` | rol staff | ⏳ | Cuarentena, featured, patrocinios |
+| GET/POST | `/v1/admin/queue` · `/v1/admin/versions/:id` · `/v1/admin/reports/:id` · `/v1/admin/packages/:id/featured` · `/v1/admin/leads/:id` | rol staff (resto ⇒ 404) | ✅ | Cola de moderación de /admin (V02-08): liberar o poner en cuarentena versiones, estado de reportes, destacados y leads; todo en `audit_log` |
 
 ---
 

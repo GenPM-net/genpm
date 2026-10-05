@@ -13,6 +13,7 @@ import { auth, me } from './routes/auth.js';
 import { advisories, badge, featured, scopes, stats } from './routes/discovery.js';
 import { health } from './routes/health.js';
 import { keys } from './routes/keys.js';
+import { compare, deprecate, mePrefs, status } from './routes/manage.js';
 import { myRepos } from './routes/my-repos.js';
 import { packages } from './routes/packages.js';
 import { publish } from './routes/publish.js';
@@ -33,6 +34,7 @@ export function createApp() {
   });
   app.use('*', requestId, securityHeaders, locale, cors, bodyLimit);
   app.route('/v1/health', health);
+  app.route('/v1/status', status);
   app.use('/v1/*', tenant);
   // Contención de incidentes (security §9, runbook §3): con READ_ONLY=1 se puede leer e instalar, nunca escribir.
   app.use('/v1/*', async (c, next) => {
@@ -48,6 +50,8 @@ export function createApp() {
   app.route('/v1/search', search);
   app.route('/v1/resolve', resolve);
   app.route('/v1/packages', yank);
+  app.route('/v1/packages', deprecate);
+  app.route('/v1/packages', compare);
   app.route('/v1/packages', packages);
   app.route('/v1/publish', publish);
   app.route('/v1/auth', auth);
@@ -59,6 +63,7 @@ export function createApp() {
   app.route('/v1/me/repos', myRepos);
   app.route('/v1/me', myPackages);
   app.route('/v1/me', me);
+  app.route('/v1/me', mePrefs);
   app.route('/v1/tokens', tokens);
   app.route('/v1/reports', reports);
   app.route('/v1/leads', leads);

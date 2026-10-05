@@ -251,7 +251,28 @@ export async function purgeExpired(env: Env, now = Date.now()): Promise<void> {
   ]);
 }
 
+/** Registra la última ejecución de cada cron en registry_meta (`cron:<expresión>`): la lee la página /status. */
+async function markCron(env: Env, cron: string, ok: boolean): Promise<void> {
+  const now = Date.now();
+  await env.DB.prepare(
+    'INSERT INTO registry_meta (key, value, updated_at) VALUES (?1, ?2, ?3) ON CONFLICT (key) DO UPDATE SET value = ?2, updated_at = ?3',
+  )
+    .bind(`cron:${cron}`, JSON.stringify({ at: now, ok }), now)
+    .run()
+    .catch(() => undefined);
+}
+
 export async function runCron(cron: string, env: Env): Promise<void> {
+  try {
+    await runCronInner(cron, env);
+    await markCron(env, cron, true);
+  } catch (e) {
+    await markCron(env, cron, false);
+    throw e;
+  }
+}
+
+async function runCronInner(cron: string, env: Env): Promise<void> {
   if (cron === '0 * * * *') {
     await rollupInstalls(env);
     await resignStale(env);

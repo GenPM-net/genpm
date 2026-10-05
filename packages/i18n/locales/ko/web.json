@@ -405,8 +405,22 @@
       "packagePublish": "{subject} 게시함",
       "versionYank": "{subject} 철회함",
       "versionTagMoved": "{subject}의 태그가 저장소에서 변경됨",
-      "packageSourceUnavailable": "{subject}의 저장소를 더 이상 사용할 수 없음"
-    }
+      "packageSourceUnavailable": "{subject}의 저장소를 더 이상 사용할 수 없음",
+      "packageDeprecate": "{subject}을(를) 지원 중단으로 표시했습니다",
+      "packageUndeprecate": "{subject}의 지원 중단을 해제했습니다"
+    },
+    "deprecated": "{name}을(를) 지원 중단으로 표시했습니다.",
+    "undeprecated": "{name}의 지원 중단 표시를 해제했습니다.",
+    "chart": "최근 30일",
+    "actions": "작업",
+    "deprecatedBadge": "지원 중단",
+    "split": "CLI {cli, number} · MCP {mcp, number}",
+    "undeprecate": "지원 중단 해제",
+    "deprecate": "지원 중단",
+    "deprecateMessage": "사용자에게 보여줄 메시지",
+    "deprecatePlaceholder": "대신 @scope/other를 사용하세요",
+    "deprecateConfirm": "지원 중단으로 표시",
+    "legend": "진한 막대: CLI로 설치. 색 막대: AI 에이전트(MCP)를 통한 설치."
   },
   "publisher": {
     "packages": "{count, plural, other {패키지 #개}}",
@@ -577,7 +591,37 @@
     "searches": "검색",
     "noResults": "결과 없음",
     "empty": "아직 데이터가 없습니다.",
-    "footnote": "설치는 미리보기(--dry-run 또는 dryRun)가 아닌 CLI 또는 MCP의 resolve 호출입니다. 데이터가 많으면 Analytics Engine이 샘플링할 수 있습니다. 직접 방문은 유입 경로가 없습니다."
+    "footnote": "설치는 미리보기(--dry-run 또는 dryRun)가 아닌 CLI 또는 MCP의 resolve 호출입니다. 데이터가 많으면 Analytics Engine이 샘플링할 수 있습니다. 직접 방문은 유입 경로가 없습니다.",
+    "queueTitle": "모더레이션",
+    "done": "완료했습니다.",
+    "versions": "검토할 버전 ({count, number})",
+    "findings": "발견 사항",
+    "release": "해제",
+    "quarantine": "격리",
+    "reports": "열린 신고 ({count, number})",
+    "reason": "사유",
+    "details": "세부 정보",
+    "reportStatus": {
+      "triaged": "분류",
+      "actioned": "조치 완료",
+      "dismissed": "기각"
+    },
+    "featured": "홈 추천",
+    "rank": "순위",
+    "save": "저장",
+    "featuredHint": "순위를 비우면 추천에서 제외됩니다.",
+    "sponsorships": "후원 ({count, number})",
+    "placement": "노출 위치",
+    "period": "기간",
+    "performance": "성과",
+    "perf": "노출 {views, number} · 클릭 {clicks, number}",
+    "leads": "영업 리드 ({count, number})",
+    "contact": "연락처",
+    "leadStatus": {
+      "contacted": "연락함",
+      "won": "성사",
+      "lost": "실패"
+    }
   },
   "quality": {
     "license": "인정된 라이선스",
@@ -591,5 +635,79 @@
     "described": "요약과 키워드",
     "passed": "충족",
     "missing": "미충족"
+  },
+  "profile": {
+    "title": "프로필",
+    "saved": "설정을 저장했습니다.",
+    "orgs": "조직",
+    "noOrgs": "동기화된 GitHub 조직의 멤버가 아닙니다.",
+    "org": "조직",
+    "role": "내 역할",
+    "roles": {
+      "owner": "소유자",
+      "admin": "관리자",
+      "publisher": "게시 가능",
+      "member": "멤버",
+      "reader": "읽기 전용"
+    },
+    "orgsHint": "로그인할 때와 매주 GitHub에서 동기화됩니다. 역할은 GitHub에서 변경하세요.",
+    "preferences": "설정",
+    "language": "이메일과 알림 언어",
+    "languageAuto": "사이트와 동일",
+    "languageHint": "사이트 언어는 헤더에서 선택합니다.",
+    "save": "저장",
+    "data": "내 데이터",
+    "dataText": "데이터를 다운로드하거나 삭제하려면 GitHub 계정 이메일로 hello@genpm.net에 연락하세요. 게시된 버전은 공개되고 변경되지 않습니다. 자세한 내용:"
+  },
+  "compare": {
+    "title": "{name} 버전 비교",
+    "heading": "{from} → {to}",
+    "from": "시작",
+    "to": "끝",
+    "submit": "비교",
+    "same": "서로 다른 두 버전을 선택하세요.",
+    "unavailable": "지금은 비교할 수 없습니다. 1분 후 다시 시도하세요.",
+    "summary": "{files, plural, other {#개 파일 변경}} · +{added, number} −{removed, number}",
+    "cli": "내 수정 사항을 유지하면서 이 변경을 적용하려면 프로젝트에서 실행하세요:",
+    "noChanges": "패키지 안에 변경 사항이 없습니다.",
+    "status": {
+      "added": "추가",
+      "removed": "삭제",
+      "renamed": "이름 변경",
+      "modified": "수정"
+    },
+    "noPatch": "차이가 너무 크거나 바이너리 파일입니다. GitHub에서 여세요.",
+    "link": "버전 비교"
+  },
+  "status": {
+    "title": "상태",
+    "lede": "genpm.net, registry API, 게시 기능의 실시간 상태.",
+    "overall": {
+      "operational": "모든 시스템이 정상입니다",
+      "degraded": "일부 시스템에 문제가 있습니다",
+      "outage": "장애가 발생했습니다"
+    },
+    "components": {
+      "web": "웹사이트",
+      "api": "Registry API",
+      "database": "데이터베이스",
+      "publishing": "게시"
+    },
+    "state": {
+      "operational": "정상",
+      "degraded": "저하",
+      "outage": "장애"
+    },
+    "latency": "응답 시간: API {api, number} ms · 데이터베이스 {db, number} ms",
+    "jobs": "예약 작업",
+    "cron": {
+      "hourly": "설치 집계 (매시간)",
+      "daily": "품질, 인기도, 태그 감사 (매일)",
+      "weekly": "GitHub 조직 동기화 (매주)"
+    },
+    "ranOk": "정상 실행",
+    "ranFailed": "실패",
+    "never": "아직 실행 기록이 없습니다",
+    "report": "문제가 있나요? 연락처:"
   }
 }

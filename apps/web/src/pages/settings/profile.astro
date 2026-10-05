@@ -1,0 +1,77 @@
+---
+// /settings/profile (web-ui-spec §3, P2): cuenta de GitHub, orgs sincronizadas con su rol, idioma preferido y cómo
+// ejercer los derechos RGPD. Formulario POST (Astro verifica el Origin: CSRF).
+import { LOCALES } from '@genpm/i18n';
+import Base from '../../layouts/Base.astro';
+import { requireSession, sessionExpired } from '../../lib/auth.js';
+import { href } from '../../lib/i18n.js';
+import { registryFetch } from '../../lib/registry.js';
+
+const gate = requireSession(Astro);
+if (gate) return gate;
+const { t, locale, session } = Astro.locals;
+let saved = false;
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const value = String(form.get('locale') ?? '');
+  const res = await registryFetch('/v1/me', {
+    method: 'PATCH',
+    token: session!.token,
+    body: { locale: (LOCALES as readonly string[]).includes(value) ? value : null },
+  });
+  if (res.status === 401) return sessionExpired(Astro);
+  saved = res.ok;
+}
+const res = await registryFetch('/v1/me', { token: session!.token, locale });
+if (res.status === 401) return sessionExpired(Astro);
+const me = (await res.json()) as {
+  handle: string;
+  kind: string;
+  displayName: string | null;
+  avatarUrl: string | null;
+  github: string | null;
+  verified: boolean;
+  locale: string | null;
+  staff: boolean;
+  orgs: Array<{ handle: string; role: string }>;
+};
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+const langName = (l: string) => t.raw(`common.languages.${l}`);
+---
+<Base title={t.t('web.profile.title')} noindex>
+  <div class="wrap" style="max-width:760px">
+    <div class="phead">
+      <h1>{t.t('web.profile.title')}</h1>
+      <div class="row"><a class="btn sm" href={href(locale, '/dashboard')}>{t.t('web.dashboard.title')}</a><a class="btn sm" href={href(locale, '/settings/tokens')}>{t.t('web.nav.tokens')}</a>{me.staff && <a class="btn sm" href={href(locale, '/admin')}>{t.t('web.admin.queueTitle')}</a>}</div>
+    </div>
+    {saved && <div class="banner" style="--c:var(--code-ink)"><b>✔</b><span>{t.t('web.profile.saved')}</span></div>}
+    <section class="sec">
+      <div class="row" style="gap:16px;align-items:center">
+        {me.avatarUrl && <img src={`/img?u=${encodeURIComponent(me.avatarUrl)}`} alt="" width="56" height="56" style="border:1px solid var(--line)" />}
+        <div>
+          <h2 style="margin:0">{me.displayName ?? me.handle}</h2>
+          <p class="hint" style="margin:4px 0 0"><a href={href(locale, `/@${me.handle}`)}>@{me.handle}</a>{me.github && <> · <a href={`https://github.com/${me.github}`} rel="noopener">github.com/{me.github}</a></>}{me.verified && <> · {t.t('web.common.verified')}</>}</p>
+        </div>
+      </div>
+    </section>
+    <section class="sec"><div class="sec-h"><h2>{t.t('web.profile.orgs')}</h2></div>
+      {me.orgs.length === 0 ? <p class="hint">{t.t('web.profile.noOrgs')}</p> : (
+        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.profile.org')}</th><th>{t.t('web.profile.role')}</th></tr></thead><tbody>
+          {me.orgs.map((o) => <tr><td><a href={href(locale, `/@${o.handle}`)}>@{o.handle}</a></td><td>{t.t(`web.profile.roles.${o.role}` as 'web.profile.roles.member')}</td></tr>)}
+        </tbody></table></div>
+      )}
+      <p class="hint" style="margin-top:8px">{t.t('web.profile.orgsHint')}</p>
+    </section>
+    <section class="sec"><div class="sec-h"><h2>{t.t('web.profile.preferences')}</h2></div>
+      <form method="post" class="builder" style="grid-template-columns:1fr;max-width:420px">
+        <label class="field">{t.t('web.profile.language')}<select class="sel" name="locale"><option value="" selected={!me.locale}>{t.t('web.profile.languageAuto')}</option>{LOCALES.map((l) => <option value={l} selected={me.locale === l}>{langName(l)}</option>)}</select></label>
+        <p class="hint" style="margin:0">{t.t('web.profile.languageHint')}</p>
+        <button class="btn primary" type="submit">{t.t('web.profile.save')}</button>
+      </form>
+    </section>
+    <section class="sec"><div class="sec-h"><h2>{t.t('web.profile.data')}</h2></div>
+      <p>{t.t('web.profile.dataText')} <a href={href(locale, '/privacy')}>{t.t('web.footer.privacy')}</a></p>
+      <form method="post" action="/logout"><button class="btn sm ghost" type="submit">{t.t('web.nav.signOut')}</button></form>
+    </section>
+  </div>
+</Base>

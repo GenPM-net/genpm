@@ -1,0 +1,86 @@
+---
+// /p/@scope/name/compare?from=&to= (web-ui-spec §10, V02-08): comparador de versiones. El registry pide a GitHub el
+// diff entre los dos commits publicados, limitado al paquete; aquí se pinta sin JS. Solo lectura y sin indexar.
+import Base from '../../../../layouts/Base.astro';
+import { href } from '../../../../lib/i18n.js';
+import { registryGet, type VersionRow } from '../../../../lib/registry.js';
+
+const { t, locale } = Astro.locals;
+const { scope, name: short } = Astro.params;
+if (!scope?.startsWith('@') || !short) return Astro.rewrite('/404');
+const name = `${scope}/${short}`;
+const versionsRes = await registryGet<{ versions: VersionRow[] }>(`/v1/packages/${name}/versions?limit=50`, locale);
+if (!versionsRes.data) {
+  Astro.response.status = versionsRes.status === 404 ? 404 : 503;
+  return Astro.rewrite(versionsRes.status === 404 ? '/404' : '/500');
+}
+const versions = versionsRes.data.versions.filter((x) => !x.yanked);
+const to = Astro.url.searchParams.get('to') ?? versions[0]?.v ?? '';
+const from = Astro.url.searchParams.get('from') ?? versions.find((x) => x.v !== to)?.v ?? '';
+type Cmp = {
+  from: { version: string; commit: string };
+  to: { version: string; commit: string };
+  dest: string;
+  files: Array<{ path: string; status: string; additions: number; deletions: number; patch: string | null }>;
+};
+const cmp =
+  from && to && from !== to
+    ? await registryGet<Cmp>(
+        `/v1/packages/${name}/compare?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`,
+        locale,
+      )
+    : null;
+const data = cmp?.data ?? null;
+const added = data?.files.reduce((n, f) => n + f.additions, 0) ?? 0;
+const removed = data?.files.reduce((n, f) => n + f.deletions, 0) ?? 0;
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+function render(patch: string): string {
+  return patch
+    .split('\n')
+    .map((l) => {
+      const cls = l.startsWith('@@') ? 'h' : l.startsWith('+') ? 'a' : l.startsWith('-') ? 'd' : '';
+      return `<span class="${cls}">${esc(l) || ' '}</span>`;
+    })
+    .join('\n');
+}
+Astro.response.headers.set('Cache-Control', 'public, max-age=300');
+---
+<Base title={t.t('web.compare.title', { name })} noindex canonical={`/p/${name}`}>
+  <div class="wrap">
+    <div class="phead">
+      <p class="hint"><a href={href(locale, `/p/${name}`)}>← {name}</a></p>
+      <h1>{t.t('web.compare.heading', { from, to })}</h1>
+      <form method="get" class="row" style="gap:8px;align-items:end">
+        <label class="field">{t.t('web.compare.from')}<select class="sel" name="from">{versions.map((x) => <option value={x.v} selected={x.v === from}>{x.v}</option>)}</select></label>
+        <label class="field">{t.t('web.compare.to')}<select class="sel" name="to">{versions.map((x) => <option value={x.v} selected={x.v === to}>{x.v}</option>)}</select></label>
+        <button class="btn sm" type="submit">{t.t('web.compare.submit')}</button>
+      </form>
+    </div>
+    {from === to && <p class="hint">{t.t('web.compare.same')}</p>}
+    {cmp && !data && <div class="banner" style="--c:var(--warn)"><b>!</b><span>{t.t('web.compare.unavailable')}</span></div>}
+    {data && (
+      <>
+        <p>{t.t('web.compare.summary', { files: data.files.length, added, removed })} · <code>{data.from.commit.slice(0, 7)}…{data.to.commit.slice(0, 7)}</code></p>
+        <p class="hint">{t.t('web.compare.cli')} <code>genpm diff {name} --to {data.to.version}</code></p>
+        {data.files.length === 0 && <p class="hint">{t.t('web.compare.noChanges')}</p>}
+        {data.files.map((f) => (
+          <details class="dfile" open={data.files.length <= 12}>
+            <summary><span class="mono">{data.dest}/{f.path}</span> <span class="st">{t.t(`web.compare.status.${f.status === 'added' || f.status === 'removed' || f.status === 'renamed' ? f.status : 'modified'}` as 'web.compare.status.modified')}</span> <span class="tnum plus">+{f.additions}</span> <span class="tnum minus">−{f.deletions}</span></summary>
+            {f.patch ? <pre class="diff"><Fragment set:html={render(f.patch)} /></pre> : <p class="hint">{t.t('web.compare.noPatch')}</p>}
+          </details>
+        ))}
+      </>
+    )}
+  </div>
+</Base>
+<style>
+  .dfile { border: 1px solid var(--line); margin: 12px 0; }
+  .dfile summary { padding: 10px 12px; cursor: pointer; display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+  .dfile .st { color: var(--ink-3); font-size: 13px; }
+  .dfile .plus { color: var(--code-ink); }
+  .dfile .minus { color: var(--danger); }
+  .diff { margin: 0; padding: 12px; overflow-x: auto; font-family: var(--f-mono); font-size: 12.5px; line-height: 1.5; border-top: 1px solid var(--line); }
+  .diff :global(.a) { background: color-mix(in srgb, var(--code-ink) 12%, transparent); display: block; }
+  .diff :global(.d) { background: color-mix(in srgb, var(--danger) 12%, transparent); display: block; }
+  .diff :global(.h) { color: var(--ink-3); display: block; }
+</style>

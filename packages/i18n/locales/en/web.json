@@ -405,8 +405,22 @@
       "packagePublish": "Published {subject}",
       "versionYank": "Withdrew {subject}",
       "versionTagMoved": "The tag of {subject} changed in its repository",
-      "packageSourceUnavailable": "The repository of {subject} is no longer available"
-    }
+      "packageSourceUnavailable": "The repository of {subject} is no longer available",
+      "packageDeprecate": "Deprecated {subject}",
+      "packageUndeprecate": "Undid the deprecation of {subject}"
+    },
+    "deprecated": "{name} is now marked as deprecated.",
+    "undeprecated": "{name} is no longer deprecated.",
+    "chart": "Last 30 days",
+    "actions": "Actions",
+    "deprecatedBadge": "deprecated",
+    "split": "CLI {cli, number} · MCP {mcp, number}",
+    "undeprecate": "Undo deprecation",
+    "deprecate": "Deprecate",
+    "deprecateMessage": "Message shown to users",
+    "deprecatePlaceholder": "Use @scope/other instead",
+    "deprecateConfirm": "Mark as deprecated",
+    "legend": "Dark bars: installs from the CLI. Colored bars: installs through an AI agent (MCP)."
   },
   "publisher": {
     "packages": "{count, plural, one {# package} other {# packages}}",
@@ -577,7 +591,37 @@
     "searches": "Searches",
     "noResults": "no results",
     "empty": "No data yet.",
-    "footnote": "An install is a resolve call from the CLI or MCP that is not a preview (--dry-run or dryRun). Counts may be sampled by Analytics Engine at high volume. Direct visits have no origin."
+    "footnote": "An install is a resolve call from the CLI or MCP that is not a preview (--dry-run or dryRun). Counts may be sampled by Analytics Engine at high volume. Direct visits have no origin.",
+    "queueTitle": "Moderation",
+    "done": "Done.",
+    "versions": "Versions to review ({count, number})",
+    "findings": "Findings",
+    "release": "Release",
+    "quarantine": "Quarantine",
+    "reports": "Open reports ({count, number})",
+    "reason": "Reason",
+    "details": "Details",
+    "reportStatus": {
+      "triaged": "Triage",
+      "actioned": "Actioned",
+      "dismissed": "Dismiss"
+    },
+    "featured": "Featured on the home page",
+    "rank": "Position",
+    "save": "Save",
+    "featuredHint": "Leave the position empty to stop featuring a package.",
+    "sponsorships": "Sponsorships ({count, number})",
+    "placement": "Placement",
+    "period": "Period",
+    "performance": "Performance",
+    "perf": "{views, number} impressions · {clicks, number} clicks",
+    "leads": "Leads ({count, number})",
+    "contact": "Contact",
+    "leadStatus": {
+      "contacted": "Contacted",
+      "won": "Won",
+      "lost": "Lost"
+    }
   },
   "quality": {
     "license": "Recognized license",
@@ -591,5 +635,79 @@
     "described": "Summary and keywords",
     "passed": "passed",
     "missing": "missing"
+  },
+  "profile": {
+    "title": "Profile",
+    "saved": "Preferences saved.",
+    "orgs": "Organizations",
+    "noOrgs": "You are not a member of any synced GitHub organization.",
+    "org": "Organization",
+    "role": "Your role",
+    "roles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "publisher": "Can publish",
+      "member": "Member",
+      "reader": "Read only"
+    },
+    "orgsHint": "Synced from GitHub when you sign in and every week. To change a role, change it in GitHub.",
+    "preferences": "Preferences",
+    "language": "Language for emails and notices",
+    "languageAuto": "Same as the website",
+    "languageHint": "The website language is chosen in the header.",
+    "save": "Save",
+    "data": "Your data",
+    "dataText": "To download or delete your data, write to hello@genpm.net from the email of your GitHub account. Published versions stay public and immutable; see the"
+  },
+  "compare": {
+    "title": "Compare versions of {name}",
+    "heading": "{from} → {to}",
+    "from": "From",
+    "to": "To",
+    "submit": "Compare",
+    "same": "Pick two different versions.",
+    "unavailable": "The comparison is not available right now. Try again in a minute.",
+    "summary": "{files, plural, one {# file changed} other {# files changed}} · +{added, number} −{removed, number}",
+    "cli": "To apply these changes while keeping your edits, run in your project:",
+    "noChanges": "No changes inside the package.",
+    "status": {
+      "added": "added",
+      "removed": "removed",
+      "renamed": "renamed",
+      "modified": "modified"
+    },
+    "noPatch": "Diff too large or binary file: open it on GitHub.",
+    "link": "Compare versions"
+  },
+  "status": {
+    "title": "Status",
+    "lede": "Live status of genpm.net, the registry API and publishing.",
+    "overall": {
+      "operational": "All systems operational",
+      "degraded": "Some systems are degraded",
+      "outage": "There is an outage"
+    },
+    "components": {
+      "web": "Website",
+      "api": "Registry API",
+      "database": "Database",
+      "publishing": "Publishing"
+    },
+    "state": {
+      "operational": "Operational",
+      "degraded": "Degraded",
+      "outage": "Outage"
+    },
+    "latency": "Response time: API {api, number} ms · database {db, number} ms",
+    "jobs": "Scheduled jobs",
+    "cron": {
+      "hourly": "Install counters (hourly)",
+      "daily": "Quality, popularity and tag audit (daily)",
+      "weekly": "GitHub organization sync (weekly)"
+    },
+    "ranOk": "Ran fine",
+    "ranFailed": "Failed",
+    "never": "No run recorded yet",
+    "report": "Something wrong? Write to"
   }
 }

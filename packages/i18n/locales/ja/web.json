@@ -405,8 +405,22 @@
       "packagePublish": "{subject} を公開しました",
       "versionYank": "{subject} を取り下げました",
       "versionTagMoved": "{subject} のタグがリポジトリで変更されました",
-      "packageSourceUnavailable": "{subject} のリポジトリは利用できなくなりました"
-    }
+      "packageSourceUnavailable": "{subject} のリポジトリは利用できなくなりました",
+      "packageDeprecate": "{subject} を非推奨にしました",
+      "packageUndeprecate": "{subject} の非推奨を解除しました"
+    },
+    "deprecated": "{name} を非推奨にしました。",
+    "undeprecated": "{name} の非推奨を解除しました。",
+    "chart": "過去 30 日",
+    "actions": "操作",
+    "deprecatedBadge": "非推奨",
+    "split": "CLI {cli, number} · MCP {mcp, number}",
+    "undeprecate": "非推奨を解除",
+    "deprecate": "非推奨にする",
+    "deprecateMessage": "利用者に表示するメッセージ",
+    "deprecatePlaceholder": "代わりに @scope/other を使ってください",
+    "deprecateConfirm": "非推奨としてマーク",
+    "legend": "濃い棒: CLI からのインストール。色付きの棒: AI エージェント（MCP）経由のインストール。"
   },
   "publisher": {
     "packages": "{count, plural, other {# パッケージ}}",
@@ -577,7 +591,37 @@
     "searches": "検索",
     "noResults": "結果なし",
     "empty": "まだデータがありません。",
-    "footnote": "インストールとは、プレビュー（--dry-run または dryRun）ではない CLI または MCP からの resolve 呼び出しです。大量のデータでは Analytics Engine がサンプリングすることがあります。直接訪問には流入元がありません。"
+    "footnote": "インストールとは、プレビュー（--dry-run または dryRun）ではない CLI または MCP からの resolve 呼び出しです。大量のデータでは Analytics Engine がサンプリングすることがあります。直接訪問には流入元がありません。",
+    "queueTitle": "モデレーション",
+    "done": "完了しました。",
+    "versions": "確認待ちのバージョン（{count, number}）",
+    "findings": "検出事項",
+    "release": "解放",
+    "quarantine": "隔離",
+    "reports": "未対応の報告（{count, number}）",
+    "reason": "理由",
+    "details": "詳細",
+    "reportStatus": {
+      "triaged": "確認中にする",
+      "actioned": "対応済み",
+      "dismissed": "却下"
+    },
+    "featured": "トップページの注目",
+    "rank": "順位",
+    "save": "保存",
+    "featuredHint": "順位を空にすると注目から外れます。",
+    "sponsorships": "スポンサー（{count, number}）",
+    "placement": "掲載枠",
+    "period": "期間",
+    "performance": "成果",
+    "perf": "表示 {views, number} · クリック {clicks, number}",
+    "leads": "商談（{count, number}）",
+    "contact": "連絡先",
+    "leadStatus": {
+      "contacted": "連絡済み",
+      "won": "成約",
+      "lost": "失注"
+    }
   },
   "quality": {
     "license": "認識されたライセンス",
@@ -591,5 +635,79 @@
     "described": "概要とキーワード",
     "passed": "達成",
     "missing": "未達成"
+  },
+  "profile": {
+    "title": "プロフィール",
+    "saved": "設定を保存しました。",
+    "orgs": "組織",
+    "noOrgs": "同期された GitHub 組織のメンバーではありません。",
+    "org": "組織",
+    "role": "あなたの役割",
+    "roles": {
+      "owner": "オーナー",
+      "admin": "管理者",
+      "publisher": "公開可能",
+      "member": "メンバー",
+      "reader": "閲覧のみ"
+    },
+    "orgsHint": "ログイン時と毎週 GitHub から同期されます。役割の変更は GitHub で行ってください。",
+    "preferences": "設定",
+    "language": "メールと通知の言語",
+    "languageAuto": "サイトと同じ",
+    "languageHint": "サイトの言語はヘッダーで選べます。",
+    "save": "保存",
+    "data": "あなたのデータ",
+    "dataText": "データのダウンロードや削除は、GitHub アカウントのメールから hello@genpm.net にご連絡ください。公開済みのバージョンは公開かつ不変のままです。詳しくは次を参照:"
+  },
+  "compare": {
+    "title": "{name} のバージョン比較",
+    "heading": "{from} → {to}",
+    "from": "比較元",
+    "to": "比較先",
+    "submit": "比較",
+    "same": "異なる 2 つのバージョンを選んでください。",
+    "unavailable": "現在比較を利用できません。1 分後にもう一度お試しください。",
+    "summary": "{files, plural, other {# ファイル変更}} · +{added, number} −{removed, number}",
+    "cli": "自分の変更を残したままこれらを適用するには、プロジェクトで次を実行します:",
+    "noChanges": "パッケージ内に変更はありません。",
+    "status": {
+      "added": "追加",
+      "removed": "削除",
+      "renamed": "名前変更",
+      "modified": "変更"
+    },
+    "noPatch": "差分が大きすぎるかバイナリファイルです。GitHub で開いてください。",
+    "link": "バージョンを比較"
+  },
+  "status": {
+    "title": "ステータス",
+    "lede": "genpm.net、registry API、公開機能のリアルタイムの状態。",
+    "overall": {
+      "operational": "すべて正常に稼働しています",
+      "degraded": "一部のシステムに問題があります",
+      "outage": "障害が発生しています"
+    },
+    "components": {
+      "web": "Web サイト",
+      "api": "Registry API",
+      "database": "データベース",
+      "publishing": "公開"
+    },
+    "state": {
+      "operational": "正常",
+      "degraded": "低下",
+      "outage": "障害"
+    },
+    "latency": "応答時間: API {api, number} ms · データベース {db, number} ms",
+    "jobs": "定期ジョブ",
+    "cron": {
+      "hourly": "インストール数の集計（毎時）",
+      "daily": "品質・人気度・タグ監査（毎日）",
+      "weekly": "GitHub 組織の同期（毎週）"
+    },
+    "ranOk": "正常に実行",
+    "ranFailed": "失敗",
+    "never": "まだ実行記録がありません",
+    "report": "問題がありますか？ 連絡先:"
   }
 }

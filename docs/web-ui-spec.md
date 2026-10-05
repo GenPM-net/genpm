@@ -39,7 +39,9 @@
 | `/login` · `/logout` | GitHub OAuth | — | **P0** |
 | `/dashboard` | Mis paquetes, publicaciones, instalaciones | ✔ | P1 |
 | `/settings/tokens` | Tokens de API (crear/revocar) | ✔ | P1 |
-| `/settings/profile` | Perfil, orgs sincronizadas | ✔ | P2 |
+| `/settings/profile` | Perfil, orgs sincronizadas, idioma de avisos, derechos RGPD | ✔ | P2 ✅ |
+| `/p/@scope/name/compare?from=&to=` | Comparador de versiones (diff visual) | — | P2 ✅ |
+| `/status` | Estado de web, API, base de datos, publicación y crons | — | P2 ✅ |
 | `/sponsors` | Patrocinar paquetes (landing + contacto) | — | P1 |
 | `/enterprise` | Registros privados (landing + waitlist) | — | P1 |
 | `/report?p=` | Reportar paquete (modal en página de paquete) | ✔ | **P0** |
@@ -47,7 +49,7 @@
 | `/security` | Cómo protege GenPM (invariantes, firma, escaneo), cómo reportar, `security.txt` | — | **P0** |
 | `/security/advisories` | Lista de advisories + feed RSS/JSON | — | **P0** |
 | `/{es,pt-br,fr,de,ja,zh-cn,ko}/…` | Versiones localizadas de todas las páginas públicas | — | **P0** |
-| `/admin/*` | Cola de cuarentena, reportes, featured, patrocinios | staff | P2 |
+| `/admin/*` | Cola de cuarentena, reportes, featured, patrocinios, leads (`/admin`) y analítica (`/admin/analytics`) | staff | P2 ✅ |
 | `/llms.txt` · `/p/@scope/name.md` · `/search.md?q=` | Superficies para agentes | — | **P0** |
 | `/schema/v1/genpm.json` | JSON Schema del manifiesto | — | **P0** |
 | `/sitemap.xml` · `/robots.txt` | SEO | — | **P0** |
@@ -208,7 +210,7 @@ Botón único "Continue with GitHub" (OAuth web flow) con texto de permisos soli
 ### 5.9 Dashboard `/dashboard` — P1
 - Tabla "My packages": nombre, última versión, escaneo, instalaciones 30 d, acciones (ver, deprecar).
 - Actividad reciente (desde `audit_log` del usuario): publicaciones, yanks, tokens.
-- Gráfico de instalaciones (CLI vs MCP) por paquete.
+- Gráfico de instalaciones (CLI vs MCP) por paquete, 30 días. ✅ Deprecar / revertir desde la tabla. ✅
 - Estado vacío: "Publish your first package" → `/publish`.
 
 ### 5.10 Tokens `/settings/tokens` — P1
