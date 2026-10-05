@@ -8,6 +8,7 @@ llevan la marca **pendiente de revisión nativa** hasta que un nativo los lea (`
 |---|---|---|---|
 | Guion del vídeo demo (90–120 s) | [demo-script.md](demo-script.md) | D7-01 | Grabar antes de todo lo demás |
 | GIFs del README y redes | [`gifs/add.gif`](gifs/add.gif), [`gifs/lock.gif`](gifs/lock.gif) | D7-02 | Regenerar tras cada release: `cd gifs && vhs add.tape && vhs lock.tape` (genpm en el PATH) |
+| Vídeos cortos para redes (reglas de producción) | [social-videos.md](social-videos.md) | — | Cada vídeo de la serie |
 | Show HN | [show-hn.md](show-hn.md) | D7-03 | Martes a jueves, 15:00–17:00 CET |
 | Hilo de X | [x-thread.md](x-thread.md) | D7-04 | Justo después de Show HN |
 | LinkedIn | [linkedin.md](linkedin.md) | D7-05 | El mismo día |
