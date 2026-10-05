@@ -7,8 +7,9 @@
     "dev": "node scripts/copy-fonts.mjs && astro dev",
     "build": "node scripts/copy-fonts.mjs && node ../../scripts/brand/gen-tokens.mjs && astro build",
     "preview": "astro preview",
-    "deploy:staging": "CLOUDFLARE_ENV=staging pnpm build && wrangler deploy --config dist/server/wrangler.json",
-    "deploy": "node ../../scripts/check-legal.mjs && astro build && wrangler deploy --config dist/server/wrangler.json",
+    "build:deps": "turbo run build --filter=@genpm/web^...",
+    "deploy:staging": "pnpm build:deps && CLOUDFLARE_ENV=staging pnpm build && wrangler deploy --config dist/server/wrangler.json",
+    "deploy": "node ../../scripts/check-legal.mjs && pnpm build:deps && pnpm build && wrangler deploy --config dist/server/wrangler.json",
     "typecheck": "astro check",
     "test": "vitest run"
   },
