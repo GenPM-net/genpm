@@ -1,6 +1,6 @@
 {
   "name": "@genpm-net/cli",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Install architectures, not dependencies: inject code + AI rules + MCP config from immutable Git commits",
   "license": "MIT",
   "type": "module",
