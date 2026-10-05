@@ -13,13 +13,12 @@ function form(params: Record<string, unknown>, prefix = '', out = new URLSearchP
   for (const [k, v] of Object.entries(params)) {
     if (v === undefined || v === null) continue;
     const key = prefix ? `${prefix}[${k}]` : k;
-    if (Array.isArray(v))
-      v.forEach((x, i) =>
-        typeof x === 'object'
-          ? form(x as Record<string, unknown>, `${key}[${i}]`, out)
-          : out.append(`${key}[${i}]`, String(x)),
-      );
-    else if (typeof v === 'object') form(v as Record<string, unknown>, key, out);
+    if (Array.isArray(v)) {
+      for (const [i, x] of v.entries()) {
+        if (typeof x === 'object') form(x as Record<string, unknown>, `${key}[${i}]`, out);
+        else out.append(`${key}[${i}]`, String(x));
+      }
+    } else if (typeof v === 'object') form(v as Record<string, unknown>, key, out);
     else out.append(key, String(v));
   }
   return out;

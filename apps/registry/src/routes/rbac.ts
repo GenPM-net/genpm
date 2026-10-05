@@ -537,7 +537,7 @@ export const teams = new Hono<AppEnv>()
     if (!body.success) throw httpError('E_BAD_REQUEST', { detail: 'role' });
     const who = await accountByHandle(c.env.DB, c.req.param('handle'));
     // Solo personas que ya son miembros de la org.
-    if (!who || who.kind !== 'user' || !(await orgRole(c.env.DB, org.id, who.id)))
+    if (who?.kind !== 'user' || !(await orgRole(c.env.DB, org.id, who.id)))
       throw httpError('E_NOT_FOUND', { name: c.req.param('handle') });
     await c.env.DB.batch([
       c.env.DB.prepare(

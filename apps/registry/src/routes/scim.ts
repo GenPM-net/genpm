@@ -111,7 +111,7 @@ export const scim = new Hono<AppEnv>()
   .get('/:org/Users', async (c) => {
     const conn = await connection(c);
     if (!conn) return scimError(c, 401, 'Invalid SCIM token');
-    const base = new URL(c.req.url).origin + `/scim/v2/${c.req.param('org')}`;
+    const base = `${new URL(c.req.url).origin}/scim/v2/${c.req.param('org')}`;
     const filter = c.req.query('filter') ?? '';
     const eq = filter.match(/^userName eq "([^"]{1,320})"$/i);
     if (filter && !eq) return scimError(c, 400, 'Only userName eq filters are supported');
@@ -183,7 +183,7 @@ export const scim = new Hono<AppEnv>()
     const row = (await c.env.DB.prepare(`${SELECT} WHERE connection_id = ?1 AND scim_id = ?2`)
       .bind(conn.id, id)
       .first<Row>())!;
-    return scimJson(c, user(row, new URL(c.req.url).origin + `/scim/v2/${c.req.param('org')}`), 201);
+    return scimJson(c, user(row, `${new URL(c.req.url).origin}/scim/v2/${c.req.param('org')}`), 201);
   })
   .get('/:org/Users/:id', async (c) => {
     const conn = await connection(c);
@@ -192,7 +192,7 @@ export const scim = new Hono<AppEnv>()
       .bind(conn.id, c.req.param('id'))
       .first<Row>();
     if (!row) return scimError(c, 404, 'User not found');
-    return scimJson(c, user(row, new URL(c.req.url).origin + `/scim/v2/${c.req.param('org')}`));
+    return scimJson(c, user(row, `${new URL(c.req.url).origin}/scim/v2/${c.req.param('org')}`));
   })
   // PUT (reemplazo) y PATCH (Okta/Entra mandan `active`): solo `active` cambia el acceso; el email se actualiza.
   .on(['PUT', 'PATCH'], '/:org/Users/:id', async (c) => {
@@ -219,7 +219,7 @@ export const scim = new Hono<AppEnv>()
       .bind(conn.id, id)
       .first<Row>();
     if (!row) return scimError(c, 404, 'User not found');
-    return scimJson(c, user(row, new URL(c.req.url).origin + `/scim/v2/${c.req.param('org')}`));
+    return scimJson(c, user(row, `${new URL(c.req.url).origin}/scim/v2/${c.req.param('org')}`));
   })
   .delete('/:org/Users/:id', async (c) => {
     const conn = await connection(c);

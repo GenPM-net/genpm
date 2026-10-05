@@ -119,7 +119,7 @@ export const sponsorships = new Hono<AppEnv>()
       throw httpError('E_BAD_REQUEST', { detail: 'startsAt' });
     // Solo paquetes públicos activos y sin cuarentena (el patrocinio no compra visibilidad a nada en revisión).
     const pkg = await repoOf(c).packageByName(body.data.package);
-    if (!pkg || pkg.status !== 'active') throw httpError('E_NOT_FOUND', { name: body.data.package });
+    if (pkg?.status !== 'active') throw httpError('E_NOT_FOUND', { name: body.data.package });
     const weekly = Number(c.env.SPONSOR_WEEKLY_CENTS ?? 4900) || 4900;
     const amount = weekly * body.data.weeks;
     const id = newId('spn');
@@ -203,7 +203,7 @@ export async function reviewSponsorship(c: Context<AppEnv>, id: string, approve:
   const s = await c.env.DB.prepare('SELECT status, paid_at, external_ref FROM sponsorships WHERE id = ?1')
     .bind(id)
     .first<{ status: string; paid_at: number | null; external_ref: string | null }>();
-  if (!s || s.status !== 'draft' || !s.paid_at) return false;
+  if (s?.status !== 'draft' || !s.paid_at) return false;
   if (!approve && s.external_ref?.startsWith('pi_') && stripeConfigured(c.env))
     await stripe(c.env, 'POST', '/refunds', { payment_intent: s.external_ref });
   // `active` con fecha futura: el cron diario solo la muestra entre starts_at y ends_at.
