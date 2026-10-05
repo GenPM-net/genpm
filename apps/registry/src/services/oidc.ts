@@ -64,13 +64,14 @@ function b64urlDecode(s: string): Uint8Array {
   return Uint8Array.from(bin, (ch) => ch.charCodeAt(0));
 }
 
-async function jwks(fetchImpl: typeof fetch, issuer: string): Promise<Jwk[]> {
-  const hit = jwksCache.get(issuer);
+async function jwks(fetchImpl: typeof fetch, issuer: string, url?: string): Promise<Jwk[]> {
+  const key = url ?? issuer;
+  const hit = jwksCache.get(key);
   if (hit && Date.now() - hit.at < 3_600_000) return hit.keys;
-  const res = await fetchImpl(JWKS_URL[issuer] ?? `${issuer}/.well-known/jwks`);
+  const res = await fetchImpl(url ?? JWKS_URL[issuer] ?? `${issuer}/.well-known/jwks`);
   if (!res.ok) throw new Error(`jwks ${res.status}`);
   const keys = ((await res.json()) as { keys: Jwk[] }).keys;
-  jwksCache.set(issuer, { at: Date.now(), keys });
+  jwksCache.set(key, { at: Date.now(), keys });
   return keys;
 }
 
@@ -79,7 +80,7 @@ export function __resetJwks(): void {
   jwksCache.clear();
 }
 
-type VerifyOpts = { fetchImpl?: typeof fetch; now?: number; audience?: string };
+type VerifyOpts = { fetchImpl?: typeof fetch; now?: number; audience?: string; jwksUri?: string };
 
 /** Firma, emisor permitido, audiencia y fechas. Devuelve los claims crudos o `null`. */
 async function verifyJwt(token: string, issuers: string[], opts: VerifyOpts): Promise<Record<string, unknown> | null> {
@@ -96,7 +97,7 @@ async function verifyJwt(token: string, issuers: string[], opts: VerifyOpts): Pr
   }
   if (header.alg !== 'RS256' || typeof claims.iss !== 'string' || !issuers.includes(claims.iss)) return null;
   // El emisor se elige de una lista cerrada antes de pedir su JWKS: nunca una URL tomada del token.
-  const keys = await jwks(opts.fetchImpl ?? fetch, claims.iss).catch(() => [] as Jwk[]);
+  const keys = await jwks(opts.fetchImpl ?? fetch, claims.iss, opts.jwksUri).catch(() => [] as Jwk[]);
   const jwk = keys.find((k) => k.kid === header.kid) ?? (keys.length === 1 ? keys[0] : undefined);
   if (!jwk) return null;
   const key = await crypto.subtle.importKey(
@@ -170,4 +171,19 @@ export async function verifyCiOidc(token: string, opts: VerifyOpts = {}): Promis
     ref: c.ref ?? null,
     run: c.pipeline_id ?? null,
   };
+}
+
+/** id_token de un IdP de SSO (V10-02): emisor y JWKS de la conexión, audiencia = client_id, nonce obligatorio. */
+export async function verifyIdToken(
+  token: string,
+  opts: { issuer: string; jwksUri: string; clientId: string; nonce: string; fetchImpl?: typeof fetch; now?: number },
+): Promise<{ sub: string; email?: string; email_verified?: boolean; name?: string } | null> {
+  const c = await verifyJwt(token, [opts.issuer], {
+    audience: opts.clientId,
+    jwksUri: opts.jwksUri,
+    ...(opts.fetchImpl ? { fetchImpl: opts.fetchImpl } : {}),
+    ...(opts.now ? { now: opts.now } : {}),
+  });
+  if (!c || c['nonce'] !== opts.nonce || typeof c['sub'] !== 'string') return null;
+  return c as { sub: string; email?: string; email_verified?: boolean; name?: string };
 }

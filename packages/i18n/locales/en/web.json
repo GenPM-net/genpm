@@ -751,5 +751,25 @@
     "saved": "Saved.",
     "cli": "Teams and per-package grants: genpm team and genpm access in the CLI.",
     "audit": "Download audit log (CSV)"
+  },
+  "sso": {
+    "title": "Single sign-on",
+    "lede": "Connect your organization's identity provider (Okta, Microsoft Entra ID, Google Workspace or any OpenID Connect provider). Members sign in once with it; with SSO required, access to the organization's private registries depends on it.",
+    "noOrgs": "You are not a member of any organization.",
+    "enabled": "SSO enabled",
+    "enforced": "SSO required",
+    "disabled": "SSO not configured",
+    "linkedAs": "Linked as {email}.",
+    "notLinked": "Your account is not linked yet.",
+    "signIn": "Sign in with SSO",
+    "issuer": "Issuer URL",
+    "clientId": "Client ID",
+    "clientSecret": "Client secret",
+    "domains": "Allowed email domains (comma separated)",
+    "enforce": "Require SSO to access private registries",
+    "redirect": "Redirect URI to register in your identity provider:",
+    "save": "Save",
+    "linked": "Your account is now linked to {org}'s identity provider.",
+    "error": "Single sign-on failed. Try again or ask your administrator."
   }
 }

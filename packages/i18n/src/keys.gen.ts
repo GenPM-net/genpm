@@ -988,6 +988,24 @@ export interface MessageParams {
   "web.registries.saved": undefined;
   "web.registries.cli": undefined;
   "web.registries.audit": undefined;
+  "web.sso.title": undefined;
+  "web.sso.lede": undefined;
+  "web.sso.noOrgs": undefined;
+  "web.sso.enabled": undefined;
+  "web.sso.enforced": undefined;
+  "web.sso.disabled": undefined;
+  "web.sso.linkedAs": { email: string | number };
+  "web.sso.notLinked": undefined;
+  "web.sso.signIn": undefined;
+  "web.sso.issuer": undefined;
+  "web.sso.clientId": undefined;
+  "web.sso.clientSecret": undefined;
+  "web.sso.domains": undefined;
+  "web.sso.enforce": undefined;
+  "web.sso.redirect": undefined;
+  "web.sso.save": undefined;
+  "web.sso.linked": { org: string | number };
+  "web.sso.error": undefined;
 }
 
 export type MessageKey = keyof MessageParams;

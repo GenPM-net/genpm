@@ -231,3 +231,5 @@ Post-mortem público sin culpables para toda severidad alta o crítica.
 | Compromiso de GitHub o de una cuenta de GitHub del publisher | Dependemos del host Git | SHA pinning (las versiones ya publicadas no cambian), 2FA exigido a verificados, trusted publishing |
 | Compromiso de Cloudflare | Proveedor de infraestructura | Firma de manifiestos con clave cuya rotación/revocación no depende solo de Cloudflare; el código sigue verificado por SHA |
 | El usuario acepta un MCP o `--force` sin leer | Decisión humana | Prompts claros, comando completo visible, defaults seguros |
+
+**SSO (V10-02, ADR-030):** secreto del IdP cifrado (AES-GCM, HKDF del pepper); `state` cifrado y ligado a la cuenta (10 min) con PKCE S256 y nonce; id_token RS256 contra el JWKS del IdP con issuer, audiencia, nonce y dominio de correo; descubrimiento y endpoints solo https públicos (SSRF); una identidad del IdP por cuenta; `enforce` corta el acceso derivado de la org sin identidad activa (owners exentos).

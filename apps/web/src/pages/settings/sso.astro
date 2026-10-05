@@ -1,0 +1,88 @@
+---
+// /settings/sso (V10-02): SSO OIDC por organización. Owners/admins configuran el IdP; los miembros vinculan su cuenta.
+import { env } from 'cloudflare:workers';
+import Base from '../../layouts/Base.astro';
+import { requireSession, sessionExpired } from '../../lib/auth.js';
+import { registryFetch } from '../../lib/registry.js';
+
+const gate = requireSession(Astro);
+if (gate) return gate;
+const { t, locale, session } = Astro.locals;
+const token = session!.token;
+type Sso = {
+  org: string;
+  enabled: boolean;
+  issuer?: string;
+  clientId?: string;
+  domains?: string[];
+  enforce?: boolean;
+  linked?: { email: string | null; active: boolean } | null;
+};
+let notice: { ok: boolean; text: string } | null = null;
+const q = Astro.url.searchParams;
+if (q.get('linked')) notice = { ok: true, text: t.t('web.sso.linked', { org: q.get('linked') ?? '' }) };
+else if (q.get('error')) notice = { ok: false, text: t.t('web.sso.error') };
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const org = String(f.get('org') ?? '');
+  if (/^[A-Za-z0-9-]{1,39}$/.test(org)) {
+    const secret = String(f.get('clientSecret') ?? '').trim();
+    const res = await registryFetch(`/v1/orgs/${org}/sso`, {
+      method: 'PUT',
+      token,
+      body: {
+        issuer: String(f.get('issuer') ?? '').trim(),
+        clientId: String(f.get('clientId') ?? '').trim(),
+        ...(secret ? { clientSecret: secret } : {}),
+        domains: String(f.get('domains') ?? '')
+          .split(',')
+          .map((d) => d.trim())
+          .filter(Boolean),
+        enforce: f.get('enforce') === 'on',
+      },
+    });
+    if (res.status === 401) return sessionExpired(Astro);
+    notice = res.ok
+      ? { ok: true, text: t.t('web.registries.saved') }
+      : { ok: false, text: ((await res.json().catch(() => ({}))) as { title?: string }).title ?? 'Error' };
+  }
+}
+const meRes = await registryFetch('/v1/me', { token, locale });
+if (meRes.status === 401) return sessionExpired(Astro);
+const me = (await meRes.json()) as { orgs: Array<{ handle: string; role: string }> };
+const orgs = await Promise.all(
+  me.orgs.map(async (o) => {
+    const r = await registryFetch(`/v1/orgs/${o.handle}/sso`, { token, locale });
+    const s = r.ok ? ((await r.json()) as Sso) : { org: o.handle, enabled: false };
+    return { ...s, admin: o.role === 'owner' || o.role === 'admin' };
+  }),
+);
+const redirectUri = `${env.SITE_ORIGIN}/auth/sso/callback`;
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+---
+<Base title={t.t('web.sso.title')} noindex>
+  <div class="wrap" style="max-width:860px">
+    <div class="phead"><h1>{t.t('web.sso.title')}</h1><p>{t.t('web.sso.lede')}</p></div>
+    {notice && <div class="banner" style={`--c:${notice.ok ? 'var(--code-ink)' : 'var(--danger)'}`}><b>{notice.ok ? '✔' : '!'}</b><span>{notice.text}</span></div>}
+    {orgs.length === 0 && <p class="hint">{t.t('web.sso.noOrgs')}</p>}
+    {orgs.map((o) => (
+      <section class="sec"><div class="sec-h"><div><h2>{o.org}</h2><p>{o.enabled ? t.t(o.enforce ? 'web.sso.enforced' : 'web.sso.enabled') : t.t('web.sso.disabled')}</p></div></div>
+        {o.enabled && (
+          <p>{o.linked?.active ? t.t('web.sso.linkedAs', { email: o.linked.email ?? '—' }) : t.t('web.sso.notLinked')} <a class="btn sm" href={`/auth/sso/start?org=${o.org}`}>{t.t('web.sso.signIn')}</a></p>
+        )}
+        {o.admin && (
+          <form method="post" class="builder" style="margin-top:16px">
+            <input type="hidden" name="org" value={o.org} />
+            <label class="field">{t.t('web.sso.issuer')}<input name="issuer" required placeholder="https://acme.okta.com" value={o.issuer ?? ''} /></label>
+            <label class="field">{t.t('web.sso.clientId')}<input name="clientId" required value={o.clientId ?? ''} /></label>
+            <label class="field">{t.t('web.sso.clientSecret')}<input name="clientSecret" type="password" autocomplete="off" required={!o.enabled} placeholder={o.enabled ? '••••••••' : ''} /></label>
+            <label class="field">{t.t('web.sso.domains')}<input name="domains" placeholder="acme.com" value={(o.domains ?? []).join(', ')} /></label>
+            <label class="check"><input type="checkbox" name="enforce" checked={!!o.enforce} /> {t.t('web.sso.enforce')}</label>
+            <p class="hint">{t.t('web.sso.redirect')} <code>{redirectUri}</code></p>
+            <button class="btn primary" type="submit">{t.t('web.sso.save')}</button>
+          </form>
+        )}
+      </section>
+    ))}
+  </div>
+</Base>

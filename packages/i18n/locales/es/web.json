@@ -751,5 +751,25 @@
     "saved": "Guardado.",
     "cli": "Equipos y permisos por paquete: genpm team y genpm access en el CLI.",
     "audit": "Descargar auditoría (CSV)"
+  },
+  "sso": {
+    "title": "Inicio de sesión único",
+    "lede": "Conecta el proveedor de identidad de tu organización (Okta, Microsoft Entra ID, Google Workspace o cualquier proveedor OpenID Connect). Los miembros inician sesión una vez con él; con el SSO obligatorio, el acceso a los registros privados de la organización depende de ello.",
+    "noOrgs": "No eres miembro de ninguna organización.",
+    "enabled": "SSO activado",
+    "enforced": "SSO obligatorio",
+    "disabled": "SSO sin configurar",
+    "linkedAs": "Vinculada como {email}.",
+    "notLinked": "Tu cuenta todavía no está vinculada.",
+    "signIn": "Iniciar sesión con SSO",
+    "issuer": "URL del emisor (issuer)",
+    "clientId": "Client ID",
+    "clientSecret": "Client secret",
+    "domains": "Dominios de correo permitidos (separados por comas)",
+    "enforce": "Exigir SSO para acceder a los registros privados",
+    "redirect": "URI de redirección que debes registrar en tu proveedor de identidad:",
+    "save": "Guardar",
+    "linked": "Tu cuenta ya está vinculada al proveedor de identidad de {org}.",
+    "error": "El inicio de sesión único ha fallado. Vuelve a intentarlo o pregunta a tu administrador."
   }
 }

@@ -751,5 +751,25 @@
     "saved": "已保存。",
     "cli": "团队和按软件包的权限：使用 CLI 中的 genpm team 和 genpm access。",
     "audit": "下载审计日志（CSV）"
+  },
+  "sso": {
+    "title": "单点登录",
+    "lede": "连接你所在组织的身份提供商（Okta、Microsoft Entra ID、Google Workspace 或任何 OpenID Connect 提供商）。成员只需用它登录一次；启用强制 SSO 后，访问组织的私有注册表需要先通过它。",
+    "noOrgs": "你不是任何组织的成员。",
+    "enabled": "已启用 SSO",
+    "enforced": "SSO 为必需",
+    "disabled": "未配置 SSO",
+    "linkedAs": "已关联为 {email}。",
+    "notLinked": "你的账户尚未关联。",
+    "signIn": "使用 SSO 登录",
+    "issuer": "颁发者（issuer）URL",
+    "clientId": "客户端 ID",
+    "clientSecret": "客户端密钥",
+    "domains": "允许的邮箱域名（用逗号分隔）",
+    "enforce": "访问私有注册表时要求 SSO",
+    "redirect": "需要在身份提供商中登记的重定向 URI：",
+    "save": "保存",
+    "linked": "你的账户已关联到 {org} 的身份提供商。",
+    "error": "单点登录失败。请重试或联系管理员。"
   }
 }

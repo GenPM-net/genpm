@@ -23,11 +23,20 @@ export async function registryRole(
   if (registry.owner_id === accountId) return 'admin';
   const { results } = await db
     .prepare(
+      // SSO obligatorio (V10-02): el acceso que viene de una org con `enforce` exige una identidad del IdP activa
+      // (los owners quedan exentos para no bloquearse fuera). SCIM la desactiva al dar de baja (ENT-02).
       `SELECT role FROM registry_members WHERE registry_id = ?1
-         AND (account_id = ?2 OR account_id IN (SELECT org_id FROM memberships WHERE user_id = ?2))
+         AND (account_id = ?2 OR account_id IN (
+           SELECT m.org_id FROM memberships m WHERE m.user_id = ?2 AND (m.role = 'owner'
+             OR NOT EXISTS (SELECT 1 FROM sso_connections s WHERE s.org_id = m.org_id AND json_extract(s.config, '$.enforce') = 1)
+             OR EXISTS (SELECT 1 FROM sso_identities i JOIN sso_connections s ON s.id = i.connection_id
+                        WHERE s.org_id = m.org_id AND i.account_id = ?2 AND i.active = 1))))
        UNION ALL
-       SELECT CASE role WHEN 'owner' THEN 'admin' WHEN 'admin' THEN 'admin' WHEN 'publisher' THEN 'publisher' ELSE 'reader' END
-       FROM memberships WHERE org_id = ?3 AND user_id = ?2`,
+       SELECT CASE m.role WHEN 'owner' THEN 'admin' WHEN 'admin' THEN 'admin' WHEN 'publisher' THEN 'publisher' ELSE 'reader' END
+       FROM memberships m WHERE m.org_id = ?3 AND m.user_id = ?2 AND (m.role = 'owner'
+         OR NOT EXISTS (SELECT 1 FROM sso_connections s WHERE s.org_id = m.org_id AND json_extract(s.config, '$.enforce') = 1)
+         OR EXISTS (SELECT 1 FROM sso_identities i JOIN sso_connections s ON s.id = i.connection_id
+                    WHERE s.org_id = m.org_id AND i.account_id = ?2 AND i.active = 1))`,
     )
     .bind(registry.id, accountId, registry.owner_id ?? '')
     .all<{ role: RegistryRole }>();

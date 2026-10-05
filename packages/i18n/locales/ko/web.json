@@ -751,5 +751,25 @@
     "saved": "저장했습니다.",
     "cli": "팀과 패키지별 권한: CLI의 genpm team과 genpm access.",
     "audit": "감사 로그 다운로드(CSV)"
+  },
+  "sso": {
+    "title": "싱글 사인온",
+    "lede": "조직의 ID 공급자(Okta, Microsoft Entra ID, Google Workspace 또는 모든 OpenID Connect 공급자)를 연결하세요. 멤버는 한 번만 로그인하면 되고, SSO를 필수로 하면 조직의 비공개 레지스트리 접근에 SSO가 필요합니다.",
+    "noOrgs": "속한 조직이 없습니다.",
+    "enabled": "SSO 사용 중",
+    "enforced": "SSO 필수",
+    "disabled": "SSO 미설정",
+    "linkedAs": "{email}(으)로 연결됨.",
+    "notLinked": "아직 계정이 연결되지 않았습니다.",
+    "signIn": "SSO로 로그인",
+    "issuer": "발급자(issuer) URL",
+    "clientId": "클라이언트 ID",
+    "clientSecret": "클라이언트 시크릿",
+    "domains": "허용할 이메일 도메인(쉼표로 구분)",
+    "enforce": "비공개 레지스트리 접근 시 SSO 필수",
+    "redirect": "ID 공급자에 등록할 리디렉션 URI:",
+    "save": "저장",
+    "linked": "계정이 {org}의 ID 공급자에 연결되었습니다.",
+    "error": "싱글 사인온에 실패했습니다. 다시 시도하거나 관리자에게 문의하세요."
   }
 }

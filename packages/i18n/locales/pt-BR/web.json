@@ -751,5 +751,25 @@
     "saved": "Salvo.",
     "cli": "Times e permissões por pacote: genpm team e genpm access no CLI.",
     "audit": "Baixar auditoria (CSV)"
+  },
+  "sso": {
+    "title": "Login único",
+    "lede": "Conecte o provedor de identidade da sua organização (Okta, Microsoft Entra ID, Google Workspace ou qualquer provedor OpenID Connect). Os membros entram uma vez com ele; com SSO obrigatório, o acesso aos registries privados da organização depende disso.",
+    "noOrgs": "Você não é membro de nenhuma organização.",
+    "enabled": "SSO ativado",
+    "enforced": "SSO obrigatório",
+    "disabled": "SSO não configurado",
+    "linkedAs": "Vinculada como {email}.",
+    "notLinked": "Sua conta ainda não está vinculada.",
+    "signIn": "Entrar com SSO",
+    "issuer": "URL do emissor (issuer)",
+    "clientId": "Client ID",
+    "clientSecret": "Client secret",
+    "domains": "Domínios de e-mail permitidos (separados por vírgula)",
+    "enforce": "Exigir SSO para acessar os registries privados",
+    "redirect": "URI de redirecionamento para cadastrar no seu provedor de identidade:",
+    "save": "Salvar",
+    "linked": "Sua conta agora está vinculada ao provedor de identidade de {org}.",
+    "error": "O login único falhou. Tente de novo ou fale com o administrador."
   }
 }

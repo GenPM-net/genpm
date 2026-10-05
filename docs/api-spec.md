@@ -81,6 +81,10 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | GET | `/v1/registries/:slug/audit` | token (admin) | ✅ | Auditoría exportable (V10-04): `?from&to&action=<prefijo>&format=json\|csv\|jsonl`; JSON paginado (`next`, `after`), CSV/JSONL hasta 50 000 filas; sin `ip_hash`; CSV protegido contra inyección de fórmulas |
 | PUT/DELETE | `/v1/registries/:slug/domain` | token (admin) | ✅ | Dominio propio (V10-03): `{ domain }` ⇒ TXT `_genpm-challenge.<dominio>` y CNAME a `domains.genpm.net` |
 | POST | `/v1/registries/:slug/domain/verify` | token (admin) | ✅ | Comprueba el TXT (DoH), fija `custom_domain` y da de alta el custom hostname (Cloudflare for SaaS); 409 si aún no está |
+| GET/PUT/DELETE | `/v1/orgs/:org/sso` | token (miembro / owner-admin) | ✅ | SSO OIDC de la org (V10-02, ADR-030): `{ issuer, clientId, clientSecret?, domains[], enforce }`; nunca devuelve el secreto |
+| DELETE | `/v1/orgs/:org/sso/identities/:handle` | token (owner/admin) | ✅ | Desvincula (`active = 0`): con `enforce`, corta el acceso |
+| POST | `/v1/auth/sso/:org/start` | token | ✅ | `{ redirectUri }` (solo `WEB_ORIGIN/auth/sso/callback`) ⇒ `{ url }` del IdP con PKCE + nonce |
+| POST | `/v1/auth/sso/callback` | token (la misma cuenta) | ✅ | `{ code, state }` ⇒ vincula la identidad y da de alta en la org |
 | * | `/r/:slug/v1/…` y `https://<dominio propio>/v1/…` | según la ruta | ✅ | Igual que `/v1/…` con `genpm-registry: <slug>` |
 | GET | `/v1/recipes`, `/v1/recipes/:slug` | — | ✅ | Recetas compose (V03-05): `{ name, summary, p: [specs] }`. Staff: `PUT/DELETE /v1/admin/recipes/:slug` con `{ s?, p }` (cada paquete debe existir) |
 | POST | `/mcp` (y raíz de `mcp.genpm.net`) | — | ✅ | MCP remoto de solo lectura (V03-04): JSON-RPC Streamable HTTP sin estado, tools `genpm_search` y `genpm_info` |

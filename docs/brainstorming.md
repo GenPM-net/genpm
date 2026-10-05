@@ -397,6 +397,25 @@ direcciona el CLI, qué ve cada miembro y cómo lee el registry repos privados.
 **Consecuencias:** migración 0009 aditiva (teams, team_members, package_grants, registry_members). CLI `genpm registry`,
 `genpm team`, `genpm access`; web `/settings/registries`.
 
+### ADR-030 · SSO por organización con OIDC sobre la identidad de GitHub — ✅ Decidida (Tech Lead, 2026-10-05)
+
+**Contexto:** V10-02 pide SSO para empresas. Las cuentas de GenPM nacen de GitHub (ADR-006) y la publicación depende
+de esa identidad; SAML exige firmas XML difíciles de verificar bien en Workers.
+
+**Decisión:** SSO **OIDC** por organización (Okta, Entra ID, Google Workspace, Auth0, Keycloak… todos lo ofrecen). Como
+en el SAML SSO de las orgs de GitHub, el SSO **vincula** la cuenta de GenPM con la identidad del IdP (no la sustituye):
+- El owner/admin registra issuer (descubrimiento `.well-known`, solo https público), client ID/secret (cifrado AES-GCM
+  con clave HKDF del pepper), dominios de correo permitidos y `enforce`.
+- Flujo: `/auth/sso/start` → IdP con PKCE S256 + nonce en un `state` cifrado ligado a la cuenta (10 min) →
+  `/auth/sso/callback` → canje del code, id_token RS256 verificado contra el JWKS del IdP, nonce, audiencia y dominio.
+- Vinculación 1:1 (`sso_identities`), alta JIT como `member` de la org (nunca rebaja un rol).
+- `enforce`: el acceso a registros privados que viene de la org exige una identidad activa; los `owner` quedan exentos
+  para no bloquearse. Desvincular (admin) o SCIM (ENT-02) pone `active = 0` y corta el acceso al momento.
+- SAML queda fuera: los IdP que solo hablan SAML pueden usar su puente OIDC; se reconsiderará con demanda.
+
+**Consecuencias:** migración 0010 (`sso_connections` del api-spec §5.4 + `sso_identities`), rutas `/v1/orgs/:org/sso`
+y `/v1/auth/sso/*`, web `/settings/sso`, actividad 12 del registro de tratamientos.
+
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

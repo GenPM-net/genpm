@@ -30,7 +30,8 @@ export type IdPrefix =
   | 'lead'
   | 'tp'
   | 'rcp'
-  | 'team';
+  | 'team'
+  | 'sso';
 
 export function newId(prefix: IdPrefix, now?: number): string {
   return `${prefix}_${ulid(now)}`;

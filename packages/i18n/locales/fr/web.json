@@ -751,5 +751,25 @@
     "saved": "Enregistré.",
     "cli": "Équipes et droits par paquet : genpm team et genpm access dans le CLI.",
     "audit": "Télécharger le journal d’audit (CSV)"
+  },
+  "sso": {
+    "title": "Authentification unique",
+    "lede": "Connectez le fournisseur d’identité de votre organisation (Okta, Microsoft Entra ID, Google Workspace ou tout fournisseur OpenID Connect). Les membres s’y connectent une fois ; avec le SSO obligatoire, l’accès aux registres privés de l’organisation en dépend.",
+    "noOrgs": "Vous n’êtes membre d’aucune organisation.",
+    "enabled": "SSO activé",
+    "enforced": "SSO obligatoire",
+    "disabled": "SSO non configuré",
+    "linkedAs": "Lié en tant que {email}.",
+    "notLinked": "Votre compte n’est pas encore lié.",
+    "signIn": "Se connecter avec le SSO",
+    "issuer": "URL de l’émetteur (issuer)",
+    "clientId": "Client ID",
+    "clientSecret": "Client secret",
+    "domains": "Domaines d’e-mail autorisés (séparés par des virgules)",
+    "enforce": "Exiger le SSO pour accéder aux registres privés",
+    "redirect": "URI de redirection à enregistrer dans votre fournisseur d’identité :",
+    "save": "Enregistrer",
+    "linked": "Votre compte est désormais lié au fournisseur d’identité de {org}.",
+    "error": "L’authentification unique a échoué. Réessayez ou contactez votre administrateur."
   }
 }

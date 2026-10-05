@@ -751,5 +751,25 @@
     "saved": "Gespeichert.",
     "cli": "Teams und Berechtigungen pro Paket: genpm team und genpm access im CLI.",
     "audit": "Audit-Log herunterladen (CSV)"
+  },
+  "sso": {
+    "title": "Single Sign-on",
+    "lede": "Verbinde den Identitätsanbieter deiner Organisation (Okta, Microsoft Entra ID, Google Workspace oder jeden OpenID-Connect-Anbieter). Mitglieder melden sich einmal damit an; ist SSO Pflicht, hängt der Zugriff auf die privaten Registries der Organisation davon ab.",
+    "noOrgs": "Du bist in keiner Organisation Mitglied.",
+    "enabled": "SSO aktiviert",
+    "enforced": "SSO verpflichtend",
+    "disabled": "SSO nicht eingerichtet",
+    "linkedAs": "Verknüpft als {email}.",
+    "notLinked": "Dein Konto ist noch nicht verknüpft.",
+    "signIn": "Mit SSO anmelden",
+    "issuer": "Issuer-URL",
+    "clientId": "Client-ID",
+    "clientSecret": "Client-Secret",
+    "domains": "Erlaubte E-Mail-Domains (durch Kommas getrennt)",
+    "enforce": "SSO für den Zugriff auf private Registries verlangen",
+    "redirect": "Redirect-URI, die du beim Identitätsanbieter einträgst:",
+    "save": "Speichern",
+    "linked": "Dein Konto ist jetzt mit dem Identitätsanbieter von {org} verknüpft.",
+    "error": "Single Sign-on ist fehlgeschlagen. Versuche es erneut oder frag deine Administration."
   }
 }
