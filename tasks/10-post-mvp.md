@@ -14,15 +14,26 @@
 
 ## v0.2 · +2 semanas
 
+> Priorización (D7-10, 2026-10-05), por lo visto en las pruebas de agente y en el ensayo del runbook:
+> 1. **`V02-01` + `V02-02` (actualizar con merge de 3 vías)**: hoy subir `@core/auth` 1.0.0 → 1.1.0 en un proyecto con
+>    cambios obliga a `remove` + `add` y se pierden las ediciones. Es lo primero que preguntará cualquiera tras instalar.
+> 2. **`V02-10`**: `genpm add --yes` sin instalar dependencias de npm (en CI y en demos no hay forma de decir "sí al
+>    código, no a npm" sin preguntas).
+> 3. **`V02-03` (Used by)** y **`V02-04` (calidad)**: ayudan a elegir entre paquetes cuando haya más que las semillas.
+> 4. **`V02-07` / `V02-08`** (web P1/P2) y **`V02-05`** (revisión nativa de nivel 2) según tracción por idioma.
+
 - [ ] `V02-01` **TODO** genpm diff y update con merge 3-way · B · 24h · deps: D7-10
 - [ ] `V02-02` **TODO** Tool genpm_diff y actualización asistida por IA · B · 8h · deps: V02-01
 - [ ] `V02-03` **TODO** Dependents ("Used by") en API y página de paquete · A · 6h · deps: D7-10
 - [ ] `V02-04` **TODO** Puntuación de calidad de paquetes · A · 8h · deps: D7-10
 - [ ] `V02-05` **TODO** Revisión nativa del nivel 2 de idiomas y retirada del banner beta · F · 8h · deps: D7-06
-- [ ] `V02-06` **TODO** Docs completas en pt-BR · C · 8h · deps: D6-I-01
+- [x] `V02-06` **DONE** Docs completas en pt-BR · C · 8h · deps: D6-I-01
+  - Hecho el 2026-10-04: las 11 páginas de docs en los 8 idiomas (pendiente la revisión nativa de D6-I-01).
 - [ ] `V02-07` **TODO** Web P1: dashboard del autor, perfil, sponsors y enterprise (landing + waitlist con POST /v1/leads) · W · 16h · deps: D5-W-23
 - [ ] `V02-08` **TODO** Web P2: comparador de versiones (diff visual), status page y cola de admin · W · 16h · deps: V02-01
-- [ ] `V02-09` **TODO** Modo oscuro opcional de la web con los tokens dark de tokens.json · W · 4h · deps: D5-W-23
+- [x] `V02-09` **DONE** Modo oscuro opcional de la web con los tokens dark de tokens.json · W · 4h · deps: D5-W-23
+  - Ya en producción: botón de tema en la cabecera y en el menú móvil (claro por defecto, branding §8).
+- [ ] `V02-10` **TODO** genpm add: aceptar el plan sin instalar las dependencias de npm ni preguntar (`--no-install-deps`), para CI y demos · B · 1h · deps: D7-10
 
 ## v0.3 · +6 semanas
 

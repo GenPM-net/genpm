@@ -21,7 +21,8 @@
 - [x] `D4-B-05` **DONE** Tests de contrato con InMemoryTransport y test de respuestas < 1 500 tokens · B · 2h · deps: D4-B-01
 - [x] `D4-B-06` **DONE** genpm mcp setup, add y remove con adaptadores por cliente (Claude Code, Cursor, VS Code, Windsurf, Codex) · B · 3h · deps: D3-B-04
   - Recorte 3: add/remove pueden pasar a v0.1.1; setup se mantiene.
-- [ ] `D4-B-07` **BLOCKED** Prueba real en Claude Code con el guion "Añade auth y billing a este proyecto" · B · 1h · deps: D4-B-05, D4-B-06
+- [x] `D4-B-07` **DONE** Prueba real en Claude Code con el guion "Añade auth y billing a este proyecto" · B · 1h · deps: D4-B-05, D4-B-06
+  - Hecho el 2026-10-05 con el MCP publicado por stdio y un agente Claude (el CLI `claude` del Mac tenía la sesión caducada): "añade auth y billing" → search → info → add dryRun → add sin MCP ni npm hasta consentimiento. Falta la sesión en la app de Claude Code con el usuario delante (vídeo D7-01).
   - Bloqueo: necesita el registry en staging con @core/auth y @core/billing publicados (D1-A-07, S-AU-05, S-BI-05). El servidor ya pasa los tests de contrato (packages/mcp/test/contract.test.ts).
 - [ ] `D4-B-08` **BLOCKED** Prueba real en Cursor con el mismo guion · B · 1h · deps: D4-B-05, D4-B-06
   - Bloqueo: igual que D4-B-07 (staging + semillas publicadas).

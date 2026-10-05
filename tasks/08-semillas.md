@@ -23,10 +23,13 @@
 - [x] `S-DB-03` **DONE** Tests en verde, LICENSE MIT y tag v1.0.0 · C · 1h · deps: S-DB-01
   - Tests en verde (Vitest + PGlite) y LICENSE MIT en `../genpm-seeds/src/lib/db`. El tag `v1.0.0` se crea al separar el repo (`git subtree split`) en la publicación (S-DB-05).
 - [x] `S-DB-04` **DONE** genpm validate sin errores y reglas ≤ 1 500 tokens · C · 0.5h · deps: S-DB-02, S-DB-03, D3-A-05
-- [ ] `S-DB-05` **BLOCKED** Publicado en staging con el CLI real · C · 0.5h · deps: S-DB-04, D3-A-06
-- [ ] `S-DB-06` **BLOCKED** Prueba de agente en Claude Code: compila y pasan los tests en < 10 min sin edición humana · C · 0.5h · deps: S-DB-05, D4-B-07
+- [x] `S-DB-05` **DONE** Publicado en staging con el CLI real · C · 0.5h · deps: S-DB-04, D3-A-06
+  - Publicadas directamente en producción (más exigente que staging): v1.0.0 con el CLI y v1.0.1/1.1.0 con el asistente web el 2026-10-05.
+- [x] `S-DB-06` **DONE** Prueba de agente en Claude Code: compila y pasan los tests en < 10 min sin edición humana · C · 0.5h · deps: S-DB-05, D4-B-07
+  - 2026-10-05: SaaS completo (db + auth 1.1.0 + billing + email + ai) solo con el MCP y las reglas, `tsc` sin errores en < 10 min; endpoints verificados. Fricción arreglada: auth 1.1.0 añade `isNewUser`/`onLogin` (el correo de bienvenida obligaba a editar auth).
 - [ ] `S-DB-07` **BLOCKED** Prueba de agente en Cursor · C · 0.5h · deps: S-DB-06, D4-B-08
 - [ ] `S-DB-08` **BLOCKED** Escaneo passed y revisión de seguridad (ADR-023) · T · 0.5h · deps: S-DB-07
+  - Revisión con IA (ADR-023 paso 2) hecha el 2026-10-05 sobre las 5 semillas: open redirect en auth (`/<TAB>/evil.com`), mensajes `system` y sin límites en ai, instantánea de Stripe en billing → arreglados en auth 1.0.1, ai 1.0.1, billing 1.0.1. Pendiente: CI verde y autorrevisión diferida del fundador.
 
 ## @core/auth · Día 2–3
 
@@ -34,8 +37,8 @@
 - [x] `S-AU-02` **DONE** AGENTS.md con las 5 secciones · C · 1h · deps: S-AU-01, S-00-02
 - [x] `S-AU-03` **DONE** Tests en verde, LICENSE MIT y tag v1.0.0 · C · 1h · deps: S-AU-01
 - [x] `S-AU-04` **DONE** genpm validate sin errores y reglas ≤ 1 500 tokens · C · 0.5h · deps: S-AU-02, S-AU-03, D3-A-05
-- [ ] `S-AU-05` **BLOCKED** Publicado en staging con el CLI real · C · 0.5h · deps: S-AU-04, S-DB-05
-- [ ] `S-AU-06` **BLOCKED** Prueba de agente en Claude Code · C · 0.5h · deps: S-AU-05, D4-B-07
+- [x] `S-AU-05` **DONE** Publicado en staging con el CLI real · C · 0.5h · deps: S-AU-04, S-DB-05
+- [x] `S-AU-06` **DONE** Prueba de agente en Claude Code · C · 0.5h · deps: S-AU-05, D4-B-07
 - [ ] `S-AU-07` **BLOCKED** Prueba de agente en Cursor · C · 0.5h · deps: S-AU-06, D4-B-08
 - [ ] `S-AU-08` **BLOCKED** Escaneo passed y revisión de seguridad (ADR-023) · T · 0.5h · deps: S-AU-07
 
@@ -45,8 +48,8 @@
 - [x] `S-BI-02` **DONE** AGENTS.md con las 5 secciones y declaración m del MCP de Stripe (verificar paquete y flags vigentes) · C · 1h · deps: S-BI-01, S-00-02
 - [x] `S-BI-03` **DONE** Tests en verde, LICENSE MIT y tag v1.0.0 · C · 1h · deps: S-BI-01
 - [x] `S-BI-04` **DONE** genpm validate sin errores y reglas ≤ 1 500 tokens · C · 0.5h · deps: S-BI-02, S-BI-03, D3-A-05
-- [ ] `S-BI-05` **BLOCKED** Publicado en staging con el CLI real · C · 0.5h · deps: S-BI-04, S-AU-05
-- [ ] `S-BI-06` **BLOCKED** Prueba de agente en Claude Code (incluye consentimiento MCP) · C · 0.5h · deps: S-BI-05, D4-B-07
+- [x] `S-BI-05` **DONE** Publicado en staging con el CLI real · C · 0.5h · deps: S-BI-04, S-AU-05
+- [x] `S-BI-06` **DONE** Prueba de agente en Claude Code (incluye consentimiento MCP) · C · 0.5h · deps: S-BI-05, D4-B-07
 - [ ] `S-BI-07` **BLOCKED** Prueba de agente en Cursor · C · 0.5h · deps: S-BI-06, D4-B-08
 - [ ] `S-BI-08` **BLOCKED** Escaneo passed y revisión de seguridad (ADR-023) · T · 0.5h · deps: S-BI-07
 
@@ -56,8 +59,8 @@
 - [x] `S-EM-02` **DONE** AGENTS.md con las 5 secciones · C · 1h · deps: S-EM-01, S-00-02
 - [x] `S-EM-03` **DONE** Tests en verde, LICENSE MIT y tag v1.0.0 · C · 1h · deps: S-EM-01
 - [x] `S-EM-04` **DONE** genpm validate sin errores y reglas ≤ 1 500 tokens · C · 0.5h · deps: S-EM-02, S-EM-03, D3-A-05
-- [ ] `S-EM-05` **BLOCKED** Publicado en staging con el CLI real · C · 0.5h · deps: S-EM-04, D3-A-06
-- [ ] `S-EM-06` **BLOCKED** Prueba de agente en Claude Code · C · 0.5h · deps: S-EM-05, D4-B-07
+- [x] `S-EM-05` **DONE** Publicado en staging con el CLI real · C · 0.5h · deps: S-EM-04, D3-A-06
+- [x] `S-EM-06` **DONE** Prueba de agente en Claude Code · C · 0.5h · deps: S-EM-05, D4-B-07
 - [ ] `S-EM-07` **BLOCKED** Prueba de agente en Cursor · C · 0.5h · deps: S-EM-06, D4-B-08
 - [ ] `S-EM-08` **BLOCKED** Escaneo passed y revisión de seguridad (ADR-023) · T · 0.5h · deps: S-EM-07
 
@@ -67,7 +70,7 @@
 - [x] `S-AI-02` **DONE** AGENTS.md con las 5 secciones · C · 1h · deps: S-AI-01, S-00-02
 - [x] `S-AI-03` **DONE** Tests en verde, LICENSE MIT y tag v1.0.0 · C · 1h · deps: S-AI-01
 - [x] `S-AI-04` **DONE** genpm validate sin errores y reglas ≤ 1 500 tokens · C · 0.5h · deps: S-AI-02, S-AI-03, D3-A-05
-- [ ] `S-AI-05` **BLOCKED** Publicado en staging con el CLI real · C · 0.5h · deps: S-AI-04, S-DB-05
-- [ ] `S-AI-06` **BLOCKED** Prueba de agente en Claude Code · C · 0.5h · deps: S-AI-05, D4-B-07
+- [x] `S-AI-05` **DONE** Publicado en staging con el CLI real · C · 0.5h · deps: S-AI-04, S-DB-05
+- [x] `S-AI-06` **DONE** Prueba de agente en Claude Code · C · 0.5h · deps: S-AI-05, D4-B-07
 - [ ] `S-AI-07` **BLOCKED** Prueba de agente en Cursor · C · 0.5h · deps: S-AI-06, D4-B-08
 - [ ] `S-AI-08` **BLOCKED** Escaneo passed y revisión de seguridad (ADR-023) · T · 0.5h · deps: S-AI-07
