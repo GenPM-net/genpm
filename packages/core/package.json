@@ -1,6 +1,7 @@
 {
   "name": "@genpm/core",
   "version": "0.1.4",
+  "private": true,
   "description": "GenPM engine shared by the CLI and the MCP server: resolve, fetch, plan, apply, inject, lock",
   "license": "MIT",
   "type": "module",

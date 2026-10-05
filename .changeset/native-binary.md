@@ -1,5 +1,5 @@
 ---
-"genpm": minor
+"@genpm-net/cli": minor
 "@genpm/core": minor
 "@genpm/manifest": minor
 "@genpm/i18n": minor

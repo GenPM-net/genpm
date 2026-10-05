@@ -1,6 +1,7 @@
 {
   "name": "@genpm/i18n",
   "version": "0.1.0",
+  "private": true,
   "description": "GenPM translation catalogs (ICU MessageFormat), locale negotiation and Intl formatting (no I/O)",
   "license": "MIT",
   "type": "module",
