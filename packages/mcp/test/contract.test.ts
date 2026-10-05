@@ -78,7 +78,7 @@ async function connect(opts: { roots?: string[] } = {}) {
 }
 
 describe('initialize', () => {
-  it('exposes instructions under 250 tokens and the 8 tools', async () => {
+  it('exposes instructions under 250 tokens and the 10 tools', async () => {
     const { client } = await connect();
     expect(client.getInstructions()).toBe(INSTRUCTIONS);
     expect(INSTRUCTIONS.length / 4).toBeLessThan(250);
@@ -87,11 +87,13 @@ describe('initialize', () => {
     expect(tools.map((t) => t.name).sort()).toEqual([
       'genpm_add',
       'genpm_audit',
+      'genpm_diff',
       'genpm_info',
       'genpm_list',
       'genpm_outdated',
       'genpm_remove',
       'genpm_search',
+      'genpm_update',
       'genpm_validate',
     ]);
     const add = tools.find((t) => t.name === 'genpm_add')!;
@@ -141,6 +143,29 @@ describe('tools', () => {
 
     const again = await call('genpm_add', { name: '@core/auth' });
     expect((again.content[0] as { text: string }).text).toContain('Nothing to install');
+  });
+
+  it('genpm_diff returns a delimited patch and genpm_update merges or records the version (strategy ai)', async () => {
+    const { call } = await connect();
+    await call('genpm_add', { name: '@core/db' });
+    const sha = await repos.db!.commit({ 'index.ts': 'export const db = 2;\n' });
+    reg.add({ n: '@core/db', v: '1.1.0', r: repos.db!.url, c: sha, d: 'src/lib/db', s: 'Drizzle client' });
+    const d = await call('genpm_diff', { name: '@core/db' });
+    const text = (d.content[0] as { text: string }).text;
+    expect(text).toContain('@core/db 1.0.3 → 1.1.0');
+    expect(text).toContain('<package-diff source="@core/db@1.1.0" trust="third-party">');
+    expect(text).toContain('+export const db = 2;');
+    expect(responseTokens(d)).toBeLessThan(TOKEN_BUDGET * 5);
+    const dry = await call('genpm_update', { name: '@core/db', dryRun: true });
+    expect((dry.content[0] as { text: string }).text).toContain('update 1.0.3 → @core/db@1.1.0');
+    // El agente aplica el parche él mismo y registra la versión nueva.
+    await writeFile(join(project, 'src/lib/db/index.ts'), 'export const db = 2;\n');
+    const u = await call('genpm_update', { name: '@core/db', strategy: 'ai' });
+    expect(u.isError).toBeFalsy();
+    expect((u.content[0] as { text: string }).text).toContain('Updated @core/db 1.0.3 → 1.1.0');
+    const listed = await call('genpm_list');
+    expect(JSON.stringify(listed.structuredContent)).toContain('"v":"1.1.0"');
+    expect(JSON.stringify(listed.structuredContent)).toContain('"modified":[]');
   });
 
   it('returns E_PLAN_STALE when the project changed after the dry run', async () => {

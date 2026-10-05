@@ -42,6 +42,17 @@ genpm audit   # 在 CI 中使用：npx @genpm-net/cli audit
 
 `audit` 会验证文件完整性、锁文件中每个条目的注册表签名、安全公告、已撤回的版本和隔离状态。发现高危或严重问题时以退出码 6 结束。
 
+## update 和 diff
+
+```bash
+genpm diff @core/auth
+genpm update @core/auth
+```
+
+`diff` 显示自已安装版本以来上游的变更，路径已指向你的目录（可用 `git apply --3way` 应用）。`update` 执行三方合并：你没改过的文件获得新版本，你改过的行会保留；如果双方修改了同样的行，文件中会留下标准的 `<<<<<<<` 标记，命令以退出码 4 结束。上游已删除但你修改过的文件会被保留。
+
+`genpm diff --local` 还会列出你的本地修改；`genpm update --dry-run` 只显示计划，不写入任何内容。
+
 ## JSON 输出
 
 所有命令都支持 `--json`（单行、英文、不提问）。没有交互式终端时，任何未回答的问题都会以 `E_CONFIRM_REQUIRED`（退出码 2）失败，并且不会写入任何内容。

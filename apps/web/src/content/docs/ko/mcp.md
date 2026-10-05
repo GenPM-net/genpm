@@ -118,6 +118,8 @@ genpm mcp setup --client gemini --scope project
 | `genpm_list` | 설치된 패키지와 로컬 변경 사항. |
 | `genpm_remove` | 패키지를 제거합니다. 여러분이 수정한 코드는 삭제하지 않습니다. |
 | `genpm_outdated` | 사용 가능한 새 버전. |
+| `genpm_diff` | 설치된 패키지의 upstream 패치와 로컬 변경. |
+| `genpm_update` | 3-way 병합으로 업데이트하거나 에이전트가 이미 적용한 패치를 기록합니다(`strategy: "ai"`). |
 | `genpm_audit` | 무결성, 서명, 보안 권고. |
 | `genpm_validate` | 작성 중인 패키지를 검증합니다. |
 

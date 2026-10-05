@@ -22,7 +22,9 @@
     "mcpAdd": "写入已安装包声明的 MCP 服务器",
     "mcpRemove": "移除已安装包声明的 MCP 服务器",
     "cache": "显示或清理下载缓存",
-    "upgrade": "将独立的 genpm 二进制文件更新到最新版本"
+    "upgrade": "将独立的 genpm 二进制文件更新到最新版本",
+    "diff": "显示自已安装版本以来上游的变更（统一 diff）",
+    "update": "更新已安装的软件包，将上游变更与你的修改合并"
   },
   "arg": {
     "cwd": "工作目录",
@@ -62,7 +64,9 @@
     "workflow": "同时创建在 v* 标签上发布的 GitHub Actions 工作流",
     "action": "dir | clean",
     "check": "仅检查是否有更新的版本",
-    "targetVersion": "要安装的版本（默认：最新）"
+    "targetVersion": "要安装的版本（默认：最新）",
+    "to": "目标版本或范围（默认：latest）",
+    "local": "同时列出你的本地修改（drift）"
   },
   "label": {
     "resolved": "已解析",
@@ -183,5 +187,20 @@
     "available": "genpm {latest} 已发布（当前为 {current}）。运行 genpm upgrade 进行安装。",
     "downloading": "正在下载 genpm {version}（{asset}）…",
     "done": "genpm 已更新：{from} → {to}（校验和已验证）"
+  },
+  "diff": {
+    "upToDate": "{name} 已是最新（{version}）。",
+    "header": "{name} {from} → {to}：上游有 {count, plural, other {# 个文件}}变更",
+    "drift": "你的本地修改：{files}",
+    "clean": "没有本地修改。"
+  },
+  "update": {
+    "confirm": "更新 {count, plural, other {# 个软件包}}？",
+    "nothing": "全部已是最新。",
+    "done": "已更新 {name} {from} → {to}",
+    "merged": "已与你的修改合并：{files}",
+    "conflicts": "需要解决的冲突（查找 <<<<<<< 标记）：{files}",
+    "orphaned": "上游已删除，因有你的修改而保留：{files}",
+    "installed": "已安装 {name} {version}（新依赖）"
   }
 }

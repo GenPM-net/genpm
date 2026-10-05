@@ -22,7 +22,9 @@
     "mcpAdd": "インストール済みパッケージが宣言する MCP サーバーを書き込む",
     "mcpRemove": "インストール済みパッケージが宣言する MCP サーバーを削除する",
     "cache": "ダウンロードキャッシュを表示または削除する",
-    "upgrade": "スタンドアロンの genpm バイナリを最新リリースに更新します"
+    "upgrade": "スタンドアロンの genpm バイナリを最新リリースに更新します",
+    "diff": "インストール済みバージョン以降の upstream の変更を表示します（unified diff）",
+    "update": "インストール済みパッケージを更新し、upstream の変更とあなたの変更をマージします"
   },
   "arg": {
     "cwd": "作業ディレクトリ",
@@ -62,7 +64,9 @@
     "workflow": "v* タグで公開する GitHub Actions ワークフローも作成する",
     "action": "dir | clean",
     "check": "新しいバージョンがあるかどうかだけを確認します",
-    "targetVersion": "インストールするバージョン（既定: 最新）"
+    "targetVersion": "インストールするバージョン（既定: 最新）",
+    "to": "更新先のバージョンまたは範囲（既定: latest）",
+    "local": "ローカルの変更（drift）も表示します"
   },
   "label": {
     "resolved": "解決済み",
@@ -183,5 +187,20 @@
     "available": "genpm {latest} が利用可能です（現在 {current}）。genpm upgrade でインストールできます。",
     "downloading": "genpm {version}（{asset}）をダウンロードしています…",
     "done": "genpm を更新しました: {from} → {to}（チェックサム検証済み）"
+  },
+  "diff": {
+    "upToDate": "{name} は最新です（{version}）。",
+    "header": "{name} {from} → {to}: upstream で {count, plural, other {# ファイル}} が変更されました",
+    "drift": "ローカルの変更: {files}",
+    "clean": "ローカルの変更はありません。"
+  },
+  "update": {
+    "confirm": "{count, plural, other {# 個のパッケージ}}を更新しますか？",
+    "nothing": "すべて最新です。",
+    "done": "{name} を更新しました {from} → {to}",
+    "merged": "あなたの変更とマージしました: {files}",
+    "conflicts": "解決が必要な競合（<<<<<<< マーカーを探してください）: {files}",
+    "orphaned": "upstream で削除されましたが、あなたの変更があるため残しました: {files}",
+    "installed": "{name} {version} をインストールしました（新しい依存関係）"
   }
 }

@@ -42,6 +42,17 @@ genpm audit   # CI에 추가할 때: npx @genpm-net/cli audit
 
 `audit`은 파일 무결성, 잠금 파일 각 항목의 레지스트리 서명, 보안 권고, 철회된 버전, 격리 상태를 검증합니다. 높음 또는 치명적 문제가 있으면 종료 코드 6으로 끝납니다.
 
+## update와 diff
+
+```bash
+genpm diff @core/auth
+genpm update @core/auth
+```
+
+`diff`는 설치된 버전 이후 upstream에서 바뀐 내용을 내 폴더를 가리키는 경로로 보여줍니다(`git apply --3way`로 적용). `update`는 3-way 병합을 합니다. 건드리지 않은 파일은 새 버전을 받고, 내가 바꾼 줄은 유지되며, 양쪽이 같은 줄을 바꾸면 파일에 표준 `<<<<<<<` 표시가 남고 명령은 종료 코드 4로 끝납니다. upstream에서 삭제됐지만 내가 수정한 파일은 유지됩니다.
+
+`genpm diff --local`은 로컬 변경도 보여주고, `genpm update --dry-run`은 아무것도 쓰지 않고 계획만 보여줍니다.
+
 ## JSON 출력
 
 모든 명령은 `--json`(한 줄, 영어, 질문 없음)을 지원합니다. 대화형 터미널이 없으면 답하지 않은 질문은 `E_CONFIRM_REQUIRED`(종료 코드 2)로 실패하며 아무것도 쓰지 않습니다.

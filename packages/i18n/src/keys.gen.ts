@@ -24,6 +24,8 @@ export interface MessageParams {
   "cli.desc.mcpRemove": undefined;
   "cli.desc.cache": undefined;
   "cli.desc.upgrade": undefined;
+  "cli.desc.diff": undefined;
+  "cli.desc.update": undefined;
   "cli.arg.cwd": undefined;
   "cli.arg.registry": undefined;
   "cli.arg.json": undefined;
@@ -62,6 +64,8 @@ export interface MessageParams {
   "cli.arg.action": undefined;
   "cli.arg.check": undefined;
   "cli.arg.targetVersion": undefined;
+  "cli.arg.to": undefined;
+  "cli.arg.local": undefined;
   "cli.label.resolved": undefined;
   "cli.label.dependency": undefined;
   "cli.label.skip": undefined;
@@ -144,6 +148,17 @@ export interface MessageParams {
   "cli.upgrade.available": { latest: string | number; current: string | number };
   "cli.upgrade.downloading": { version: string | number; asset: string | number };
   "cli.upgrade.done": { from: string | number; to: string | number };
+  "cli.diff.upToDate": { name: string | number; version: string | number };
+  "cli.diff.header": { name: string | number; from: string | number; to: string | number; count: number };
+  "cli.diff.drift": { files: string | number };
+  "cli.diff.clean": undefined;
+  "cli.update.confirm": { count: number };
+  "cli.update.nothing": undefined;
+  "cli.update.done": { name: string | number; from: string | number; to: string | number };
+  "cli.update.merged": { files: string | number };
+  "cli.update.conflicts": { files: string | number };
+  "cli.update.orphaned": { files: string | number };
+  "cli.update.installed": { name: string | number; version: string | number };
   "common.product.tagline": undefined;
   "common.layers.code": undefined;
   "common.layers.context": undefined;

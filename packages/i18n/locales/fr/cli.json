@@ -22,7 +22,9 @@
     "mcpAdd": "Écrire les serveurs MCP déclarés par un paquet installé",
     "mcpRemove": "Supprimer les serveurs MCP déclarés par un paquet installé",
     "cache": "Afficher ou vider le cache de téléchargement",
-    "upgrade": "Met à jour le binaire autonome genpm vers la dernière version"
+    "upgrade": "Met à jour le binaire autonome genpm vers la dernière version",
+    "diff": "Affiche ce qui a changé en amont depuis la version installée (diff unifié)",
+    "update": "Met à jour les paquets installés en fusionnant les changements amont avec les vôtres"
   },
   "arg": {
     "cwd": "Répertoire de travail",
@@ -62,7 +64,9 @@
     "workflow": "Créer aussi un workflow GitHub Actions qui publie sur les tags v*",
     "action": "dir | clean",
     "check": "Vérifie seulement s’il existe une version plus récente",
-    "targetVersion": "Version à installer (par défaut : la dernière)"
+    "targetVersion": "Version à installer (par défaut : la dernière)",
+    "to": "Version ou plage cible (par défaut : latest)",
+    "local": "Liste aussi vos changements locaux (drift)"
   },
   "label": {
     "resolved": "Résolu",
@@ -183,5 +187,20 @@
     "available": "genpm {latest} est disponible (vous avez {current}). Lancez genpm upgrade pour l’installer.",
     "downloading": "Téléchargement de genpm {version} ({asset})…",
     "done": "genpm mis à jour : {from} → {to} (somme de contrôle vérifiée)"
+  },
+  "diff": {
+    "upToDate": "{name} est à jour ({version}).",
+    "header": "{name} {from} → {to} : {count, plural, one {# fichier modifié} other {# fichiers modifiés}} en amont",
+    "drift": "Vos changements locaux : {files}",
+    "clean": "Aucun changement local."
+  },
+  "update": {
+    "confirm": "Mettre à jour {count, plural, one {# paquet} other {# paquets}} ?",
+    "nothing": "Tout est à jour.",
+    "done": "{name} mis à jour {from} → {to}",
+    "merged": "Fusionné avec vos changements : {files}",
+    "conflicts": "Conflits à résoudre (cherchez les marqueurs <<<<<<<) : {files}",
+    "orphaned": "Supprimé en amont, conservé avec vos changements : {files}",
+    "installed": "{name} {version} installé (nouvelle dépendance)"
   }
 }

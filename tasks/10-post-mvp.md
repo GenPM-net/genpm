@@ -40,8 +40,10 @@
 > 3. **`V02-03` (Used by)** y **`V02-04` (calidad)**: ayudan a elegir entre paquetes cuando haya más que las semillas.
 > 4. **`V02-07` / `V02-08`** (web P1/P2) y **`V02-05`** (revisión nativa de nivel 2) según tracción por idioma.
 
-- [ ] `V02-01` **TODO** genpm diff y update con merge 3-way · B · 24h · deps: D7-10
-- [ ] `V02-02` **TODO** Tool genpm_diff y actualización asistida por IA · B · 8h · deps: V02-01
+- [x] `V02-01` **DONE** genpm diff y update con merge 3-way · B · 24h · deps: D7-10
+  - ✅ 2026-10-05: core/merge.ts (planMerge + git merge-file endurecido), plan({update}) con acción `update`, apply con merge archivo a archivo dentro del journal, `genpm diff` (parche aplicable con git apply) y `genpm update` (exit 4 con conflictos). Tests en core y CLI.
+- [x] `V02-02` **DONE** Tool genpm_diff y actualización asistida por IA · B · 8h · deps: V02-01
+  - ✅ 2026-10-05: `genpm_diff` (parche delimitado como contenido de terceros, truncado al presupuesto) y `genpm_update` con `strategy: 3way | ai`; instrucciones del servidor actualizadas (< 250 tokens).
 - [ ] `V02-03` **TODO** Dependents ("Used by") en API y página de paquete · A · 6h · deps: D7-10
 - [ ] `V02-04` **TODO** Puntuación de calidad de paquetes · A · 8h · deps: D7-10
 - [ ] `V02-05` **TODO** Revisión nativa del nivel 2 de idiomas y retirada del banner beta · F · 8h · deps: D7-06

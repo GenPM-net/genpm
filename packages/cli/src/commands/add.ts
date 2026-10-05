@@ -28,7 +28,8 @@ export function renderPlan(ctx: Ctx, pl: InstallPlan): string[] {
           : p.role === 'dep'
             ? c.dim(t.t('cli.label.dependency'))
             : '';
-    return [`  ${c.dim(branch)} ${p.n}`, p.v, c.dim(shortSha(p.c)), target, note];
+    const version = p.action === 'update' ? `${p.from} → ${p.v}` : p.v;
+    return [`  ${c.dim(branch)} ${p.n}`, version, c.dim(shortSha(p.c)), target, note];
   });
   out.push(...table(rows));
   out.push('');

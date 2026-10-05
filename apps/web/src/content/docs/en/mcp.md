@@ -118,6 +118,8 @@ genpm mcp setup --client gemini --scope project
 | `genpm_list` | Installed packages with local changes. |
 | `genpm_remove` | Remove a package; never deletes code you modified. |
 | `genpm_outdated` | Newer versions available. |
+| `genpm_diff` | Upstream patch of an installed package plus your local changes. |
+| `genpm_update` | Update with a three-way merge, or record a patch the agent already applied (`strategy: "ai"`). |
 | `genpm_audit` | Integrity, signatures and advisories. |
 | `genpm_validate` | Validate a package you are authoring. |
 

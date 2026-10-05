@@ -22,7 +22,9 @@
     "mcpAdd": "Die von einem installierten Paket deklarierten MCP-Server schreiben",
     "mcpRemove": "Die von einem installierten Paket deklarierten MCP-Server entfernen",
     "cache": "Den Download-Cache anzeigen oder leeren",
-    "upgrade": "Aktualisiert das eigenständige genpm-Binary auf die neueste Version"
+    "upgrade": "Aktualisiert das eigenständige genpm-Binary auf die neueste Version",
+    "diff": "Zeigt, was sich upstream seit der installierten Version geändert hat (Unified Diff)",
+    "update": "Aktualisiert installierte Pakete und führt Upstream-Änderungen mit deinen zusammen"
   },
   "arg": {
     "cwd": "Arbeitsverzeichnis",
@@ -62,7 +64,9 @@
     "workflow": "Zusätzlich einen GitHub-Actions-Workflow anlegen, der bei v*-Tags veröffentlicht",
     "action": "dir | clean",
     "check": "Prüft nur, ob es eine neuere Version gibt",
-    "targetVersion": "Zu installierende Version (Standard: neueste)"
+    "targetVersion": "Zu installierende Version (Standard: neueste)",
+    "to": "Zielversion oder -bereich (Standard: latest)",
+    "local": "Listet auch deine lokalen Änderungen (Drift)"
   },
   "label": {
     "resolved": "Aufgelöst",
@@ -183,5 +187,20 @@
     "available": "genpm {latest} ist verfügbar (du hast {current}). Führe genpm upgrade aus, um es zu installieren.",
     "downloading": "Lade genpm {version} herunter ({asset})…",
     "done": "genpm aktualisiert: {from} → {to} (Prüfsumme verifiziert)"
+  },
+  "diff": {
+    "upToDate": "{name} ist aktuell ({version}).",
+    "header": "{name} {from} → {to}: {count, plural, one {# Datei} other {# Dateien}} upstream geändert",
+    "drift": "Deine lokalen Änderungen: {files}",
+    "clean": "Keine lokalen Änderungen."
+  },
+  "update": {
+    "confirm": "{count, plural, one {# Paket} other {# Pakete}} aktualisieren?",
+    "nothing": "Alles ist aktuell.",
+    "done": "{name} aktualisiert {from} → {to}",
+    "merged": "Mit deinen Änderungen zusammengeführt: {files}",
+    "conflicts": "Zu lösende Konflikte (suche nach <<<<<<<-Markern): {files}",
+    "orphaned": "Upstream entfernt, mit deinen Änderungen behalten: {files}",
+    "installed": "{name} {version} installiert (neue Abhängigkeit)"
   }
 }

@@ -15,6 +15,7 @@ import {
   searchCmd,
 } from './commands/consumer.js';
 import { mcpCmd } from './commands/mcp.js';
+import { diffCmd, updateCmd } from './commands/update.js';
 import { upgradeCmd } from './commands/upgrade.js';
 import { type Ctx, createContext } from './context.js';
 import { reportError } from './output.js';
@@ -31,6 +32,8 @@ export function buildCli(ctx: Ctx) {
       remove: removeCmd(ctx),
       rm: removeCmd(ctx),
       outdated: outdatedCmd(ctx),
+      update: updateCmd(ctx),
+      diff: diffCmd(ctx),
       audit: auditCmd(ctx),
       doctor: doctorCmd(ctx),
       mcp: mcpCmd(ctx),

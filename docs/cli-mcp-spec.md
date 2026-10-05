@@ -258,13 +258,13 @@ Verifica el proyecto: hashes en disco vs `.genpm/files` (drift esperado vs manip
 ```
 Exit 6 si hay advisory alta/crítica o firma inválida. `--json` ⇒ `{ok, findings:[{n,v,kind:'advisory'|'yanked'|'quarantined'|'signature'|'tamper',severity,id,fix}]}`. Recomendado en el CI del proyecto del usuario.
 
-### `genpm diff <name> [--to <range>]` ⏳ v0.2
+### `genpm diff <name> [--to <range>] [--local]` ✅
 
-Diff unificado upstream `c_instalado..c_nuevo` remapeado a `d`; `--local` muestra además el drift local. Salida consumible por `git apply --3way`.
+Diff unificado upstream `c_instalado..c_nuevo` remapeado a `d` (rutas `a/<d>/…` y `b/<d>/…`) por stdout, consumible por `git apply --3way` desde la raíz; la cabecera y `--local` (drift) van por stderr. No cuenta como instalación (`client=none`). `--json` ⇒ `{n,d,from,to,patch,files,omitted,drift}`.
 
-### `genpm update <name> [--to <range>]` ⏳ v0.2
+### `genpm update <name…> [--to <range>] [--dry-run] [--mcp] [--install-deps]` ✅
 
-Merge de 3 vías (ver [architecture §6.6](architecture.md#66-actualización-con-drift-diseño-v02)). Archivos con conflicto quedan con marcadores estándar y se listan; exit 4 si hubo conflictos.
+Merge de 3 vías (ver [architecture §6.6](architecture.md#66-actualización-con-drift)): plan con `action: 'update'` y `from`, misma confirmación y consentimientos que `add` (MCP y npm nuevos), dependencias nuevas se instalan y las que ya satisfacen el rango se dejan. Archivos con conflicto quedan con marcadores `<<<<<<< local` / `>>>>>>> upstream` y se listan; exit 4 si hubo conflictos. Un paquete no instalado ⇒ `E_NOT_FOUND`. `add` de una versión distinta de un paquete instalado sigue dando `E_ALREADY_INSTALLED` con `fix: genpm update`.
 
 ### `genpm mcp serve` ✅
 
@@ -464,10 +464,10 @@ Annotations `readOnlyHint: true`. Input `{}`. Salida `{ p: [{n,v,c,d,drift:{modi
 
 `readOnlyHint: true`. Input `{ path?: string }` (default raíz). Para autores que crean paquetes con ayuda de su IA. Salida: `ValidationReport { ok, errors[], warnings[], files: number, rulesTokens }`.
 
-### ⏳ v0.2: `genpm_diff` y `genpm_update`
+### `genpm_diff` y `genpm_update` ✅
 
 - `genpm_diff { name, to? }` (read-only) ⇒ `{ from, to, patch: string (unified, remapeado a d), drift: string[] }`, truncado a ~6 000 tokens con lista de archivos omitidos. **Es la pieza de "actualizaciones asistidas por IA"**: el LLM aplica el parche entendiendo los cambios locales.
-- `genpm_update { name, to?, strategy: '3way' | 'ai' }` — `ai` solo actualiza lock/hashes tras confirmar que el LLM aplicó el parche.
+- `genpm_update { name, to?, strategy: '3way' | 'ai', dryRun?, allowMcp?, installNpmDeps?, planId? }` — `ai` solo actualiza lock/hashes tras confirmar que el LLM aplicó el parche. El parche va delimitado como contenido de terceros (`<package-diff trust="third-party">`).
 
 ## B.4 Resources
 

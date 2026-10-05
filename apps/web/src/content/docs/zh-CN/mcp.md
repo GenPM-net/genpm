@@ -118,6 +118,8 @@ genpm mcp setup --client gemini --scope project
 | `genpm_list` | 已安装的包及本地改动。 |
 | `genpm_remove` | 删除一个包；从不删除你修改过的代码。 |
 | `genpm_outdated` | 可用的新版本。 |
+| `genpm_diff` | 已安装软件包的上游补丁和你的本地修改。 |
+| `genpm_update` | 通过三方合并更新，或记录代理已应用的补丁（`strategy: "ai"`）。 |
 | `genpm_audit` | 完整性、签名和安全公告。 |
 | `genpm_validate` | 验证你正在编写的包。 |
 

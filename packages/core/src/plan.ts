@@ -3,7 +3,7 @@
 // local con las mismas reglas deterministas que el registry (doble verificación, security §3.1).
 
 import { createHash } from 'node:crypto';
-import { readFile, stat } from 'node:fs/promises';
+import { readdir, readFile, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
   checkDest,
@@ -13,6 +13,7 @@ import {
   type Finding,
   isAutorunFile,
   LIMITS,
+  type LockEntry,
   type McpServerEntry,
   normalizeMcp,
   parseSpec,
@@ -56,6 +57,8 @@ export type PlanInput = {
   /** Cliente de IA conectado por MCP: se añade a los detectados (no los sustituye). */
   agentClient?: Client | null;
   force?: boolean;
+  /** `genpm update` (architecture §6.6): un paquete instalado en otro commit se actualiza en lugar de dar conflicto. */
+  update?: boolean;
   allowAutorun?: boolean;
   registry?: string;
   token?: string | null;
@@ -75,7 +78,9 @@ export type PlanPackage = {
   c: string;
   d: string;
   role: 'root' | 'dep';
-  action: 'install' | 'skip' | 'conflict';
+  action: 'install' | 'update' | 'skip' | 'conflict';
+  /** Versión instalada antes de `update`. */
+  from?: string;
   reason?: string;
   files: number;
   bytes: number;
@@ -116,6 +121,8 @@ export type PlanInternal = {
     files: Array<{ path: string; size: number; sha1: string | null }>;
     rules: string | null;
     excluded: string[];
+    /** Entrada del lock antes de `update` (base del merge de 3 vías). */
+    prev: LockEntry | null;
   }>;
   fingerprint: string;
 };
@@ -133,14 +140,40 @@ function hash(v: unknown): string {
 }
 
 /** Huella del disco: si cambia entre plan() y apply() ⇒ E_PLAN_STALE. */
-export async function fingerprintOf(root: string, dests: string[]): Promise<string> {
+export async function fingerprintOf(root: string, dests: string[], deep: string[] = []): Promise<string> {
   const lock = (await readTextOrNull(join(root, LOCK_FILE))) ?? '';
   const states: string[] = [];
   for (const d of dests) {
     const abs = join(root, ...d.split('/'));
     states.push(`${d}:${(await exists(abs)) ? ((await isEmptyDir(abs)) ? 'empty' : 'full') : 'none'}`);
   }
+  // En `update` también cuenta el contenido: una edición local entre plan y apply cambia el merge.
+  for (const d of deep) states.push(`${d}#${await treeHash(join(root, ...d.split('/')))}`);
   return hash({ lock, states });
+}
+
+async function treeHash(abs: string): Promise<string> {
+  const h = createHash('sha256');
+  const walk = async (dir: string, rel: string) => {
+    let entries: import('node:fs').Dirent[];
+    try {
+      entries = await readdir(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const e of entries.sort((a, b) => a.name.localeCompare(b.name))) {
+      const r = rel ? `${rel}/${e.name}` : e.name;
+      if (e.isDirectory()) await walk(join(dir, e.name), r);
+      else h.update(`${r}\0`).update(await readFile(join(dir, e.name)));
+    }
+  };
+  await walk(abs, '');
+  return h.digest('hex');
+}
+
+/** ¿La versión instalada satisface todos los rangos que piden los paquetes del plan? */
+function satisfiesAll(items: PlanInternal['items'], name: string, version: string): boolean {
+  return items.every((x) => !x.manifest.g?.[name] || satisfies(version, x.manifest.g[name]!));
 }
 
 async function resolveDirect(
@@ -231,6 +264,7 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
         files: [],
         rules: null,
         excluded: [],
+        prev: null,
       });
       seen.add(manifest.n);
       continue;
@@ -271,6 +305,7 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
         files: [],
         rules: null,
         excluded: [],
+        prev: null,
       });
     }
   }
@@ -284,16 +319,21 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
     const destProblem = checkDest(it.dest);
     if (destProblem) throw fail('E_PATH_UNSAFE', { path: it.dest, reason: destProblem });
     await safeDestPath(root, it.dest);
+    if (input.update && it.role === 'root' && !prev) throw fail('E_NOT_FOUND', { name: m.n });
     if (prev) {
       if (prev.c === m.c) {
         it.action = 'skip';
         if (it.sg && prev.sg !== it.sg) resign.push(m.n);
         continue;
       }
-      if (
-        it.role === 'dep' &&
-        Object.values(items.map((x) => x.manifest.g ?? {})).every((g) => !g[m.n] || satisfies(prev.v, g[m.n]!))
-      ) {
+      if (input.update && (it.role === 'root' || !satisfiesAll(items, m.n, prev.v))) {
+        it.action = 'update';
+        it.prev = prev;
+        // Se actualiza donde está instalado: --dest no mueve un paquete existente.
+        it.dest = prev.d;
+        continue;
+      }
+      if (it.role === 'dep' && satisfiesAll(items, m.n, prev.v)) {
         it.action = 'skip';
         continue;
       }
@@ -302,7 +342,7 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
         code: 'E_ALREADY_INSTALLED',
         n: m.n,
         detail: `${m.n} ${prev.v} is installed; ${m.v} was requested`,
-        fix: `Run genpm remove ${m.n} first (genpm update arrives in v0.2).`,
+        fix: `Run genpm update ${m.n}.`,
       });
       continue;
     }
@@ -400,10 +440,13 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
     }
   }
 
-  // Contexto, MCP, npm y env para lo que se va a instalar.
-  const toInstall = items.filter((i) => i.action === 'install');
+  // Contexto, MCP, npm y env para lo que se va a instalar o actualizar.
+  const toInstall = items.filter((i) => i.action === 'install' || i.action === 'update');
+  const updating = new Set(items.filter((i) => i.action === 'update').map((i) => i.manifest.n));
   const finalInstalled: InstalledRef[] = [
-    ...Object.entries(lock.p).map(([n, e]) => ({ n, v: e.v, d: e.d })),
+    ...Object.entries(lock.p)
+      .filter(([n]) => !updating.has(n))
+      .map(([n, e]) => ({ n, v: e.v, d: e.d })),
     ...toInstall.map((i) => ({ n: i.manifest.n, v: i.manifest.v, d: i.dest })),
   ];
   const ops = contextOps(
@@ -449,6 +492,7 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
       role: it.role,
       action: it.action,
       ...(it.action === 'skip' && prev ? { reason: `already installed ${prev.v}` } : {}),
+      ...(it.action === 'update' && prev ? { from: prev.v } : {}),
       ...(it.action === 'conflict'
         ? { reason: conflicts.find((c) => c.n === it.manifest.n)?.detail ?? 'conflict' }
         : {}),
@@ -460,6 +504,7 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
   const fingerprint = await fingerprintOf(
     root,
     items.map((i) => i.dest),
+    items.filter((i) => i.action === 'update').map((i) => i.dest),
   );
   const body = {
     root,

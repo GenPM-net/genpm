@@ -42,6 +42,17 @@ genpm audit   # à ajouter à votre CI : npx @genpm-net/cli audit
 
 `audit` vérifie l’intégrité des fichiers, la signature du registry de chaque entrée du lock, les avis de sécurité, les versions retirées et les quarantaines. Il sort avec le code 6 en cas de problème élevé ou critique.
 
+## update et diff
+
+```bash
+genpm diff @core/auth
+genpm update @core/auth
+```
+
+`diff` affiche ce qui a changé en amont depuis votre version installée, avec des chemins qui pointent déjà vers votre dossier (appliquez-le avec `git apply --3way`). `update` fait une fusion à trois voies : les fichiers que vous n’avez pas touchés reçoivent la nouvelle version, vos lignes modifiées sont conservées et, si les deux côtés ont changé les mêmes lignes, le fichier garde les marqueurs standard `<<<<<<<` et la commande sort avec le code 4. Un fichier supprimé en amont que vous avez modifié est conservé.
+
+`genpm diff --local` liste aussi vos changements locaux ; `genpm update --dry-run` affiche le plan sans rien écrire.
+
 ## Sortie JSON
 
 Toutes les commandes acceptent `--json` (une ligne, en anglais, sans questions). Sans terminal interactif, toute question sans réponse échoue avec `E_CONFIRM_REQUIRED` (code de sortie 2) et rien n’est écrit.

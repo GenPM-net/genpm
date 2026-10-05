@@ -196,7 +196,7 @@ La raíz del proyecto la determina el servidor MCP con este orden: `roots/list` 
 4. El registry valida el token contra `GET /user` y `GET /user/orgs`, hace upsert de `accounts` + `memberships`, **descarta el token de GitHub** (no se almacena) y emite un token GenPM `gpm_…` (se guarda solo su hash).
 5. El CLI guarda el token en `~/.genpm/auth.json` (permisos `0600`), o en el llavero del SO si está disponible (post-MVP).
 
-### 6.6 Actualización con drift (diseño v0.2)
+### 6.6 Actualización con drift
 
 ```
 genpm update @core/auth

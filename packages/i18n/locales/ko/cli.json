@@ -22,7 +22,9 @@
     "mcpAdd": "설치된 패키지가 선언한 MCP 서버 기록",
     "mcpRemove": "설치된 패키지가 선언한 MCP 서버 제거",
     "cache": "다운로드 캐시 표시 또는 정리",
-    "upgrade": "독립 실행형 genpm 바이너리를 최신 릴리스로 업데이트합니다"
+    "upgrade": "독립 실행형 genpm 바이너리를 최신 릴리스로 업데이트합니다",
+    "diff": "설치된 버전 이후 upstream 변경 사항을 보여줍니다(unified diff)",
+    "update": "설치된 패키지를 업데이트하고 upstream 변경과 내 변경을 병합합니다"
   },
   "arg": {
     "cwd": "작업 디렉터리",
@@ -62,7 +64,9 @@
     "workflow": "v* 태그에서 게시하는 GitHub Actions 워크플로도 생성",
     "action": "dir | clean",
     "check": "새 버전이 있는지 확인만 합니다",
-    "targetVersion": "설치할 버전(기본값: 최신)"
+    "targetVersion": "설치할 버전(기본값: 최신)",
+    "to": "대상 버전 또는 범위(기본값: latest)",
+    "local": "로컬 변경(drift)도 표시합니다"
   },
   "label": {
     "resolved": "확인됨",
@@ -183,5 +187,20 @@
     "available": "genpm {latest}을(를) 사용할 수 있습니다(현재 {current}). genpm upgrade를 실행해 설치하세요.",
     "downloading": "genpm {version}({asset})을(를) 다운로드하는 중…",
     "done": "genpm 업데이트 완료: {from} → {to}(체크섬 확인됨)"
+  },
+  "diff": {
+    "upToDate": "{name}은(는) 최신입니다({version}).",
+    "header": "{name} {from} → {to}: upstream에서 {count, plural, other {#개 파일}} 변경",
+    "drift": "로컬 변경: {files}",
+    "clean": "로컬 변경이 없습니다."
+  },
+  "update": {
+    "confirm": "{count, plural, other {#개 패키지}}를 업데이트할까요?",
+    "nothing": "모두 최신입니다.",
+    "done": "{name} 업데이트됨 {from} → {to}",
+    "merged": "내 변경과 병합됨: {files}",
+    "conflicts": "해결할 충돌(<<<<<<< 표시를 찾으세요): {files}",
+    "orphaned": "upstream에서 삭제되었지만 내 변경이 있어 유지됨: {files}",
+    "installed": "{name} {version} 설치됨(새 의존성)"
   }
 }

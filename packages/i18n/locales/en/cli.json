@@ -22,7 +22,9 @@
     "mcpAdd": "Write the MCP servers declared by an installed package",
     "mcpRemove": "Remove the MCP servers declared by an installed package",
     "cache": "Show or clean the download cache",
-    "upgrade": "Update the standalone genpm binary to the latest release"
+    "upgrade": "Update the standalone genpm binary to the latest release",
+    "diff": "Show what changed upstream since the installed version (unified diff)",
+    "update": "Update installed packages, merging upstream changes with yours"
   },
   "arg": {
     "cwd": "Working directory",
@@ -62,7 +64,9 @@
     "workflow": "Also create a GitHub Actions workflow that publishes on v* tags",
     "action": "dir | clean",
     "check": "Only check whether a newer version exists",
-    "targetVersion": "Version to install (default: latest)"
+    "targetVersion": "Version to install (default: latest)",
+    "to": "Target version or range (default: latest)",
+    "local": "Also list your local changes (drift)"
   },
   "label": {
     "resolved": "Resolved",
@@ -183,5 +187,20 @@
     "available": "genpm {latest} is available (you have {current}). Run genpm upgrade to install it.",
     "downloading": "Downloading genpm {version} ({asset})…",
     "done": "genpm upgraded: {from} → {to} (checksum verified)"
+  },
+  "diff": {
+    "upToDate": "{name} is up to date ({version}).",
+    "header": "{name} {from} → {to}: {count, plural, one {# file} other {# files}} changed upstream",
+    "drift": "Your local changes: {files}",
+    "clean": "No local changes."
+  },
+  "update": {
+    "confirm": "Update {count, plural, one {# package} other {# packages}}?",
+    "nothing": "Everything is up to date.",
+    "done": "Updated {name} {from} → {to}",
+    "merged": "Merged with your changes: {files}",
+    "conflicts": "Conflicts to resolve (look for <<<<<<< markers): {files}",
+    "orphaned": "Removed upstream, kept with your changes: {files}",
+    "installed": "Installed {name} {version} (new dependency)"
   }
 }

@@ -22,7 +22,9 @@
     "mcpAdd": "Escribe los servidores MCP que declara un paquete instalado",
     "mcpRemove": "Quita los servidores MCP que declara un paquete instalado",
     "cache": "Muestra o limpia la caché de descargas",
-    "upgrade": "Actualiza el binario independiente de genpm a la última versión"
+    "upgrade": "Actualiza el binario independiente de genpm a la última versión",
+    "diff": "Muestra qué cambió upstream desde la versión instalada (diff unificado)",
+    "update": "Actualiza paquetes instalados fusionando los cambios upstream con los tuyos"
   },
   "arg": {
     "cwd": "Directorio de trabajo",
@@ -62,7 +64,9 @@
     "workflow": "Crea también un workflow de GitHub Actions que publica con los tags v*",
     "action": "dir | clean",
     "check": "Solo comprueba si hay una versión más nueva",
-    "targetVersion": "Versión a instalar (por defecto: la última)"
+    "targetVersion": "Versión a instalar (por defecto: la última)",
+    "to": "Versión o rango destino (por defecto: latest)",
+    "local": "Lista también tus cambios locales (drift)"
   },
   "label": {
     "resolved": "Resuelto",
@@ -183,5 +187,20 @@
     "available": "Hay una nueva versión: genpm {latest} (tienes {current}). Ejecuta genpm upgrade para instalarla.",
     "downloading": "Descargando genpm {version} ({asset})…",
     "done": "genpm actualizado: {from} → {to} (checksum verificado)"
+  },
+  "diff": {
+    "upToDate": "{name} está al día ({version}).",
+    "header": "{name} {from} → {to}: {count, plural, one {# archivo cambiado} other {# archivos cambiados}} upstream",
+    "drift": "Tus cambios locales: {files}",
+    "clean": "Sin cambios locales."
+  },
+  "update": {
+    "confirm": "¿Actualizar {count, plural, one {# paquete} other {# paquetes}}?",
+    "nothing": "Todo está al día.",
+    "done": "Actualizado {name} {from} → {to}",
+    "merged": "Fusionado con tus cambios: {files}",
+    "conflicts": "Conflictos por resolver (busca los marcadores <<<<<<<): {files}",
+    "orphaned": "Eliminado upstream, conservado con tus cambios: {files}",
+    "installed": "Instalado {name} {version} (dependencia nueva)"
   }
 }

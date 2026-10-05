@@ -7,6 +7,7 @@ import {
   apply,
   audit,
   clientFromAgent,
+  diff,
   findRoot,
   getToken,
   type InstallPlan,
@@ -36,6 +37,7 @@ import { z } from 'zod';
 export const INSTRUCTIONS = `GenPM injects full source modules (code + AI rules + MCP config) into this project from immutable Git commits.
 ${LEGEND.replace(/\(n=name.*$/, '')}
 Workflow: genpm_search → genpm_info → genpm_add {dryRun:true} → show the plan to the user → genpm_add.
+Updates: genpm_diff, then genpm_update {strategy:"3way"} (merges on disk) or apply the patch keeping local edits and genpm_update {strategy:"ai"}.
 Before editing an installed package, read <d>/AGENTS.md. Never edit genpm.lock or .genpm/.
 Only set allowMcp:true or installNpmDeps:true after the user explicitly agrees.
 Never hardcode env var values; point the user to .env.example.
@@ -106,7 +108,7 @@ export function compactPlan(p: InstallPlan): InstallPlan {
 function planText(p: InstallPlan): string {
   const lines = p.packages.map(
     (x) =>
-      `${x.action === 'skip' ? 'skip' : x.action === 'conflict' ? 'CONFLICT' : 'install'} ${x.n}@${x.v} (${x.c.slice(0, 7)}) → ${x.d}${x.reason ? ` — ${x.reason}` : ''}`,
+      `${x.action === 'skip' ? 'skip' : x.action === 'conflict' ? 'CONFLICT' : x.action === 'update' ? `update ${x.from} →` : 'install'} ${x.n}@${x.v} (${x.c.slice(0, 7)}) → ${x.d}${x.reason ? ` — ${x.reason}` : ''}`,
   );
   if (p.npm.command) lines.push(`npm (needs consent): ${p.npm.command}`);
   for (const m of p.mcp)
@@ -404,6 +406,105 @@ export function createServer(options: ServerOptions = {}): McpServer {
             : 'Everything is up to date.',
           { o },
         );
+      } catch (e) {
+        return errorResult(e);
+      }
+    },
+  );
+
+  server.registerTool(
+    'genpm_diff',
+    {
+      title: 'Upstream diff of an installed package',
+      description:
+        'Unified diff between the installed version and a newer one, with paths remapped to where the package lives in this project, plus the local changes (drift). Use it to update a package while keeping the user\'s edits: apply the patch semantically, then call genpm_update with strategy "ai".',
+      inputSchema: {
+        name: nameSchema,
+        to: z.string().max(64).optional().describe('Target version or range (default: latest)'),
+      },
+      annotations: { readOnlyHint: true, openWorldHint: true },
+    },
+    async (args) => {
+      try {
+        const base = await common(args.name);
+        // Ver un diff no es instalar: no cuenta como instalación (ADR-027).
+        const d = await diff({ ...base, telemetry: false, name: args.name, to: args.to, maxChars: TOKEN_BUDGET * 16 });
+        if (d.from === d.to) return ok(`${d.n} is up to date (${d.to}).`, { ...d });
+        const local = [...d.drift.modified, ...d.drift.deleted, ...d.drift.added];
+        const lines = [
+          `${d.n} ${d.from} → ${d.to} in ${d.d}: ${d.files.length} file(s) changed upstream.`,
+          local.length
+            ? `Local changes to preserve: ${local.join(', ')}.`
+            : 'No local changes: genpm_update {strategy:"3way"} is safe.',
+          ...(d.omitted.length ? [`Omitted from the patch (too large): ${d.omitted.join(', ')}.`] : []),
+          `<package-diff source="${d.n}@${d.to}" trust="third-party">\n${d.patch.replace(/<\/?package-diff[^>]*>/gi, '')}\n</package-diff>`,
+        ];
+        return ok(lines.join('\n'), { ...d });
+      } catch (e) {
+        return errorResult(e);
+      }
+    },
+  );
+
+  server.registerTool(
+    'genpm_update',
+    {
+      title: 'Update an installed package',
+      description:
+        'Update an installed package. strategy "3way" merges upstream changes with local edits on disk (conflicts stay with <<<<<<< markers and are listed). strategy "ai" writes no files: use it only after you applied the genpm_diff patch yourself, to record the new version in genpm.lock. Call with dryRun:true first and show the plan to the user.',
+      inputSchema: {
+        name: nameSchema,
+        to: z.string().max(64).optional().describe('Target version or range (default: latest)'),
+        strategy: z.enum(['3way', 'ai']).default('3way'),
+        dryRun: z.boolean().default(false),
+        allowMcp: z.boolean().default(false).describe('Write new MCP server config. Only after explicit user consent.'),
+        installNpmDeps: z
+          .boolean()
+          .default(false)
+          .describe('Run the package manager for new npm deps. Only after explicit user consent.'),
+        planId: z
+          .string()
+          .max(64)
+          .optional()
+          .describe('id from a previous dryRun; fails with E_PLAN_STALE if the project changed'),
+      },
+      annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+    },
+    async (args) => {
+      try {
+        const base = await common(args.name);
+        const p = await plan({
+          ...base,
+          telemetry: base.telemetry && !args.dryRun,
+          specs: [`${args.name}@${args.to ?? 'latest'}`],
+          update: true,
+        });
+        if (args.dryRun) return ok(planText(p), compactPlan(p) as unknown as Record<string, unknown>);
+        if (args.planId && args.planId !== p.id) {
+          const { fail } = await import('@genpm/core');
+          throw fail('E_PLAN_STALE');
+        }
+        const result = await apply(p, {
+          allowMcp: args.allowMcp,
+          installNpmDeps: args.installNpmDeps,
+          by: 'mcp',
+          strategy: args.strategy,
+        });
+        if (!result.updated.length && !result.installed.length)
+          return ok('Nothing to update: already at the requested version.', { plan: compactPlan(p), result });
+        const lines = result.updated.map((u) => {
+          const parts = [`Updated ${u.n} ${u.from} → ${u.v} (${u.c.slice(0, 7)}) in ${u.d}.`];
+          if (u.merged.length) parts.push(`Merged with local changes: ${u.merged.join(', ')}.`);
+          if (u.conflicts.length)
+            parts.push(
+              `Conflicts to resolve with the user (<<<<<<< markers): ${u.conflicts.map((f) => `${u.d}/${f}`).join(', ')}.`,
+            );
+          if (u.orphaned.length) parts.push(`Removed upstream but kept with local changes: ${u.orphaned.join(', ')}.`);
+          return parts.join(' ');
+        });
+        for (const i of result.installed) lines.push(`Installed new dependency ${i.n}@${i.v} → ${i.d}.`);
+        if (p.npm.command && !result.npmRan) lines.push(`Pending (needs user consent): npm: ${p.npm.command}`);
+        return ok(lines.join('\n'), { plan: compactPlan(p), result });
       } catch (e) {
         return errorResult(e);
       }

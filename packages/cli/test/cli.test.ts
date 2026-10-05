@@ -159,6 +159,36 @@ describe('genpm add', () => {
   });
 });
 
+describe('genpm update and diff', () => {
+  it('shows the upstream diff, merges local edits and exits 4 on conflicts', async () => {
+    expect((await cli('add', '@core/auth', '--yes')).code).toBe(0);
+    const sha = await repos.auth!.commit({
+      'AGENTS.md': '# @core/auth rules\n',
+      'index.ts': 'export const auth = 2;\n',
+      'extra.ts': 'export {};\n',
+    });
+    reg.add({ n: '@core/auth', v: '1.3.0', r: repos.auth!.url, c: sha, d: 'src/lib/auth', s: 'Sessions + OAuth' });
+    const d = await cli('diff', '@core/auth');
+    expect(d.code).toBe(0);
+    expect(d.stdout).toContain('diff --git a/src/lib/auth/index.ts b/src/lib/auth/index.ts');
+    expect(d.stdout).toContain('+export const auth = 2;');
+    expect(d.stderr).toContain('@core/auth 1.2.0 → 1.3.0');
+    // Conflicto: la misma línea cambiada en local y upstream.
+    await writeFile(join(project, 'src/lib/auth/index.ts'), 'export const auth = 99;\n');
+    const dry = await cli('update', '@core/auth', '--dry-run');
+    expect(dry.stdout).toContain('1.2.0 → 1.3.0');
+    expect(dry.stdout).toContain('Dry run');
+    const u = await cli('update', '@core/auth', '--yes');
+    expect(u.code).toBe(4);
+    expect(u.stdout).toContain('Updated @core/auth 1.2.0 → 1.3.0');
+    expect(u.stdout).toContain('src/lib/auth/index.ts');
+    expect(await readFile(join(project, 'src/lib/auth/extra.ts'), 'utf8')).toBe('export {};\n');
+    expect(await readFile(join(project, 'src/lib/auth/index.ts'), 'utf8')).toContain('<<<<<<< local');
+    expect((await cli('update', '@core/auth', '--yes')).stdout).toContain('Everything is up to date.');
+    expect((await cli('update', '@core/nope', '--yes')).stderr).toContain('E_NOT_FOUND');
+  });
+});
+
 describe('other commands', () => {
   it('search', async () => {
     const r = await cli('search', 'auth');

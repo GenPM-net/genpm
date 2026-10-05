@@ -9,20 +9,35 @@ import { dirname, join } from 'node:path';
 import type { LockEntry } from '@genpm/manifest';
 import { withLock } from './busy.js';
 import { fail } from './errors.js';
-import { gitBlobSha1, sourcePath } from './fetch/index.js';
+import { fetchSource, gitBlobSha1, sourcePath } from './fetch/index.js';
 import { exists, readTextOrNull, writeFileAtomic } from './fs/io.js';
 import { safeDestPath, safePath } from './fs/safe-path.js';
 import { applyBlock, contextOps, type InstalledRef } from './inject/context.js';
 import { ENV_EXAMPLE, updateEnvExample } from './inject/env.js';
 import { MCP_FILES, mcpTargets, mergeMcpConfig } from './inject/mcp.js';
 import { installArgs } from './inject/npm.js';
-import { integrityOf, LOCK_FILE, readLock, STATE_DIR, sri, writeFilesIndex, writeLock } from './lock.js';
+import {
+  integrityOf,
+  LOCK_FILE,
+  readFilesIndex,
+  readLock,
+  STATE_DIR,
+  sri,
+  writeFilesIndex,
+  writeLock,
+} from './lock.js';
+import { planMerge, readTree, type Tree } from './merge.js';
 import { fingerprintOf, type InstallPlan, planInternal } from './plan.js';
 
 export type ApplyOptions = {
   allowMcp: boolean;
   installNpmDeps: boolean;
   by: 'cli' | 'mcp';
+  /**
+   * `update`: `3way` fusiona en disco (architecture §6.6); `ai` no toca archivos (el agente ya aplicó el parche de
+   * `genpm_diff`) y solo registra la versión nueva en el lock y en `.genpm/files`.
+   */
+  strategy?: '3way' | 'ai';
   /** Solo tests (D2-G-03): se invoca tras cada paso; si lanza, se fuerza el rollback. */
   onStep?: (step: string) => void;
   log?: (line: string) => void;
@@ -31,11 +46,26 @@ export type ApplyOptions = {
 export type ApplyResult = {
   ok: true;
   installed: Array<{ n: string; v: string; c: string; d: string }>;
+  updated: UpdatedPackage[];
   written: string[];
   mcpWritten: string[];
   npmRan: boolean;
   durationMs: number;
   next: string[];
+};
+
+export type UpdatedPackage = {
+  n: string;
+  from: string;
+  v: string;
+  c: string;
+  d: string;
+  /** Archivos con marcadores de conflicto (o binarios modificados en ambos lados). */
+  conflicts: string[];
+  /** Fusionados sin conflicto. */
+  merged: string[];
+  /** Borrados upstream pero modificados en local: se conservan y dejan de estar gestionados. */
+  orphaned: string[];
 };
 
 type JournalEntry =
@@ -84,6 +114,28 @@ async function ensureDir(abs: string, journal: Journal): Promise<void> {
     await mkdir(d);
     journal.push({ op: 'mkdir', abs: d });
   }
+}
+
+/** Escribe bytes en una ruta absoluta ya validada, registrando el estado anterior. */
+async function writeBytesTracked(abs: string, data: Buffer, journal: Journal): Promise<void> {
+  const prev = await readFile(abs).catch(() => null);
+  if (prev?.equals(data)) return;
+  await ensureDir(dirname(abs), journal);
+  journal.push(prev === null ? { op: 'created', abs } : { op: 'replaced', abs, previous: prev });
+  await writeFileAtomic(abs, data);
+  await chmod(abs, 0o644);
+}
+
+/** Árbol upstream de un paquete tal como GenPM lo inyecta (archivos filtrados + reglas en `AGENTS.md`). */
+async function upstreamTree(
+  src: Awaited<ReturnType<typeof fetchSource>>,
+  m: { i: string; x: string },
+  rels: Iterable<string>,
+  rules: string | null,
+): Promise<Tree> {
+  const tree = await readTree(join(src.dir, ...(m.i === '.' ? [] : m.i.split('/'))), rels);
+  if (rules !== null && m.x !== 'AGENTS.md') tree.set('AGENTS.md', Buffer.from(rules));
+  return tree;
 }
 
 /** Escribe un archivo de texto registrando el estado anterior. Devuelve `true` si cambió. */
@@ -143,6 +195,7 @@ export async function apply(plan: InstallPlan, opts: ApplyOptions): Promise<Appl
       (await fingerprintOf(
         root,
         internal.items.map((i) => i.dest),
+        internal.items.filter((i) => i.action === 'update').map((i) => i.dest),
       )) !== internal.fingerprint
     )
       throw fail('E_PLAN_STALE');
@@ -150,6 +203,7 @@ export async function apply(plan: InstallPlan, opts: ApplyOptions): Promise<Appl
     const written = new Set<string>();
     const mcpWritten: string[] = [];
     const installed: ApplyResult['installed'] = [];
+    const updated: UpdatedPackage[] = [];
     const stagingRoot = await safePath(root, `${STATE_DIR}/tmp/${randomBytes(6).toString('hex')}`);
     try {
       await ensureStateDir(root, journal);
@@ -230,11 +284,89 @@ export async function apply(plan: InstallPlan, opts: ApplyOptions): Promise<Appl
         installed.push({ n: m.n, v: m.v, c: m.c, d: it.dest });
       }
 
+      // `update`: merge de 3 vías dentro de `<d>` (architecture §6.6). Nada se mueve: se reescribe archivo a archivo.
+      const toUpdate = internal.items.filter((i) => i.action === 'update');
+      for (const it of toUpdate) {
+        const m = it.manifest;
+        const prev = it.prev!;
+        const destAbs = await safeDestPath(root, it.dest);
+        const registered = (await readFilesIndex(root, m.n))?.f ?? {};
+        const theirsRels = it.files.map((f) => f.path);
+        for (const f of it.files) {
+          const data = await readFile(sourcePath(it.source!, m.i, f.path));
+          if (f.sha1 && f.sha1.length === 40 && gitBlobSha1(data) !== f.sha1)
+            throw fail('E_INTEGRITY', { name: m.n, detail: `${f.path} changed in cache` });
+        }
+        const theirs = await upstreamTree(it.source!, m, theirsRels, it.rules);
+        // Base: el commit instalado (de la caché o re-descargado por SHA; INV-1 lo verifica fetchSource).
+        const baseSrc = await fetchSource(
+          { r: prev.r, c: prev.c, i: m.i },
+          { ...internal.input.fetch, fetchImpl: internal.input.fetchImpl ?? internal.input.fetch?.fetchImpl },
+        );
+        const baseRules =
+          m.x !== 'AGENTS.md' ? await readFile(sourcePath(baseSrc, m.i, prev.x), 'utf8').catch(() => null) : null;
+        const base = await upstreamTree(
+          baseSrc,
+          { i: m.i, x: prev.x },
+          Object.keys(registered).filter((r) => r !== 'AGENTS.md' || prev.x === 'AGENTS.md'),
+          baseRules,
+        );
+        const ours = await readTree(destAbs, new Set([...theirs.keys(), ...Object.keys(registered)]));
+        const merge = await planMerge({ base, theirs, ours, registered });
+        if (opts.strategy !== 'ai') {
+          for (const [rel, data] of merge.writes) {
+            await writeBytesTracked(await safePath(destAbs, rel), data, journal);
+            written.add(`${it.dest}/${rel}`);
+          }
+          for (const rel of merge.deletes) {
+            const abs = await safePath(destAbs, rel);
+            const previous = await readFile(abs).catch(() => null);
+            if (previous === null) continue;
+            journal.push({ op: 'replaced', abs, previous });
+            await rm(abs, { force: true });
+            written.add(`${it.dest}/${rel}`);
+          }
+        }
+        step(`merged:${m.n}`);
+        lock.p[m.n] = {
+          v: m.v,
+          r: m.r,
+          t: m.t,
+          c: m.c,
+          d: it.dest,
+          x: m.x,
+          h: integrityOf(merge.index),
+          ...(it.sg ? { sg: it.sg } : {}),
+          m: prev.m,
+          by: opts.by,
+          ...(m.g && Object.keys(m.g).length ? { g: m.g } : {}),
+        };
+        const fiAbs = await safePath(root, `${STATE_DIR}/files/${m.n.replace(/^@/, '').replace('/', '__')}.json`);
+        const prevFi = await readFile(fiAbs).catch(() => null);
+        await ensureDir(dirname(fiAbs), journal);
+        journal.push(
+          prevFi === null ? { op: 'created', abs: fiAbs } : { op: 'replaced', abs: fiAbs, previous: prevFi },
+        );
+        await writeFilesIndex(root, m.n, { c: m.c, f: merge.index });
+        const of = (k: string[]) => merge.outcomes.filter((o) => k.includes(o.kind)).map((o) => o.rel);
+        updated.push({
+          n: m.n,
+          from: prev.v,
+          v: m.v,
+          c: m.c,
+          d: it.dest,
+          conflicts: opts.strategy === 'ai' ? [] : of(['conflict', 'binary-conflict']),
+          merged: opts.strategy === 'ai' ? [] : of(['merged']),
+          orphaned: of(['orphan']),
+        });
+      }
+
       // Contexto con alcance: archivos por IDE + índices raíz (bloques gestionados).
+      const changed = [...toInstall, ...toUpdate];
       const all: InstalledRef[] = Object.entries(lock.p).map(([n, e]) => ({ n, v: e.v, d: e.d }));
       const ops = contextOps(
         internal.clients,
-        toInstall.map((i) => ({ ref: { n: i.manifest.n, v: i.manifest.v, d: i.dest }, rules: i.rules ?? '' })),
+        changed.map((i) => ({ ref: { n: i.manifest.n, v: i.manifest.v, d: i.dest }, rules: i.rules ?? '' })),
         all,
       );
       for (const op of ops) {
@@ -248,7 +380,7 @@ export async function apply(plan: InstallPlan, opts: ApplyOptions): Promise<Appl
       step('context');
 
       // `.env.example`: bloque con los nombres de todas las variables de los paquetes instalados (nunca valores).
-      const envByPkg = toInstall.map((i) => ({ n: i.manifest.n, e: i.manifest.e ?? [] })).filter((p) => p.e.length);
+      const envByPkg = changed.map((i) => ({ n: i.manifest.n, e: i.manifest.e ?? [] })).filter((p) => p.e.length);
       if (envByPkg.length) {
         const current = await readTextOrNull(await safePath(root, ENV_EXAMPLE));
         const existing = current?.match(/# genpm:env:start\n([\s\S]*?)\n# genpm:env:end/)?.[1] ?? '';
@@ -268,14 +400,14 @@ export async function apply(plan: InstallPlan, opts: ApplyOptions): Promise<Appl
       // MCP (INV-5): solo con consentimiento.
       if (opts.allowMcp) {
         for (const target of mcpTargets(internal.clients)) {
-          const servers = toInstall.flatMap((i) => i.manifest.m ?? []);
+          const servers = changed.flatMap((i) => i.manifest.m ?? []);
           if (!servers.length) continue;
           const rel = MCP_FILES[target];
           const current = await readTextOrNull(await safePath(root, rel));
           const merged = mergeMcpConfig(current, target, servers);
           if (merged.changed && (await writeTracked(root, rel, merged.text, journal))) mcpWritten.push(rel);
         }
-        for (const it of toInstall) if ((it.manifest.m ?? []).length) lock.p[it.manifest.n]!.m = 1;
+        for (const it of changed) if ((it.manifest.m ?? []).length) lock.p[it.manifest.n]!.m = 1;
       }
       step('mcp');
 
@@ -310,12 +442,21 @@ export async function apply(plan: InstallPlan, opts: ApplyOptions): Promise<Appl
     const next: string[] = [];
     if (plan.env.length) next.push(`Set ${plan.env.join(', ')} (see .env.example)`);
     for (const it of installed) next.push(`Follow "Integration" in ${it.d}/AGENTS.md`);
+    for (const u of updated) {
+      if (u.conflicts.length)
+        next.push(`Resolve conflict markers in ${u.conflicts.map((f) => `${u.d}/${f}`).join(', ')}`);
+      if (u.orphaned.length)
+        next.push(
+          `Review ${u.orphaned.map((f) => `${u.d}/${f}`).join(', ')}: removed upstream, kept with your changes`,
+        );
+    }
     if (plan.npm.command && !npmRan) next.push(`Run ${plan.npm.command}`);
     if (plan.mcp.length && !opts.allowMcp)
       next.push(`Enable MCP later: genpm mcp add ${[...new Set(plan.mcp.map((m) => m.from))].join(' ')}`);
     return {
       ok: true,
       installed,
+      updated,
       written: [...written].sort(),
       mcpWritten,
       npmRan,
