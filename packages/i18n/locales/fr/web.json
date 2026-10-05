@@ -50,7 +50,8 @@
     "beta": "Bêta publique · Traduction automatique (bêta)",
     "legalNotice": "Mentions légales",
     "cookies": "Cookies",
-    "madeBy": "Créé par {name}"
+    "madeBy": "Créé par {name}",
+    "recipes": "Recettes"
   },
   "common": {
     "copy": "Copier",
@@ -728,5 +729,12 @@
     "how": "Ajoutez id-token: write aux permissions du job et lancez genpm publish : sans GENPM_TOKEN, il demande un jeton OIDC à Actions et l’échange automatiquement.",
     "provider": "Hébergeur",
     "howGitlab": "GitLab CI : déclarez id_tokens avec aud genpm sous le nom GENPM_ID_TOKEN et lancez genpm publish. Les projets GitLab ne publient que via la publication de confiance et doivent être publics."
+  },
+  "recipes": {
+    "title": "Recettes",
+    "lede": "Les recettes installent en une commande plusieurs paquets qui fonctionnent ensemble : même plan, mêmes vérifications et mêmes questions que genpm add.",
+    "empty": "Le registre ne contient encore aucune recette.",
+    "localTitle": "Votre propre recette",
+    "local": "Une recette peut aussi être un fichier JSON dans votre dépôt : partagez la stack de votre équipe et installez-la partout."
   }
 }

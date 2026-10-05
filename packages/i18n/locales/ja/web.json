@@ -50,7 +50,8 @@
     "beta": "パブリックベータ · 機械翻訳（ベータ）",
     "legalNotice": "法的表示",
     "cookies": "Cookie",
-    "madeBy": "制作：{name}"
+    "madeBy": "制作：{name}",
+    "recipes": "レシピ"
   },
   "common": {
     "copy": "コピー",
@@ -728,5 +729,12 @@
     "how": "ジョブの権限に id-token: write を追加し、genpm publish を実行します。GENPM_TOKEN がなければ Actions に OIDC トークンを要求し、自動で交換します。",
     "provider": "ホスト",
     "howGitlab": "GitLab CI: aud を genpm にした id_tokens を GENPM_ID_TOKEN として宣言し、genpm publish を実行します。GitLab プロジェクトは信頼済みパブリッシング経由でのみ公開でき、公開プロジェクトである必要があります。"
+  },
+  "recipes": {
+    "title": "レシピ",
+    "lede": "レシピは、一緒に動く複数のパッケージを 1 つのコマンドでインストールします。genpm add と同じプラン、チェック、確認が行われます。",
+    "empty": "レジストリにはまだレシピがありません。",
+    "localTitle": "自分のレシピ",
+    "local": "レシピはリポジトリ内の JSON ファイルにもできます。チームのスタックを共有し、どこにでもインストールできます。"
   }
 }

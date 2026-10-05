@@ -24,7 +24,8 @@
     "cache": "Mostrar ou limpar o cache de downloads",
     "upgrade": "Atualiza o binário independente do genpm para a versão mais recente",
     "diff": "Mostra o que mudou upstream desde a versão instalada (diff unificado)",
-    "update": "Atualiza pacotes instalados mesclando as mudanças upstream com as suas"
+    "update": "Atualiza pacotes instalados mesclando as mudanças upstream com as suas",
+    "compose": "Instala de uma vez todos os pacotes de uma receita (nome do registry ou arquivo JSON local)"
   },
   "arg": {
     "cwd": "Diretório de trabalho",
@@ -66,7 +67,9 @@
     "check": "Só verifica se existe uma versão mais nova",
     "targetVersion": "Versão a instalar (padrão: a mais recente)",
     "to": "Versão ou faixa de destino (padrão: latest)",
-    "local": "Lista também as suas mudanças locais (drift)"
+    "local": "Lista também as suas mudanças locais (drift)",
+    "recipe": "Nome da receita (ex.: saas-starter) ou caminho para um arquivo JSON de receita",
+    "listRecipes": "Lista as receitas publicadas no registry"
   },
   "label": {
     "resolved": "Resolvido",
@@ -210,5 +213,9 @@
     "rulesIntegration": "AGENTS.md tem passos de integração (## Integration)",
     "rulesConventions": "AGENTS.md lista convenções ou proibições",
     "tests": "Inclui testes"
+  },
+  "compose": {
+    "none": "Ainda não há receitas neste registry.",
+    "hint": "Instale uma com: genpm compose <nome> --dry-run"
   }
 }

@@ -56,3 +56,17 @@ genpm update @core/auth
 ## JSON 출력
 
 모든 명령은 `--json`(한 줄, 영어, 질문 없음)을 지원합니다. 대화형 터미널이 없으면 답하지 않은 질문은 `E_CONFIRM_REQUIRED`(종료 코드 2)로 실패하며 아무것도 쓰지 않습니다.
+
+## 레시피: 여러 패키지를 한 번에
+
+레시피는 함께 동작하는 여러 패키지를 명령 하나로 설치하며, 계획과 확인 절차는 `genpm add`와 같습니다. GenPM이 엄선한 레시피는 [/recipes](/recipes)에 있고, 팀의 레시피를 저장소의 JSON 파일로 둘 수도 있습니다.
+
+```bash
+genpm compose --list
+genpm compose saas-starter --dry-run
+genpm compose ./stack.json
+```
+
+```json
+{ "name": "my-stack", "p": ["@core/db", "@core/auth@^1.2"] }
+```

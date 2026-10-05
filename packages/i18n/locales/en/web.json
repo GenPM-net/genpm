@@ -50,7 +50,8 @@
     "beta": "Public beta",
     "legalNotice": "Legal notice",
     "cookies": "Cookies",
-    "madeBy": "Made by {name}"
+    "madeBy": "Made by {name}",
+    "recipes": "Recipes"
   },
   "common": {
     "copy": "Copy",
@@ -728,5 +729,12 @@
     "how": "Add id-token: write to the job permissions and run genpm publish: with no GENPM_TOKEN it asks Actions for an OIDC token and exchanges it automatically.",
     "provider": "Host",
     "howGitlab": "GitLab CI: declare id_tokens with aud genpm as GENPM_ID_TOKEN and run genpm publish. GitLab projects can only publish through trusted publishing, and must be public."
+  },
+  "recipes": {
+    "title": "Recipes",
+    "lede": "Recipes install several packages that work together with one command: the same plan, checks and questions as genpm add.",
+    "empty": "There are no recipes in the registry yet.",
+    "localTitle": "Your own recipe",
+    "local": "A recipe can also be a JSON file in your repository: share your team's stack and install it anywhere."
   }
 }

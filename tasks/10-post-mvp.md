@@ -70,7 +70,8 @@
   - ✅ 2026-10-05 (ADR-028): sin vincular cuentas; el dueño del scope autoriza un proyecto público de gitlab.com como editor de confianza y GitLab CI publica con `id_tokens` (`GENPM_ID_TOKEN`). Registry: `services/gitlab.ts` + `source-host.ts` (publish, auditoría de tags y compare agnósticos del host), OIDC multiemisor. CLI: remotos de GitLab y tarball del API anclado al SHA. Web: README/árbol desde GitLab, selector de host en /settings/publishing. Docs en 8 idiomas.
 - [x] `V03-04` **DONE** Transporte MCP HTTP remoto de solo lectura · B · 12h · deps: V02-02
   - ✅ 2026-10-05: `mcp.genpm.net` (custom domain del Worker del registry) y `/mcp` en el API; Streamable HTTP sin estado, `genpm_search`/`genpm_info`, CORS abierto, docs en 8 idiomas. Pendiente fundador: nada (el dominio se crea al desplegar).
-- [ ] `V03-05` **TODO** Recetas compose (varios paquetes en un comando) · B · 16h · deps: V02-01
+- [x] `V03-05` **DONE** Recetas compose (varios paquetes en un comando) · B · 16h · deps: V02-01
+  - ✅ 2026-10-05: `validateRecipe` en manifest; migración 0008 `recipes`, `GET /v1/recipes[/:slug]`, gestión staff `PUT/DELETE /v1/admin/recipes/:slug`; core `loadRecipe` (slug o JSON local); `genpm compose <receta> [--list]` con el flujo de `add`; MCP `genpm_add {recipe}`; página `/recipes`; docs en 8 idiomas. Pendiente fundador: crear las primeras recetas con el API de staff.
 - [ ] `V03-06` **TODO** Auditoría de seguridad externa · F · 8h · deps: V02-01
 
 ## v1.0 · SaaS · +3 meses

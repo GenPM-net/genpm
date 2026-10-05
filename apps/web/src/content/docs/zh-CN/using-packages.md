@@ -56,3 +56,17 @@ genpm update @core/auth
 ## JSON 输出
 
 所有命令都支持 `--json`（单行、英文、不提问）。没有交互式终端时，任何未回答的问题都会以 `E_CONFIRM_REQUIRED`（退出码 2）失败，并且不会写入任何内容。
+
+## 配方：一次安装多个软件包
+
+配方用一条命令安装多个可协同工作的软件包，计划和确认与 `genpm add` 相同。GenPM 精选的配方列在 [/recipes](/recipes)；你的团队也可以把自己的配方作为 JSON 文件放在仓库里。
+
+```bash
+genpm compose --list
+genpm compose saas-starter --dry-run
+genpm compose ./stack.json
+```
+
+```json
+{ "name": "my-stack", "p": ["@core/db", "@core/auth@^1.2"] }
+```

@@ -1,6 +1,7 @@
 // /v1/admin/* (solo staff): GET /analytics para el panel /admin/analytics (ADR-027) y la cola de moderación /queue
 // (V02-08). Lee Analytics Engine
 // (visitas e instalaciones, sin identificadores) y D1 (publicaciones, logins y cuentas nuevas). Nunca se cachea.
+import { validateRecipe } from '@genpm/manifest';
 import type { Context, MiddlewareHandler } from 'hono';
 import { Hono } from 'hono';
 import { z } from 'zod';
@@ -250,6 +251,48 @@ export const admin = new Hono<AppEnv>()
       .run();
     if (!r.meta.changes) throw httpError('E_NOT_FOUND', { name: id });
     await (await audit(c, 'package.featured', 'package', id, { rank: body.data.rank })).run();
+    return c.json({ ok: true });
+  })
+  // Recetas compose (V03-05): crear o reemplazar; cada paquete tiene que existir en este registry.
+  .put('/recipes/:slug', async (c) => {
+    const slug = c.req.param('slug');
+    const input = await c.req.json().catch(() => null);
+    const v = validateRecipe(input && typeof input === 'object' ? { ...input, name: slug } : input);
+    if (!v.ok) throw httpError('E_BAD_REQUEST', { detail: v.issues.map((i) => `${i.path}: ${i.message}`).join('; ') });
+    const names = v.data.p.map((p) => p.replace(/^(@[^/]+\/[^@]+).*$/, '$1'));
+    const { results } = await c.env.DB.prepare(
+      `SELECT full_name FROM packages WHERE registry_id = ?1 AND full_name IN (SELECT value FROM json_each(?2))`,
+    )
+      .bind(c.get('tenant').registryId, JSON.stringify(names))
+      .all<{ full_name: string }>();
+    const missing = names.filter((n) => !results.some((r) => r.full_name === n));
+    if (missing.length) throw httpError('E_NOT_FOUND', { name: missing.join(', ') });
+    const now = Date.now();
+    await c.env.DB.batch([
+      c.env.DB.prepare(
+        `INSERT INTO recipes (id, registry_id, slug, summary, specs, created_by, created_at, updated_at)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?7)
+         ON CONFLICT (registry_id, slug) DO UPDATE SET summary = ?4, specs = ?5, updated_at = ?7`,
+      ).bind(
+        newId('rcp'),
+        c.get('tenant').registryId,
+        slug,
+        v.data.s === undefined ? null : JSON.stringify(v.data.s),
+        JSON.stringify(v.data.p),
+        c.get('actor')!.accountId,
+        now,
+      ),
+      await audit(c, 'recipe.put', 'recipe', slug, { p: v.data.p }),
+    ]);
+    return c.json({ ok: true, name: slug });
+  })
+  .delete('/recipes/:slug', async (c) => {
+    const slug = c.req.param('slug');
+    const r = await c.env.DB.prepare('DELETE FROM recipes WHERE registry_id = ?1 AND slug = ?2')
+      .bind(c.get('tenant').registryId, slug)
+      .run();
+    if (!r.meta.changes) throw httpError('E_NOT_FOUND', { name: slug });
+    await (await audit(c, 'recipe.delete', 'recipe', slug, {})).run();
     return c.json({ ok: true });
   })
   .post('/leads/:id', async (c) => {

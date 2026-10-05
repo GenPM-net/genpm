@@ -15,6 +15,7 @@ import {
   LOCK_FILE,
   list,
   loadRc,
+  loadRecipe,
   outdated,
   plan,
   readLock,
@@ -27,7 +28,7 @@ import {
   VERSION,
   validate,
 } from '@genpm/core';
-import { AGENT_RULES, estimateTokens, GenpmError, LEGEND, NAME_RE } from '@genpm/manifest';
+import { AGENT_RULES, estimateTokens, GenpmError, LEGEND, NAME_RE, RECIPE_SLUG_RE } from '@genpm/manifest';
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { RootsListChangedNotificationSchema } from '@modelcontextprotocol/sdk/types.js';
@@ -278,9 +279,14 @@ export function createServer(options: ServerOptions = {}): McpServer {
     {
       title: 'Install a GenPM package',
       description:
-        'Inject a GenPM package (and its GenPM dependencies) into the project. ALWAYS call with dryRun:true first and show the plan to the user.',
+        'Inject a GenPM package (and its GenPM dependencies), or every package of a recipe, into the project. ALWAYS call with dryRun:true first and show the plan to the user.',
       inputSchema: {
-        name: nameSchema,
+        name: nameSchema.optional(),
+        recipe: z
+          .string()
+          .regex(RECIPE_SLUG_RE)
+          .optional()
+          .describe('Registry recipe to install instead of one package, e.g. saas-starter'),
         version: z.string().max(64).optional(),
         dest: z.string().max(200).optional().describe('Override install dir (relative path)'),
         dryRun: z.boolean().default(false),
@@ -299,15 +305,21 @@ export function createServer(options: ServerOptions = {}): McpServer {
     },
     async (args) => {
       try {
-        const spec = args.version ? `${args.name}@${args.version}` : args.name;
         // Sin `force` en el MCP: sobrescribir código del usuario exige el CLI (B.6).
-        const base = await common(args.name);
+        const base = await common(args.name ?? null);
+        let specs: string[];
+        if (args.recipe) specs = (await loadRecipe({ ...base, recipe: args.recipe })).specs;
+        else if (args.name) specs = [args.version ? `${args.name}@${args.version}` : args.name];
+        else {
+          const { fail } = await import('@genpm/core');
+          throw fail('E_USAGE', { detail: 'pass name or recipe' });
+        }
         // Una vista previa no es una instalación: el apply posterior es el que cuenta (ADR-027).
         const p = await plan({
           ...base,
           telemetry: base.telemetry && !args.dryRun,
-          specs: [spec],
-          dest: args.dest,
+          specs,
+          dest: specs.length === 1 ? args.dest : undefined,
         });
         if (args.dryRun) return ok(planText(p), compactPlan(p) as unknown as Record<string, unknown>);
         if (args.planId && args.planId !== p.id) {

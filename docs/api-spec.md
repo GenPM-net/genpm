@@ -71,6 +71,7 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | PATCH | `/v1/me` | token/cookie | ✅ | Preferencias de la cuenta (`{locale}`) |
 | GET | `/v1/status` | — | ✅ | Página /status: componentes y última ejecución de cada cron (`registry_meta` `cron:<expr>`) |
 | POST | `/v1/auth/github/exchange` | — | ✅ | `genpm login` (device flow) |
+| GET | `/v1/recipes`, `/v1/recipes/:slug` | — | ✅ | Recetas compose (V03-05): `{ name, summary, p: [specs] }`. Staff: `PUT/DELETE /v1/admin/recipes/:slug` con `{ s?, p }` (cada paquete debe existir) |
 | POST | `/mcp` (y raíz de `mcp.genpm.net`) | — | ✅ | MCP remoto de solo lectura (V03-04): JSON-RPC Streamable HTTP sin estado, tools `genpm_search` y `genpm_info` |
 | POST | `/v1/auth/oidc/exchange` | — (JWT OIDC de GitHub Actions o GitLab CI) | ✅ | Trusted publishing (V03-01, GitLab V03-03/ADR-028): token `publish` de 15 min, restringido al scope y al repo (`owner/repo` o `gitlab.com/<ruta>`) |
 | GET/POST/DELETE | `/v1/scopes/:scope/trusted-publishers[/:id]` | token (owner/admin del scope; resto ⇒ 404) | ✅ | Repos autorizados para trusted publishing (`/settings/publishing`). Cuerpo: `{ provider?: 'github'\|'gitlab', repository, workflow?, environment? }`; GitLab: proyecto público con subgrupos |

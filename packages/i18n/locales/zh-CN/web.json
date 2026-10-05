@@ -50,7 +50,8 @@
     "beta": "公开测试版 · 机器翻译（测试版）",
     "legalNotice": "法律声明",
     "cookies": "Cookie",
-    "madeBy": "作者：{name}"
+    "madeBy": "作者：{name}",
+    "recipes": "配方"
   },
   "common": {
     "copy": "复制",
@@ -728,5 +729,12 @@
     "how": "在 job 权限中加入 id-token: write 并运行 genpm publish：没有 GENPM_TOKEN 时，它会向 Actions 请求 OIDC 令牌并自动兑换。",
     "provider": "托管平台",
     "howGitlab": "GitLab CI：将 aud 为 genpm 的 id_tokens 声明为 GENPM_ID_TOKEN，然后运行 genpm publish。GitLab 项目只能通过可信发布来发布，并且必须是公开项目。"
+  },
+  "recipes": {
+    "title": "配方",
+    "lede": "配方用一条命令安装多个可协同工作的软件包：与 genpm add 相同的计划、检查和确认。",
+    "empty": "注册表中还没有配方。",
+    "localTitle": "你自己的配方",
+    "local": "配方也可以是仓库中的一个 JSON 文件：共享团队的技术栈，在任何项目中安装。"
   }
 }

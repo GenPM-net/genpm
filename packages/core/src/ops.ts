@@ -1,14 +1,16 @@
-// Operaciones de consumidor sobre un proyecto (cli-mcp-spec §0, §A.5): list, remove, info, search, outdated, audit.
+// Operaciones de consumidor sobre un proyecto (cli-mcp-spec §0, §A.5): list, remove, info, search, outdated, audit, compose.
 
 import { readdir, readFile, rm, rmdir } from 'node:fs/promises';
-import { join } from 'node:path';
+import { isAbsolute, join } from 'node:path';
 import {
   compareVersions,
   diffKind,
   GenpmError,
   normalizeMcp,
   pickSummary,
+  RECIPE_SLUG_RE,
   type ResolvedManifest,
+  validateRecipe,
   verifyManifest,
 } from '@genpm/manifest';
 import { withLock } from './busy.js';
@@ -467,4 +469,48 @@ export async function audit(opts: CommonOptions): Promise<AuditReport> {
   const signaturesValid = !findings.some((f) => f.kind === 'signature');
   const ok = !findings.some((f) => f.severity === 'high' || f.severity === 'critical');
   return { ok, packages: Object.keys(lock.p).length, signaturesValid, findings, drift };
+}
+
+// ───────────── compose (V03-05) ─────────────
+
+export type ResolvedRecipe = { name: string; summary: string | null; specs: string[]; source: 'file' | 'registry' };
+
+/**
+ * Receta compose: archivo local (`./saas.json`, `file:…`, cualquier ruta acabada en `.json`) o slug del registry
+ * (`saas-starter`). Se valida siempre con `validateRecipe`: solo specs del registry, sin duplicados.
+ */
+export async function loadRecipe(opts: CommonOptions & { recipe: string; locale?: string }): Promise<ResolvedRecipe> {
+  const ref = opts.recipe.trim();
+  const isFile = ref.startsWith('file:') || ref.startsWith('.') || ref.startsWith('/') || ref.endsWith('.json');
+  if (isFile) {
+    const path = ref.replace(/^file:/, '');
+    const text = await readTextOrNull(isAbsolute(path) ? path : join(opts.cwd, path));
+    if (text === null) throw fail('E_NOT_FOUND', { name: path });
+    let raw: unknown;
+    try {
+      raw = JSON.parse(text);
+    } catch {
+      throw fail('E_MANIFEST_INVALID', {}, { issues: [{ path, message: 'invalid JSON' }] });
+    }
+    const v = validateRecipe(raw);
+    if (!v.ok) throw fail('E_MANIFEST_INVALID', {}, { issues: v.issues });
+    return {
+      name: v.data.name,
+      summary: v.data.s === undefined ? null : (pickSummary(v.data.s, opts.locale ?? 'en') ?? null),
+      specs: v.data.p,
+      source: 'file',
+    };
+  }
+  if (!RECIPE_SLUG_RE.test(ref)) throw fail('E_USAGE', { detail: 'genpm compose <recipe-name | ./recipe.json>' });
+  const { client } = await clientFor(opts, null);
+  const r = await client.recipe(ref);
+  // El registry ya validó al guardar, pero el cliente no confía: se revalida antes de planificar.
+  const v = validateRecipe({ name: r.name, p: r.p });
+  if (!v.ok) throw fail('E_MANIFEST_INVALID', {}, { issues: v.issues });
+  return { name: r.name, summary: r.summary, specs: v.data.p, source: 'registry' };
+}
+
+export async function listRecipes(opts: CommonOptions) {
+  const { client } = await clientFor(opts, null);
+  return client.recipes();
 }

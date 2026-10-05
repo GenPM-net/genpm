@@ -24,7 +24,8 @@
     "cache": "Afficher ou vider le cache de téléchargement",
     "upgrade": "Met à jour le binaire autonome genpm vers la dernière version",
     "diff": "Affiche ce qui a changé en amont depuis la version installée (diff unifié)",
-    "update": "Met à jour les paquets installés en fusionnant les changements amont avec les vôtres"
+    "update": "Met à jour les paquets installés en fusionnant les changements amont avec les vôtres",
+    "compose": "Installe en une fois tous les paquets d’une recette (nom dans le registre ou fichier JSON local)"
   },
   "arg": {
     "cwd": "Répertoire de travail",
@@ -66,7 +67,9 @@
     "check": "Vérifie seulement s’il existe une version plus récente",
     "targetVersion": "Version à installer (par défaut : la dernière)",
     "to": "Version ou plage cible (par défaut : latest)",
-    "local": "Liste aussi vos changements locaux (drift)"
+    "local": "Liste aussi vos changements locaux (drift)",
+    "recipe": "Nom de la recette (ex. saas-starter) ou chemin vers un fichier JSON de recette",
+    "listRecipes": "Liste les recettes publiées dans le registre"
   },
   "label": {
     "resolved": "Résolu",
@@ -210,5 +213,9 @@
     "rulesIntegration": "AGENTS.md donne les étapes d’intégration (## Integration)",
     "rulesConventions": "AGENTS.md liste conventions ou interdits",
     "tests": "Contient des tests"
+  },
+  "compose": {
+    "none": "Aucune recette dans ce registre pour l’instant.",
+    "hint": "Installez-en une avec : genpm compose <nom> --dry-run"
   }
 }

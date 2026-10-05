@@ -159,6 +159,30 @@ describe('genpm add', () => {
   });
 });
 
+describe('genpm compose (V03-05)', () => {
+  it('lists recipes and installs every package of one with the add flow', async () => {
+    reg.recipes['saas-starter'] = { summary: 'DB + auth', p: ['@core/db', '@core/auth'] };
+    const ls = await cli('compose', '--list');
+    expect(ls.stdout).toContain('saas-starter');
+    expect(ls.stdout).toContain('@core/db @core/auth');
+    const dry = await cli('compose', 'saas-starter', '--dry-run');
+    expect(dry.code).toBe(0);
+    expect(dry.stdout).toContain('genpm compose saas-starter → @core/db @core/auth');
+    const r = await cli('compose', 'saas-starter', '--yes', '--json');
+    expect(r.code).toBe(0);
+    const out = JSON.parse(r.stdout) as { result: { installed: Array<{ n: string }> } };
+    expect(out.result.installed.map((x) => x.n).sort()).toEqual(['@core/auth', '@core/db']);
+  });
+  it('accepts a local recipe file and rejects invalid ones', async () => {
+    await writeFile(join(project, 'stack.json'), JSON.stringify({ name: 'stack', p: ['@core/db'] }));
+    expect((await cli('compose', './stack.json', '--dry-run')).stdout).toContain('genpm compose stack → @core/db');
+    await writeFile(join(project, 'bad.json'), JSON.stringify({ name: 'bad', p: ['gh:x/y#v1'] }));
+    const bad = await cli('compose', './bad.json', '--dry-run');
+    expect(bad.code).not.toBe(0);
+    expect(bad.stderr).toContain('E_MANIFEST_INVALID');
+  });
+});
+
 describe('genpm update and diff', () => {
   it('shows the upstream diff, merges local edits and exits 4 on conflicts', async () => {
     expect((await cli('add', '@core/auth', '--yes')).code).toBe(0);

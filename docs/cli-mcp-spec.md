@@ -201,6 +201,14 @@ Salida humana:
 
 `--json`: `{"ok":true,"plan":InstallPlan,"result":ApplyResult}` · con `--dry-run`: `{"ok":true,"plan":InstallPlan}` · error: `{"ok":false,"error":{"code","message","fix","details"}}`.
 
+
+### `genpm compose <receta> [--list]` ✅ (V03-05)
+
+Instala de una vez los paquetes de una receta: slug del registry (`GET /v1/recipes/:slug`) o archivo JSON local
+(`./stack.json`, validado con `validateRecipe`: `{ name, s?, p: ["@scope/name[@rango]", …] }`, solo specs del registry,
+sin duplicados, máx. 20). Mismo plan, confirmaciones, consentimientos (MCP, npm) y flags que `genpm add`. Sin receta o
+con `--list`, lista las del registry. MCP: `genpm_add { recipe }` (solo slug del registry).
+
 ### `genpm search [query]` ✅
 
 | Flag | Descripción |

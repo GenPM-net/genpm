@@ -19,6 +19,7 @@ import { mcpRoutes } from './routes/mcp.js';
 import { myRepos } from './routes/my-repos.js';
 import { packages } from './routes/packages.js';
 import { publish } from './routes/publish.js';
+import { recipes } from './routes/recipes.js';
 import { resolve } from './routes/resolve.js';
 import { search } from './routes/search.js';
 import { oidc, trusted } from './routes/trusted.js';
@@ -86,6 +87,7 @@ export function createApp() {
   app.route('/v1/auth', auth);
   app.route('/v1/auth', oidc);
   app.route('/v1/scopes', trusted);
+  app.route('/v1/recipes', recipes);
   app.route('/v1/featured', featured);
   app.route('/v1/stats', stats);
   app.route('/v1/scopes', scopes);

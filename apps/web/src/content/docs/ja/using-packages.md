@@ -56,3 +56,17 @@ genpm update @core/auth
 ## JSON 出力
 
 すべてのコマンドが `--json`（1 行、英語、確認なし）に対応しています。対話できる端末がない場合、未回答の確認は `E_CONFIRM_REQUIRED`（終了コード 2）で失敗し、何も書き込まれません。
+
+## レシピ: 複数のパッケージをまとめて
+
+レシピは、一緒に動く複数のパッケージを 1 つのコマンドでインストールします。プランと確認は `genpm add` と同じです。GenPM が選んだレシピは [/recipes](/recipes) にあります。チームのレシピをリポジトリ内の JSON ファイルとして持つこともできます。
+
+```bash
+genpm compose --list
+genpm compose saas-starter --dry-run
+genpm compose ./stack.json
+```
+
+```json
+{ "name": "my-stack", "p": ["@core/db", "@core/auth@^1.2"] }
+```

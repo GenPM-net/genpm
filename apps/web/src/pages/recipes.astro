@@ -1,0 +1,35 @@
+---
+// /recipes (V03-05): recetas compose del registry. Cada una instala varios paquetes con un comando (`genpm compose`).
+import CommandBlock from '../components/CommandBlock.astro';
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/i18n.js';
+import { registryFetch } from '../lib/registry.js';
+
+const { t, locale } = Astro.locals;
+type Recipe = { name: string; summary: string | null; p: string[] };
+const res = await registryFetch('/v1/recipes', { locale }).catch(() => null);
+const recipes = res?.ok ? ((await res.json()) as { recipes: Recipe[] }).recipes : [];
+const pkgName = (spec: string) => spec.replace(/^(@[^/]+\/[^@]+).*$/, '$1');
+const example = `{
+  "name": "my-stack",
+  "p": ["@core/db", "@core/auth@^1.2"]
+}`;
+Astro.response.headers.set('Cache-Control', 'public, max-age=300');
+---
+<Base title={t.t('web.recipes.title')} description={t.t('web.recipes.lede')}>
+  <div class="wrap" style="max-width:860px">
+    <div class="phead"><h1>{t.t('web.recipes.title')}</h1><p>{t.t('web.recipes.lede')}</p></div>
+    {recipes.length === 0 && <p class="hint">{t.t('web.recipes.empty')}</p>}
+    {recipes.map((r) => (
+      <section class="sec"><div class="sec-h"><div><h2 class="mono">{r.name}</h2>{r.summary && <p>{r.summary}</p>}</div></div>
+        <p>{r.p.map((s, i) => <>{i > 0 && ' · '}<a class="mono" href={href(locale, `/p/${pkgName(s)}`)}>{s}</a></>)}</p>
+        <CommandBlock command={`npx -y @genpm-net/cli compose ${r.name}`} event="copy_compose" />
+      </section>
+    ))}
+    <section class="sec"><div class="sec-h"><h2>{t.t('web.recipes.localTitle')}</h2></div>
+      <p>{t.t('web.recipes.local')}</p>
+      <div class="term"><div class="bar"><span>stack.json</span><button class="cp" type="button" data-copy="rcp-json">{t.t('web.common.copy')}</button></div><pre id="rcp-json">{example}</pre></div>
+      <CommandBlock command="npx -y @genpm-net/cli compose ./stack.json" event="copy_compose" />
+    </section>
+  </div>
+</Base>

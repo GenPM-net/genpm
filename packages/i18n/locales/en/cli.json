@@ -24,7 +24,8 @@
     "cache": "Show or clean the download cache",
     "upgrade": "Update the standalone genpm binary to the latest release",
     "diff": "Show what changed upstream since the installed version (unified diff)",
-    "update": "Update installed packages, merging upstream changes with yours"
+    "update": "Update installed packages, merging upstream changes with yours",
+    "compose": "Install every package of a recipe (registry name or local JSON file) in one go"
   },
   "arg": {
     "cwd": "Working directory",
@@ -66,7 +67,9 @@
     "check": "Only check whether a newer version exists",
     "targetVersion": "Version to install (default: latest)",
     "to": "Target version or range (default: latest)",
-    "local": "Also list your local changes (drift)"
+    "local": "Also list your local changes (drift)",
+    "recipe": "Recipe name (e.g. saas-starter) or path to a recipe JSON file",
+    "listRecipes": "List the recipes published in the registry"
   },
   "label": {
     "resolved": "Resolved",
@@ -210,5 +213,9 @@
     "rulesIntegration": "AGENTS.md has integration steps (## Integration)",
     "rulesConventions": "AGENTS.md lists conventions or don'ts",
     "tests": "Includes tests"
+  },
+  "compose": {
+    "none": "No recipes in this registry yet.",
+    "hint": "Install one with: genpm compose <name> --dry-run"
   }
 }

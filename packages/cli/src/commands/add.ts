@@ -81,136 +81,154 @@ export function renderPlan(ctx: Ctx, pl: InstallPlan): string[] {
   return out;
 }
 
+/** Flags de `add`, compartidos con `compose` (V03-05). */
+export const addArgs = (ctx: Ctx) =>
+  ({
+    dest: { type: 'string', description: ctx.t.t('cli.arg.dest') },
+    'dry-run': { type: 'boolean', description: ctx.t.t('cli.arg.dryRun') },
+    mcp: { type: 'boolean', description: ctx.t.t('cli.arg.mcp'), negativeDescription: ctx.t.t('cli.arg.noMcp') },
+    'install-deps': {
+      type: 'boolean',
+      description: ctx.t.t('cli.arg.installDeps'),
+      negativeDescription: ctx.t.t('cli.arg.noInstallDeps'),
+    },
+    clients: { type: 'string', description: ctx.t.t('cli.arg.clients') },
+    force: { type: 'boolean', description: ctx.t.t('cli.arg.force') },
+    'allow-autorun': { type: 'boolean', description: ctx.t.t('cli.arg.allowAutorun') },
+    'max-size': { type: 'string', description: ctx.t.t('cli.arg.maxSize') },
+  }) as const;
+
+export type AddArgs = {
+  dest?: string;
+  'dry-run'?: boolean;
+  mcp?: boolean;
+  'install-deps'?: boolean;
+  clients?: string;
+  force?: boolean;
+  'allow-autorun'?: boolean;
+  'max-size'?: string;
+};
+
+/** Plan + confirmaciones + apply para una lista de specs (`add` y `compose`). */
+export async function runAdd(ctx: Ctx, specs: string[], args: AddArgs, label: string): Promise<void> {
+  // Tiempo total que ve el usuario: resolver, descargar, verificar y escribir (no solo la escritura).
+  const started = Date.now();
+  try {
+    const opts = await coreOptions(ctx, registryName(specs[0]));
+    const pl = await plan({
+      specs,
+      ...opts,
+      // --dry-run no instala: no suma al contador (ADR-027).
+      telemetry: opts.telemetry && !args['dry-run'],
+      dest: args.dest,
+      clients: args.clients?.split(',').map((s) => s.trim()),
+      force: args.force,
+      allowAutorun: args['allow-autorun'],
+      maxSize: args['max-size'] ? Number(args['max-size']) * 1024 * 1024 : undefined,
+    });
+    const toInstall = pl.packages.filter((p) => p.action === 'install');
+    if (args['dry-run']) {
+      if (ctx.flags.json) return json({ ok: true, plan: pl });
+      line(ctx, `${ctx.c.cyan('◆')} ${label}`);
+      line(ctx);
+      for (const l of renderPlan(ctx, pl)) line(ctx, l);
+      line(ctx);
+      line(ctx, ctx.c.dim(ctx.t.t('cli.add.dryRun')));
+      if (pl.conflicts.length && !args.force) process.exitCode = 4;
+      return;
+    }
+    if (!ctx.flags.json) {
+      line(ctx, `${ctx.c.cyan('◆')} ${label}`);
+      line(ctx);
+      for (const l of renderPlan(ctx, pl)) line(ctx, l);
+      line(ctx);
+    }
+    if (pl.conflicts.length && !args.force) {
+      const first = pl.conflicts[0]!;
+      const { fail } = await import('@genpm/core');
+      throw fail(
+        first.code,
+        { name: first.n ?? '', path: first.path ?? '', version: '', detail: first.detail },
+        { conflicts: pl.conflicts },
+      );
+    }
+    if (!toInstall.length) {
+      // Rotación de clave: mismo commit, firma nueva ya verificada → solo se actualiza `sg` en el lock.
+      const result = pl.resign.length
+        ? await apply(pl, { allowMcp: false, installNpmDeps: false, by: 'cli', log: ctx.log })
+        : null;
+      if (ctx.flags.json) return json({ ok: true, plan: pl, result });
+      if (result) line(ctx, ctx.c.green(`✔ ${ctx.t.t('cli.add.resigned', { names: pl.resign.join(', ') })}`));
+      line(ctx, ctx.c.green(`✔ ${ctx.t.t('cli.add.nothing')}`));
+      return;
+    }
+    const files = toInstall.reduce((n, p) => n + p.files, 0);
+    const bytes = toInstall.reduce((n, p) => n + p.bytes, 0);
+    const ok = await confirm(
+      ctx,
+      ctx.t.t('cli.add.confirm', { count: toInstall.length, files, size: format.bytes(ctx.t.locale, bytes) }),
+      {
+        answer: ctx.flags.yes ? true : undefined,
+        flag: '--yes',
+      },
+    );
+    if (!ok) {
+      line(ctx, ctx.c.dim(ctx.t.t('cli.add.cancelled')));
+      return;
+    }
+    let allowMcp = false;
+    if (pl.mcp.length) {
+      for (const m of pl.mcp) {
+        const yes = await confirm(ctx, ctx.t.t('cli.add.mcpConsent', { name: m.n, targets: m.targets.join(', ') }), {
+          answer: args.mcp === undefined ? (ctx.interactive ? undefined : false) : args.mcp,
+          flag: '--mcp',
+          initial: false,
+        });
+        allowMcp = allowMcp || yes;
+      }
+    }
+    let installNpmDeps = false;
+    if (pl.npm.command) {
+      installNpmDeps = await confirm(ctx, ctx.t.t('cli.add.npmConsent', { command: pl.npm.command }), {
+        // --install-deps / --no-install-deps deciden sin preguntar (también con --yes); sin ninguno, se pregunta.
+        answer: args['install-deps'] === undefined ? (ctx.interactive ? undefined : false) : args['install-deps'],
+        flag: '--install-deps',
+      });
+    }
+    const result = await apply(pl, { allowMcp, installNpmDeps, by: 'cli', log: ctx.log });
+    if (ctx.flags.json) return json({ ok: true, plan: pl, result });
+    line(ctx);
+    line(
+      ctx,
+      `${ctx.c.green('✔')} ${ctx.t.t('cli.add.injected', { count: result.installed.length, seconds: (Date.now() - started) / 1000 })}`,
+    );
+    if (result.mcpWritten.length)
+      line(ctx, `  ${ctx.t.t('cli.add.mcpWritten', { files: result.mcpWritten.join(', ') })}`);
+    const next: string[] = [];
+    if (pl.env.length) next.push(ctx.t.t('cli.next.env', { vars: format.list(ctx.t.locale, pl.env) }));
+    for (const it of result.installed) next.push(ctx.t.t('cli.next.integration', { file: `${it.d}/AGENTS.md` }));
+    if (pl.npm.command && !result.npmRan) next.push(ctx.t.t('cli.next.npm', { command: pl.npm.command }));
+    if (pl.mcp.length && !allowMcp)
+      next.push(ctx.t.t('cli.next.mcp', { names: [...new Set(pl.mcp.map((m) => m.from))].join(' ') }));
+    if (next.length) {
+      line(ctx, `  ${ctx.c.bold(ctx.t.t('cli.label.next'))}`);
+      for (const n of next) line(ctx, `  ${ctx.c.dim('›')} ${n}`);
+    }
+  } catch (e) {
+    reportError(ctx, e);
+  }
+}
+
 export const add = (ctx: Ctx) =>
   defineCommand({
     meta: { name: 'add', description: ctx.t.t('cli.desc.add') },
     args: {
       spec: { type: 'positional', description: ctx.t.t('cli.arg.spec'), required: true },
-      dest: { type: 'string', description: ctx.t.t('cli.arg.dest') },
-      'dry-run': { type: 'boolean', description: ctx.t.t('cli.arg.dryRun') },
-      mcp: { type: 'boolean', description: ctx.t.t('cli.arg.mcp'), negativeDescription: ctx.t.t('cli.arg.noMcp') },
-      'install-deps': {
-        type: 'boolean',
-        description: ctx.t.t('cli.arg.installDeps'),
-        negativeDescription: ctx.t.t('cli.arg.noInstallDeps'),
-      },
-      clients: { type: 'string', description: ctx.t.t('cli.arg.clients') },
-      force: { type: 'boolean', description: ctx.t.t('cli.arg.force') },
-      'allow-autorun': { type: 'boolean', description: ctx.t.t('cli.arg.allowAutorun') },
-      'max-size': { type: 'string', description: ctx.t.t('cli.arg.maxSize') },
+      ...addArgs(ctx),
       ...globalArgs(ctx),
     },
-    async run({ args }) {
-      // Tiempo total que ve el usuario: resolver, descargar, verificar y escribir (no solo la escritura).
-      const started = Date.now();
-      try {
-        const specs = [args.spec, ...args._.filter((a) => a !== args.spec)].filter(Boolean) as string[];
-        const opts = await coreOptions(ctx, registryName(specs[0]));
-        const pl = await plan({
-          specs,
-          ...opts,
-          // --dry-run no instala: no suma al contador (ADR-027).
-          telemetry: opts.telemetry && !args['dry-run'],
-          dest: args.dest,
-          clients: args.clients?.split(',').map((s) => s.trim()),
-          force: args.force,
-          allowAutorun: args['allow-autorun'],
-          maxSize: args['max-size'] ? Number(args['max-size']) * 1024 * 1024 : undefined,
-        });
-        const toInstall = pl.packages.filter((p) => p.action === 'install');
-        if (args['dry-run']) {
-          if (ctx.flags.json) return json({ ok: true, plan: pl });
-          line(ctx, `${ctx.c.cyan('◆')} genpm add ${specs.join(' ')}`);
-          line(ctx);
-          for (const l of renderPlan(ctx, pl)) line(ctx, l);
-          line(ctx);
-          line(ctx, ctx.c.dim(ctx.t.t('cli.add.dryRun')));
-          if (pl.conflicts.length && !args.force) process.exitCode = 4;
-          return;
-        }
-        if (!ctx.flags.json) {
-          line(ctx, `${ctx.c.cyan('◆')} genpm add ${specs.join(' ')}`);
-          line(ctx);
-          for (const l of renderPlan(ctx, pl)) line(ctx, l);
-          line(ctx);
-        }
-        if (pl.conflicts.length && !args.force) {
-          const first = pl.conflicts[0]!;
-          const { fail } = await import('@genpm/core');
-          throw fail(
-            first.code,
-            { name: first.n ?? '', path: first.path ?? '', version: '', detail: first.detail },
-            { conflicts: pl.conflicts },
-          );
-        }
-        if (!toInstall.length) {
-          // Rotación de clave: mismo commit, firma nueva ya verificada → solo se actualiza `sg` en el lock.
-          const result = pl.resign.length
-            ? await apply(pl, { allowMcp: false, installNpmDeps: false, by: 'cli', log: ctx.log })
-            : null;
-          if (ctx.flags.json) return json({ ok: true, plan: pl, result });
-          if (result) line(ctx, ctx.c.green(`✔ ${ctx.t.t('cli.add.resigned', { names: pl.resign.join(', ') })}`));
-          line(ctx, ctx.c.green(`✔ ${ctx.t.t('cli.add.nothing')}`));
-          return;
-        }
-        const files = toInstall.reduce((n, p) => n + p.files, 0);
-        const bytes = toInstall.reduce((n, p) => n + p.bytes, 0);
-        const ok = await confirm(
-          ctx,
-          ctx.t.t('cli.add.confirm', { count: toInstall.length, files, size: format.bytes(ctx.t.locale, bytes) }),
-          {
-            answer: ctx.flags.yes ? true : undefined,
-            flag: '--yes',
-          },
-        );
-        if (!ok) {
-          line(ctx, ctx.c.dim(ctx.t.t('cli.add.cancelled')));
-          return;
-        }
-        let allowMcp = false;
-        if (pl.mcp.length) {
-          for (const m of pl.mcp) {
-            const yes = await confirm(
-              ctx,
-              ctx.t.t('cli.add.mcpConsent', { name: m.n, targets: m.targets.join(', ') }),
-              {
-                answer: args.mcp === undefined ? (ctx.interactive ? undefined : false) : args.mcp,
-                flag: '--mcp',
-                initial: false,
-              },
-            );
-            allowMcp = allowMcp || yes;
-          }
-        }
-        let installNpmDeps = false;
-        if (pl.npm.command) {
-          installNpmDeps = await confirm(ctx, ctx.t.t('cli.add.npmConsent', { command: pl.npm.command }), {
-            // --install-deps / --no-install-deps deciden sin preguntar (también con --yes); sin ninguno, se pregunta.
-            answer: args['install-deps'] === undefined ? (ctx.interactive ? undefined : false) : args['install-deps'],
-            flag: '--install-deps',
-          });
-        }
-        const result = await apply(pl, { allowMcp, installNpmDeps, by: 'cli', log: ctx.log });
-        if (ctx.flags.json) return json({ ok: true, plan: pl, result });
-        line(ctx);
-        line(
-          ctx,
-          `${ctx.c.green('✔')} ${ctx.t.t('cli.add.injected', { count: result.installed.length, seconds: (Date.now() - started) / 1000 })}`,
-        );
-        if (result.mcpWritten.length)
-          line(ctx, `  ${ctx.t.t('cli.add.mcpWritten', { files: result.mcpWritten.join(', ') })}`);
-        const next: string[] = [];
-        if (pl.env.length) next.push(ctx.t.t('cli.next.env', { vars: format.list(ctx.t.locale, pl.env) }));
-        for (const it of result.installed) next.push(ctx.t.t('cli.next.integration', { file: `${it.d}/AGENTS.md` }));
-        if (pl.npm.command && !result.npmRan) next.push(ctx.t.t('cli.next.npm', { command: pl.npm.command }));
-        if (pl.mcp.length && !allowMcp)
-          next.push(ctx.t.t('cli.next.mcp', { names: [...new Set(pl.mcp.map((m) => m.from))].join(' ') }));
-        if (next.length) {
-          line(ctx, `  ${ctx.c.bold(ctx.t.t('cli.label.next'))}`);
-          for (const n of next) line(ctx, `  ${ctx.c.dim('›')} ${n}`);
-        }
-      } catch (e) {
-        reportError(ctx, e);
-      }
+    run: ({ args }) => {
+      const specs = [args.spec, ...args._.filter((a) => a !== args.spec)].filter(Boolean) as string[];
+      return runAdd(ctx, specs, args, `genpm add ${specs.join(' ')}`);
     },
   });

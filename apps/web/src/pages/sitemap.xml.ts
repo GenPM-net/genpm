@@ -18,6 +18,7 @@ export const GET: APIRoute = async () => {
     '/legal',
     '/policy',
     '/sponsors',
+    '/recipes',
     '/enterprise',
     ...docPages('en').map((d) => `/docs/${d.slug}`),
   ];

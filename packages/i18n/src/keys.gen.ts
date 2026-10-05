@@ -26,6 +26,7 @@ export interface MessageParams {
   "cli.desc.upgrade": undefined;
   "cli.desc.diff": undefined;
   "cli.desc.update": undefined;
+  "cli.desc.compose": undefined;
   "cli.arg.cwd": undefined;
   "cli.arg.registry": undefined;
   "cli.arg.json": undefined;
@@ -66,6 +67,8 @@ export interface MessageParams {
   "cli.arg.targetVersion": undefined;
   "cli.arg.to": undefined;
   "cli.arg.local": undefined;
+  "cli.arg.recipe": undefined;
+  "cli.arg.listRecipes": undefined;
   "cli.label.resolved": undefined;
   "cli.label.dependency": undefined;
   "cli.label.skip": undefined;
@@ -165,6 +168,8 @@ export interface MessageParams {
   "cli.quality.rulesIntegration": undefined;
   "cli.quality.rulesConventions": undefined;
   "cli.quality.tests": undefined;
+  "cli.compose.none": undefined;
+  "cli.compose.hint": undefined;
   "common.product.tagline": undefined;
   "common.layers.code": undefined;
   "common.layers.context": undefined;
@@ -325,6 +330,7 @@ export interface MessageParams {
   "web.footer.legalNotice": undefined;
   "web.footer.cookies": undefined;
   "web.footer.madeBy": { name: string | number };
+  "web.footer.recipes": undefined;
   "web.common.copy": undefined;
   "web.common.copied": undefined;
   "web.common.copiedToast": undefined;
@@ -924,6 +930,11 @@ export interface MessageParams {
   "web.trusted.how": undefined;
   "web.trusted.provider": undefined;
   "web.trusted.howGitlab": undefined;
+  "web.recipes.title": undefined;
+  "web.recipes.lede": undefined;
+  "web.recipes.empty": undefined;
+  "web.recipes.localTitle": undefined;
+  "web.recipes.local": undefined;
 }
 
 export type MessageKey = keyof MessageParams;

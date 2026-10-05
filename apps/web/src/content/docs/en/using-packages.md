@@ -56,3 +56,17 @@ genpm update @core/auth
 ## JSON output
 
 Every command accepts `--json` (one line, English, no prompts). Without a TTY, any unanswered question fails with `E_CONFIRM_REQUIRED` (exit 2) and nothing is written.
+
+## Recipes: several packages at once
+
+A recipe installs several packages that work together in one command, with the same plan and questions as `genpm add`. Recipes curated by GenPM are listed at [/recipes](/recipes); your team can also keep one as a JSON file in the repository.
+
+```bash
+genpm compose --list
+genpm compose saas-starter --dry-run
+genpm compose ./stack.json
+```
+
+```json
+{ "name": "my-stack", "p": ["@core/db", "@core/auth@^1.2"] }
+```

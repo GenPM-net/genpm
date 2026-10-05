@@ -24,7 +24,8 @@
     "cache": "ダウンロードキャッシュを表示または削除する",
     "upgrade": "スタンドアロンの genpm バイナリを最新リリースに更新します",
     "diff": "インストール済みバージョン以降の upstream の変更を表示します（unified diff）",
-    "update": "インストール済みパッケージを更新し、upstream の変更とあなたの変更をマージします"
+    "update": "インストール済みパッケージを更新し、upstream の変更とあなたの変更をマージします",
+    "compose": "レシピ（レジストリ上の名前またはローカルの JSON ファイル）のパッケージをまとめてインストールします"
   },
   "arg": {
     "cwd": "作業ディレクトリ",
@@ -66,7 +67,9 @@
     "check": "新しいバージョンがあるかどうかだけを確認します",
     "targetVersion": "インストールするバージョン（既定: 最新）",
     "to": "更新先のバージョンまたは範囲（既定: latest）",
-    "local": "ローカルの変更（drift）も表示します"
+    "local": "ローカルの変更（drift）も表示します",
+    "recipe": "レシピ名（例: saas-starter）またはレシピ JSON ファイルのパス",
+    "listRecipes": "レジストリで公開されているレシピを一覧表示します"
   },
   "label": {
     "resolved": "解決済み",
@@ -210,5 +213,9 @@
     "rulesIntegration": "AGENTS.md に統合手順がある（## Integration）",
     "rulesConventions": "AGENTS.md に規約や禁止事項がある",
     "tests": "テストを含む"
+  },
+  "compose": {
+    "none": "このレジストリにはまだレシピがありません。",
+    "hint": "インストールするには: genpm compose <名前> --dry-run"
   }
 }

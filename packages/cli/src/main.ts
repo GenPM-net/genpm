@@ -4,6 +4,7 @@ import { cleanupOldBinary, VERSION } from '@genpm/core';
 import { defineCommand, runMain } from 'citty';
 import { add } from './commands/add.js';
 import { initCmd, loginCmd, logoutCmd, publishCmd, validateCmd, whoamiCmd, yankCmd } from './commands/author.js';
+import { composeCmd } from './commands/compose.js';
 import {
   auditCmd,
   cacheCmd,
@@ -25,6 +26,7 @@ export function buildCli(ctx: Ctx) {
     meta: { name: 'genpm', version: VERSION, description: ctx.t.t('cli.desc.root') },
     subCommands: {
       add: add(ctx),
+      compose: composeCmd(ctx),
       search: searchCmd(ctx),
       info: infoCmd(ctx),
       list: listCmd(ctx),

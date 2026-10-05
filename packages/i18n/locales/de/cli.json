@@ -24,7 +24,8 @@
     "cache": "Den Download-Cache anzeigen oder leeren",
     "upgrade": "Aktualisiert das eigenständige genpm-Binary auf die neueste Version",
     "diff": "Zeigt, was sich upstream seit der installierten Version geändert hat (Unified Diff)",
-    "update": "Aktualisiert installierte Pakete und führt Upstream-Änderungen mit deinen zusammen"
+    "update": "Aktualisiert installierte Pakete und führt Upstream-Änderungen mit deinen zusammen",
+    "compose": "Installiert alle Pakete eines Rezepts auf einmal (Name im Registry oder lokale JSON-Datei)"
   },
   "arg": {
     "cwd": "Arbeitsverzeichnis",
@@ -66,7 +67,9 @@
     "check": "Prüft nur, ob es eine neuere Version gibt",
     "targetVersion": "Zu installierende Version (Standard: neueste)",
     "to": "Zielversion oder -bereich (Standard: latest)",
-    "local": "Listet auch deine lokalen Änderungen (Drift)"
+    "local": "Listet auch deine lokalen Änderungen (Drift)",
+    "recipe": "Rezeptname (z. B. saas-starter) oder Pfad zu einer Rezept-JSON-Datei",
+    "listRecipes": "Listet die im Registry veröffentlichten Rezepte auf"
   },
   "label": {
     "resolved": "Aufgelöst",
@@ -210,5 +213,9 @@
     "rulesIntegration": "AGENTS.md enthält Integrationsschritte (## Integration)",
     "rulesConventions": "AGENTS.md nennt Konventionen oder Verbote",
     "tests": "Enthält Tests"
+  },
+  "compose": {
+    "none": "In diesem Registry gibt es noch keine Rezepte.",
+    "hint": "Installiere eines mit: genpm compose <name> --dry-run"
   }
 }

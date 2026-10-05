@@ -50,7 +50,8 @@
     "beta": "공개 베타 · 기계 번역(베타)",
     "legalNotice": "법적 고지",
     "cookies": "쿠키",
-    "madeBy": "만든 사람: {name}"
+    "madeBy": "만든 사람: {name}",
+    "recipes": "레시피"
   },
   "common": {
     "copy": "복사",
@@ -728,5 +729,12 @@
     "how": "job 권한에 id-token: write를 추가하고 genpm publish를 실행하세요. GENPM_TOKEN이 없으면 Actions에 OIDC 토큰을 요청해 자동으로 교환합니다.",
     "provider": "호스트",
     "howGitlab": "GitLab CI: aud가 genpm인 id_tokens를 GENPM_ID_TOKEN으로 선언하고 genpm publish를 실행하세요. GitLab 프로젝트는 신뢰할 수 있는 게시로만 게시할 수 있으며 공개 프로젝트여야 합니다."
+  },
+  "recipes": {
+    "title": "레시피",
+    "lede": "레시피는 함께 동작하는 여러 패키지를 명령 하나로 설치합니다. genpm add와 같은 계획, 검사, 확인 절차를 거칩니다.",
+    "empty": "레지스트리에 아직 레시피가 없습니다.",
+    "localTitle": "나만의 레시피",
+    "local": "레시피는 저장소의 JSON 파일일 수도 있습니다. 팀의 스택을 공유하고 어디서나 설치하세요."
   }
 }

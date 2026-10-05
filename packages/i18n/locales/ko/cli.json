@@ -24,7 +24,8 @@
     "cache": "다운로드 캐시 표시 또는 정리",
     "upgrade": "독립 실행형 genpm 바이너리를 최신 릴리스로 업데이트합니다",
     "diff": "설치된 버전 이후 upstream 변경 사항을 보여줍니다(unified diff)",
-    "update": "설치된 패키지를 업데이트하고 upstream 변경과 내 변경을 병합합니다"
+    "update": "설치된 패키지를 업데이트하고 upstream 변경과 내 변경을 병합합니다",
+    "compose": "레시피(레지스트리 이름 또는 로컬 JSON 파일)의 모든 패키지를 한 번에 설치합니다"
   },
   "arg": {
     "cwd": "작업 디렉터리",
@@ -66,7 +67,9 @@
     "check": "새 버전이 있는지 확인만 합니다",
     "targetVersion": "설치할 버전(기본값: 최신)",
     "to": "대상 버전 또는 범위(기본값: latest)",
-    "local": "로컬 변경(drift)도 표시합니다"
+    "local": "로컬 변경(drift)도 표시합니다",
+    "recipe": "레시피 이름(예: saas-starter) 또는 레시피 JSON 파일 경로",
+    "listRecipes": "레지스트리에 게시된 레시피를 나열합니다"
   },
   "label": {
     "resolved": "확인됨",
@@ -210,5 +213,9 @@
     "rulesIntegration": "AGENTS.md에 통합 단계 (## Integration)",
     "rulesConventions": "AGENTS.md에 규칙 또는 금지 사항",
     "tests": "테스트 포함"
+  },
+  "compose": {
+    "none": "이 레지스트리에는 아직 레시피가 없습니다.",
+    "hint": "설치하려면: genpm compose <이름> --dry-run"
   }
 }

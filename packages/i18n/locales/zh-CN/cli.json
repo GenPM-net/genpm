@@ -24,7 +24,8 @@
     "cache": "显示或清理下载缓存",
     "upgrade": "将独立的 genpm 二进制文件更新到最新版本",
     "diff": "显示自已安装版本以来上游的变更（统一 diff）",
-    "update": "更新已安装的软件包，将上游变更与你的修改合并"
+    "update": "更新已安装的软件包，将上游变更与你的修改合并",
+    "compose": "一次性安装某个配方中的全部软件包（注册表中的名称或本地 JSON 文件）"
   },
   "arg": {
     "cwd": "工作目录",
@@ -66,7 +67,9 @@
     "check": "仅检查是否有更新的版本",
     "targetVersion": "要安装的版本（默认：最新）",
     "to": "目标版本或范围（默认：latest）",
-    "local": "同时列出你的本地修改（drift）"
+    "local": "同时列出你的本地修改（drift）",
+    "recipe": "配方名称（例如 saas-starter）或配方 JSON 文件路径",
+    "listRecipes": "列出注册表中发布的配方"
   },
   "label": {
     "resolved": "已解析",
@@ -210,5 +213,9 @@
     "rulesIntegration": "AGENTS.md 包含集成步骤（## Integration）",
     "rulesConventions": "AGENTS.md 列出约定或禁止事项",
     "tests": "包含测试"
+  },
+  "compose": {
+    "none": "此注册表中还没有配方。",
+    "hint": "安装方式：genpm compose <名称> --dry-run"
   }
 }

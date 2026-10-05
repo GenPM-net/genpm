@@ -56,3 +56,17 @@ genpm update @core/auth
 ## Saída JSON
 
 Todos os comandos aceitam `--json` (uma linha, em inglês, sem perguntas). Sem terminal interativo, qualquer pergunta sem resposta falha com `E_CONFIRM_REQUIRED` (código de saída 2) e nada é escrito.
+
+## Receitas: vários pacotes de uma vez
+
+Uma receita instala com um comando vários pacotes que funcionam juntos, com o mesmo plano e as mesmas perguntas do `genpm add`. As receitas curadas pelo GenPM estão em [/recipes](/recipes); seu time também pode manter a sua como arquivo JSON no repositório.
+
+```bash
+genpm compose --list
+genpm compose saas-starter --dry-run
+genpm compose ./stack.json
+```
+
+```json
+{ "name": "my-stack", "p": ["@core/db", "@core/auth@^1.2"] }
+```

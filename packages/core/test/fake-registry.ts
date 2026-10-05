@@ -61,6 +61,9 @@ export class FakeRegistry {
     return vs.find((p) => p.v === v);
   }
 
+  /** Recetas compose (V03-05) por slug. */
+  recipes: Record<string, { summary: string | null; p: string[] }> = {};
+
   fetch = async (input: string | URL | Request): Promise<Response> => {
     const url = new URL(String(input));
     this.requests.push(url.pathname + url.search);
@@ -68,6 +71,13 @@ export class FakeRegistry {
     if (url.pathname === '/v1/health') return ok({ ok: true });
     if (url.pathname === '/v1/keys') return ok({ alg: 'Ed25519', keys: [], revocation: this.revocation });
     if (url.pathname === '/v1/advisories') return ok({ advisories: [] });
+    if (url.pathname === '/v1/recipes')
+      return ok({ recipes: Object.entries(this.recipes).map(([name, r]) => ({ name, ...r })) });
+    const rc = url.pathname.match(/^\/v1\/recipes\/([a-z0-9-]+)$/);
+    if (rc)
+      return this.recipes[rc[1]!]
+        ? ok({ name: rc[1], ...this.recipes[rc[1]!] })
+        : new Response(JSON.stringify({ code: 'E_NOT_FOUND', params: { name: rc[1] } }), { status: 404 });
     if (url.pathname === '/v1/search') {
       const q = (url.searchParams.get('q') ?? '').toLowerCase();
       const latest = new Map<string, ResolvedManifest>();

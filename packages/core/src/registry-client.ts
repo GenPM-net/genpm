@@ -175,6 +175,21 @@ export class RegistryClient {
     return this.request<ResolveResponse>('GET', `/v1/resolve/${name}?${p}`).then((r) => r.data);
   }
 
+  /** Receta compose (V03-05) por slug. */
+  recipe(slug: string) {
+    return this.request<{ name: string; summary: string | null; p: string[] }>(
+      'GET',
+      `/v1/recipes/${encodeURIComponent(slug)}`,
+    ).then((r) => r.data);
+  }
+
+  recipes() {
+    return this.request<{ recipes: Array<{ name: string; summary: string | null; p: string[] }> }>(
+      'GET',
+      '/v1/recipes',
+    ).then((r) => r.data.recipes);
+  }
+
   packageCompact(name: string) {
     return this.request<PackageCompact>('GET', `/v1/packages/${name}?fmt=c`).then((r) => r.data);
   }

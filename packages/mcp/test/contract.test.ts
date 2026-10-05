@@ -145,6 +145,19 @@ describe('tools', () => {
     expect((again.content[0] as { text: string }).text).toContain('Nothing to install');
   });
 
+  it('genpm_add installs a whole recipe (V03-05) and needs a name or a recipe', async () => {
+    const { call } = await connect();
+    reg.recipes['saas-starter'] = { summary: 'DB + auth', p: ['@core/db', '@core/auth'] };
+    const dry = await call('genpm_add', { recipe: 'saas-starter', dryRun: true });
+    expect(dry.isError).toBeFalsy();
+    const text = (dry.content[0] as { text: string }).text;
+    expect(text).toContain('install @core/db@1.0.3');
+    expect(text).toContain('install @core/auth@1.2.0');
+    const none = await call('genpm_add', {});
+    expect(none.isError).toBe(true);
+    expect((none.structuredContent as { error: { code: string } }).error.code).toBe('E_USAGE');
+  });
+
   it('genpm_diff returns a delimited patch and genpm_update merges or records the version (strategy ai)', async () => {
     const { call } = await connect();
     await call('genpm_add', { name: '@core/db' });
