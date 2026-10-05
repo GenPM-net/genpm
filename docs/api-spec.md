@@ -78,6 +78,12 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | PUT/DELETE | `/v1/orgs/:org/teams/:team/members/:handle` | token (owner/admin o maintainer) | ✅ | `{ role: maintainer\|member }`; solo miembros de la org |
 | GET/PUT | `/v1/packages/:scope/:name/access` | token (admin del paquete) | ✅ | Visibilidad (`internal`\|`private`) y grants; solo registros privados |
 | PUT/DELETE | `/v1/packages/:scope/:name/grants` | token (admin del paquete) | ✅ | `{ principal: user:<h>\|team:<org>/<team>, permission }`; DELETE con `?principal=` |
+| GET | `/v1/registries/:slug/billing` | token (admin) | ✅ | V10-05: plan, límites del gratuito (3 miembros, 10 paquetes), uso y suscripción |
+| POST | `/v1/registries/:slug/billing/checkout` · `/billing/portal` | token (admin) | ✅ | Stripe Checkout (plan Team, asientos = miembros) y portal de cliente ⇒ `{ url }` |
+| POST | `/v1/billing/webhook` | firma `Stripe-Signature` | ✅ | Idempotente por `evt_…`: suscripción ⇒ `plan`; patrocinio pagado ⇒ `paid_at` |
+| POST | `/v1/sponsorships/checkout` | token | ✅ | V10-06: `{ package, keyword?, weeks 1–12, startsAt }` ⇒ Checkout; queda en revisión del staff |
+| GET | `/v1/sponsorships/mine` | token | ✅ | Campañas propias con estado (`unpaid`/`review`/`active`…), impresiones y clics |
+| POST | `/v1/admin/sponsorships/:id` | staff | ✅ | `{ decision: approve\|reject }`; rechazar reembolsa |
 | PUT | `/v1/registries/:slug/policy` | token (admin) | ✅ | Política (ENT-03): `{ allow?: ["@acme/*"], requireScan?, denyLicenses?, allowDirect? }` |
 | GET | `/v1/policy` | según el tenant | ✅ | Política del registro (`{}` en el público). El CLI/MCP la aplica con `policy=` en `.genpmrc`; al publicar en el privado se rechazan licencias prohibidas (`E_POLICY`) |
 | GET | `/v1/registries/:slug/audit` | token (admin) | ✅ | Auditoría exportable (V10-04): `?from&to&action=<prefijo>&format=json\|csv\|jsonl`; JSON paginado (`next`, `after`), CSV/JSONL hasta 50 000 filas; sin `ip_hash`; CSV protegido contra inyección de fórmulas |

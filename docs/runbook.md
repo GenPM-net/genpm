@@ -192,6 +192,18 @@ Una vez, para activar los dominios propios (sin esto, verificar el TXT activa el
 El cliente publica `TXT _genpm-challenge.<dominio>` y `CNAME <dominio> → domains.genpm.net`, y ejecuta
 `genpm registry verify <slug>`. Quitarlo: `genpm registry domain <slug> --remove` (borra también el custom hostname).
 
+## 3.3 Stripe: plan Team y patrocinios (V10-05, V10-06)
+
+1. Stripe → Products: «GenPM Team» con precio **recurrente mensual por asiento**; copia el `price_…` en
+   `STRIPE_PRICE_TEAM` (vars de `apps/registry/wrangler.jsonc`, producción y staging con el de test).
+2. Developers → Webhooks: endpoint `https://api.genpm.net/v1/billing/webhook` con los eventos
+   `checkout.session.completed`, `customer.subscription.created|updated|deleted` e `invoice.payment_failed`.
+3. Secretos: `npx wrangler secret put STRIPE_SECRET_KEY` y `npx wrangler secret put STRIPE_WEBHOOK_SECRET`.
+4. Portal de cliente activado (Settings → Billing → Customer portal) con cambio de asientos y cancelación.
+5. Precio del hueco patrocinado: `SPONSOR_WEEKLY_CENTS` (por defecto 4900 = 49 USD/semana).
+
+Sin `STRIPE_SECRET_KEY` no se ofrece la mejora ni la reserva (la web lo oculta y el API responde 404).
+
 ## 4. Entornos
 
 | Entorno | Web | API | D1 | Clave de firma |

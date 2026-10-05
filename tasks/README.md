@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-05. No editar a mano. -->
 
-**78 %** completado · 209/267 tareas · 207.5h estimadas pendientes
+**79 %** completado · 211/267 tareas · 159.5h estimadas pendientes
 
-TODO 30 · DOING 4 · DONE 209 · BLOCKED 24 · CUT 0
+TODO 28 · DOING 4 · DONE 211 · BLOCKED 24 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -87,7 +87,7 @@ TODO 30 · DOING 4 · DONE 209 · BLOCKED 24 · CUT 0
 | [Día 7 · Lanzamiento](07-dia-7-lanzamiento.md) | `▓▓░░░░░░░░░░` 18 % | 2/11 | 16.5h |
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 16/17 | 2h |
-| [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓▓▓▓▓░░░` 75 % | 30/40 | 154.5h |
+| [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓▓▓▓▓▓░░` 80 % | 32/40 | 106.5h |
 
 **En curso**
 
@@ -133,7 +133,7 @@ TODO 30 · DOING 4 · DONE 209 · BLOCKED 24 · CUT 0
 - `BR-16` Test de 5 segundos de la home con 5 desarrolladores: ¿entienden qué hace GenPM? · F · 2h ([09-marca-diseno.md](09-marca-diseno.md))
 - `V011-13` Activar PostHog en producción: proyecto en región EU, DPA aceptado, retención 30 días/12 meses, POSTHOG_KEY en wrangler.jsonc y despliegue de la web · F · 0.5h ([10-post-mvp.md](10-post-mvp.md))
 - `V03-06` Auditoría de seguridad externa · F · 8h ([10-post-mvp.md](10-post-mvp.md))
-- `V10-05` Facturación con Stripe · A · 24h ([10-post-mvp.md](10-post-mvp.md))
 - `V10-07` Pentest y bug bounty con recompensas · F · 8h ([10-post-mvp.md](10-post-mvp.md))
+- `ENT-01` Tenancy dedicada: D1 por cliente vía Workers for Platforms · A · 60h ([10-post-mvp.md](10-post-mvp.md))
 
 <!-- board:end -->

@@ -446,7 +446,28 @@
     "company": "Company",
     "message": "What do you want to promote?",
     "send": "Send",
-    "sent": "Thanks, we will get back to you within two business days."
+    "sent": "Thanks, we will get back to you within two business days.",
+    "book": "Book a search slot",
+    "package": "Package",
+    "keyword": "Keyword (optional)",
+    "weeks": "Weeks",
+    "start": "Start date",
+    "review": "You pay now; we review the package before it goes live and refund in full if we reject it.",
+    "pay": "Continue to payment",
+    "signIn": "Sign in to book",
+    "mine": "Your campaigns",
+    "dates": "Dates",
+    "state": "Status",
+    "stats": "Impressions / clicks",
+    "paid": "Payment received. We will review your campaign within one business day.",
+    "status": {
+      "unpaid": "Awaiting payment",
+      "review": "In review",
+      "active": "Live",
+      "paused": "Paused",
+      "ended": "Ended",
+      "cancelled": "Cancelled (refunded)"
+    }
   },
   "enterprise": {
     "title": "Private registries for your team",
@@ -750,7 +771,11 @@
     "owner": "Owner",
     "saved": "Saved.",
     "cli": "Teams and per-package grants: genpm team and genpm access in the CLI.",
-    "audit": "Download audit log (CSV)"
+    "audit": "Download audit log (CSV)",
+    "plan": "Plan: {plan}",
+    "usage": "{members}/{maxMembers} members, {packages}/{maxPackages} packages",
+    "upgrade": "Upgrade to Team",
+    "manageBilling": "Manage billing"
   },
   "sso": {
     "title": "Single sign-on",

@@ -40,6 +40,15 @@ export type Env = {
   /** Dominios propios (V10-03): zona de Cloudflare for SaaS y token con permiso de custom hostnames. */
   CF_SAAS_ZONE_ID?: string;
   CF_SAAS_TOKEN?: string;
+  /** Facturación (V10-05) y patrocinios self-serve (V10-06). */
+  STRIPE_SECRET_KEY?: string;
+  STRIPE_WEBHOOK_SECRET?: string;
+  /** Precio mensual por asiento del plan Team (price_…). */
+  STRIPE_PRICE_TEAM?: string;
+  /** Precio por semana de un hueco patrocinado en la búsqueda, en céntimos de USD (por defecto 4900). */
+  SPONSOR_WEEKLY_CENTS?: string;
+  /** Solo tests: base del API de Stripe. */
+  STRIPE_API_BASE?: string;
   GITHUB_RAW_BASE?: string;
 };
 

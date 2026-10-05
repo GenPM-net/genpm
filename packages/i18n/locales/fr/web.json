@@ -446,7 +446,28 @@
     "company": "Entreprise",
     "message": "Que voulez-vous promouvoir ?",
     "send": "Envoyer",
-    "sent": "Merci, nous vous répondrons sous deux jours ouvrés."
+    "sent": "Merci, nous vous répondrons sous deux jours ouvrés.",
+    "book": "Réserver un emplacement dans la recherche",
+    "package": "Paquet",
+    "keyword": "Mot-clé (facultatif)",
+    "weeks": "Semaines",
+    "start": "Date de début",
+    "review": "Vous payez maintenant ; nous vérifions le paquet avant la mise en ligne et remboursons intégralement en cas de refus.",
+    "pay": "Passer au paiement",
+    "signIn": "Connectez-vous pour réserver",
+    "mine": "Vos campagnes",
+    "dates": "Dates",
+    "state": "Statut",
+    "stats": "Impressions / clics",
+    "paid": "Paiement reçu. Nous examinerons votre campagne sous un jour ouvré.",
+    "status": {
+      "unpaid": "En attente de paiement",
+      "review": "En cours d’examen",
+      "active": "En ligne",
+      "paused": "En pause",
+      "ended": "Terminée",
+      "cancelled": "Annulée (remboursée)"
+    }
   },
   "enterprise": {
     "title": "Registres privés pour votre équipe",
@@ -750,7 +771,11 @@
     "owner": "Propriétaire",
     "saved": "Enregistré.",
     "cli": "Équipes et droits par paquet : genpm team et genpm access dans le CLI.",
-    "audit": "Télécharger le journal d’audit (CSV)"
+    "audit": "Télécharger le journal d’audit (CSV)",
+    "plan": "Plan : {plan}",
+    "usage": "{members}/{maxMembers} membres, {packages}/{maxPackages} paquets",
+    "upgrade": "Passer à Team",
+    "manageBilling": "Gérer la facturation"
   },
   "sso": {
     "title": "Authentification unique",

@@ -190,5 +190,9 @@
   "E_POLICY": {
     "message": "你所在组织的策略不允许 {name}：{reason}。",
     "fix": "请选择允许的软件包，或请组织注册表的管理员修改策略。"
+  },
+  "E_PLAN_LIMIT": {
+    "message": "{name} 的免费套餐最多允许 {limit} 个{what}。",
+    "fix": "请在 设置 › 私有注册表 中将注册表升级到 Team 套餐。"
   }
 }

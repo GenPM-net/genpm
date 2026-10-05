@@ -1,17 +1,79 @@
 ---
+// /sponsors: qué es un patrocinio y reglas (ADR-010), reserva self-serve con pago en Stripe (V10-06) y formulario de
+// contacto para campañas a medida. Las campañas propias se ven aquí con impresiones y clics.
 import LeadForm from '../components/LeadForm.astro';
 import Base from '../layouts/Base.astro';
+import { href } from '../lib/i18n.js';
+import { registryFetch } from '../lib/registry.js';
 
-const { t } = Astro.locals;
+const { t, locale, session } = Astro.locals;
 const sent = Astro.url.searchParams.get('sent') ? t.t('web.sponsors.sent') : null;
+let notice: { ok: boolean; text: string } | null = Astro.url.searchParams.get('paid')
+  ? { ok: true, text: t.t('web.sponsors.paid') }
+  : null;
+if (Astro.request.method === 'POST' && session) {
+  const f = await Astro.request.formData();
+  const keyword = String(f.get('keyword') ?? '')
+    .trim()
+    .toLowerCase();
+  const res = await registryFetch('/v1/sponsorships/checkout', {
+    method: 'POST',
+    token: session.token,
+    body: {
+      package: String(f.get('package') ?? '').trim(),
+      ...(keyword ? { keyword } : {}),
+      weeks: Number(f.get('weeks') ?? 1),
+      startsAt: String(f.get('startsAt') ?? ''),
+    },
+  });
+  if (res.ok) return Astro.redirect(((await res.json()) as { url: string }).url, 303);
+  notice = { ok: false, text: ((await res.json().catch(() => ({}))) as { title?: string }).title ?? 'Error' };
+}
+type Mine = {
+  id: string;
+  package: string;
+  keyword: string | null;
+  startsAt: string;
+  endsAt: string;
+  status: string;
+  impressions: number;
+  clicks: number;
+};
+const mine = session
+  ? await registryFetch('/v1/sponsorships/mine', { token: session.token, locale })
+      .then(async (r) => (r.ok ? ((await r.json()) as { sponsorships: Mine[] }).sponsorships : []))
+      .catch(() => [] as Mine[])
+  : [];
+const tomorrow = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
+if (session) Astro.response.headers.set('Cache-Control', 'private, no-store');
 ---
 <Base title={t.t('web.sponsors.title')} description={t.t('web.sponsors.lede')}>
   <div class="wrap">
     <div class="phead"><span class="spons" style="justify-self:start">{t.t('web.common.sponsored')}</span><h1>{t.t('web.sponsors.title')}</h1><p>{t.t('web.sponsors.lede')}</p></div>
+    {notice && <div class="banner" style={`--c:${notice.ok ? 'var(--code-ink)' : 'var(--danger)'}`}><b>{notice.ok ? '✔' : '!'}</b><span>{notice.text}</span></div>}
     <section class="sec"><div class="cols3">
       <div><h2 class="h3">{t.t('web.sponsors.what')}</h2><ul class="dots"><li>{t.t('web.sponsors.w1')}</li><li>{t.t('web.sponsors.w2')}</li><li>{t.t('web.sponsors.w3')}</li><li>{t.t('web.sponsors.w4')}</li></ul></div>
       <div><h2 class="h3">{t.t('web.sponsors.rules')}</h2><ul class="dots"><li>{t.t('web.sponsors.r1')}</li><li>{t.t('web.sponsors.r2')}</li><li>{t.t('web.sponsors.r3')}</li></ul></div>
-      <div id="form"><h2 class="h3">{t.t('web.sponsors.form')}</h2><LeadForm kind="sponsor" fields={[{ name: 'message', label: t.t('web.sponsors.message'), textarea: true }]} submit={t.t('web.sponsors.send')} sent={sent} /></div>
+      <div id="book"><h2 class="h3">{t.t('web.sponsors.book')}</h2>
+        {session ? (
+          <form method="post" class="builder">
+            <label class="field">{t.t('web.sponsors.package')}<input name="package" required pattern="@[a-z0-9][a-z0-9\-]*/[a-z0-9][a-z0-9\-]*" placeholder="@acme/auth" /></label>
+            <label class="field">{t.t('web.sponsors.keyword')}<input name="keyword" pattern="[a-z0-9][a-z0-9\-]{1,31}" placeholder="auth" /></label>
+            <label class="field">{t.t('web.sponsors.weeks')}<input name="weeks" type="number" min="1" max="12" value="1" required /></label>
+            <label class="field">{t.t('web.sponsors.start')}<input name="startsAt" type="date" min={tomorrow} value={tomorrow} required /></label>
+            <p class="hint">{t.t('web.sponsors.review')}</p>
+            <button class="btn primary" type="submit">{t.t('web.sponsors.pay')}</button>
+          </form>
+        ) : <p><a class="btn primary" href={`/login?next=${encodeURIComponent(href(locale, '/sponsors'))}`}>{t.t('web.sponsors.signIn')}</a></p>}
+      </div>
     </div></section>
+    {mine.length > 0 && (
+      <section class="sec"><div class="sec-h"><h2>{t.t('web.sponsors.mine')}</h2></div>
+        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.sponsors.package')}</th><th>{t.t('web.sponsors.keyword')}</th><th>{t.t('web.sponsors.dates')}</th><th>{t.t('web.sponsors.state')}</th><th>{t.t('web.sponsors.stats')}</th></tr></thead><tbody>
+          {mine.map((m) => <tr><td class="mono">{m.package}</td><td>{m.keyword ?? '—'}</td><td>{m.startsAt.slice(0, 10)} → {m.endsAt.slice(0, 10)}</td><td>{t.t(`web.sponsors.status.${m.status}` as 'web.sponsors.status.active')}</td><td>{m.impressions} / {m.clicks}</td></tr>)}
+        </tbody></table></div>
+      </section>
+    )}
+    <section class="sec" id="form"><div class="sec-h"><h2>{t.t('web.sponsors.form')}</h2></div><LeadForm kind="sponsor" fields={[{ name: 'message', label: t.t('web.sponsors.message'), textarea: true }]} submit={t.t('web.sponsors.send')} sent={sent} /></section>
   </div>
 </Base>

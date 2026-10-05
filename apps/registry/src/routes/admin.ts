@@ -11,6 +11,7 @@ import { httpError } from '../http.js';
 import { newId } from '../ids.js';
 import { requireAuth } from '../middleware/auth.js';
 import { aeConfigured, aeDataset, aeQuery } from '../services/ae.js';
+import { reviewSponsorship } from './billing.js';
 
 const DAY = 86_400_000;
 
@@ -293,6 +294,18 @@ export const admin = new Hono<AppEnv>()
       .run();
     if (!r.meta.changes) throw httpError('E_NOT_FOUND', { name: slug });
     await (await audit(c, 'recipe.delete', 'recipe', slug, {})).run();
+    return c.json({ ok: true });
+  })
+  // Patrocinios self-serve (V10-06): aprobar o rechazar (con reembolso) uno pagado.
+  .post('/sponsorships/:id{spn_[0-9A-Za-z]+}', async (c) => {
+    const body = z
+      .strictObject({ decision: z.enum(['approve', 'reject']) })
+      .safeParse(await c.req.json().catch(() => null));
+    if (!body.success) throw httpError('E_BAD_REQUEST', { detail: 'decision' });
+    const id = c.req.param('id');
+    if (!(await reviewSponsorship(c, id, body.data.decision === 'approve')))
+      throw httpError('E_NOT_FOUND', { name: id });
+    await (await audit(c, `sponsorship.${body.data.decision}`, 'sponsorship', id, {})).run();
     return c.json({ ok: true });
   })
   .post('/leads/:id', async (c) => {

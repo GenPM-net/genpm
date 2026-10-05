@@ -446,7 +446,28 @@
     "company": "회사",
     "message": "무엇을 홍보하고 싶나요?",
     "send": "보내기",
-    "sent": "감사합니다. 영업일 기준 2일 이내에 답변드리겠습니다."
+    "sent": "감사합니다. 영업일 기준 2일 이내에 답변드리겠습니다.",
+    "book": "검색 광고 자리 예약",
+    "package": "패키지",
+    "keyword": "키워드(선택)",
+    "weeks": "주",
+    "start": "시작일",
+    "review": "지금 결제하면 게시 전에 패키지를 검토하며, 거절하면 전액 환불합니다.",
+    "pay": "결제하기",
+    "signIn": "로그인하고 예약",
+    "mine": "내 캠페인",
+    "dates": "기간",
+    "state": "상태",
+    "stats": "노출 / 클릭",
+    "paid": "결제가 완료되었습니다. 영업일 기준 하루 안에 캠페인을 검토합니다.",
+    "status": {
+      "unpaid": "결제 대기",
+      "review": "검토 중",
+      "active": "게재 중",
+      "paused": "일시 중지",
+      "ended": "종료",
+      "cancelled": "취소(환불됨)"
+    }
   },
   "enterprise": {
     "title": "팀을 위한 비공개 레지스트리",
@@ -750,7 +771,11 @@
     "owner": "소유자",
     "saved": "저장했습니다.",
     "cli": "팀과 패키지별 권한: CLI의 genpm team과 genpm access.",
-    "audit": "감사 로그 다운로드(CSV)"
+    "audit": "감사 로그 다운로드(CSV)",
+    "plan": "플랜: {plan}",
+    "usage": "멤버 {members}/{maxMembers}, 패키지 {packages}/{maxPackages}",
+    "upgrade": "Team으로 업그레이드",
+    "manageBilling": "결제 관리"
   },
   "sso": {
     "title": "싱글 사인온",

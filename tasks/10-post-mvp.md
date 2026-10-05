@@ -84,8 +84,10 @@
   - ✅ 2026-10-05: `PUT/DELETE /v1/registries/:slug/domain` + `POST …/verify` (TXT por DoH), enrutado por host en el Worker, alta en Cloudflare for SaaS si hay `CF_SAAS_*`; CLI `genpm registry domain|verify`. Pendiente fundador: runbook §3.2 (Custom Hostnames, ruta y secretos).
 - [x] `V10-04` **DONE** Auditoría exportable · A · 12h · deps: V10-01
   - ✅ 2026-10-05: `GET /v1/registries/:slug/audit` (JSON/CSV/JSONL), `genpm registry audit`, descarga CSV en /settings/registries.
-- [ ] `V10-05` **TODO** Facturación con Stripe · A · 24h · deps: V10-01
-- [ ] `V10-06` **TODO** Patrocinios self-serve · W · 24h · deps: V10-05
+- [x] `V10-05` **DONE** Facturación con Stripe · A · 24h · deps: V10-01
+  - ✅ 2026-10-05 (ADR-031): migración 0012, `services/stripe.ts` (REST + firma de webhooks), plan free con límites y Team por Checkout/portal, webhook idempotente; botones en /settings/registries. Pendiente fundador: runbook §3.3 y textos legales (RAT actividad 13).
+- [x] `V10-06` **DONE** Patrocinios self-serve · W · 24h · deps: V10-05
+  - ✅ 2026-10-05: reserva y pago en /sponsors (`/v1/sponsorships/checkout`), revisión del staff con reembolso al rechazar (`/v1/admin/sponsorships/:id`), campañas propias con impresiones y clics.
 - [ ] `V10-07` **TODO** Pentest y bug bounty con recompensas · F · 8h · deps: V10-01
 
 ## Enterprise · +6 meses

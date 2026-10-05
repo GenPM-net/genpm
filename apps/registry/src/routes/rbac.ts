@@ -23,12 +23,16 @@ import {
   removeCustomHostname,
   verifyTxt,
 } from '../services/domains.js';
+import { stripe, stripeConfigured } from '../services/stripe.js';
 import { newToken } from '../services/tokens.js';
 import { fullName, repoOf } from './util.js';
 
 /** Subdominios y rutas que nunca pueden ser el slug de un registro. */
 const RESERVED = new Set(['public', 'www', 'api', 'mcp', 'staging', 'admin', 'app', 'docs', 'status', 'genpm', 'r']);
 const SLUG = /^[a-z0-9][a-z0-9-]{1,38}$/;
+
+/** Plan gratuito de un registro privado (V10-05). Team y Enterprise: sin límites. */
+export const FREE_LIMITS = { members: 3, packages: 10 };
 
 function audit(c: Context<AppEnv>, action: string, type: string, id: string, meta: Record<string, unknown>) {
   return c.env.DB.prepare(
@@ -187,6 +191,15 @@ export const registries = new Hono<AppEnv>()
     if (!body.success) throw httpError('E_BAD_REQUEST', { detail: 'role' });
     const who = await accountByHandle(c.env.DB, c.req.param('handle'));
     if (!who) throw httpError('E_NOT_FOUND', { name: c.req.param('handle') });
+    if (r.plan === 'free') {
+      const n = await c.env.DB.prepare(
+        'SELECT count(*) AS n FROM registry_members WHERE registry_id = ?1 AND account_id != ?2',
+      )
+        .bind(r.id, who.id)
+        .first<{ n: number }>();
+      if ((n?.n ?? 0) >= FREE_LIMITS.members)
+        throw httpError('E_PLAN_LIMIT', { name: r.slug, limit: FREE_LIMITS.members, what: 'members' });
+    }
     c.set('tenant', { registryId: r.id, slug: r.slug });
     await c.env.DB.batch([
       c.env.DB.prepare(
@@ -196,6 +209,72 @@ export const registries = new Hono<AppEnv>()
       audit(c, 'registry.member', 'account', who.id, { handle: who.handle, role: body.data.role }),
     ]);
     return c.json({ ok: true, handle: who.handle, kind: who.kind, role: body.data.role });
+  })
+  // Facturación (V10-05): estado, Checkout para pasar a Team y portal de Stripe para gestionarlo.
+  .get('/:slug/billing', async (c) => {
+    const r = await registryFor(c, 'admin');
+    const b = await c.env.DB.prepare(
+      'SELECT status, seats, current_period_end FROM registry_billing WHERE registry_id = ?1',
+    )
+      .bind(r.id)
+      .first<{ status: string; seats: number; current_period_end: number | null }>();
+    const usage = await c.env.DB.prepare(
+      `SELECT (SELECT count(*) FROM registry_members WHERE registry_id = ?1) AS members,
+              (SELECT count(*) FROM packages WHERE registry_id = ?1 AND status != 'removed') AS packages`,
+    )
+      .bind(r.id)
+      .first<{ members: number; packages: number }>();
+    return c.json({
+      plan: r.plan,
+      limits: r.plan === 'free' ? FREE_LIMITS : null,
+      usage,
+      subscription: b
+        ? {
+            status: b.status,
+            seats: b.seats,
+            renewsAt: b.current_period_end ? new Date(b.current_period_end).toISOString() : null,
+          }
+        : null,
+      available: stripeConfigured(c.env) && !!c.env.STRIPE_PRICE_TEAM,
+    });
+  })
+  .post('/:slug/billing/checkout', requireAuth('publish'), async (c) => {
+    const r = await registryFor(c, 'admin');
+    if (!stripeConfigured(c.env) || !c.env.STRIPE_PRICE_TEAM) throw httpError('E_NOT_FOUND', { name: 'billing' });
+    const body = z
+      .object({ seats: z.number().int().min(1).max(10_000).optional() })
+      .safeParse((await c.req.json().catch(() => ({}))) ?? {});
+    const members = await c.env.DB.prepare('SELECT count(*) AS n FROM registry_members WHERE registry_id = ?1')
+      .bind(r.id)
+      .first<{ n: number }>();
+    const seats = (body.success ? body.data.seats : undefined) ?? Math.max(1, members?.n ?? 1);
+    const existing = await c.env.DB.prepare('SELECT customer_id FROM registry_billing WHERE registry_id = ?1')
+      .bind(r.id)
+      .first<{ customer_id: string }>();
+    const session = await stripe<{ url: string }>(c.env, 'POST', '/checkout/sessions', {
+      mode: 'subscription',
+      line_items: [{ price: c.env.STRIPE_PRICE_TEAM, quantity: seats }],
+      client_reference_id: r.id,
+      ...(existing ? { customer: existing.customer_id } : {}),
+      subscription_data: { metadata: { registry_id: r.id } },
+      metadata: { kind: 'registry', registry_id: r.id },
+      allow_promotion_codes: true,
+      success_url: `${c.env.WEB_ORIGIN}/settings/registries?billing=ok`,
+      cancel_url: `${c.env.WEB_ORIGIN}/settings/registries`,
+    });
+    return c.json({ url: session.url });
+  })
+  .post('/:slug/billing/portal', requireAuth('publish'), async (c) => {
+    const r = await registryFor(c, 'admin');
+    const b = await c.env.DB.prepare('SELECT customer_id FROM registry_billing WHERE registry_id = ?1')
+      .bind(r.id)
+      .first<{ customer_id: string }>();
+    if (!b || !stripeConfigured(c.env)) throw httpError('E_NOT_FOUND', { name: 'billing' });
+    const session = await stripe<{ url: string }>(c.env, 'POST', '/billing_portal/sessions', {
+      customer: b.customer_id,
+      return_url: `${c.env.WEB_ORIGIN}/settings/registries`,
+    });
+    return c.json({ url: session.url });
   })
   // Políticas (ENT-03): las aplica el registry al publicar aquí y el CLI/MCP en todo proyecto con `policy=` en .genpmrc.
   .put('/:slug/policy', requireAuth('publish'), async (c) => {

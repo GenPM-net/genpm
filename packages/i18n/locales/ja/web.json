@@ -446,7 +446,28 @@
     "company": "会社名",
     "message": "何を宣伝したいですか？",
     "send": "送信",
-    "sent": "ありがとうございます。2 営業日以内にご連絡します。"
+    "sent": "ありがとうございます。2 営業日以内にご連絡します。",
+    "book": "検索枠を予約",
+    "package": "パッケージ",
+    "keyword": "キーワード（任意）",
+    "weeks": "週数",
+    "start": "開始日",
+    "review": "支払いは今行います。公開前にパッケージを審査し、却下した場合は全額返金します。",
+    "pay": "支払いに進む",
+    "signIn": "サインインして予約",
+    "mine": "あなたのキャンペーン",
+    "dates": "期間",
+    "state": "状態",
+    "stats": "表示回数 / クリック数",
+    "paid": "支払いを受け付けました。1 営業日以内にキャンペーンを審査します。",
+    "status": {
+      "unpaid": "支払い待ち",
+      "review": "審査中",
+      "active": "掲載中",
+      "paused": "一時停止",
+      "ended": "終了",
+      "cancelled": "キャンセル（返金済み）"
+    }
   },
   "enterprise": {
     "title": "チームのためのプライベートレジストリ",
@@ -750,7 +771,11 @@
     "owner": "所有者",
     "saved": "保存しました。",
     "cli": "チームとパッケージごとの権限: CLI の genpm team と genpm access。",
-    "audit": "監査ログをダウンロード（CSV）"
+    "audit": "監査ログをダウンロード（CSV）",
+    "plan": "プラン: {plan}",
+    "usage": "メンバー {members}/{maxMembers}、パッケージ {packages}/{maxPackages}",
+    "upgrade": "Team にアップグレード",
+    "manageBilling": "請求を管理"
   },
   "sso": {
     "title": "シングルサインオン",

@@ -190,5 +190,9 @@
   "E_POLICY": {
     "message": "Die Richtlinie deiner Organisation erlaubt {name} nicht: {reason}.",
     "fix": "Wähle ein erlaubtes Paket oder bitte eine Administration des Registrys deiner Organisation, die Richtlinie zu ändern."
+  },
+  "E_PLAN_LIMIT": {
+    "message": "Der kostenlose Plan von {name} erlaubt bis zu {limit} {what}.",
+    "fix": "Stelle das Registry unter Einstellungen › Private Registries auf den Team-Plan um."
   }
 }

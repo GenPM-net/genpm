@@ -416,6 +416,16 @@ en el SAML SSO de las orgs de GitHub, el SSO **vincula** la cuenta de GenPM con 
 **Consecuencias:** migración 0010 (`sso_connections` del api-spec §5.4 + `sso_identities`), rutas `/v1/orgs/:org/sso`
 y `/v1/auth/sso/*`, web `/settings/sso`, actividad 12 del registro de tratamientos.
 
+### ADR-031 · Planes de registros privados y patrocinios self-serve con Stripe — ✅ Decidida (Tech Lead, 2026-10-05)
+
+**Decisión:** registros privados en plan **free** (3 miembros, 10 paquetes; sobre el límite `E_PLAN_LIMIT` 402) y
+**Team** (sin límites, suscripción mensual por asiento en Stripe Checkout; asientos = miembros al contratar, ajustables
+en el portal). **Enterprise** se asigna a mano (contrato, tenancy dedicada ENT-01) y Stripe nunca lo baja. El estado
+viene solo del webhook firmado e idempotente; cancelar devuelve a free **sin borrar datos**. Patrocinios: el
+patrocinador reserva un hueco de búsqueda (paquete, palabra clave, 1–12 semanas) y paga en Checkout; queda en revisión
+y el staff lo aprueba o lo rechaza con reembolso completo (ADR-010: siempre marcado, nunca en el MCP). Stripe sin SDK
+(REST + firma HMAC) para no meter dependencias en el Worker.
+
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

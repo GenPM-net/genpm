@@ -16,6 +16,7 @@
 | 7 | Analítica web | Visitantes | Página vista, búsqueda (y nº de resultados), paquete visto, idioma, ruta, dominio de procedencia, campaña, país, robot/persona/con sesión; sin IP ni identificadores | Mejorar el servicio | 6.1.f | Cloudflare (Analytics Engine) | EE. UU. | 3 meses (retención de Analytics Engine) |
 | 11 | Analítica opcional (ADR-027) | Visitantes que la aceptan | Clics, desplazamiento, páginas, grabación de sesión con formularios enmascarados (nunca páginas de cuenta), ID aleatorio del navegador, navegador y dispositivo; sin IP (el proxy `/ph` no la reenvía) | Mapas de calor y mejora de la web | 6.1.a + art. 22.2 LSSI (banner, retirada en el pie) | PostHog, Inc. (Cloud EU, Fráncfort) | EE. UU. solo para acceso de soporte (CCT) | Eventos 12 meses y grabaciones 30 días (configurar en el proyecto de PostHog) |
 | 12 | SSO y SCIM de organizaciones (V10-02, ENT-02) | Miembros de organizaciones clientes | Identificador del IdP (`sub`), email corporativo, estado activo, última autenticación | Control de acceso a registros privados por encargo del cliente | 6.1.b (contrato con la organización; GenPM actúa como encargado del cliente) | Cloudflare | EE. UU. | Mientras dure la conexión; se borra al quitar el SSO o la cuenta |
+| 13 | Facturación (V10-05, V10-06) | Clientes de planes de pago y patrocinadores | Cuenta, registro o paquete, importe, estado del pago e ids de Stripe (cliente, suscripción, pago); la tarjeta la trata solo Stripe | Cobrar y cumplir obligaciones fiscales | 6.1.b y 6.1.c | Stripe Payments Europe, Ltd. (Irlanda) | EE. UU. para soporte (DPF/CCT) | Mientras dure la relación + plazos fiscales (6 años) |
 | 8 | Leads | Empresas y patrocinadores | Email, empresa, tamaño, IDE, mensaje | Responder | 6.1.b (precontractual) | Cloudflare | EE. UU. | 12 meses salvo acuerdo (cron diario) |
 | 9 | Denuncias (DSA art. 16) | Denunciantes | Cuenta, paquete, motivo, descripción | Moderación y comunicación | 6.1.c | Cloudflare | EE. UU. | Cerradas: 2 años (cron diario) |
 | 10 | Correo | Remitentes | Email y contenido | Atender consultas y derechos | 6.1.f / 6.1.c | Piensa Solutions (Arsys) | No (España) | Lo necesario + 2 años (manual) |
@@ -41,6 +42,7 @@ de administración; rate limits; CSP estricta; copias en D1 (Time Travel 30 d). 
 ## Pendiente del responsable
 
 - Revisión jurídica de los textos legales (tarea `D6-P-08`).
+- Actividad 13: aceptar el DPA de Stripe y añadir Stripe a la política de privacidad y a las condiciones (precios, renovación, reembolsos de patrocinios) antes de poner `STRIPE_SECRET_KEY`.
 - Si se activan Turnstile o newsletter, añadir la actividad aquí y en la política.
 - Actividad 11: firmar el DPA de PostHog (se acepta en su panel), elegir la región EU al crear el proyecto y fijar
   la retención de grabaciones en 30 días y de eventos en 12 meses antes de poner `POSTHOG_KEY` en producción.

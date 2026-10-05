@@ -22,7 +22,7 @@ export default defineConfig({
         "connect-src 'self'",
         'frame-src https://challenges.cloudflare.com',
         "base-uri 'self'",
-        "form-action 'self' https://github.com",
+        "form-action 'self' https://github.com https://checkout.stripe.com https://billing.stripe.com",
         "object-src 'none'",
       ],
       scriptDirective: { resources: ["'self'", 'https://challenges.cloudflare.com'] },

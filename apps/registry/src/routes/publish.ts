@@ -44,6 +44,7 @@ import { recomputeQuality } from '../services/quality.js';
 import { sign } from '../services/signing.js';
 import { type SourceHost, sourceHost } from '../services/source-host.js';
 import { hashIp } from '../services/tokens.js';
+import { FREE_LIMITS } from './rbac.js';
 import { repoOf } from './util.js';
 
 const Body = z.strictObject({
@@ -297,6 +298,18 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   const license = ghLicense ?? m.l ?? 'NOASSERTION';
   if (ghLicense && m.l && ghLicense !== m.l)
     warnings.push({ code: 'W_LICENSE_MISMATCH', detail: `${m.l} → ${ghLicense}` });
+
+  // 9a · plan gratuito de un registro privado (V10-05): límite de paquetes.
+  if (tenant.private && !existing) {
+    const row = await db
+      .prepare(
+        "SELECT r.plan, (SELECT count(*) FROM packages p WHERE p.registry_id = r.id AND p.status != 'removed') AS n FROM registries r WHERE r.id = ?1",
+      )
+      .bind(tenant.registryId)
+      .first<{ plan: string; n: number }>();
+    if (row?.plan === 'free' && row.n >= FREE_LIMITS.packages)
+      throw httpError('E_PLAN_LIMIT', { name: tenant.slug, limit: FREE_LIMITS.packages, what: 'packages' });
+  }
 
   // 9b · política del registro privado (ENT-03): licencias prohibidas no entran.
   if (tenant.private) {

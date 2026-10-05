@@ -11,6 +11,7 @@ import { leads, myPackages, reports, tokens } from './routes/account.js';
 import { admin } from './routes/admin.js';
 import { archive } from './routes/archive.js';
 import { auth, me } from './routes/auth.js';
+import { billing, sponsorships } from './routes/billing.js';
 import { advisories, badge, featured, scopes, stats } from './routes/discovery.js';
 import { health } from './routes/health.js';
 import { keys } from './routes/keys.js';
@@ -121,6 +122,8 @@ export function createApp() {
   app.route('/v1/scopes', trusted);
   app.route('/v1/recipes', recipes);
   app.route('/v1/policy', policy);
+  app.route('/v1/billing', billing);
+  app.route('/v1/sponsorships', sponsorships);
   app.route('/v1/registries', registries);
   app.route('/v1/orgs', teams);
   app.route('/v1/orgs', sso);

@@ -446,7 +446,28 @@
     "company": "Empresa",
     "message": "O que você quer promover?",
     "send": "Enviar",
-    "sent": "Obrigado, responderemos em até dois dias úteis."
+    "sent": "Obrigado, responderemos em até dois dias úteis.",
+    "book": "Reserve um espaço na busca",
+    "package": "Pacote",
+    "keyword": "Palavra-chave (opcional)",
+    "weeks": "Semanas",
+    "start": "Data de início",
+    "review": "Você paga agora; revisamos o pacote antes de publicar e devolvemos tudo se recusarmos.",
+    "pay": "Continuar para o pagamento",
+    "signIn": "Entre para reservar",
+    "mine": "Suas campanhas",
+    "dates": "Datas",
+    "state": "Status",
+    "stats": "Impressões / cliques",
+    "paid": "Pagamento recebido. Vamos revisar sua campanha em um dia útil.",
+    "status": {
+      "unpaid": "Aguardando pagamento",
+      "review": "Em revisão",
+      "active": "Ativa",
+      "paused": "Pausada",
+      "ended": "Encerrada",
+      "cancelled": "Cancelada (reembolsada)"
+    }
   },
   "enterprise": {
     "title": "Registros privados para sua equipe",
@@ -750,7 +771,11 @@
     "owner": "Dono",
     "saved": "Salvo.",
     "cli": "Times e permissões por pacote: genpm team e genpm access no CLI.",
-    "audit": "Baixar auditoria (CSV)"
+    "audit": "Baixar auditoria (CSV)",
+    "plan": "Plano: {plan}",
+    "usage": "{members}/{maxMembers} membros, {packages}/{maxPackages} pacotes",
+    "upgrade": "Mudar para Team",
+    "manageBilling": "Gerenciar cobrança"
   },
   "sso": {
     "title": "Login único",

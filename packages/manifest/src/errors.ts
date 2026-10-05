@@ -17,6 +17,8 @@ export const ERRORS = {
   E_USAGE: { http: 400, exit: 2 },
   E_CONFIRM_REQUIRED: { http: 400, exit: 2 },
   E_PAYLOAD_TOO_LARGE: { http: 413, exit: 2 },
+  /** V10-05: el plan gratuito de un registro privado llegó a su límite (miembros o paquetes). */
+  E_PLAN_LIMIT: { http: 402, exit: 7 },
   E_NOT_FOUND: { http: 404, exit: 3 },
   E_NO_MATCHING_VERSION: { http: 404, exit: 3 },
   E_DEST_CONFLICT: { http: 409, exit: 4 },

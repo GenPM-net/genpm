@@ -446,7 +446,28 @@
     "company": "Unternehmen",
     "message": "Was möchtest du bewerben?",
     "send": "Senden",
-    "sent": "Danke, wir melden uns innerhalb von zwei Werktagen."
+    "sent": "Danke, wir melden uns innerhalb von zwei Werktagen.",
+    "book": "Suchplatz buchen",
+    "package": "Paket",
+    "keyword": "Stichwort (optional)",
+    "weeks": "Wochen",
+    "start": "Startdatum",
+    "review": "Du zahlst jetzt; wir prüfen das Paket vor dem Start und erstatten alles, wenn wir ablehnen.",
+    "pay": "Weiter zur Zahlung",
+    "signIn": "Zum Buchen anmelden",
+    "mine": "Deine Kampagnen",
+    "dates": "Zeitraum",
+    "state": "Status",
+    "stats": "Impressionen / Klicks",
+    "paid": "Zahlung erhalten. Wir prüfen deine Kampagne innerhalb eines Werktags.",
+    "status": {
+      "unpaid": "Zahlung ausstehend",
+      "review": "In Prüfung",
+      "active": "Live",
+      "paused": "Pausiert",
+      "ended": "Beendet",
+      "cancelled": "Storniert (erstattet)"
+    }
   },
   "enterprise": {
     "title": "Private Registries für dein Team",
@@ -750,7 +771,11 @@
     "owner": "Besitzer",
     "saved": "Gespeichert.",
     "cli": "Teams und Berechtigungen pro Paket: genpm team und genpm access im CLI.",
-    "audit": "Audit-Log herunterladen (CSV)"
+    "audit": "Audit-Log herunterladen (CSV)",
+    "plan": "Plan: {plan}",
+    "usage": "{members}/{maxMembers} Mitglieder, {packages}/{maxPackages} Pakete",
+    "upgrade": "Auf Team upgraden",
+    "manageBilling": "Abrechnung verwalten"
   },
   "sso": {
     "title": "Single Sign-on",

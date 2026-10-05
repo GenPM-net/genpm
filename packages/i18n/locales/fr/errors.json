@@ -190,5 +190,9 @@
   "E_POLICY": {
     "message": "La politique de votre organisation n’autorise pas {name} : {reason}.",
     "fix": "Choisissez un paquet autorisé ou demandez à un administrateur du registre de votre organisation de modifier la politique."
+  },
+  "E_PLAN_LIMIT": {
+    "message": "Le plan gratuit de {name} permet jusqu’à {limit} {what}.",
+    "fix": "Passez le registre au plan Team dans Paramètres › Registres privés."
   }
 }

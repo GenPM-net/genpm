@@ -446,7 +446,28 @@
     "company": "公司",
     "message": "你想推广什么？",
     "send": "发送",
-    "sent": "谢谢，我们将在两个工作日内回复你。"
+    "sent": "谢谢，我们将在两个工作日内回复你。",
+    "book": "预订搜索广告位",
+    "package": "软件包",
+    "keyword": "关键词（可选）",
+    "weeks": "周数",
+    "start": "开始日期",
+    "review": "现在付款；上线前我们会审核软件包，如被拒绝将全额退款。",
+    "pay": "继续付款",
+    "signIn": "登录后预订",
+    "mine": "你的推广活动",
+    "dates": "日期",
+    "state": "状态",
+    "stats": "展示 / 点击",
+    "paid": "已收到付款。我们会在一个工作日内审核你的推广活动。",
+    "status": {
+      "unpaid": "待付款",
+      "review": "审核中",
+      "active": "投放中",
+      "paused": "已暂停",
+      "ended": "已结束",
+      "cancelled": "已取消（已退款）"
+    }
   },
   "enterprise": {
     "title": "为团队打造的私有注册表",
@@ -750,7 +771,11 @@
     "owner": "所有者",
     "saved": "已保存。",
     "cli": "团队和按软件包的权限：使用 CLI 中的 genpm team 和 genpm access。",
-    "audit": "下载审计日志（CSV）"
+    "audit": "下载审计日志（CSV）",
+    "plan": "套餐：{plan}",
+    "usage": "成员 {members}/{maxMembers}，软件包 {packages}/{maxPackages}",
+    "upgrade": "升级到 Team",
+    "manageBilling": "管理账单"
   },
   "sso": {
     "title": "单点登录",
