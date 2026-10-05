@@ -62,6 +62,7 @@ export function compactSearchRow(p: PackageRow & { is_verified: number }, keywor
     i: p.installs_30d,
     m: p.has_mcp,
     vf: p.is_verified,
+    q: p.quality_score ?? 0,
   };
 }
 
@@ -81,6 +82,7 @@ export function longSearchRow(
     license: p.license,
     updatedAt: iso(p.updated_at),
     featured: p.is_featured === 1,
+    quality: p.quality_score ?? 0,
     score: p.rel === undefined ? null : Math.round(-p.rel * 100) / 100,
   };
 }

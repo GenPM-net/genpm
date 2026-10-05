@@ -12,7 +12,9 @@ import {
   LIMITS,
   type ScanFile,
   type SourceManifest,
+  type StaticQuality,
   scanTree,
+  staticQuality,
   validateSource,
 } from '@genpm/manifest';
 import { fail } from './errors.js';
@@ -31,6 +33,8 @@ export type ValidationReport = {
   bytes: number;
   rulesTokens: number;
   fileList: string[];
+  /** Comprobaciones de calidad que dependen solo del paquete (V02-04); el resto las añade el registry. */
+  quality: StaticQuality | null;
 };
 
 async function walk(root: string, base: string, out: Array<{ path: string; abs: string }>): Promise<void> {
@@ -57,6 +61,7 @@ export async function validate(opts: { path?: string; cwd: string; manifest?: st
     bytes: 0,
     rulesTokens: 0,
     fileList: [],
+    quality: null,
   });
   const raw = await readTextOrNull(manifestPath);
   if (raw === null) {
@@ -132,6 +137,11 @@ export async function validate(opts: { path?: string; cwd: string; manifest?: st
     bytes: report.bytes,
     rulesTokens: report.rulesTokens,
     fileList: files.map((f) => f.path).sort(),
+    quality: staticQuality({
+      license: m.l ?? ((await exists(join(repoRoot, 'LICENSE'))) ? 'LICENSE' : null),
+      rules: contextFile?.content ? contextFile.content.toString() : null,
+      paths: all.map((f) => f.path),
+    }),
   };
 }
 

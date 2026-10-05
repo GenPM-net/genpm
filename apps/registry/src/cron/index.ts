@@ -1,6 +1,6 @@
 // Cron Triggers (api-spec §8):
 //   0 * * * *   rollup Analytics Engine → install_stats_daily (últimos 2 días); installs_30d e installs_total.
-//   15 3 * * *  rollup de 30 días (autocorrige huecos: AE guarda 90 días y el upsert es idempotente), popularity_score, patrocinios por fecha, auditoría tag → SHA y repos inaccesibles (security §3.3) y
+//   15 3 * * *  calidad (V02-04), rollup de 30 días (autocorrige huecos: AE guarda 90 días y el upsert es idempotente), popularity_score, patrocinios por fecha, auditoría tag → SHA y repos inaccesibles (security §3.3) y
 //               borrado de datos personales caducados (plazos de la política de privacidad, art. 5.1.e RGPD).
 //   0 4 * * SUN   re-sync de membresías de GitHub con synced_at > 7 días.
 //   0 * * * *   además: re-firma por lotes las versiones cuya firma no es de la clave activa (rotación, runbook §2).
@@ -9,6 +9,7 @@ import type { Env } from '../env.js';
 import { newId } from '../ids.js';
 import { aeConfigured, aeDataset, aeQuery } from '../services/ae.js';
 import { GitHub, parseGithubRepo } from '../services/github.js';
+import { recomputeQuality } from '../services/quality.js';
 import { activeSigningKey, sign } from '../services/signing.js';
 
 const DAY = 86_400_000;
@@ -90,13 +91,14 @@ export async function rollupInstalls(
   return agg.size;
 }
 
-/** popularity_score = ln(1 + installs_30d)/10 + verificado + recencia (api-spec §5.3). */
+/** popularity_score = ln(1 + installs_30d)/10 + verificado + recencia + calidad/500 (api-spec §5.3). */
 export async function recomputePopularity(env: Env, now = Date.now()): Promise<void> {
   await env.DB.prepare(
     `UPDATE packages SET popularity_score =
        ln(1 + installs_30d) / 10.0
        + (SELECT CASE WHEN a.is_verified = 1 THEN 0.5 ELSE 0 END FROM accounts a WHERE a.id = packages.owner_id)
-       + CASE WHEN updated_at > ?1 THEN 0.3 WHEN updated_at > ?2 THEN 0.1 ELSE 0 END`,
+       + CASE WHEN updated_at > ?1 THEN 0.3 WHEN updated_at > ?2 THEN 0.1 ELSE 0 END
+       + quality_score / 500.0`,
   )
     .bind(now - 30 * DAY, now - 180 * DAY)
     .run();
@@ -255,6 +257,7 @@ export async function runCron(cron: string, env: Env): Promise<void> {
     await resignStale(env);
   } else if (cron === '15 3 * * *') {
     await rollupInstalls(env, fetch, undefined, 30);
+    await recomputeQuality(env);
     await recomputePopularity(env);
     await syncSponsorships(env);
     await auditTags(env);

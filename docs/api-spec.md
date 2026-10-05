@@ -60,7 +60,7 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | GET | `/v1/packages/:scope/:name` | — | ✅ | `genpm info`, página de paquete |
 | GET | `/v1/packages/:scope/:name/versions` | — | ✅ | Historial de versiones |
 | GET | `/v1/packages/:scope/:name/versions/:version` | — | ✅ | Manifiesto exacto |
-| GET | `/v1/packages/:scope/:name/dependents` | — | ⏳ v0.2 | "Usado por" |
+| GET | `/v1/packages/:scope/:name/dependents` | — | ✅ | "Usado por" (V02-03): paquetes públicos cuya versión latest declara el paquete en `g`; `?limit≤50&cursor`; `fmt=c` ⇒ `{r:[{n,v,s,range,i,vf}],nx}` |
 | GET | `/v1/scopes/:scope` | — | ✅ | Página de publisher |
 | GET | `/v1/featured` | — | ✅ | Home web, `genpm search` sin query |
 | GET | `/v1/stats` | — | ✅ | Contadores públicos de la home |
@@ -337,7 +337,8 @@ CREATE TABLE packages (
   -- Métricas desnormalizadas (cron)
   installs_total     INTEGER NOT NULL DEFAULT 0,
   installs_30d       INTEGER NOT NULL DEFAULT 0,
-  popularity_score   REAL    NOT NULL DEFAULT 0,           -- precalculado: ln(1+installs_30d)/10 + verificado + recencia
+  popularity_score   REAL    NOT NULL DEFAULT 0,           -- precalculado: ln(1+installs_30d)/10 + verificado + recencia + quality_score/500
+  -- quality_score INTEGER 0–100 y quality TEXT (JSON [[id, 0|1]]) llegan en la migración 0005 (V02-04, @genpm/manifest quality.ts)
   created_at         INTEGER NOT NULL,
   updated_at         INTEGER NOT NULL,
   UNIQUE (registry_id, full_name),
@@ -665,7 +666,7 @@ El catálogo vive en `@genpm/manifest/errors` y lo reutilizan CLI y MCP (mismo `
 | Cron | Tarea |
 |---|---|
 | `0 * * * *` | Rollup Analytics Engine → `install_stats_daily` (últimos 2 días); actualizar `installs_30d`, `installs_total`. Sin `CF_AE_TOKEN` no toca D1 y registra `installs_rollup_skipped` en los logs. |
-| `15 3 * * *` | Rollup de los últimos 30 días (recupera huecos; ADR-027); recalcular `popularity_score`; activar/desactivar `sponsorships` por fecha y sincronizar `packages.is_sponsored`; auditoría de tags (tag→SHA ≠ `commit_sha` ⇒ `audit_log` + alerta); marcar repos inaccesibles. |
+| `15 3 * * *` | Rollup de los últimos 30 días (recupera huecos; ADR-027); recalcular `quality_score` (V02-04) y `popularity_score`; activar/desactivar `sponsorships` por fecha y sincronizar `packages.is_sponsored`; auditoría de tags (tag→SHA ≠ `commit_sha` ⇒ `audit_log` + alerta); marcar repos inaccesibles. |
 | `0 4 * * SUN` | Re-sync de membresías de GitHub con `synced_at` > 7 días (vía GitHub App). |
 
 ## 9. Bindings (`wrangler.jsonc`)

@@ -112,7 +112,19 @@ export const validateCmd = (ctx: Ctx) =>
           line(ctx, `  ${ctx.c.yellow('▲')} ${w.code}${w.path ? ` ${w.path}` : ''}: ${w.message}`);
         if (r.ok)
           line(ctx, `${ctx.c.green('✔')} ${ctx.t.t('cli.validate.ok', { files: r.files, tokens: r.rulesTokens })}`);
-        else stderr(ctx.c.red(ctx.t.t('cli.validate.failed', { count: r.errors.length })));
+        if (r.quality) {
+          // Checklist de calidad (V02-04): lo que depende del paquete; escaneo, mantenimiento y verificación los mide el registry.
+          const checks = Object.entries(r.quality) as Array<[keyof typeof r.quality, boolean]>;
+          line(
+            ctx,
+            `  ${ctx.t.t('cli.validate.quality', { passed: checks.filter(([, ok]) => ok).length, total: checks.length })}`,
+          );
+          for (const [id, ok] of checks)
+            line(
+              ctx,
+              `  ${ok ? ctx.c.green('✓') : ctx.c.dim('·')} ${ctx.t.t(`cli.quality.${id}` as 'cli.quality.license')}`,
+            );
+        } else stderr(ctx.c.red(ctx.t.t('cli.validate.failed', { count: r.errors.length })));
       })(),
   });
 

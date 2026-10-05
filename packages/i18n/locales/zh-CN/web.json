@@ -242,7 +242,12 @@
     "unavailable": "源代码不可用",
     "unavailableText": "无法访问此包的 Git 仓库。已安装的副本仍可正常使用。",
     "notFoundTitle": "未找到包",
-    "selectVersion": "选择版本"
+    "selectVersion": "选择版本",
+    "usedBy": "被以下包使用（{count, number}）",
+    "usedByNone": "目前还没有公开软件包依赖它。",
+    "usedByShort": "被使用",
+    "quality": "质量",
+    "qualityScore": "{score, number}/100"
   },
   "report": {
     "title": "举报 {name}",
@@ -573,5 +578,18 @@
     "noResults": "无结果",
     "empty": "暂无数据。",
     "footnote": "安装是指来自 CLI 或 MCP、且不是预览（--dry-run 或 dryRun）的 resolve 调用。数据量大时 Analytics Engine 可能会抽样计数。直接访问没有来源。"
+  },
+  "quality": {
+    "license": "可识别的许可证",
+    "rulesPurpose": "AGENTS.md 说明了用途",
+    "rulesIntegration": "AGENTS.md 包含集成步骤",
+    "rulesConventions": "AGENTS.md 列出约定或禁止事项",
+    "tests": "包含测试",
+    "scan": "通过安全扫描",
+    "maintained": "最近 6 个月内发布",
+    "verified": "已验证的发布者",
+    "described": "摘要和关键词",
+    "passed": "已满足",
+    "missing": "未满足"
   }
 }

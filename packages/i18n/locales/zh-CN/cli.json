@@ -142,7 +142,8 @@
   },
   "validate": {
     "ok": "genpm.json 有效（{files, plural, other {# 个文件}}，规则约 {tokens} 个 token）",
-    "failed": "{count, plural, other {# 个错误}}"
+    "failed": "{count, plural, other {# 个错误}}",
+    "quality": "质量清单：{passed}/{total}（扫描、维护和验证由 registry 补充）"
   },
   "publish": {
     "done": "已发布 {name}@{version} → {url}",
@@ -202,5 +203,12 @@
     "conflicts": "需要解决的冲突（查找 <<<<<<< 标记）：{files}",
     "orphaned": "上游已删除，因有你的修改而保留：{files}",
     "installed": "已安装 {name} {version}（新依赖）"
+  },
+  "quality": {
+    "license": "可识别的许可证",
+    "rulesPurpose": "AGENTS.md 说明了用途（## Purpose）",
+    "rulesIntegration": "AGENTS.md 包含集成步骤（## Integration）",
+    "rulesConventions": "AGENTS.md 列出约定或禁止事项",
+    "tests": "包含测试"
   }
 }

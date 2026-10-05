@@ -1,7 +1,13 @@
 // Carga de datos de la página de paquete: metadatos del registry + README, reglas y árbol desde GitHub por SHA.
 import { estimateTokens, normalizeMcp } from '@genpm/manifest';
 import { injectedTree, rawFile, type TreeFile } from './github.js';
-import { type LongManifest, type PackageResponse, registryGet, type VersionRow } from './registry.js';
+import {
+  type DependentRow,
+  type LongManifest,
+  type PackageResponse,
+  registryGet,
+  type VersionRow,
+} from './registry.js';
 
 export type PackageView = {
   pkg: PackageResponse;
@@ -13,6 +19,9 @@ export type PackageView = {
   tree: TreeFile[] | undefined;
   mcp: Array<{ n: string; command: string; env: string[] }>;
   rulesTokens: number | null;
+  /** "Used by" (V02-03): paquetes públicos cuya última versión depende de este. */
+  dependents: DependentRow[];
+  dependentsTotal: number;
   stale: boolean;
 };
 
@@ -21,9 +30,10 @@ export async function loadPackage(
   version: string | null,
   locale: string,
 ): Promise<PackageView | null | 'quarantined' | 'unavailable'> {
-  const [pkgRes, versRes] = await Promise.all([
+  const [pkgRes, versRes, depRes] = await Promise.all([
     registryGet<PackageResponse>(`/v1/packages/${name}`, locale),
     registryGet<{ versions: VersionRow[] }>(`/v1/packages/${name}/versions?limit=50`, locale),
+    registryGet<{ dependents: DependentRow[]; total: number }>(`/v1/packages/${name}/dependents?limit=20`, locale),
   ]);
   if (pkgRes.status === 451) return 'quarantined';
   const pkg = pkgRes.data;
@@ -59,6 +69,8 @@ export async function loadPackage(
       return { n: s.n, command: s.u ?? [s.c, ...(s.a ?? [])].join(' '), env: s.e ?? [] };
     }),
     rulesTokens: rulesText ? estimateTokens(rulesText) : null,
+    dependents: depRes.data?.dependents ?? [],
+    dependentsTotal: depRes.data?.total ?? 0,
     stale: pkgRes.stale,
   };
 }

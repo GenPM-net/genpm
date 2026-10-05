@@ -142,7 +142,8 @@
   },
   "validate": {
     "ok": "genpm.json は有効です（{files, plural, other {# ファイル}}、ルール約 {tokens} トークン）",
-    "failed": "{count, plural, other {# 件のエラー}}"
+    "failed": "{count, plural, other {# 件のエラー}}",
+    "quality": "品質チェックリスト: {passed}/{total}（スキャン・メンテナンス・認証は registry が追加します）"
   },
   "publish": {
     "done": "{name}@{version} を公開しました → {url}",
@@ -202,5 +203,12 @@
     "conflicts": "解決が必要な競合（<<<<<<< マーカーを探してください）: {files}",
     "orphaned": "upstream で削除されましたが、あなたの変更があるため残しました: {files}",
     "installed": "{name} {version} をインストールしました（新しい依存関係）"
+  },
+  "quality": {
+    "license": "認識されたライセンス",
+    "rulesPurpose": "AGENTS.md に目的の説明がある（## Purpose）",
+    "rulesIntegration": "AGENTS.md に統合手順がある（## Integration）",
+    "rulesConventions": "AGENTS.md に規約や禁止事項がある",
+    "tests": "テストを含む"
   }
 }

@@ -5,6 +5,7 @@ import { Hono } from 'hono';
 import { CACHE, cached } from '../cache.js';
 import type { AppEnv } from '../env.js';
 import { httpError } from '../http.js';
+import { qualityChecks } from '../services/quality.js';
 import { compactManifest, iso, longManifest, summaryOf } from '../views.js';
 import { decodeCursor, encodeCursor, fullName, repoOf, wantsCompact } from './util.js';
 
@@ -34,6 +35,7 @@ export const packages = new Hono<AppEnv>()
         st: pkg.status,
         dep: pkg.is_deprecated ? (pkg.deprecation_msg ?? '') : null,
         scan: latest?.scan_status ?? null,
+        q: pkg.quality_score,
       });
     }
     const weekly = await c.env.DB.prepare(
@@ -69,6 +71,8 @@ export const packages = new Hono<AppEnv>()
         deprecated: pkg.is_deprecated === 1,
         deprecationMessage: pkg.deprecation_msg,
       },
+      quality: { score: pkg.quality_score, checks: qualityChecks(pkg.quality) },
+      dependentsCount: await repo.dependentsCount(pkg.full_name),
       stats: {
         installs30d: pkg.installs_30d,
         installsTotal: pkg.installs_total,
@@ -85,6 +89,40 @@ export const packages = new Hono<AppEnv>()
       createdAt: iso(pkg.created_at),
       updatedAt: iso(pkg.updated_at),
     });
+  })
+  .get(`${PKG}/dependents`, cached({ control: () => CACHE.short }), async (c) => {
+    const repo = repoOf(c);
+    const name = fullName(c);
+    if (!(await repo.packageByName(name))) throw httpError('E_NOT_FOUND', { name });
+    const limit = Math.min(Math.max(Number(c.req.query('limit') ?? 20) || 20, 1), 50);
+    const offset = decodeCursor(c.req.query('cursor'));
+    const [rows, total] = await Promise.all([repo.dependents(name, limit + 1, offset), repo.dependentsCount(name)]);
+    const next = rows.length > limit ? encodeCursor(offset + limit) : null;
+    const locale = c.get('locale');
+    const items = rows.slice(0, limit).map((p) => ({
+      n: p.full_name,
+      v: p.latest_version!,
+      s: summaryOf(p.summary, locale) ?? '',
+      range: p.dep_range,
+      i: p.installs_30d,
+      vf: p.is_verified,
+    }));
+    return c.json(
+      wantsCompact(c)
+        ? { r: items, nx: next }
+        : {
+            dependents: items.map((x) => ({
+              name: x.n,
+              version: x.v,
+              summary: x.s || null,
+              range: x.range,
+              installs30d: x.i,
+              verified: x.vf === 1,
+            })),
+            next,
+            total,
+          },
+    );
   })
   .get(`${PKG}/versions`, cached({ control: () => CACHE.short }), async (c) => {
     const repo = repoOf(c);

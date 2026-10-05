@@ -113,6 +113,9 @@ export type PackageResponse = {
   latest: LongManifest | null;
   flags: { featured: boolean; sponsored: boolean; deprecated: boolean; deprecationMessage: string | null };
   stats: { installs30d: number; installsTotal: number; weekly: number[] };
+  /** V02-04 (ausente en registries antiguos). */
+  quality?: { score: number; checks: Array<{ id: string; ok: boolean }> };
+  dependentsCount?: number;
   security: {
     scanStatus: string | null;
     scannedAt: string | null;
@@ -122,6 +125,15 @@ export type PackageResponse = {
   createdAt: string | null;
   updatedAt: string | null;
   sourceStatus?: string;
+};
+
+export type DependentRow = {
+  name: string;
+  version: string;
+  summary: string | null;
+  range: string;
+  installs30d: number;
+  verified: boolean;
 };
 
 export type VersionRow = {

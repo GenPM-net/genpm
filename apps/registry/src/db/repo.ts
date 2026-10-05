@@ -30,6 +30,8 @@ export type PackageRow = {
   installs_total: number;
   installs_30d: number;
   popularity_score: number;
+  quality_score: number;
+  quality: string | null;
   created_at: number;
   updated_at: number;
 };
@@ -123,6 +125,39 @@ export class Repo {
       .bind(packageId)
       .all<{ tag: string; version: string }>();
     return Object.fromEntries(results.map((r) => [r.tag, r.version]));
+  }
+
+  /** Paquetes públicos cuya versión latest declara `name` en `g` ("Used by", V02-03). */
+  async dependents(
+    name: string,
+    limit: number,
+    offset: number,
+  ): Promise<Array<PackageRow & { dep_range: string; is_verified: number }>> {
+    const { results } = await this.db
+      .prepare(
+        `SELECT p.*, d.dep_range, coalesce(a.is_verified, 0) AS is_verified
+         FROM package_dependencies d
+         JOIN package_versions v ON v.id = d.version_id
+         JOIN packages p ON p.latest_version_id = v.id
+         LEFT JOIN accounts a ON a.id = p.owner_id
+         WHERE d.kind = 'genpm' AND d.dep_name = ?2 AND p.registry_id = ?1 AND ${PUBLIC} AND p.status = 'active'
+         ORDER BY p.installs_30d DESC, p.full_name LIMIT ?3 OFFSET ?4`,
+      )
+      .bind(this.rid, name, limit, offset)
+      .all<PackageRow & { dep_range: string; is_verified: number }>();
+    return results;
+  }
+
+  async dependentsCount(name: string): Promise<number> {
+    const row = await this.db
+      .prepare(
+        `SELECT count(*) AS n FROM package_dependencies d
+         JOIN packages p ON p.latest_version_id = d.version_id
+         WHERE d.kind = 'genpm' AND d.dep_name = ?2 AND p.registry_id = ?1 AND ${PUBLIC} AND p.status = 'active'`,
+      )
+      .bind(this.rid, name)
+      .first<{ n: number }>();
+    return row?.n ?? 0;
   }
 
   // ───────────── Versiones ─────────────

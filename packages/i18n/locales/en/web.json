@@ -242,7 +242,12 @@
     "unavailable": "Source unavailable",
     "unavailableText": "The Git repository behind this package is not reachable. Installed copies keep working.",
     "notFoundTitle": "Package not found",
-    "selectVersion": "Select version"
+    "selectVersion": "Select version",
+    "usedBy": "Used by ({count, number})",
+    "usedByNone": "No public package depends on it yet.",
+    "usedByShort": "Used by",
+    "quality": "Quality",
+    "qualityScore": "{score, number}/100"
   },
   "report": {
     "title": "Report {name}",
@@ -573,5 +578,18 @@
     "noResults": "no results",
     "empty": "No data yet.",
     "footnote": "An install is a resolve call from the CLI or MCP that is not a preview (--dry-run or dryRun). Counts may be sampled by Analytics Engine at high volume. Direct visits have no origin."
+  },
+  "quality": {
+    "license": "Recognized license",
+    "rulesPurpose": "AGENTS.md explains its purpose",
+    "rulesIntegration": "AGENTS.md has integration steps",
+    "rulesConventions": "AGENTS.md lists conventions or don'ts",
+    "tests": "Includes tests",
+    "scan": "Security scan passed",
+    "maintained": "Released in the last 6 months",
+    "verified": "Verified publisher",
+    "described": "Summary and keywords",
+    "passed": "passed",
+    "missing": "missing"
   }
 }

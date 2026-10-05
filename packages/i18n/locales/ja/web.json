@@ -242,7 +242,12 @@
     "unavailable": "ソースを利用できません",
     "unavailableText": "このパッケージの Git リポジトリにアクセスできません。インストール済みのコピーは引き続き動作します。",
     "notFoundTitle": "パッケージが見つかりません",
-    "selectVersion": "バージョンを選択"
+    "selectVersion": "バージョンを選択",
+    "usedBy": "利用元（{count, number}）",
+    "usedByNone": "まだこのパッケージに依存する公開パッケージはありません。",
+    "usedByShort": "利用元",
+    "quality": "品質",
+    "qualityScore": "{score, number}/100"
   },
   "report": {
     "title": "{name} を報告",
@@ -573,5 +578,18 @@
     "noResults": "結果なし",
     "empty": "まだデータがありません。",
     "footnote": "インストールとは、プレビュー（--dry-run または dryRun）ではない CLI または MCP からの resolve 呼び出しです。大量のデータでは Analytics Engine がサンプリングすることがあります。直接訪問には流入元がありません。"
+  },
+  "quality": {
+    "license": "認識されたライセンス",
+    "rulesPurpose": "AGENTS.md に目的の説明がある",
+    "rulesIntegration": "AGENTS.md に統合手順がある",
+    "rulesConventions": "AGENTS.md に規約や禁止事項がある",
+    "tests": "テストを含む",
+    "scan": "セキュリティスキャンに合格",
+    "maintained": "過去 6 か月以内に公開",
+    "verified": "認証済みの公開者",
+    "described": "概要とキーワード",
+    "passed": "達成",
+    "missing": "未達成"
   }
 }

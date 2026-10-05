@@ -122,6 +122,7 @@ export interface MessageParams {
   "cli.init.nextValidate": undefined;
   "cli.validate.ok": { files: number; tokens: string | number };
   "cli.validate.failed": { count: number };
+  "cli.validate.quality": { passed: string | number; total: string | number };
   "cli.publish.done": { name: string | number; version: string | number; url: string | number };
   "cli.publish.scan": { status: string | number };
   "cli.publish.dryRun": { name: string | number; version: string | number; commit: string | number };
@@ -159,6 +160,11 @@ export interface MessageParams {
   "cli.update.conflicts": { files: string | number };
   "cli.update.orphaned": { files: string | number };
   "cli.update.installed": { name: string | number; version: string | number };
+  "cli.quality.license": undefined;
+  "cli.quality.rulesPurpose": undefined;
+  "cli.quality.rulesIntegration": undefined;
+  "cli.quality.rulesConventions": undefined;
+  "cli.quality.tests": undefined;
   "common.product.tagline": undefined;
   "common.layers.code": undefined;
   "common.layers.context": undefined;
@@ -501,6 +507,11 @@ export interface MessageParams {
   "web.pkg.unavailableText": undefined;
   "web.pkg.notFoundTitle": undefined;
   "web.pkg.selectVersion": undefined;
+  "web.pkg.usedBy": { count: number };
+  "web.pkg.usedByNone": undefined;
+  "web.pkg.usedByShort": undefined;
+  "web.pkg.quality": undefined;
+  "web.pkg.qualityScore": { score: number };
   "web.report.title": { name: string | number };
   "web.report.reason": undefined;
   "web.report.malware": undefined;
@@ -789,6 +800,17 @@ export interface MessageParams {
   "web.admin.noResults": undefined;
   "web.admin.empty": undefined;
   "web.admin.footnote": undefined;
+  "web.quality.license": undefined;
+  "web.quality.rulesPurpose": undefined;
+  "web.quality.rulesIntegration": undefined;
+  "web.quality.rulesConventions": undefined;
+  "web.quality.tests": undefined;
+  "web.quality.scan": undefined;
+  "web.quality.maintained": undefined;
+  "web.quality.verified": undefined;
+  "web.quality.described": undefined;
+  "web.quality.passed": undefined;
+  "web.quality.missing": undefined;
 }
 
 export type MessageKey = keyof MessageParams;

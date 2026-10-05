@@ -44,8 +44,10 @@
   - ✅ 2026-10-05: core/merge.ts (planMerge + git merge-file endurecido), plan({update}) con acción `update`, apply con merge archivo a archivo dentro del journal, `genpm diff` (parche aplicable con git apply) y `genpm update` (exit 4 con conflictos). Tests en core y CLI.
 - [x] `V02-02` **DONE** Tool genpm_diff y actualización asistida por IA · B · 8h · deps: V02-01
   - ✅ 2026-10-05: `genpm_diff` (parche delimitado como contenido de terceros, truncado al presupuesto) y `genpm_update` con `strategy: 3way | ai`; instrucciones del servidor actualizadas (< 250 tokens).
-- [ ] `V02-03` **TODO** Dependents ("Used by") en API y página de paquete · A · 6h · deps: D7-10
-- [ ] `V02-04` **TODO** Puntuación de calidad de paquetes · A · 8h · deps: D7-10
+- [x] `V02-03` **DONE** Dependents ("Used by") en API y página de paquete · A · 6h · deps: D7-10
+  - ✅ 2026-10-05: `GET /v1/packages/:scope/:name/dependents` (índice inverso existente), `dependentsCount` en el paquete y lista en la pestaña Dependencies y el lateral.
+- [x] `V02-04` **DONE** Puntuación de calidad de paquetes · A · 8h · deps: D7-10
+  - ✅ 2026-10-05: `@genpm/manifest` quality.ts (9 comprobaciones ponderadas, 0–100), estático al publicar (tests aunque se ignoren), cron diario, migración 0005, peso en popularidad, checklist en la pestaña Security y en `genpm validate`.
 - [ ] `V02-05` **TODO** Revisión nativa del nivel 2 de idiomas y retirada del banner beta · F · 8h · deps: D7-06
 - [x] `V02-06` **DONE** Docs completas en pt-BR · C · 8h · deps: D6-I-01
   - Hecho el 2026-10-04: las 11 páginas de docs en los 8 idiomas (pendiente la revisión nativa de D6-I-01).

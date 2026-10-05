@@ -242,7 +242,12 @@
     "unavailable": "Quelle nicht verfügbar",
     "unavailableText": "Das Git-Repository dieses Pakets ist nicht erreichbar. Installierte Kopien funktionieren weiter.",
     "notFoundTitle": "Paket nicht gefunden",
-    "selectVersion": "Version wählen"
+    "selectVersion": "Version wählen",
+    "usedBy": "Verwendet von ({count, number})",
+    "usedByNone": "Noch hängt kein öffentliches Paket davon ab.",
+    "usedByShort": "Verwendet von",
+    "quality": "Qualität",
+    "qualityScore": "{score, number}/100"
   },
   "report": {
     "title": "{name} melden",
@@ -573,5 +578,18 @@
     "noResults": "keine Ergebnisse",
     "empty": "Noch keine Daten.",
     "footnote": "Eine Installation ist ein resolve-Aufruf aus CLI oder MCP, der keine Vorschau ist (--dry-run oder dryRun). Bei hohem Volumen kann Analytics Engine Stichproben bilden. Direkte Besuche haben keine Herkunft."
+  },
+  "quality": {
+    "license": "Anerkannte Lizenz",
+    "rulesPurpose": "AGENTS.md erklärt den Zweck",
+    "rulesIntegration": "AGENTS.md enthält Integrationsschritte",
+    "rulesConventions": "AGENTS.md nennt Konventionen oder Verbote",
+    "tests": "Enthält Tests",
+    "scan": "Sicherheitsscan bestanden",
+    "maintained": "In den letzten 6 Monaten veröffentlicht",
+    "verified": "Verifizierter Herausgeber",
+    "described": "Zusammenfassung und Schlagwörter",
+    "passed": "erfüllt",
+    "missing": "fehlt"
   }
 }

@@ -142,7 +142,8 @@
   },
   "validate": {
     "ok": "genpm.json이 유효합니다({files, plural, other {파일 #개}}, 규칙 약 {tokens}토큰)",
-    "failed": "{count, plural, other {오류 #건}}"
+    "failed": "{count, plural, other {오류 #건}}",
+    "quality": "품질 체크리스트: {passed}/{total} (검사·유지 관리·인증은 registry가 추가)"
   },
   "publish": {
     "done": "{name}@{version}을(를) 게시했습니다 → {url}",
@@ -202,5 +203,12 @@
     "conflicts": "해결할 충돌(<<<<<<< 표시를 찾으세요): {files}",
     "orphaned": "upstream에서 삭제되었지만 내 변경이 있어 유지됨: {files}",
     "installed": "{name} {version} 설치됨(새 의존성)"
+  },
+  "quality": {
+    "license": "인정된 라이선스",
+    "rulesPurpose": "AGENTS.md에 목적 설명 (## Purpose)",
+    "rulesIntegration": "AGENTS.md에 통합 단계 (## Integration)",
+    "rulesConventions": "AGENTS.md에 규칙 또는 금지 사항",
+    "tests": "테스트 포함"
   }
 }

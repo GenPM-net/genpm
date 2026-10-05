@@ -2352,6 +2352,23 @@ table.tbl tr.y td:first-child {
   gap: 14px;
   padding: 20px;
 }
+.qchecks {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--ink-3);
+}
+.qchecks li.ok {
+  color: var(--ink);
+}
+.qchecks li span[aria-hidden] {
+  display: inline-block;
+  width: 1.2em;
+  font-family: var(--f-mono);
+}
 .finding {
   border-left: 3px solid var(--warn);
   background: var(--hit);

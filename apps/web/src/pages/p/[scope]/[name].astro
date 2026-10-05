@@ -186,6 +186,7 @@ const badgeMd = `[![genpm](https://api.genpm.net/v1/badge/${name}.svg)](https://
                 <div><dt>{t.t('web.pkg.genpmDeps')}</dt><dd>{deps.length ? deps.map(([d, r]) => <a href={href(locale, `/p/${d}`)} style="margin-right:12px">{d} {r}</a>) : <span style="color:var(--ink-3)">{t.t('web.common.none')}</span>}</dd></div>
                 <div><dt>{t.t('web.pkg.npmDeps')}</dt><dd class="mono">{npm.length ? npm.map(([d, r]) => <a href={`https://www.npmjs.com/package/${d}`} rel="nofollow noopener" style="margin-right:12px">{d} {r}</a>) : <span style="color:var(--ink-3)">{t.t('web.common.none')}</span>}</dd></div>
                 <div><dt>{t.t('web.pkg.proposed')}</dt><dd>{t.t('web.pkg.proposedText')}</dd></div>
+                <div><dt>{t.t('web.pkg.usedBy', { count: v.dependentsTotal })}</dt><dd>{v.dependents.length ? v.dependents.map((d) => <a href={href(locale, `/p/${d.name}`)} style="margin-right:12px" title={d.summary ?? undefined}>{d.name} <span style="color:var(--ink-3)">{d.range}</span></a>) : <span style="color:var(--ink-3)">{t.t('web.pkg.usedByNone')}</span>}</dd></div>
               </dl>
             </div>
 
@@ -195,6 +196,7 @@ const badgeMd = `[![genpm](https://api.genpm.net/v1/badge/${name}.svg)](https://
                 <div><dt>{t.t('web.pkg.secCommit')}</dt><dd class="mono">{t.t('web.pkg.secCommitText', { ref: m.ref, sha: m.commit })}</dd></div>
                 <div><dt>{t.t('web.pkg.secScripts')}</dt><dd>{t.t('web.pkg.secScriptsText')}</dd></div>
                 <div><dt>{t.t('web.pkg.secLicense')}</dt><dd>{m.license}</dd></div>
+                {p.quality && <div><dt>{t.t('web.pkg.quality')}</dt><dd><b class="tnum">{t.t('web.pkg.qualityScore', { score: p.quality.score })}</b><ul class="qchecks">{p.quality.checks.map((q) => <li class:list={[{ ok: q.ok }]}><span aria-hidden="true">{q.ok ? '✓' : '·'}</span> {t.t(`web.quality.${q.id}` as 'web.quality.license')}<span class="sr">{q.ok ? t.t('web.quality.passed') : t.t('web.quality.missing')}</span></li>)}</ul></dd></div>}
                 <div><dt>{t.t('web.pkg.secReport')}</dt><dd>{t.t('web.pkg.secReportText')} <button type="button" style="border-bottom:1px solid var(--line-2)" data-report>{t.t('web.pkg.secReportLink')}</button></dd></div>
               </dl>
               {p.security.findings.map((f) => <div class="finding">{f.severity} · {f.rule}{f.path && ` · ${f.path}`} · {f.detail}</div>)}
@@ -213,6 +215,8 @@ const badgeMd = `[![genpm](https://api.genpm.net/v1/badge/${name}.svg)](https://
               {deps.length > 0 && <><dt>{t.t('web.pkg.requires')}</dt><dd>{deps.map(([d, r]) => <a href={href(locale, `/p/${d}`)}>{d} {r}</a>)}</dd></>}
               {npm.length > 0 && <><dt>npm</dt><dd>{npm.map(([d, r]) => <span>{d} {r}</span>)}</dd></>}
               {m.env.length > 0 && <><dt>{t.t('web.pkg.env')}</dt><dd>{m.env.join(' ')}</dd></>}
+              {p.quality && <><dt>{t.t('web.pkg.quality')}</dt><dd class="tnum">{t.t('web.pkg.qualityScore', { score: p.quality.score })}</dd></>}
+              {v.dependentsTotal > 0 && <><dt>{t.t('web.pkg.usedByShort')}</dt><dd class="tnum">{compact(locale, v.dependentsTotal)}</dd></>}
               <dt>{t.t('web.pkg.installs')}</dt><dd><Fragment set:html={sparkline(p.stats.weekly.length ? p.stats.weekly : [0, p.stats.installs30d])} /><span class="tnum">{t.t('web.common.perMonth', { count: compact(locale, p.stats.installs30d) })}</span></dd>
               <dt>{t.t('web.pkg.published')}</dt><dd>{t.t('web.pkg.publishedBy', { when: ago(locale, v.selected?.publishedAt ?? p.updatedAt), by: p.publisher?.handle ?? '' })}</dd>
             </dl>

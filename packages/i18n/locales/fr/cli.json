@@ -142,7 +142,8 @@
   },
   "validate": {
     "ok": "genpm.json est valide ({files, plural, one {# fichier} other {# fichiers}}, ~{tokens} tokens de règles)",
-    "failed": "{count, plural, one {# erreur} other {# erreurs}}"
+    "failed": "{count, plural, one {# erreur} other {# erreurs}}",
+    "quality": "Liste de qualité : {passed}/{total} (le registry ajoute l’analyse, la maintenance et la vérification)"
   },
   "publish": {
     "done": "Publié {name}@{version} → {url}",
@@ -202,5 +203,12 @@
     "conflicts": "Conflits à résoudre (cherchez les marqueurs <<<<<<<) : {files}",
     "orphaned": "Supprimé en amont, conservé avec vos changements : {files}",
     "installed": "{name} {version} installé (nouvelle dépendance)"
+  },
+  "quality": {
+    "license": "Licence reconnue",
+    "rulesPurpose": "AGENTS.md explique son objectif (## Purpose)",
+    "rulesIntegration": "AGENTS.md donne les étapes d’intégration (## Integration)",
+    "rulesConventions": "AGENTS.md liste conventions ou interdits",
+    "tests": "Contient des tests"
   }
 }

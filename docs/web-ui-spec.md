@@ -168,7 +168,7 @@
 | **Files** (verde) | Árbol **exacto** de lo que se inyectará (aplicando `i` y `.genpmignore`), con tamaños; clic → visor de archivo con resaltado | GitHub `git/trees/<sha>?recursive=1` + raw, caché por SHA |
 | **MCP** (cyan) | Cada servidor: nombre, comando completo, env requeridas, enlace a su fuente; aviso "solo se añade con tu consentimiento" | manifiesto `m` |
 | **Versions** | Tabla: versión, tag, SHA, fecha, publisher, escaneo, `yanked` (tachado + motivo) | `/versions` |
-| **Dependencies** | `g` (enlaces a paquetes GenPM), `p` (enlaces a npm), "Used by" (v0.2) | manifiesto |
+| **Dependencies** | `g` (enlaces a paquetes GenPM), `p` (enlaces a npm), "Used by" (`/dependents`, V02-03) | manifiesto |
 | **Security** | Estado del escaneo, hallazgos, verificación de SHA/tag, licencia detectada, cómo reportar | `security` |
 
 **Install panel (tabs):**
