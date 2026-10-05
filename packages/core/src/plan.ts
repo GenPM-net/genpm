@@ -247,7 +247,12 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
 
   for (const raw of input.specs) {
     const parsed = parseSpec(raw);
-    if (!parsed.ok) throw fail('E_USAGE', { detail: `${raw}: ${parsed.problem}` });
+    if (!parsed.ok) {
+      // cli-mcp-spec §A.4: un spec directo sin ref, o con una rama, no es inmutable (no un error de uso).
+      if (parsed.problem === 'missing_ref' || parsed.problem === 'invalid_ref')
+        throw fail('E_REF_MUTABLE', { ref: raw.trim() });
+      throw fail('E_USAGE', { detail: `${raw}: ${parsed.problem}` });
+    }
     const spec = parsed.spec;
     if (spec.kind === 'file') throw fail('E_USAGE', { detail: 'file: specs are not supported yet' });
     if (spec.kind === 'github') {
