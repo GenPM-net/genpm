@@ -1,12 +1,12 @@
 ---
 title: Cookie-Richtlinie
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 Diese Richtlinie entspricht Artikel 22.2 des spanischen Gesetzes 34/2002 über Dienste der Informationsgesellschaft (LSSI-CE) und dem Cookie-Leitfaden der spanischen Datenschutzbehörde. Bei Abweichungen ist die spanische Fassung maßgeblich.
 
 ## Kurz gesagt
 
-genpm.net **verwendet nur technische Cookies und Einstellungen, die du selbst wählst** und die für den angeforderten Dienst unbedingt erforderlich sind. Sie sind von der Einwilligungspflicht ausgenommen (Art. 22.2 LSSI-CE), deshalb gibt es kein Cookie-Banner. Wir verwenden keine Analyse-, Werbe- oder Tracking-Cookies, weder eigene noch von Dritten. Die Webanalyse ist eigen, speichert nichts auf deinem Gerät und erfasst deine IP nicht.
+genpm.net **verwendet nur technische Cookies und Einstellungen, die du selbst wählst** und die für den angeforderten Dienst unbedingt erforderlich sind. Sie sind von der Einwilligungspflicht ausgenommen (Art. 22.2 LSSI-CE), deshalb gibt es kein Cookie-Banner. Wir verwenden keine Analyse-, Werbe- oder Tracking-Cookies, weder eigene noch von Dritten. Die Analyse erfolgt auf unseren Servern anhand der Seiten, die du aufrufst (Suchen und angesehene Pakete): Dein Browser sendet dafür nichts, auf deinem Gerät wird nichts gespeichert und weder deine IP noch eine Kennung werden erfasst.
 
 ## Was wir in deinem Browser speichern
 

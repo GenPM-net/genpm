@@ -8,14 +8,6 @@ function toast(msg: string) {
   (toast as unknown as { h?: number }).h = window.setTimeout(() => (t.hidden = true), 1800);
 }
 
-export function track(event: string, data: Record<string, string> = {}) {
-  try {
-    navigator.sendBeacon?.('/e', JSON.stringify({ event, ...data, path: location.pathname }));
-  } catch {
-    /* la analítica nunca rompe la página */
-  }
-}
-
 async function copy(text: string, btn: HTMLElement | null, okLabel: string) {
   try {
     await navigator.clipboard.writeText(text);
@@ -48,7 +40,6 @@ function wireTabs(root: ParentNode) {
       });
       if (push && box.dataset.tabs === 'hash') {
         history.replaceState(null, '', `#${tab.dataset.tab}`);
-        track('tab_view', { tab: tab.dataset.tab ?? '' });
       }
     };
     tabs.forEach((tab, i) => {
@@ -87,7 +78,6 @@ export function initSite() {
       e.preventDefault();
       const src = document.getElementById(b.dataset.copy!);
       if (src) void copy(src.textContent ?? '', b, root.dataset.copiedtoast ?? 'Copied');
-      if (b.dataset.event) track(b.dataset.event, { pkg: b.dataset.pkgname ?? '' });
       return;
     }
     const sha = el.closest<HTMLElement>('[data-copysha]');

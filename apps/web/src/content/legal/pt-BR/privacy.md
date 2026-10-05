@@ -1,6 +1,6 @@
 ---
 title: Política de Privacidade
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 Esta política explica quais dados pessoais o GenPM (genpm.net, a API `api.genpm.net`, o CLI `genpm` e o servidor `@genpm-net/mcp`) trata, para quê, com qual base legal e quais são os seus direitos. Ela cumpre o Regulamento (UE) 2016/679 (RGPD) e a Lei Orgânica espanhola 3/2018 (LOPDGDD) e, para titulares no Brasil, a Lei 13.709/2018 (LGPD). Em caso de divergência, prevalece a versão em espanhol.
 
@@ -24,11 +24,14 @@ Não é obrigatório designar um encarregado de proteção de dados (art. 37 RGP
 | Eventos de instalação: pacote, versão, cliente (`cli`/`mcp`), versão do CLI e país (deduzido do IP, que não é guardado) | Contadores públicos de instalações e estatísticas agregadas | Interesse legítimo em medir o uso do registro | Agregados por dia; eventos individuais, 90 dias |
 | Endereço IP, convertido em hash com um sal que muda diariamente | Limitar requisições e prevenir abusos | Interesse legítimo na segurança do serviço | No máximo 30 dias |
 | Logs técnicos do servidor (Cloudflare Workers) | Diagnosticar erros e ataques | Interesse legítimo na segurança e continuidade do serviço | No máximo 7 dias |
+| Analítica da web: buscas feitas, pacote visto, idioma e rota (sem IP nem identificadores) | Saber o que se busca e se usa para melhorar o serviço | Interesse legítimo em medir o uso de forma agregada (art. 6.1.f) | 3 meses (Analytics Engine da Cloudflare) |
 | Formulário de patrocínio ou empresas: e-mail, empresa, tamanho da equipe, IDE e mensagem | Responder à sua solicitação | Procedimentos preliminares a pedido seu | 12 meses, salvo acordo |
 | Denúncias de pacotes: sua conta, o pacote, o motivo e sua descrição | Revisar o conteúdo denunciado e comunicar a decisão | Obrigação legal do Regulamento (UE) 2022/2065 de Serviços Digitais, art. 16 | 2 anos após a decisão |
 | E-mails que você nos envia | Atender sua solicitação ou o exercício dos seus direitos | Interesse legítimo em responder ou, quando aplicável, obrigação legal | O necessário e até 2 anos depois |
 
-**O que nunca tratamos:** o conteúdo do seu projeto, seus arquivos `.env` ou os valores das suas variáveis de ambiente. Não usamos cookies de publicidade nem de rastreamento entre sites: a analítica da web é própria, sem cookies e sem IP (ver a [Política de cookies](/cookies)).
+Esses prazos são aplicados automaticamente: um processo diário apaga ou anonimiza o que expirou.
+
+**O que nunca tratamos:** o conteúdo do seu projeto, seus arquivos `.env` ou os valores das suas variáveis de ambiente. Não usamos cookies de publicidade nem de rastreamento entre sites, e o seu navegador não envia nada para a analítica: contamos nos nossos servidores as páginas que você pede (ver a [Política de cookies](/cookies)).
 
 **Telemetria do CLI e do MCP:** com `GENPM_TELEMETRY=0` ou `DO_NOT_TRACK=1`, o cliente envia `client=none` e o registro não guarda o evento.
 
@@ -65,7 +68,7 @@ Se você pedir o encerramento, anonimizamos seus dados pessoais em até 30 dias;
 
 ## 7. Menores
 
-O GenPM é um serviço para desenvolvedores. É preciso ter pelo menos 14 anos para criar uma conta; abaixo dessa idade, é necessário o consentimento dos pais ou responsáveis.
+O GenPM é um serviço para desenvolvedores. É preciso ter pelo menos 16 anos para criar uma conta: é a idade geral do art. 8 do RGPD e a fixada pelo projeto de lei orgânica espanhol de proteção de menores em ambientes digitais, que elevará os 14 anos do art. 7 da LOPDGDD. Não aceitamos contas de menores dessa idade; se identificarmos uma, encerramos a conta e apagamos os dados.
 
 ## 8. Segurança
 

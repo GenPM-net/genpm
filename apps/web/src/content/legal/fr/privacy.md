@@ -1,6 +1,6 @@
 ---
 title: Politique de confidentialité
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 Cette politique explique quelles données personnelles GenPM (genpm.net, l’API `api.genpm.net`, le CLI `genpm` et le serveur `@genpm-net/mcp`) traite, pourquoi, sur quelle base juridique et quels sont vos droits. Elle respecte le règlement (UE) 2016/679 (RGPD) et la loi organique espagnole 3/2018 (LOPDGDD). La version espagnole fait foi en cas de divergence.
 
@@ -24,11 +24,14 @@ La désignation d’un délégué à la protection des données n’est pas obli
 | Événements d’installation : paquet, version, client (`cli`/`mcp`), version du CLI et pays (déduit de l’IP, qui n’est pas stockée) | Compteurs d’installation publics et statistiques agrégées | Intérêt légitime à mesurer l’utilisation du registry | Agrégés par jour ; événements individuels, 90 jours |
 | Adresse IP, transformée en hash avec un sel renouvelé chaque jour | Limitation du débit et prévention des abus | Intérêt légitime à la sécurité du service (art. 6.1.f, considérant 49) | 30 jours au maximum |
 | Journaux techniques du serveur (Cloudflare Workers) | Diagnostiquer les erreurs et les attaques | Intérêt légitime à la sécurité et à la continuité du service | 7 jours au maximum |
+| Mesure d’audience : recherches effectuées, paquet consulté, langue et chemin (sans IP ni identifiant) | Savoir ce qui est cherché et utilisé pour améliorer le service | Intérêt légitime à mesurer l’usage de façon agrégée (art. 6.1.f) | 3 mois (Analytics Engine de Cloudflare) |
 | Formulaire sponsors ou entreprises : e-mail, entreprise, taille de l’équipe, IDE et message | Répondre à votre demande | Mesures précontractuelles à votre demande (art. 6.1.b) | 12 mois sauf accord conclu |
 | Signalements de paquets : votre compte, le paquet, le motif et votre description | Examiner le contenu signalé et communiquer la décision | Obligation légale au titre de l’art. 16 du règlement européen sur les services numériques (art. 6.1.c RGPD) | 2 ans après la décision |
 | E-mails que vous nous envoyez | Traiter votre demande ou l’exercice de vos droits | Intérêt légitime à vous répondre ou, le cas échéant, obligation légale | Le temps nécessaire et jusqu’à 2 ans ensuite |
 
-**Ce que nous ne traitons jamais :** le contenu de votre projet, vos fichiers `.env` ou les valeurs de vos variables d’environnement. Nous n’utilisons aucun cookie publicitaire ou de suivi entre sites : l’analyse d’audience est interne, sans cookies et sans IP (voir la [Politique relative aux cookies](/cookies)).
+Ces durées sont appliquées automatiquement : un traitement quotidien supprime ou anonymise ce qui a expiré.
+
+**Ce que nous ne traitons jamais :** le contenu de votre projet, vos fichiers `.env` ou les valeurs de vos variables d’environnement. Nous n’utilisons aucun cookie publicitaire ou de suivi entre sites, et votre navigateur n’envoie rien pour la mesure d’audience : nous comptons sur nos serveurs les pages que vous demandez (voir la [Politique relative aux cookies](/cookies)).
 
 **Télémétrie du CLI et du MCP :** avec `GENPM_TELEMETRY=0` ou `DO_NOT_TRACK=1`, le client envoie `client=none` et le registry ne stocke pas l’événement. Vous pouvez vous y opposer ainsi à tout moment.
 
@@ -67,7 +70,7 @@ Si vous nous demandez de fermer votre compte, nous anonymisons vos données pers
 
 ## 7. Mineurs
 
-GenPM est un service destiné aux développeurs. Vous devez avoir au moins 14 ans pour créer un compte (art. 7 LOPDGDD) ; en dessous de cet âge, le consentement de vos parents ou tuteurs est nécessaire.
+GenPM est un service destiné aux développeurs. Vous devez avoir au moins 16 ans pour créer un compte : c'est l'âge général de l'art. 8 du RGPD et celui que fixe le projet de loi organique espagnole sur la protection des mineurs dans les environnements numériques, qui relèvera les 14 ans de l'art. 7 LOPDGDD. Nous n'acceptons pas de comptes de personnes plus jeunes ; si nous en détectons un, nous le fermons et supprimons ses données.
 
 ## 8. Sécurité
 

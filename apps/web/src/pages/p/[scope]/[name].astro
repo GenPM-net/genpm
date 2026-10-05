@@ -6,6 +6,7 @@ import Ico from '../../../components/Ico.astro';
 import LayerBadges from '../../../components/LayerBadges.astro';
 import ReportDialog from '../../../components/ReportDialog.astro';
 import Base from '../../../layouts/Base.astro';
+import { recordEvent } from '../../../lib/analytics.js';
 import { ago, bytes, compact, shortSha, sparkline } from '../../../lib/format.js';
 import { highlight, langFor } from '../../../lib/highlight.js';
 import { href } from '../../../lib/i18n.js';
@@ -28,6 +29,7 @@ if (view === 'unavailable') {
   return Astro.rewrite('/500');
 }
 const quarantined = view === 'quarantined';
+if (!quarantined) recordEvent('pkg_view', name, locale, '/p');
 const v = quarantined ? null : view;
 const m = v?.manifest;
 const p = v?.pkg;

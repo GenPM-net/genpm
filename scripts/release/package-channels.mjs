@@ -20,7 +20,13 @@ const sums = Object.fromEntries(
     .map((l) => l.trim().split(/\s+\*?/))
     .map(([hash, file]) => [file, hash]),
 );
-const need = (f) => sums[f] ?? (console.error(`missing ${f} in SHA256SUMS`), process.exit(1));
+const need = (f) => {
+  if (!sums[f]) {
+    console.error(`missing ${f} in SHA256SUMS`);
+    process.exit(1);
+  }
+  return sums[f];
+};
 const base = `https://github.com/GenPM-net/genpm-releases/releases/download/v${version}`;
 
 const formula = `# Generado por scripts/release/package-channels.mjs (repo GenPM-net/genpm). No editar a mano.

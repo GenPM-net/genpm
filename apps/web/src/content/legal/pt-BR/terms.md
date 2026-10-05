@@ -1,6 +1,6 @@
 ---
 title: Termos de Serviço
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 Estes termos regem o uso de genpm.net, da API do registro (`api.genpm.net`), do CLI `genpm` e do servidor `@genpm-net/mcp` (em conjunto, «GenPM»), prestados por {{name}} (dados completos no [Aviso legal](/legal)). Ao criar uma conta ou publicar um pacote você os aceita. Pesquisar e instalar pacotes não exige conta. O GenPM está em **beta pública** e é gratuito. Em caso de divergência, prevalece a versão em espanhol.
 
@@ -10,7 +10,7 @@ O GenPM é um registro que indexa manifestos de pacotes hospedados em repositór
 
 ## 2. Conta
 
-- Você entra com sua conta do GitHub. É preciso ter pelo menos 14 anos.
+- Você entra com sua conta do GitHub. É preciso ter pelo menos 16 anos.
 - Você é responsável pela atividade da sua conta e dos seus tokens de API. Mantenha-os em segredo e revogue-os se vazarem.
 - Você pode encerrar a conta quando quiser escrevendo para {{email}}; as consequências para seus pacotes estão na [Política de privacidade](/privacy#6-encerramento-da-conta).
 

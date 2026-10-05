@@ -1,12 +1,12 @@
 ---
 title: Cookie Policy
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 This policy complies with article 22.2 of Spanish Law 34/2002 on Information Society Services (LSSI-CE) and the cookie guidelines of the Spanish Data Protection Agency. The Spanish version prevails in case of discrepancy.
 
 ## Summary
 
-genpm.net **only uses technical cookies and preferences you choose yourself**, strictly necessary to provide the service you ask for. They are exempt from consent (art. 22.2 LSSI-CE), which is why there is no cookie banner. We use no analytics, advertising or tracking cookies, first- or third-party. Web analytics are first-party, store nothing on your device and do not record your IP.
+genpm.net **only uses technical cookies and preferences you choose yourself**, strictly necessary to provide the service you ask for. They are exempt from consent (art. 22.2 LSSI-CE), which is why there is no cookie banner. We use no analytics, advertising or tracking cookies, first- or third-party. Analytics happen on our servers from the pages you request (searches and packages viewed): your browser sends nothing for it, nothing is stored on your device and neither your IP nor any identifier is recorded.
 
 ## What we store in your browser
 

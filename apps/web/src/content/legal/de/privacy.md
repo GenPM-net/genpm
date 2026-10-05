@@ -1,6 +1,6 @@
 ---
 title: Datenschutzerklärung
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 Diese Erklärung beschreibt, welche personenbezogenen Daten GenPM (genpm.net, die API `api.genpm.net`, der CLI `genpm` und der Server `@genpm-net/mcp`) verarbeitet, warum, auf welcher Rechtsgrundlage und welche Rechte du hast. Sie entspricht der Verordnung (EU) 2016/679 (DSGVO) und dem spanischen Organgesetz 3/2018 (LOPDGDD). Bei Abweichungen ist die spanische Fassung maßgeblich.
 
@@ -24,11 +24,14 @@ Die Benennung eines Datenschutzbeauftragten ist nicht erforderlich (Art. 37 DSGV
 | Installationsereignisse: Paket, Version, Client (`cli`/`mcp`), CLI-Version und Land (aus der IP abgeleitet, die nicht gespeichert wird) | Öffentliche Installationszähler und aggregierte Statistiken | Berechtigtes Interesse, die Nutzung der Registry zu messen | Täglich aggregiert; Einzelereignisse 90 Tage |
 | IP-Adresse, gehasht mit einem täglich wechselnden Salt | Ratenbegrenzung und Missbrauchsabwehr | Berechtigtes Interesse an der Sicherheit des Dienstes (Art. 6.1.f, Erwägungsgrund 49) | Höchstens 30 Tage |
 | Technische Serverprotokolle (Cloudflare Workers) | Fehler und Angriffe diagnostizieren | Berechtigtes Interesse an Sicherheit und Betrieb des Dienstes | Höchstens 7 Tage |
+| Webanalyse: durchgeführte Suchen, angesehenes Paket, Sprache und Pfad (ohne IP oder Kennungen) | Wissen, was gesucht und genutzt wird, um den Dienst zu verbessern | Berechtigtes Interesse an aggregierter Nutzungsmessung (Art. 6.1.f) | 3 Monate (Cloudflare Analytics Engine) |
 | Formular für Sponsoren oder Unternehmen: E-Mail, Firma, Teamgröße, IDE und Nachricht | Deine Anfrage beantworten | Vorvertragliche Maßnahmen auf deine Anfrage (Art. 6.1.b) | 12 Monate, sofern keine Vereinbarung zustande kommt |
 | Paketmeldungen: dein Konto, das Paket, der Grund und deine Beschreibung | Den gemeldeten Inhalt prüfen und die Entscheidung mitteilen | Rechtliche Pflicht nach Art. 16 des EU-Gesetzes über digitale Dienste (Art. 6.1.c DSGVO) | 2 Jahre nach der Entscheidung |
 | E-Mails, die du uns schickst | Deine Anfrage oder die Ausübung deiner Rechte bearbeiten | Berechtigtes Interesse, dir zu antworten, oder gegebenenfalls eine rechtliche Pflicht | So lange wie nötig und bis zu 2 Jahre danach |
 
-**Was wir nie verarbeiten:** den Inhalt deines Projekts, deine `.env`-Dateien oder die Werte deiner Umgebungsvariablen. Wir verwenden keine Werbe- oder websiteübergreifenden Tracking-Cookies: Die Webanalyse ist eigen, ohne Cookies und ohne IP (siehe [Cookie-Richtlinie](/cookies)).
+Diese Fristen werden automatisch durchgesetzt: Ein täglicher Prozess löscht oder anonymisiert, was abgelaufen ist.
+
+**Was wir nie verarbeiten:** den Inhalt deines Projekts, deine `.env`-Dateien oder die Werte deiner Umgebungsvariablen. Wir verwenden keine Werbe- oder websiteübergreifenden Tracking-Cookies, und dein Browser sendet nichts für die Analyse: Wir zählen auf unseren Servern die Seiten, die du aufrufst (siehe [Cookie-Richtlinie](/cookies)).
 
 **Telemetrie von CLI und MCP:** Mit `GENPM_TELEMETRY=0` oder `DO_NOT_TRACK=1` sendet der Client `client=none`, und die Registry speichert das Ereignis nicht. So kannst du jederzeit widersprechen.
 
@@ -67,7 +70,7 @@ Wenn du die Schließung deines Kontos verlangst, anonymisieren wir deine persone
 
 ## 7. Minderjährige
 
-GenPM ist ein Dienst für Entwickler. Für ein Konto musst du mindestens 14 Jahre alt sein (Art. 7 LOPDGDD); darunter brauchst du die Einwilligung deiner Eltern oder Erziehungsberechtigten.
+GenPM ist ein Dienst für Entwickler. Für ein Konto musst du mindestens 16 Jahre alt sein: Das ist das allgemeine Alter nach Art. 8 DSGVO und das, was der spanische Entwurf eines Organgesetzes zum Schutz Minderjähriger in digitalen Umgebungen vorsieht (er hebt die 14 Jahre aus Art. 7 LOPDGDD an). Konten jüngerer Personen akzeptieren wir nicht; finden wir eines, schließen wir es und löschen seine Daten.
 
 ## 8. Sicherheit
 

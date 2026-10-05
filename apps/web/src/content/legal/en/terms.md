@@ -1,6 +1,6 @@
 ---
 title: Terms of Service
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 These terms govern the use of genpm.net, the registry API (`api.genpm.net`), the `genpm` CLI and the `@genpm-net/mcp` server (together, "GenPM"), provided by {{name}} (full details in the [Legal Notice](/legal)). By creating an account or publishing a package you accept them. Searching and installing packages needs no account. GenPM is in **public beta** and free of charge.
 
@@ -10,7 +10,7 @@ GenPM is a registry that indexes manifests of packages hosted in public Git repo
 
 ## 2. Account
 
-- You sign in with your GitHub account. You must be at least 14.
+- You sign in with your GitHub account. You must be at least 16.
 - You are responsible for the activity of your account and your API tokens. Keep them secret and revoke them if they leak.
 - You can close your account at any time by writing to {{email}}; the consequences for your packages are explained in the [Privacy Policy](/privacy#6-closing-your-account).
 

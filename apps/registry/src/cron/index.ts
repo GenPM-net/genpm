@@ -1,6 +1,7 @@
 // Cron Triggers (api-spec §8):
 //   0 * * * *   rollup Analytics Engine → install_stats_daily; installs_30d e installs_total.
-//   15 3 * * *  popularity_score, patrocinios por fecha, auditoría tag → SHA y repos inaccesibles (security §3.3).
+//   15 3 * * *  popularity_score, patrocinios por fecha, auditoría tag → SHA y repos inaccesibles (security §3.3) y
+//               borrado de datos personales caducados (plazos de la política de privacidad, art. 5.1.e RGPD).
 //   0 4 * * SUN   re-sync de membresías de GitHub con synced_at > 7 días.
 //   0 * * * *   además: re-firma por lotes las versiones cuya firma no es de la clave activa (rotación, runbook §2).
 
@@ -198,6 +199,31 @@ export async function resignStale(env: Env, limit = 500): Promise<number> {
   return results.length;
 }
 
+/**
+ * Plazos de conservación de la política de privacidad (§2): hash de IP 30 días, leads 12 meses salvo acuerdo,
+ * reportes cerrados 2 años, tokens revocados o caducados 30 días y sesiones al caducar. Idempotente.
+ */
+export async function purgeExpired(env: Env, now = Date.now()): Promise<void> {
+  const db = env.DB;
+  const ago = (days: number) => now - days * DAY;
+  await db.batch([
+    db.prepare('UPDATE audit_log SET ip_hash = NULL WHERE ip_hash IS NOT NULL AND created_at < ?1').bind(ago(30)),
+    db
+      .prepare(
+        "UPDATE leads SET details = json_remove(details, '$.ip') WHERE created_at < ?1 AND json_extract(details, '$.ip') IS NOT NULL",
+      )
+      .bind(ago(30)),
+    db.prepare("DELETE FROM leads WHERE created_at < ?1 AND status != 'won'").bind(ago(365)),
+    db.prepare("DELETE FROM reports WHERE created_at < ?1 AND status IN ('actioned', 'dismissed')").bind(ago(730)),
+    db
+      .prepare(
+        'DELETE FROM api_tokens WHERE (revoked_at IS NOT NULL AND revoked_at < ?1) OR (expires_at IS NOT NULL AND expires_at < ?1)',
+      )
+      .bind(ago(30)),
+    db.prepare('DELETE FROM sessions WHERE expires_at < ?1').bind(now),
+  ]);
+}
+
 export async function runCron(cron: string, env: Env): Promise<void> {
   if (cron === '0 * * * *') {
     await rollupInstalls(env);
@@ -206,5 +232,6 @@ export async function runCron(cron: string, env: Env): Promise<void> {
     await recomputePopularity(env);
     await syncSponsorships(env);
     await auditTags(env);
+    await purgeExpired(env);
   } else if (cron === '0 4 * * SUN') await resyncMemberships(env);
 }

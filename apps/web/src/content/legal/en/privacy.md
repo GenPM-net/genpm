@@ -1,6 +1,6 @@
 ---
 title: Privacy Policy
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 This policy explains which personal data GenPM (genpm.net, the `api.genpm.net` API, the `genpm` CLI and the `@genpm-net/mcp` server) processes, why, on what legal basis and what your rights are. It complies with Regulation (EU) 2016/679 (GDPR) and Spanish Organic Law 3/2018 (LOPDGDD). The Spanish version prevails in case of discrepancy.
 
@@ -24,11 +24,14 @@ Appointing a data protection officer is not required (art. 37 GDPR, art. 34 LOPD
 | Install events: package, version, client (`cli`/`mcp`), CLI version and country (derived from the IP, which is not stored) | Public install counters and aggregated statistics | Legitimate interest in measuring registry usage | Aggregated daily; individual events, 90 days |
 | IP address, turned into a hash with a daily-rotated salt | Rate limiting and abuse prevention | Legitimate interest in service security (art. 6.1.f, recital 49) | 30 days at most |
 | Technical server logs (Cloudflare Workers) | Diagnose errors and attacks | Legitimate interest in service security and continuity | 7 days at most |
+| Web analytics: searches made, package viewed, language and path (no IP or identifiers) | Know what people search for and use, to improve the service | Legitimate interest in measuring usage in aggregate (art. 6.1.f) | 3 months (Cloudflare Analytics Engine) |
 | Sponsors or enterprise form: email, company, team size, IDE and message | Answer your request | Pre-contractual steps at your request (art. 6.1.b) | 12 months unless we reach an agreement |
 | Package reports: your account, the package, the reason and your description | Review the reported content and communicate the decision | Legal obligation under the EU Digital Services Act, art. 16 (art. 6.1.c GDPR) | 2 years after the decision |
 | Emails you send us | Handle your request or the exercise of your rights | Legitimate interest in answering you or, where applicable, a legal obligation | As long as needed and up to 2 years afterwards |
 
-**What we never process:** the contents of your project, your `.env` files or your environment variable values. We use no advertising or cross-site tracking cookies: web analytics are first-party, cookie-free and IP-free (see the [Cookie Policy](/cookies)).
+These periods are enforced automatically: a daily job deletes or anonymizes whatever has expired.
+
+**What we never process:** the contents of your project, your `.env` files or your environment variable values. We use no advertising or cross-site tracking cookies, and your browser sends nothing for analytics: we count the pages you request on our servers (see the [Cookie Policy](/cookies)).
 
 **CLI and MCP telemetry:** with `GENPM_TELEMETRY=0` or `DO_NOT_TRACK=1` the client sends `client=none` and the registry does not store the event. You can object this way at any time.
 
@@ -67,7 +70,7 @@ If you ask us to close your account, we anonymize your personal data within 30 d
 
 ## 7. Minors
 
-GenPM is a service for developers. You must be at least 14 to create an account (art. 7 LOPDGDD); below that age you need consent from your parents or guardians.
+GenPM is a service for developers. You must be at least 16 to create an account: that is the general age in art. 8 GDPR and the one set by Spain's draft organic law on minors in digital environments, which will raise the 14 years of art. 7 LOPDGDD. We do not accept accounts from anyone younger; if we find one, we close it and delete its data.
 
 ## 8. Security
 

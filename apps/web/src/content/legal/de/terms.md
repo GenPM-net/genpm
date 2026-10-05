@@ -1,6 +1,6 @@
 ---
 title: Nutzungsbedingungen
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 Diese Bedingungen regeln die Nutzung von genpm.net, der Registry-API (`api.genpm.net`), des CLI `genpm` und des Servers `@genpm-net/mcp` (zusammen „GenPM“), bereitgestellt von {{name}} (vollständige Angaben im [Impressum](/legal)). Mit dem Anlegen eines Kontos oder dem Veröffentlichen eines Pakets akzeptierst du sie. Für das Suchen und Installieren von Paketen brauchst du kein Konto. GenPM ist eine **öffentliche Beta** und kostenlos.
 
@@ -10,7 +10,7 @@ GenPM ist eine Registry, die Manifeste von Paketen in öffentlichen Git-Reposito
 
 ## 2. Konto
 
-- Du meldest dich mit deinem GitHub-Konto an. Du musst mindestens 14 Jahre alt sein.
+- Du meldest dich mit deinem GitHub-Konto an. Du musst mindestens 16 Jahre alt sein.
 - Du bist für die Aktivitäten deines Kontos und deiner API-Tokens verantwortlich. Halte sie geheim und widerrufe sie, wenn sie bekannt werden.
 - Du kannst dein Konto jederzeit schließen, indem du an {{email}} schreibst; die Folgen für deine Pakete erklärt die [Datenschutzerklärung](/privacy#6-konto-schließen).
 

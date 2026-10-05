@@ -1,12 +1,12 @@
 ---
 title: Politique relative aux cookies
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 Cette politique respecte l’article 22.2 de la loi espagnole 34/2002 sur les services de la société de l’information (LSSI-CE) et le guide sur les cookies de l’Agence espagnole de protection des données. La version espagnole fait foi en cas de divergence.
 
 ## En bref
 
-genpm.net **n’utilise que des cookies techniques et des préférences que vous choisissez vous-même**, strictement nécessaires pour fournir le service que vous demandez. Ils sont exemptés de consentement (art. 22.2 LSSI-CE), c’est pourquoi il n’y a pas de bannière de cookies. Nous n’utilisons aucun cookie d’analyse, de publicité ou de suivi, ni propre ni tiers. L’analyse d’audience est interne, ne stocke rien sur votre appareil et n’enregistre pas votre adresse IP.
+genpm.net **n’utilise que des cookies techniques et des préférences que vous choisissez vous-même**, strictement nécessaires pour fournir le service que vous demandez. Ils sont exemptés de consentement (art. 22.2 LSSI-CE), c’est pourquoi il n’y a pas de bannière de cookies. Nous n’utilisons aucun cookie d’analyse, de publicité ou de suivi, ni propre ni tiers. La mesure d’audience se fait sur nos serveurs à partir des pages que vous demandez (recherches et paquets consultés) : votre navigateur n’envoie rien pour cela, rien n’est stocké sur votre appareil et ni votre IP ni aucun identifiant ne sont enregistrés.
 
 ## Ce que nous stockons dans votre navigateur
 
