@@ -1,0 +1,4 @@
+# GenPM: staging, backups y candado (files/ sí se commitea)
+tmp/
+backup/
+.lock
