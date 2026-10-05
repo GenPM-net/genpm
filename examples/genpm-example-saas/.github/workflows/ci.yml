@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * 1' # weekly: catch upstream drift in the registry or the seed packages
+
+jobs:
+  app:
+    name: typecheck + tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+  genpm:
+    name: genpm against the production registry
+    runs-on: ubuntu-latest
+    env:
+      NO_COLOR: '1'
+      GENPM_TELEMETRY: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm i -g @genpm-net/cli
+      - run: genpm --version
+      - run: genpm doctor
+      # Lockfile vs. what is on disk: the deleted Next.js adapters show up as drift, everything else must be clean.
+      - run: genpm list
+      # Integrity (files hash), registry signatures, advisories and yanked versions.
+      - run: genpm audit
+      - run: genpm outdated
+      # Same install from scratch in an empty project, to compare with the committed genpm.lock.
+      - name: fresh install
+        run: |
+          mkdir /tmp/fresh && cd /tmp/fresh && git init -q && echo '{"name":"fresh","private":true,"type":"module"}' > package.json
+          genpm add @core/billing @core/email @core/ai -y --no-mcp --no-install-deps --clients=agents,claude,cursor
+          genpm audit
+          cat genpm.lock
