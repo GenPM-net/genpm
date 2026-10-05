@@ -68,8 +68,10 @@ Aparece en `/security/advisories`, en el feed JSON y en `genpm audit`.
 Tras la revisión: `status='active'` (falso positivo), o `yank` de las versiones afectadas y suspensión de la cuenta
 (confirmado). Purga de nuevo la caché.
 
-> Ensayado en local (D6-S-08): `UPDATE packages SET status='quarantined'` → `resolve` 451 → el CLI muestra `E_QUARANTINED`
-> → `status='active'` → 200.
+> Ensayado en local y en staging (D6-S-08, 2026-10-05): `UPDATE packages SET status='quarantined'` → `resolve` 451 en
+> 1 s → el CLI y el MCP muestran `E_QUARANTINED` → la web "En revisión" y fuera de la búsqueda → advisory visible en
+> `/security/advisories` y en `GET /v1/advisories` → `status='active'` → 200. El ensayo encontró que la web seguía
+> ofreciendo instalar el paquete (servía los metadatos con `status`); corregido.
 
 ---
 
@@ -138,6 +140,12 @@ Qué pasa en los clientes:
 
 Comunicación: advisory "rotación de clave de firma" con la fecha, las claves afectadas y el comando `genpm add`.
 
+> Ensayado en staging (D6-S-08, 2026-10-05): `s2` activa → `s3` (variable + `deploy`, estados en D1) → el cron de las
+> 00:00 re-firmó las 4 versiones → con solo `s2` fijada el CLI falla con `E_SIGNATURE`, con solo `s3` verifica →
+> lista de revocación de `s2` firmada con una raíz de staging, publicada en `registry_meta` y aceptada y cacheada por el
+> CLI (`GENPM_ROOT_PUBLIC_KEY`); con otra raíz se ignora → `SIGNING_KEYS` reducido a `s3`. La raíz de staging se
+> destruyó tras el ensayo: genera otra si hay que repetirlo.
+>
 > Cubierto por tests: `apps/registry/test/resign.test.ts` (re-firma por lotes, idempotente, verificable con la clave
 > nueva), `packages/core/src/revocation.test.ts` (firma raíz, listas falsificadas, monotonía, una caché por registry) y
 > `packages/core/test/install.test.ts` (rechazo `revoked_key` end to end y refresco de `sg` sin tocar archivos).

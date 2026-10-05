@@ -46,7 +46,7 @@
   - Recorte 3.
 - [x] `D5-B-02` **DONE** Revisar uno a uno los mensajes de error: causa + fix en todos · B · 2h · deps: D3-B-11
   - Test `core/test/error-catalog.test.ts`: todo E_* con message+fix y cada fail()/httpError() pasa sus parámetros (AST). La CLI ahora traduce también los errores sin parámetros. GET /report redirige a /security#report.
-- [ ] `D5-B-03` **BLOCKED** Rendimiento: add en frío < 5 s · B · 2h · deps: D3-G-01
+- [x] `D5-B-03` **DONE** Rendimiento: add en frío < 5 s · B · 2h · deps: D3-G-01
   - Bloqueo: la medida real (add en frío < 5 s) es contra staging con las semillas publicadas (D3-G-01). En local, `npx genpm --version` en frío tarda ~1 s (D5-B-04).
 - [x] `D5-B-04` **DONE** Empaquetado con tsdown; npx en frío < 2 s · B · 2h · deps: D4-B-01
   - tsdown en cli y mcp con todo dentro (0 dependencias en el tarball; catálogos no usados como stub). `pnpm --filter genpm cold-start` en CI: ~1 s en local.

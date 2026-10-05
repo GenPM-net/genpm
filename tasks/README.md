@@ -69,11 +69,11 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 ## Tablero
 
 <!-- board:start -->
-<!-- Generado por `pnpm tasks sync` · 2026-10-04. No editar a mano. -->
+<!-- Generado por `pnpm tasks sync` · 2026-10-05. No editar a mano. -->
 
-**62 %** completado · 161/258 tareas · 549h estimadas pendientes
+**64 %** completado · 166/258 tareas · 542h estimadas pendientes
 
-TODO 56 · DOING 4 · DONE 160 · BLOCKED 37 · CUT 1
+TODO 53 · DOING 4 · DONE 165 · BLOCKED 35 · CUT 1
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -82,8 +82,8 @@ TODO 56 · DOING 4 · DONE 160 · BLOCKED 37 · CUT 1
 | [Día 2 · Registry y motor de fetch](02-dia-2-registry-fetch.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 95 % | 20/21 | 0.5h |
 | [Día 3 · CLI y contexto](03-dia-3-cli-contexto.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 95 % | 21/22 | 1h |
 | [Día 4 · Servidor MCP](04-dia-4-mcp.md) | `▓▓▓▓▓▓▓▓▓▓░░` 82 % | 14/17 | 3h |
-| [Día 5 · Web MVP y pulido del cliente](05-dia-5-web.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 90 % | 27/30 | 3.5h |
-| [Día 6 · Integración, seguridad y producción](06-dia-6-produccion.md) | `▓▓▓▓▓▓░░░░░░` 47 % | 14/30 | 21h |
+| [Día 5 · Web MVP y pulido del cliente](05-dia-5-web.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 93 % | 28/30 | 1.5h |
+| [Día 6 · Integración, seguridad y producción](06-dia-6-produccion.md) | `▓▓▓▓▓▓▓░░░░░` 60 % | 18/30 | 16h |
 | [Día 7 · Lanzamiento](07-dia-7-lanzamiento.md) | `░░░░░░░░░░░░` 0 % | 0/11 | 18.5h |
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓░░░░░░` 52 % | 22/42 | 10h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 16/17 | 2h |
@@ -111,10 +111,8 @@ TODO 56 · DOING 4 · DONE 160 · BLOCKED 37 · CUT 1
 - `D4-B-07` Prueba real en Claude Code con el guion "Añade auth y billing a este proyecto" · B · 1h ([04-dia-4-mcp.md](04-dia-4-mcp.md))
 - `D4-B-08` Prueba real en Cursor con el mismo guion · B · 1h ([04-dia-4-mcp.md](04-dia-4-mcp.md))
 - `D4-G-01` En Claude Code y Cursor, "añade login con GitHub" instala el módulo llamando primero a genpm_add con dryRun:true · T · 1h ([04-dia-4-mcp.md](04-dia-4-mcp.md))
-- `D5-B-03` Rendimiento: add en frío < 5 s · B · 2h ([05-dia-5-web.md](05-dia-5-web.md))
 - `D5-B-05` npm publish --provenance en dry-run desde CI · B · 1h ([05-dia-5-web.md](05-dia-5-web.md))
 - `D6-S-01` INV-1 a INV-10 con tests verdes en macOS, Linux y Windows · T · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
-- `D6-S-08` Runbook de incidentes probado en staging: cuarentena de un paquete y rotación de la clave de firma · T · 2h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 - `S-DB-05` Publicado en staging con el CLI real · C · 0.5h ([08-semillas.md](08-semillas.md))
 - `S-DB-06` Prueba de agente en Claude Code: compila y pasan los tests en < 10 min sin edición humana · C · 0.5h ([08-semillas.md](08-semillas.md))
 - `S-DB-07` Prueba de agente en Cursor · C · 0.5h ([08-semillas.md](08-semillas.md))
@@ -142,7 +140,6 @@ TODO 56 · DOING 4 · DONE 160 · BLOCKED 37 · CUT 1
 - `D6-P-04` Alertas: errores 5xx > 1 % y latencia p95 · A · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 - `D6-P-07` Apertura del código (ADR-016): semillas públicas, paquetes cliente públicos con licencia, registry y web según decisión del fundador · F · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 - `D6-P-08` Datos del titular (nombre, NIF, domicilio, ciudad) en apps/web/src/content/legal/owner.json y revisión legal (ADR-024) · F · 0.5h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
-- `D6-G-03` genpm publish de un paquete nuevo aparece en genpm.net en < 1 minuto · T · 0.5h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 - `D7-01` Vídeo demo de 90–120 s con el guion del objetivo (PLAN §1) · T · 3h ([07-dia-7-lanzamiento.md](07-dia-7-lanzamiento.md))
 - `BR-16` Test de 5 segundos de la home con 5 desarrolladores: ¿entienden qué hace GenPM? · F · 2h ([09-marca-diseno.md](09-marca-diseno.md))
 - `V02-07` Web P1: dashboard del autor, perfil, sponsors y enterprise (landing + waitlist con POST /v1/leads) · W · 16h ([10-post-mvp.md](10-post-mvp.md))

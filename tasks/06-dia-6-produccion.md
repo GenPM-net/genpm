@@ -5,7 +5,8 @@
 
 ## Dogfooding
 
-- [ ] `D6-01` **TODO** Crear una app Hono desde cero solo con el MCP en Claude Code; registrar cada fricción como issue · T · 2h · deps: D4-G-01, D5-G-02
+- [x] `D6-01` **DONE** Crear una app Hono desde cero solo con el MCP en Claude Code; registrar cada fricción como issue · T · 2h · deps: D4-G-01, D5-G-02
+  - Hecho el 2026-10-05 con el MCP publicado (`@genpm-net/mcp`) y un agente Claude por stdio (el CLI `claude` del Mac tenía la sesión caducada): app Hono con login GitHub + Stripe, `tsc` sin errores, login redirige y rutas protegidas dan 401. Fricciones: (1) sin `CLAUDE.md` en proyectos nuevos con solo `.mcp.json` → arreglado (clientInfo + señal `.mcp.json`); (2) `list` decía "modificado" por archivos borrados → "con cambios"; (3) `add` mostraba 0.0s → tiempo total.
 - [ ] `D6-02` **TODO** Crear una app Next.js desde cero solo con el MCP en Cursor; registrar cada fricción como issue · T · 2h · deps: D4-G-01, D5-G-02
 - [ ] `D6-03` **TODO** Triage de las fricciones y arreglo de todos los P0/P1 · T · 4h · deps: D6-01, D6-02
 
@@ -15,14 +16,14 @@
   - En verde en macOS (Node 24) y Linux (Docker: Node 22 y Node 20 con el bundle construido en 22). Falta Windows: solo en el CI de GitHub (D0-08). El CI ahora compila con Node 22 (tsdown y Astro 7 lo exigen) y prueba con la versión de la matriz.
 - [x] `D6-S-02` **DONE** Corpus de path traversal de security §8.2 completo y en verde · T · 1h · deps: D4-A-03, D1-B-07
   - Unitario en `core/src/fs/safe-path.test.ts` (+ fast-check) y end-to-end en `core/test/install.test.ts`: corpus completo como `d` del registro y nombres reservados/NFD/punto final dentro del árbol Git (NFD real vía plumbing).
-- [ ] `D6-S-03` **TODO** Firma de manifiestos activa y verificada por el CLI publicado · T · 0.5h · deps: D2-B-07, D6-P-06
+- [x] `D6-S-03` **DONE** Firma de manifiestos activa y verificada por el CLI publicado · T · 0.5h · deps: D2-B-07, D6-P-06
 - [x] `D6-S-04` **DONE** Escáner v1 activo en publish y en el cliente · T · 0.5h · deps: D2-A-07, D3-A-05
   - Mismo `scanTree` de @genpm/manifest en `registry/routes/publish.ts`, `core/plan.ts` y `genpm validate`; cubierto por `registry/test/publish.test.ts` y `core/test/install.test.ts`.
 - [ ] `D6-S-05` **TODO** Las 5 semillas con escaneo passed y revisión de seguridad (ADR-023) · T · 0.5h · deps: S-DB-08, S-AU-08, S-BI-08, S-EM-08, S-AI-08
 - [ ] `D6-S-06` **TODO** npm con provenance desde CI, 2FA/FIDO2 en todas las cuentas y registrar lock en el dominio · T · 0.5h · deps: D6-P-06, D0-G-01
 - [x] `D6-S-07` **DONE** security.txt, política de divulgación y canal de reporte operativos en los idiomas de nivel 1 · T · 1h · deps: D5-W-18, D6-I-02
   - Canal único según security §9: hello@genpm.net con asunto [SECURITY] (security.txt, /security en 8 idiomas, SECURITY.md, legales). Pendiente fundador: buzón operativo, filtro y clave PGP.
-- [ ] `D6-S-08` **BLOCKED** Runbook de incidentes probado en staging: cuarentena de un paquete y rotación de la clave de firma · T · 2h · deps: D2-A-08
+- [x] `D6-S-08` **DONE** Runbook de incidentes probado en staging: cuarentena de un paquete y rotación de la clave de firma · T · 2h · deps: D2-A-08
   - Bloqueo: falta el ensayo en staging (D0-10/D0-11) y la revisión de seguridad de ADR-022 según ADR-023 (toca INV-8). Hecho y ensayado en local: docs/runbook.md, revocación en el cliente (caché monótona), re-firma por cron (`resignStale`), refresco de `sg` en el lock, `E_READ_ONLY` y `scripts/sign-revocation.mjs`.
 
 ## Idiomas
@@ -58,4 +59,4 @@
 
 - [ ] `D6-G-01` **TODO** Checklist de seguridad sin ítems abiertos de severidad alta · T · 0.5h · deps: D6-S-01, D6-S-02, D6-S-03, D6-S-04, D6-S-05, D6-S-06, D6-S-07, D6-S-08
 - [x] `D6-G-02` **DONE** Instalación desde npm público en una máquina limpia; genpm search auth < 1 s en producción · T · 0.5h · deps: D6-P-06, D6-P-05
-- [ ] `D6-G-03` **TODO** genpm publish de un paquete nuevo aparece en genpm.net en < 1 minuto · T · 0.5h · deps: D6-P-05, D6-P-02
+- [x] `D6-G-03` **DONE** genpm publish de un paquete nuevo aparece en genpm.net en < 1 minuto · T · 0.5h · deps: D6-P-05, D6-P-02
