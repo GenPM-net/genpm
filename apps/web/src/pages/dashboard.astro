@@ -1,7 +1,7 @@
 ---
 // /dashboard (web-ui-spec §5.9): mis paquetes y actividad reciente.
 import Base from '../layouts/Base.astro';
-import { requireSession } from '../lib/auth.js';
+import { requireSession, sessionExpired } from '../lib/auth.js';
 import { ago, compact } from '../lib/format.js';
 import { href } from '../lib/i18n.js';
 import { registryFetch } from '../lib/registry.js';
@@ -9,24 +9,23 @@ import { registryFetch } from '../lib/registry.js';
 const gate = requireSession(Astro);
 if (gate) return gate;
 const { t, locale, session } = Astro.locals;
-const [pk, act] = await Promise.all([
-  registryFetch('/v1/me/packages', { token: session!.token, locale }).then((r) =>
-    r.ok ? r.json() : { packages: [] },
-  ) as Promise<{
-    packages: Array<{ name: string; version: string | null; installs30d: number; scan: string | null; status: string }>;
-  }>,
-  registryFetch('/v1/me/activity', { token: session!.token, locale }).then((r) =>
-    r.ok ? r.json() : { activity: [] },
-  ) as Promise<{
-    activity: Array<{
-      action: string;
-      target: string;
-      subject: string | null;
-      metadata: Record<string, unknown> | null;
-      at: string;
-    }>;
-  }>,
+const [pkRes, actRes] = await Promise.all([
+  registryFetch('/v1/me/packages', { token: session!.token, locale }),
+  registryFetch('/v1/me/activity', { token: session!.token, locale }),
 ]);
+if (pkRes.status === 401 || actRes.status === 401) return sessionExpired(Astro);
+const pk = (pkRes.ok ? await pkRes.json() : { packages: [] }) as {
+  packages: Array<{ name: string; version: string | null; installs30d: number; scan: string | null; status: string }>;
+};
+const act = (actRes.ok ? await actRes.json() : { activity: [] }) as {
+  activity: Array<{
+    action: string;
+    target: string;
+    subject: string | null;
+    metadata: Record<string, unknown> | null;
+    at: string;
+  }>;
+};
 Astro.response.headers.set('Cache-Control', 'private, no-store');
 
 // Acción de auditoría → frase legible; las desconocidas se muestran con su código.

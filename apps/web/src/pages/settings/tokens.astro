@@ -2,7 +2,7 @@
 // /settings/tokens (web-ui-spec §5.10): crear (se muestra una vez), listar por prefijo y revocar. Formularios POST
 // (Astro verifica el Origin: protección CSRF).
 import Base from '../../layouts/Base.astro';
-import { requireSession } from '../../lib/auth.js';
+import { requireSession, sessionExpired } from '../../lib/auth.js';
 import { ago } from '../../lib/format.js';
 import { registryFetch } from '../../lib/registry.js';
 
@@ -30,9 +30,10 @@ if (Astro.request.method === 'POST') {
     else error = ((await res.json().catch(() => ({}))) as { title?: string }).title ?? 'Error';
   }
 }
-const list = (await registryFetch('/v1/tokens', { token: session!.token, locale }).then((r) =>
-  r.ok ? r.json() : { tokens: [] },
-)) as {
+const listRes = await registryFetch('/v1/tokens', { token: session!.token, locale });
+// Incluye revocar desde aquí el propio token de la sesión web: la siguiente lectura ya no autentica.
+if (listRes.status === 401) return sessionExpired(Astro);
+const list = (listRes.ok ? await listRes.json() : { tokens: [] }) as {
   tokens: Array<{
     id: string;
     name: string;

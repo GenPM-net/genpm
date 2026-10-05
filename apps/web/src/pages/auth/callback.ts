@@ -5,11 +5,11 @@ import { env } from 'cloudflare:workers';
 import type { APIRoute } from 'astro';
 import { href } from '../../lib/i18n.js';
 import { registryFetch } from '../../lib/registry.js';
-import { STATE_COOKIE, setSession } from '../../lib/session.js';
+import { HOST_COOKIE, STATE_COOKIE, setSession } from '../../lib/session.js';
 
 export const GET: APIRoute = async ({ url, cookies, redirect }) => {
   const saved = cookies.get(STATE_COOKIE)?.json() as { state: string; next: string; lang: string } | undefined;
-  cookies.delete(STATE_COOKIE, { path: '/' });
+  cookies.delete(STATE_COOKIE, HOST_COOKIE);
   const code = url.searchParams.get('code');
   if (!saved || !code || url.searchParams.get('state') !== saved.state) return redirect('/login?error=state');
   const res = await fetch('https://github.com/login/oauth/access_token', {

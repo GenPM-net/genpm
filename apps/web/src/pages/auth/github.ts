@@ -2,7 +2,7 @@
 
 import { env } from 'cloudflare:workers';
 import type { APIRoute } from 'astro';
-import { STATE_COOKIE } from '../../lib/session.js';
+import { HOST_COOKIE, STATE_COOKIE } from '../../lib/session.js';
 
 export const GET: APIRoute = ({ url, cookies, redirect }) => {
   if (!env.GITHUB_OAUTH_CLIENT_ID) return redirect('/login?error=config');
@@ -12,13 +12,7 @@ export const GET: APIRoute = ({ url, cookies, redirect }) => {
   cookies.set(
     STATE_COOKIE,
     JSON.stringify({ state, next: next.startsWith('/') && !next.startsWith('//') ? next : '/dashboard', lang }),
-    {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 600,
-    },
+    { ...HOST_COOKIE, maxAge: 600 },
   );
   const p = new URLSearchParams({
     client_id: env.GITHUB_OAUTH_CLIENT_ID,

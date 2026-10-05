@@ -4,6 +4,7 @@ import { env } from 'cloudflare:workers';
 import { errorText } from '@genpm/i18n';
 import type { APIContext } from 'astro';
 import { registryFetch } from './registry.js';
+import { clearSession } from './session.js';
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -24,6 +25,8 @@ export async function relay(
   const res = await registryFetch(path, { ...init, token: locals.session.token, locale: locals.locale });
   const body = (await res.json().catch(() => null)) as Record<string, unknown> | null;
   if (res.ok) return json(body, res.status);
+  // Token revocado o caducado: sin cookie, la siguiente navegación lleva a /login en vez de quedarse a medias.
+  if (res.status === 401) clearSession(ctx.cookies);
   const code = typeof body?.['code'] === 'string' ? (body['code'] as string) : 'E_INTERNAL';
   const params = (body?.['params'] as Record<string, unknown> | undefined) ?? {};
   return json({ code, ...errorText(locals.t, code, params), issues: body?.['issues'] ?? null }, res.status);
