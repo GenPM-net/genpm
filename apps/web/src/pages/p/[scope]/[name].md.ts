@@ -1,4 +1,5 @@
 // /p/@scope/name.md: manifiesto resuelto compacto + resumen + reglas completas + comando (web-ui-spec §5.13).
+// `client=none`: leer el .md (agentes, buscadores) no es instalar y no debe sumar al contador de instalaciones.
 import { LEGEND } from '@genpm/manifest';
 import type { APIRoute } from 'astro';
 import { rawFile } from '../../../lib/github.js';
@@ -7,7 +8,7 @@ import { registryFetch } from '../../../lib/registry.js';
 export const GET: APIRoute = async ({ params }) => {
   const name = `${params.scope}/${params.name}`;
   if (!String(params.scope).startsWith('@')) return new Response('Not found', { status: 404 });
-  const res = await registryFetch(`/v1/resolve/${name}?fmt=c&client=web`).catch(() => null);
+  const res = await registryFetch(`/v1/resolve/${name}?fmt=c&client=none`).catch(() => null);
   if (!res?.ok)
     return new Response(`# ${name}\n\nNot found or under review.\n`, {
       status: res?.status === 451 ? 451 : 404,

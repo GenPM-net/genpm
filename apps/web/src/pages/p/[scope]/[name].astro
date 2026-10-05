@@ -29,7 +29,7 @@ if (view === 'unavailable') {
   return Astro.rewrite('/500');
 }
 const quarantined = view === 'quarantined';
-if (!quarantined) recordEvent('pkg_view', name, locale, '/p');
+if (!quarantined) recordEvent('pkg_view', name, locale, '/p', Astro.request.headers.get('user-agent'));
 const v = quarantined ? null : view;
 const m = v?.manifest;
 const p = v?.pkg;

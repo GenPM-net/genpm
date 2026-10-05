@@ -12,7 +12,7 @@ import { registryGet, type SearchResponse } from '../lib/registry.js';
 const { t, locale } = Astro.locals;
 const url = Astro.url;
 const q = (url.searchParams.get('q') ?? '').slice(0, 100);
-if (q) recordEvent('search', q.trim().toLowerCase(), locale, '/search');
+if (q) recordEvent('search', q.trim().toLowerCase(), locale, '/search', Astro.request.headers.get('user-agent'));
 const k = (url.searchParams.get('k') ?? '').toLowerCase().replace(/[^a-z0-9-]/g, '');
 const mcp = url.searchParams.get('mcp') === '1';
 const sortParam = url.searchParams.get('sort');
