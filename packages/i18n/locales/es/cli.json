@@ -38,6 +38,7 @@
     "mcp": "Escribe la config MCP sin preguntar",
     "noMcp": "No escribe config MCP ni pregunta",
     "installDeps": "Ejecuta sin preguntar el comando propuesto del package manager",
+    "noInstallDeps": "No ejecutar el comando del gestor de paquetes ni preguntar",
     "clients": "Clientes de IA: agents,claude,cursor,copilot,windsurf",
     "force": "Sobrescribe un destino no vacío (antes hace una copia de seguridad)",
     "allowAutorun": "Permite archivos de auto-ejecución (solo publishers verificados)",

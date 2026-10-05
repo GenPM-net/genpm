@@ -38,6 +38,7 @@
     "mcp": "確認せずに MCP 設定を書き込む",
     "noMcp": "MCP 設定を書き込まず、確認もしない",
     "installDeps": "提案されたパッケージマネージャーのコマンドを確認せずに実行する",
+    "noInstallDeps": "パッケージマネージャーのコマンドを実行せず、確認もしない",
     "clients": "AI クライアント: agents,claude,cursor,copilot,windsurf",
     "force": "空でない出力先を上書きする（先にバックアップを作成）",
     "allowAutorun": "自動実行ファイルを許可する（認証済みの公開者のみ）",

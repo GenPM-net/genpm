@@ -38,6 +38,7 @@
     "mcp": "Escrever a config MCP sem perguntar",
     "noMcp": "Não escrever a config MCP nem perguntar",
     "installDeps": "Executar o comando proposto do gerenciador de pacotes sem perguntar",
+    "noInstallDeps": "Não executar o comando do gerenciador de pacotes nem perguntar",
     "clients": "Clientes de IA: agents,claude,cursor,copilot,windsurf",
     "force": "Sobrescrever um destino não vazio (faz backup antes)",
     "allowAutorun": "Permitir arquivos de execução automática (apenas publicadores verificados)",

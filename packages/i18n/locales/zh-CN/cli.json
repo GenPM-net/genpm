@@ -38,6 +38,7 @@
     "mcp": "无需询问直接写入 MCP 配置",
     "noMcp": "不写入 MCP 配置，也不询问",
     "installDeps": "无需询问直接运行建议的包管理器命令",
+    "noInstallDeps": "不运行包管理器命令，也不询问",
     "clients": "AI 客户端：agents,claude,cursor,copilot,windsurf",
     "force": "覆盖非空目标目录（会先备份）",
     "allowAutorun": "允许自动运行的文件（仅限已验证的发布者）",

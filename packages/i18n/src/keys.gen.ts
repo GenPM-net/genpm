@@ -37,6 +37,7 @@ export interface MessageParams {
   "cli.arg.mcp": undefined;
   "cli.arg.noMcp": undefined;
   "cli.arg.installDeps": undefined;
+  "cli.arg.noInstallDeps": undefined;
   "cli.arg.clients": undefined;
   "cli.arg.force": undefined;
   "cli.arg.allowAutorun": undefined;

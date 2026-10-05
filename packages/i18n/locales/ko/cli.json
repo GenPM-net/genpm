@@ -38,6 +38,7 @@
     "mcp": "묻지 않고 MCP 설정 기록",
     "noMcp": "MCP 설정을 기록하지도 묻지도 않음",
     "installDeps": "제안된 패키지 관리자 명령을 묻지 않고 실행",
+    "noInstallDeps": "패키지 매니저 명령을 실행하지 않고 묻지도 않음",
     "clients": "AI 클라이언트: agents,claude,cursor,copilot,windsurf",
     "force": "비어 있지 않은 대상 덮어쓰기(먼저 백업함)",
     "allowAutorun": "자동 실행 파일 허용(인증된 게시자만)",

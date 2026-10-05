@@ -161,7 +161,7 @@ Inyecta uno o más paquetes (y sus dependencias `g`).
 | `--dry-run` | `false` | Muestra el plan y sale (exit 0). |
 | `--mcp` | `false` | Escribir config MCP sin preguntar. |
 | `--no-mcp` | — | No escribir config MCP ni preguntar. |
-| `--install-deps` | `false` | Ejecutar el comando npm propuesto sin preguntar. |
+| `--install-deps` / `--no-install-deps` | pregunta | Ejecutar (o no) el comando npm propuesto sin preguntar. Sin ninguno: se pregunta en TTY y no se ejecuta fuera de TTY. |
 | `--clients <list>` | detección | `agents,claude,cursor,copilot,windsurf`. |
 | `--force` | `false` | Sobrescribir destino no vacío (backup en `.genpm/backup/<ts>/`). |
 | `--allow-autorun` | `false` | Permitir archivos de auto-ejecución (security §3.1). Solo paquetes de publishers verificados; aviso en rojo. |

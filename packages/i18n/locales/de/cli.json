@@ -38,6 +38,7 @@
     "mcp": "MCP-Konfiguration ohne Rückfrage schreiben",
     "noMcp": "MCP-Konfiguration weder schreiben noch nachfragen",
     "installDeps": "Den vorgeschlagenen Paketmanager-Befehl ohne Rückfrage ausführen",
+    "noInstallDeps": "Den Paketmanager-Befehl weder ausführen noch nachfragen",
     "clients": "KI-Clients: agents,claude,cursor,copilot,windsurf",
     "force": "Ein nicht leeres Ziel überschreiben (erstellt vorher eine Sicherung)",
     "allowAutorun": "Automatisch ausgeführte Dateien erlauben (nur verifizierte Herausgeber)",

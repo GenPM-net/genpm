@@ -88,7 +88,11 @@ export const add = (ctx: Ctx) =>
       dest: { type: 'string', description: ctx.t.t('cli.arg.dest') },
       'dry-run': { type: 'boolean', description: ctx.t.t('cli.arg.dryRun') },
       mcp: { type: 'boolean', description: ctx.t.t('cli.arg.mcp'), negativeDescription: ctx.t.t('cli.arg.noMcp') },
-      'install-deps': { type: 'boolean', description: ctx.t.t('cli.arg.installDeps') },
+      'install-deps': {
+        type: 'boolean',
+        description: ctx.t.t('cli.arg.installDeps'),
+        negativeDescription: ctx.t.t('cli.arg.noInstallDeps'),
+      },
       clients: { type: 'string', description: ctx.t.t('cli.arg.clients') },
       force: { type: 'boolean', description: ctx.t.t('cli.arg.force') },
       'allow-autorun': { type: 'boolean', description: ctx.t.t('cli.arg.allowAutorun') },
@@ -177,7 +181,8 @@ export const add = (ctx: Ctx) =>
         let installNpmDeps = false;
         if (pl.npm.command) {
           installNpmDeps = await confirm(ctx, ctx.t.t('cli.add.npmConsent', { command: pl.npm.command }), {
-            answer: args['install-deps'] ? true : ctx.interactive ? undefined : false,
+            // --install-deps / --no-install-deps deciden sin preguntar (también con --yes); sin ninguno, se pregunta.
+            answer: args['install-deps'] === undefined ? (ctx.interactive ? undefined : false) : args['install-deps'],
             flag: '--install-deps',
           });
         }

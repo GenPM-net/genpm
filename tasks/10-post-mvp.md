@@ -33,7 +33,7 @@
 - [ ] `V02-08` **TODO** Web P2: comparador de versiones (diff visual), status page y cola de admin · W · 16h · deps: V02-01
 - [x] `V02-09` **DONE** Modo oscuro opcional de la web con los tokens dark de tokens.json · W · 4h · deps: D5-W-23
   - Ya en producción: botón de tema en la cabecera y en el menú móvil (claro por defecto, branding §8).
-- [ ] `V02-10` **TODO** genpm add: aceptar el plan sin instalar las dependencias de npm ni preguntar (`--no-install-deps`), para CI y demos · B · 1h · deps: D7-10
+- [x] `V02-10` **DONE** genpm add: aceptar el plan sin instalar las dependencias de npm ni preguntar (`--no-install-deps`), para CI y demos · B · 1h · deps: D7-10
 
 ## v0.3 · +6 semanas
 

@@ -38,6 +38,7 @@
     "mcp": "Write MCP config without asking",
     "noMcp": "Do not write MCP config nor ask",
     "installDeps": "Run the proposed package-manager command without asking",
+    "noInstallDeps": "Do not run the package-manager command nor ask",
     "clients": "AI clients: agents,claude,cursor,copilot,windsurf",
     "force": "Overwrite a non-empty destination (backs it up first)",
     "allowAutorun": "Allow auto-run files (verified publishers only)",
