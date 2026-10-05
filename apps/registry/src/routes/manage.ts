@@ -7,7 +7,7 @@ import { CACHE, cached, purgePackage } from '../cache.js';
 import type { AppEnv } from '../env.js';
 import { httpError } from '../http.js';
 import { newId } from '../ids.js';
-import { requireAuth } from '../middleware/auth.js';
+import { requireAuth, tokenAllows } from '../middleware/auth.js';
 import { GitHub, parseGithubRepo } from '../services/github.js';
 import { VERSION } from './health.js';
 import { fullName, repoOf } from './util.js';
@@ -23,7 +23,8 @@ export const deprecate = new Hono<AppEnv>().post(`${PKG}/deprecate`, requireAuth
   if (!parsed.success) throw httpError('E_BAD_REQUEST', { detail: 'message' });
   const name = fullName(c);
   const pkg = await repoOf(c).packageByName(name);
-  if (!pkg || !(await canWrite(c, actor, pkg.owner_id))) throw httpError('E_NOT_FOUND', { name });
+  if (!pkg || !tokenAllows(actor, name) || !(await canWrite(c, actor, pkg.owner_id)))
+    throw httpError('E_NOT_FOUND', { name });
   const now = Date.now();
   const message = parsed.data.message;
   await c.env.DB.batch([

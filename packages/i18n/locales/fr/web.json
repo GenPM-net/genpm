@@ -709,5 +709,21 @@
     "ranFailed": "Échec",
     "never": "Aucune exécution enregistrée",
     "report": "Un problème ? Écrivez à"
+  },
+  "trusted": {
+    "title": "Publication de confiance",
+    "lede": "Publiez depuis GitHub Actions sans stocker de jeton : Actions prouve quel dépôt et quel workflow s’exécutent (OIDC) et GenPM lui remet un jeton de 15 minutes qui ne peut publier que dans ce scope depuis ce dépôt.",
+    "added": "Dépôt autorisé.",
+    "removed": "Autorisation supprimée.",
+    "noScopes": "Vous n’administrez encore aucun scope. Publiez votre premier paquet pour réclamer le vôtre.",
+    "none": "Aucun dépôt ne peut encore publier ici sans jeton.",
+    "repository": "Dépôt",
+    "workflow": "Workflow (facultatif)",
+    "environment": "Environment (facultatif)",
+    "any": "tous",
+    "remove": "Retirer",
+    "add": "Autoriser le dépôt",
+    "howTitle": "Workflow",
+    "how": "Ajoutez id-token: write aux permissions du job et lancez genpm publish : sans GENPM_TOKEN, il demande un jeton OIDC à Actions et l’échange automatiquement."
   }
 }

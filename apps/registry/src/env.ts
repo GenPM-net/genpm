@@ -39,7 +39,17 @@ export type Env = {
 /** Trabajo de escaneo profundo encolado en publish. */
 export type ScanJob = { versionId: string; name: string; version: string };
 
-export type Actor = { accountId: string; handle: string; scopes: string[]; tokenId: string | null; isStaff: boolean };
+export type Actor = {
+  accountId: string;
+  handle: string;
+  scopes: string[];
+  tokenId: string | null;
+  isStaff: boolean;
+  /** Paquetes que el token puede tocar (`@scope/name` o `@scope/*`); null = todos los de la cuenta. */
+  allowedPackages?: string[] | null;
+  /** Tokens de trusted publishing: único repositorio (`owner/repo`) desde el que pueden publicar. */
+  repository?: string | null;
+};
 
 /** Contexto de tenant obligatorio en la capa de datos (INV-10). */
 export type Tenant = { registryId: string; slug: string };

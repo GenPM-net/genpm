@@ -172,6 +172,8 @@ on:
     tags: ['v*']
 permissions:
   contents: read
+  # Trusted publishing (OIDC): authorize this repo at https://genpm.net/settings/publishing and no token is needed.
+  id-token: write
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -185,6 +187,7 @@ jobs:
           GENPM_NO_MODIFY_PATH: '1'
       - run: ~/.genpm/bin/genpm publish --ref "$GITHUB_REF_NAME"
         env:
+          # Only if you do not use trusted publishing; when empty, genpm uses OIDC.
           GENPM_TOKEN: \${{ secrets.GENPM_TOKEN }}
 `;
 }

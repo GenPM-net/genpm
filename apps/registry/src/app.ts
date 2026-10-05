@@ -19,6 +19,7 @@ import { packages } from './routes/packages.js';
 import { publish } from './routes/publish.js';
 import { resolve } from './routes/resolve.js';
 import { search } from './routes/search.js';
+import { oidc, trusted } from './routes/trusted.js';
 import { yank } from './routes/yank.js';
 
 export function createApp() {
@@ -43,7 +44,12 @@ export function createApp() {
   });
   app.use('/v1/*', async (c, next) => {
     // Las clases específicas (publish, auth exchange) se aplican en sus rutas.
-    if (c.req.path === '/v1/publish' || c.req.path === '/v1/auth/github/exchange') return next();
+    if (
+      c.req.path === '/v1/publish' ||
+      c.req.path === '/v1/auth/github/exchange' ||
+      c.req.path === '/v1/auth/oidc/exchange'
+    )
+      return next();
     return rateLimit()(c, next);
   });
   app.route('/v1/keys', keys);
@@ -55,6 +61,8 @@ export function createApp() {
   app.route('/v1/packages', packages);
   app.route('/v1/publish', publish);
   app.route('/v1/auth', auth);
+  app.route('/v1/auth', oidc);
+  app.route('/v1/scopes', trusted);
   app.route('/v1/featured', featured);
   app.route('/v1/stats', stats);
   app.route('/v1/scopes', scopes);

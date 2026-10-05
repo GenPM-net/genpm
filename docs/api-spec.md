@@ -71,6 +71,8 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | PATCH | `/v1/me` | token/cookie | ✅ | Preferencias de la cuenta (`{locale}`) |
 | GET | `/v1/status` | — | ✅ | Página /status: componentes y última ejecución de cada cron (`registry_meta` `cron:<expr>`) |
 | POST | `/v1/auth/github/exchange` | — | ✅ | `genpm login` (device flow) |
+| POST | `/v1/auth/oidc/exchange` | — (JWT OIDC de GitHub Actions) | ✅ | Trusted publishing (V03-01): token `publish` de 15 min, restringido al scope y al repo |
+| GET/POST/DELETE | `/v1/scopes/:scope/trusted-publishers[/:id]` | token (owner/admin del scope; resto ⇒ 404) | ✅ | Repos autorizados para trusted publishing (`/settings/publishing`) |
 | GET | `/v1/auth/github/callback` | — | ✅ | Login web (OAuth web flow) |
 | GET | `/v1/me` | token/cookie | ✅ | `genpm whoami`, dashboard |
 | GET/POST/DELETE | `/v1/tokens` | cookie | ✅ | Gestión de tokens en la web |

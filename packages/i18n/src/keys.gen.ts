@@ -907,6 +907,20 @@ export interface MessageParams {
   "web.status.ranFailed": undefined;
   "web.status.never": undefined;
   "web.status.report": undefined;
+  "web.trusted.title": undefined;
+  "web.trusted.lede": undefined;
+  "web.trusted.added": undefined;
+  "web.trusted.removed": undefined;
+  "web.trusted.noScopes": undefined;
+  "web.trusted.none": undefined;
+  "web.trusted.repository": undefined;
+  "web.trusted.workflow": undefined;
+  "web.trusted.environment": undefined;
+  "web.trusted.any": undefined;
+  "web.trusted.remove": undefined;
+  "web.trusted.add": undefined;
+  "web.trusted.howTitle": undefined;
+  "web.trusted.how": undefined;
 }
 
 export type MessageKey = keyof MessageParams;

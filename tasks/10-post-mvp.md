@@ -5,7 +5,8 @@
 
 ## v0.1.1 · +1 semana (lo recortado del sprint)
 
-- [ ] `V011-01` **TODO** Recuperar todo lo marcado como CUT en el sprint (ver pnpm tasks list cut) · T · 8h · deps: D7-09
+- [x] `V011-01` **DONE** Recuperar todo lo marcado como CUT en el sprint (ver pnpm tasks list cut) · T · 8h · deps: D7-09
+  - ✅ 2026-10-05: `pnpm tasks list cut` ⇒ 0 tareas: no se recortó nada del sprint.
 - [ ] `V011-02` **DOING** Binario nativo de genpm para macOS, Linux y Windows con instaladores de una línea y genpm upgrade (ADR-025) · B · 8h · deps: D5-B-04
   - DoD: `release.yml` verde en macOS, Linux y Windows (smoke del binario + install.sh + install.ps1 en PowerShell 5.1 y 7); autorrevisión diferida (ADR-023) de `scripts/install/` y `core/src/self-update.ts` antes del primer tag. El release real espera a la apertura del repo (D6-P-07).
 - [ ] `V011-03` **TODO** Firma de código de los binarios: Apple Developer ID + notarización y Authenticode · F · 6h · deps: V011-02
@@ -61,7 +62,8 @@
 
 ## v0.3 · +6 semanas
 
-- [ ] `V03-01` **TODO** Trusted publishing con OIDC de GitHub Actions · A · 12h · deps: V02-01
+- [x] `V03-01` **DONE** Trusted publishing con OIDC de GitHub Actions · A · 12h · deps: V02-01
+  - ✅ 2026-10-05: migración 0006, `POST /v1/auth/oidc/exchange` (JWT RS256 verificado contra el JWKS de GitHub), `/v1/scopes/:scope/trusted-publishers`, `/settings/publishing`, `genpm publish` usa OIDC sin GENPM_TOKEN, plantilla de `init --workflow` con `id-token: write`, docs en 8 idiomas. De paso: `allowed_packages` de los tokens no se aplicaba; ahora sí (publish, yank, deprecate).
 - [ ] `V03-02` **TODO** Mirror R2 "Verified Archive" · A · 16h · deps: V02-01
 - [ ] `V03-03` **TODO** Publicación desde GitLab · A · 12h · deps: V02-01
 - [ ] `V03-04` **TODO** Transporte MCP HTTP remoto de solo lectura · B · 12h · deps: V02-02

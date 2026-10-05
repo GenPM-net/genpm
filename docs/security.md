@@ -112,7 +112,7 @@ Como la telemetría es anónima, **no sabemos quién instaló una versión vulne
 ### 4.2 Credenciales
 - Token en el llavero del SO (macOS Keychain, Windows Credential Manager, libsecret) con fallback a `~/.genpm/auth.json` `0600`; el CLI se niega a usar el archivo si tiene permisos más abiertos (`E_INSECURE_PERMS`).
 - Tokens con expiración (90 días CLI, 30 días por defecto en tokens creados en la web), revocables, con scopes mínimos (`read` vs `publish`) y opcionalmente restringidos a paquetes concretos (CI).
-- `GENPM_TOKEN` en CI; recomendación oficial: **trusted publishing** con OIDC de GitHub Actions (v0.3) para eliminar tokens de larga vida.
+- `GENPM_TOKEN` en CI; recomendación oficial: **trusted publishing** con OIDC de GitHub Actions (✅ V03-01) para eliminar tokens de larga vida: el dueño del scope autoriza `owner/repo` (+ workflow y environment opcionales, con el id numérico del repo contra repojacking) y `POST /v1/auth/oidc/exchange` verifica el JWT RS256 de `token.actions.githubusercontent.com` (aud `genpm`) y emite un token `publish` de 15 min con `allowed_packages = @scope/*` y `repository` fijado. `allowed_packages` se aplica en publish, yank y deprecate.
 
 ### 4.3 Firma de manifiestos (INV-8)
 - El registry firma cada manifiesto resuelto canónico con **Ed25519** (WebCrypto en Workers; clave privada como secreto, rotación anual).

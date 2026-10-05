@@ -15,7 +15,17 @@ type TokenRow = {
   status: string;
   is_staff: number;
   name: string;
+  allowed_packages: string | null;
+  repository: string | null;
 };
+
+/** ¿Puede este token actuar sobre el paquete? (`allowed_packages` admite `@scope/*`). */
+export function tokenAllows(actor: Actor, name: string): boolean {
+  const list = actor.allowedPackages;
+  if (!list) return true;
+  const scope = name.split('/')[0];
+  return list.some((p) => p === name || p === `${scope}/*`);
+}
 
 export async function actorFromRequest(c: Context<AppEnv>): Promise<Actor | null> {
   const pepper = c.env.TOKEN_PEPPER;
@@ -25,7 +35,7 @@ export async function actorFromRequest(c: Context<AppEnv>): Promise<Actor | null
     const token = header.replace(/^Bearer\s+/i, '').trim();
     if (!isWellFormedToken(token)) throw httpError('E_AUTH');
     const row = await c.env.DB.prepare(
-      `SELECT t.id, t.account_id, t.scopes, t.name, t.expires_at, t.revoked_at, a.handle, a.status, a.is_staff
+      `SELECT t.id, t.account_id, t.scopes, t.name, t.expires_at, t.revoked_at, t.allowed_packages, t.repository, a.handle, a.status, a.is_staff
        FROM api_tokens t JOIN accounts a ON a.id = t.account_id WHERE t.token_hash = ?1`,
     )
       .bind(await hashToken(pepper, token))
@@ -49,6 +59,8 @@ export async function actorFromRequest(c: Context<AppEnv>): Promise<Actor | null
       scopes: [...(JSON.parse(row.scopes) as string[]), ...(row.name === 'web' ? ['web'] : [])],
       tokenId: row.id,
       isStaff: row.is_staff === 1,
+      allowedPackages: row.allowed_packages ? (JSON.parse(row.allowed_packages) as string[]) : null,
+      repository: row.repository,
     };
   }
   const session = getCookie(c, '__Host-genpm_session');

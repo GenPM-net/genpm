@@ -709,5 +709,21 @@
     "ranFailed": "실패",
     "never": "아직 실행 기록이 없습니다",
     "report": "문제가 있나요? 연락처:"
+  },
+  "trusted": {
+    "title": "신뢰할 수 있는 게시",
+    "lede": "토큰을 저장하지 않고 GitHub Actions에서 게시하세요. Actions가 실행 중인 저장소와 워크플로를 증명하면(OIDC) GenPM이 해당 저장소에서 이 scope에만 게시할 수 있는 15분짜리 토큰을 발급합니다.",
+    "added": "저장소를 승인했습니다.",
+    "removed": "승인을 삭제했습니다.",
+    "noScopes": "아직 관리하는 scope가 없습니다. 첫 패키지를 게시해 내 scope를 확보하세요.",
+    "none": "아직 토큰 없이 여기에 게시할 수 있는 저장소가 없습니다.",
+    "repository": "저장소",
+    "workflow": "워크플로(선택)",
+    "environment": "Environment(선택)",
+    "any": "모두",
+    "remove": "제거",
+    "add": "저장소 승인",
+    "howTitle": "워크플로",
+    "how": "job 권한에 id-token: write를 추가하고 genpm publish를 실행하세요. GENPM_TOKEN이 없으면 Actions에 OIDC 토큰을 요청해 자동으로 교환합니다."
   }
 }

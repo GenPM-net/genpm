@@ -127,3 +127,36 @@ export async function pollDeviceFlow(
   }
   throw fail('E_AUTH');
 }
+
+/**
+ * Trusted publishing (V03-01): dentro de GitHub Actions con `permissions: id-token: write`, pide a Actions un token
+ * OIDC con audiencia `genpm` y lo canjea en el registry por un token `publish` de 15 minutos. Sin esas variables, o
+ * si el registry no tiene autorizado el repositorio, devuelve `null` (el CLI pide entonces `GENPM_TOKEN` o login).
+ */
+export async function oidcToken(
+  registry: string,
+  opts: { env?: Record<string, string | undefined>; fetchImpl?: typeof fetch } = {},
+): Promise<string | null> {
+  const env = opts.env ?? process.env;
+  const url = env['ACTIONS_ID_TOKEN_REQUEST_URL'];
+  const bearer = env['ACTIONS_ID_TOKEN_REQUEST_TOKEN'];
+  if (!url || !bearer || env['GENPM_OIDC'] === '0') return null;
+  const f = opts.fetchImpl ?? fetch;
+  try {
+    const res = await f(`${url}${url.includes('?') ? '&' : '?'}audience=genpm`, {
+      headers: { authorization: `bearer ${bearer}`, accept: 'application/json' },
+    });
+    if (!res.ok) return null;
+    const { value } = (await res.json()) as { value?: string };
+    if (!value) return null;
+    const ex = await f(`${registry.replace(/\/$/, '')}/v1/auth/oidc/exchange`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify({ token: value }),
+    });
+    if (!ex.ok) return null;
+    return ((await ex.json()) as { token?: string }).token ?? null;
+  } catch {
+    return null;
+  }
+}

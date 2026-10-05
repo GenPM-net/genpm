@@ -57,3 +57,17 @@ Seu escopo é o seu usuário do GitHub ou uma das suas organizações. Escopos c
 ## CI
 
 `genpm init --workflow` adiciona um workflow do GitHub Actions que publica quando você faz push de uma tag `v*`, com `GENPM_TOKEN` como segredo.
+
+### Sem tokens: publicação confiável
+
+Autorize o repositório uma vez em [Publicação confiável](/settings/publishing) (se quiser, só um arquivo de workflow ou um environment). Depois dê ao job `id-token: write` e remova `GENPM_TOKEN`: `genpm publish` pede um token OIDC ao Actions e o GenPM troca por um token de 15 minutos que só publica no seu scope a partir desse repositório.
+
+```yaml
+permissions:
+  contents: read
+  id-token: write   # trusted publishing
+steps:
+  - uses: actions/checkout@v4
+    with: { fetch-depth: 0 }
+  - run: npx -y @genpm-net/cli publish --yes
+```

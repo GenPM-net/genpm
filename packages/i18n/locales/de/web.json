@@ -709,5 +709,21 @@
     "ranFailed": "Fehlgeschlagen",
     "never": "Noch kein Lauf erfasst",
     "report": "Stimmt etwas nicht? Schreib an"
+  },
+  "trusted": {
+    "title": "Vertrauenswürdiges Veröffentlichen",
+    "lede": "Veröffentliche aus GitHub Actions, ohne ein Token zu speichern: Actions weist nach, welches Repository und welcher Workflow läuft (OIDC), und GenPM gibt ein 15-Minuten-Token aus, das nur in diesen Scope und nur aus diesem Repository veröffentlichen kann.",
+    "added": "Repository autorisiert.",
+    "removed": "Autorisierung entfernt.",
+    "noScopes": "Du verwaltest noch keinen Scope. Veröffentliche dein erstes Paket, um deinen zu beanspruchen.",
+    "none": "Noch kann kein Repository hier ohne Token veröffentlichen.",
+    "repository": "Repository",
+    "workflow": "Workflow (optional)",
+    "environment": "Environment (optional)",
+    "any": "beliebig",
+    "remove": "Entfernen",
+    "add": "Repository autorisieren",
+    "howTitle": "Workflow",
+    "how": "Füge id-token: write zu den Job-Berechtigungen hinzu und führe genpm publish aus: Ohne GENPM_TOKEN fordert es bei Actions ein OIDC-Token an und tauscht es automatisch ein."
   }
 }

@@ -709,5 +709,21 @@
     "ranFailed": "失敗",
     "never": "まだ実行記録がありません",
     "report": "問題がありますか？ 連絡先:"
+  },
+  "trusted": {
+    "title": "信頼済みパブリッシング",
+    "lede": "トークンを保存せずに GitHub Actions から公開できます。Actions が実行中のリポジトリとワークフローを証明し（OIDC）、GenPM はそのリポジトリからこの scope にのみ公開できる 15 分間のトークンを発行します。",
+    "added": "リポジトリを承認しました。",
+    "removed": "承認を削除しました。",
+    "noScopes": "まだ管理している scope がありません。最初のパッケージを公開して自分の scope を取得してください。",
+    "none": "トークンなしでここに公開できるリポジトリはまだありません。",
+    "repository": "リポジトリ",
+    "workflow": "ワークフロー（任意）",
+    "environment": "Environment（任意）",
+    "any": "すべて",
+    "remove": "削除",
+    "add": "リポジトリを承認",
+    "howTitle": "ワークフロー",
+    "how": "ジョブの権限に id-token: write を追加し、genpm publish を実行します。GENPM_TOKEN がなければ Actions に OIDC トークンを要求し、自動で交換します。"
   }
 }

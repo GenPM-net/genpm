@@ -1,0 +1,102 @@
+---
+// /settings/publishing (V03-01): trusted publishing. Por cada scope que administras (el tuyo y las orgs donde eres
+// owner/admin), qué repositorios de GitHub pueden publicar desde Actions con OIDC, sin tokens. POST con verificación
+// de Origin (CSRF).
+import Base from '../../layouts/Base.astro';
+import { requireSession, sessionExpired } from '../../lib/auth.js';
+import { href } from '../../lib/i18n.js';
+import { registryFetch } from '../../lib/registry.js';
+
+const gate = requireSession(Astro);
+if (gate) return gate;
+const { t, locale, session } = Astro.locals;
+let notice: { ok: boolean; text: string } | null = null;
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const scope = String(f.get('scope') ?? '');
+  if (/^@[a-z0-9][a-z0-9-]*$/.test(scope)) {
+    const del = String(f.get('delete') ?? '');
+    const res = del
+      ? await registryFetch(`/v1/scopes/${scope}/trusted-publishers/${del}`, {
+          method: 'DELETE',
+          token: session!.token,
+        })
+      : await registryFetch(`/v1/scopes/${scope}/trusted-publishers`, {
+          method: 'POST',
+          token: session!.token,
+          body: {
+            repository: String(f.get('repository') ?? '').trim(),
+            workflow: String(f.get('workflow') ?? '').trim() || null,
+            environment: String(f.get('environment') ?? '').trim() || null,
+          },
+        });
+    if (res.status === 401) return sessionExpired(Astro);
+    notice = res.ok
+      ? { ok: true, text: t.t(del ? 'web.trusted.removed' : 'web.trusted.added') }
+      : { ok: false, text: ((await res.json().catch(() => ({}))) as { title?: string }).title ?? 'Error' };
+  }
+}
+const meRes = await registryFetch('/v1/me', { token: session!.token, locale });
+if (meRes.status === 401) return sessionExpired(Astro);
+const me = (await meRes.json()) as { handle: string; orgs: Array<{ handle: string; role: string }> };
+const candidates = [me.handle, ...me.orgs.filter((o) => o.role === 'owner' || o.role === 'admin').map((o) => o.handle)];
+const scopes = (
+  await Promise.all(
+    candidates.map(async (h) => {
+      const r = await registryFetch(`/v1/scopes/@${h}/trusted-publishers`, { token: session!.token, locale });
+      if (!r.ok) return null;
+      return (await r.json()) as {
+        scope: string;
+        publishers: Array<{
+          id: string;
+          repository: string;
+          workflow: string | null;
+          environment: string | null;
+          createdAt: string;
+        }>;
+      };
+    }),
+  )
+).filter((x) => x !== null);
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+const yaml = `on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - run: npx -y @genpm-net/cli publish --yes`;
+---
+<Base title={t.t('web.trusted.title')} noindex>
+  <div class="wrap" style="max-width:860px">
+    <div class="phead"><h1>{t.t('web.trusted.title')}</h1><p>{t.t('web.trusted.lede')}</p></div>
+    {notice && <div class="banner" style={`--c:${notice.ok ? 'var(--code-ink)' : 'var(--danger)'}`}><b>{notice.ok ? '✔' : '!'}</b><span>{notice.text}</span></div>}
+    {scopes.length === 0 && <p class="hint">{t.t('web.trusted.noScopes')} <a href={href(locale, '/publish')}>{t.t('web.nav.publish')}</a></p>}
+    {scopes.map((s) => (
+      <section class="sec"><div class="sec-h"><h2>{s.scope}</h2></div>
+        {s.publishers.length === 0 ? <p class="hint">{t.t('web.trusted.none')}</p> : (
+          <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.trusted.repository')}</th><th>{t.t('web.trusted.workflow')}</th><th>{t.t('web.trusted.environment')}</th><th><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
+            {s.publishers.map((p) => <tr><td class="mono">{p.repository}</td><td class="mono">{p.workflow ?? t.t('web.trusted.any')}</td><td>{p.environment ?? t.t('web.trusted.any')}</td><td><form method="post"><input type="hidden" name="scope" value={s.scope} /><input type="hidden" name="delete" value={p.id} /><button class="btn sm ghost" type="submit">{t.t('web.trusted.remove')}</button></form></td></tr>)}
+          </tbody></table></div>
+        )}
+        <form method="post" class="builder" style="margin-top:16px">
+          <input type="hidden" name="scope" value={s.scope} />
+          <label class="field">{t.t('web.trusted.repository')}<input name="repository" required placeholder={`${s.scope.slice(1)}/my-package`} pattern="[A-Za-z0-9_.\-]+/[A-Za-z0-9_.\-]+" /></label>
+          <label class="field">{t.t('web.trusted.workflow')}<input name="workflow" placeholder=".github/workflows/release.yml" /></label>
+          <label class="field">{t.t('web.trusted.environment')}<input name="environment" placeholder="release" /></label>
+          <button class="btn primary" type="submit">{t.t('web.trusted.add')}</button>
+        </form>
+      </section>
+    ))}
+    <section class="sec"><div class="sec-h"><h2>{t.t('web.trusted.howTitle')}</h2></div>
+      <p>{t.t('web.trusted.how')}</p>
+      <div class="term"><div class="bar"><span>.github/workflows/release.yml</span><button class="cp" type="button" data-copy="tp-yaml">{t.t('web.common.copy')}</button></div><pre id="tp-yaml">{yaml}</pre></div>
+    </section>
+  </div>
+</Base>

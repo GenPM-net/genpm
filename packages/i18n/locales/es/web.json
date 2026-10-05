@@ -709,5 +709,21 @@
     "ranFailed": "Falló",
     "never": "Aún no hay ejecuciones",
     "report": "¿Algo va mal? Escribe a"
+  },
+  "trusted": {
+    "title": "Publicación de confianza",
+    "lede": "Publica desde GitHub Actions sin guardar ningún token: Actions demuestra qué repositorio y qué workflow se ejecuta (OIDC) y GenPM le da un token de 15 minutos que solo puede publicar en este scope desde ese repositorio.",
+    "added": "Repositorio autorizado.",
+    "removed": "Autorización eliminada.",
+    "noScopes": "Aún no administras ningún scope. Publica tu primer paquete para reclamar el tuyo.",
+    "none": "Todavía ningún repositorio puede publicar aquí sin token.",
+    "repository": "Repositorio",
+    "workflow": "Workflow (opcional)",
+    "environment": "Environment (opcional)",
+    "any": "cualquiera",
+    "remove": "Quitar",
+    "add": "Autorizar repositorio",
+    "howTitle": "Workflow",
+    "how": "Añade id-token: write a los permisos del job y ejecuta genpm publish: sin GENPM_TOKEN pide a Actions un token OIDC y lo canjea automáticamente."
   }
 }

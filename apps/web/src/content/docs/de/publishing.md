@@ -57,3 +57,17 @@ Dein Scope ist dein GitHub-Login oder eine deiner Organisationen. Scopes wie `@c
 ## CI
 
 `genpm init --workflow` fügt einen GitHub-Actions-Workflow hinzu, der beim Push eines `v*`-Tags veröffentlicht, mit `GENPM_TOKEN` als Secret.
+
+### Ohne Token: vertrauenswürdiges Veröffentlichen
+
+Autorisiere das Repository einmal unter [Vertrauenswürdiges Veröffentlichen](/settings/publishing) (optional nur eine Workflow-Datei oder ein Environment). Gib dem Job dann `id-token: write` und entferne `GENPM_TOKEN`: `genpm publish` fordert bei Actions ein OIDC-Token an, und GenPM tauscht es gegen ein 15-Minuten-Token, das nur aus diesem Repository in deinen Scope veröffentlichen kann.
+
+```yaml
+permissions:
+  contents: read
+  id-token: write   # trusted publishing
+steps:
+  - uses: actions/checkout@v4
+    with: { fetch-depth: 0 }
+  - run: npx -y @genpm-net/cli publish --yes
+```

@@ -102,6 +102,9 @@ export class FakeGitHub {
     return repo.tags[ref] ?? repo.branches?.[ref] ?? null;
   }
 
+  /** Claves públicas del emisor OIDC de GitHub Actions (trusted publishing). */
+  jwks: JsonWebKey[] = [];
+
   /** Respuesta de /repos/:o/:r/compare por repo (`owner/repo`). */
   compareFiles: Record<string, unknown[]> = {};
 
@@ -113,6 +116,8 @@ export class FakeGitHub {
       new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
     const notFound = () => json({ message: 'Not Found' }, 404);
     const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
+    if (url.host === 'token.actions.githubusercontent.com' && url.pathname === '/.well-known/jwks')
+      return json({ keys: this.jwks });
     if (url.host === 'api.github.com') {
       if (parts[0] === 'repos' && parts[3] === 'compare')
         return json({ files: this.compareFiles[`${parts[1]}/${parts[2]}`] ?? [] });

@@ -709,5 +709,21 @@
     "ranFailed": "失败",
     "never": "尚无运行记录",
     "report": "有问题？请写信至"
+  },
+  "trusted": {
+    "title": "可信发布",
+    "lede": "无需保存任何令牌即可从 GitHub Actions 发布：Actions 证明正在运行的仓库和工作流（OIDC），GenPM 发放一个 15 分钟的令牌，只能从该仓库发布到这个 scope。",
+    "added": "已授权仓库。",
+    "removed": "已移除授权。",
+    "noScopes": "你还没有管理任何 scope。发布第一个软件包即可认领你的 scope。",
+    "none": "目前还没有仓库可以不用令牌在这里发布。",
+    "repository": "仓库",
+    "workflow": "工作流（可选）",
+    "environment": "Environment（可选）",
+    "any": "任意",
+    "remove": "移除",
+    "add": "授权仓库",
+    "howTitle": "工作流",
+    "how": "在 job 权限中加入 id-token: write 并运行 genpm publish：没有 GENPM_TOKEN 时，它会向 Actions 请求 OIDC 令牌并自动兑换。"
   }
 }

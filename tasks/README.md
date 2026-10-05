@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-05. No editar a mano. -->
 
-**74 %** completado · 197/267 tareas · 439.5h estimadas pendientes
+**75 %** completado · 199/267 tareas · 419.5h estimadas pendientes
 
-TODO 42 · DOING 4 · DONE 197 · BLOCKED 24 · CUT 0
+TODO 40 · DOING 4 · DONE 199 · BLOCKED 24 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -87,7 +87,7 @@ TODO 42 · DOING 4 · DONE 197 · BLOCKED 24 · CUT 0
 | [Día 7 · Lanzamiento](07-dia-7-lanzamiento.md) | `▓▓░░░░░░░░░░` 18 % | 2/11 | 16.5h |
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 16/17 | 2h |
-| [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓░░░░░░░` 45 % | 18/40 | 386.5h |
+| [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓▓░░░░░░` 50 % | 20/40 | 366.5h |
 
 **En curso**
 
@@ -132,8 +132,8 @@ TODO 42 · DOING 4 · DONE 197 · BLOCKED 24 · CUT 0
 - `D7-04` Hilo en X de 6 posts (esqueleto de branding §9) · F · 1h ([07-dia-7-lanzamiento.md](07-dia-7-lanzamiento.md))
 - `BR-16` Test de 5 segundos de la home con 5 desarrolladores: ¿entienden qué hace GenPM? · F · 2h ([09-marca-diseno.md](09-marca-diseno.md))
 - `V011-13` Activar PostHog en producción: proyecto en región EU, DPA aceptado, retención 30 días/12 meses, POSTHOG_KEY en wrangler.jsonc y despliegue de la web · F · 0.5h ([10-post-mvp.md](10-post-mvp.md))
-- `V03-01` Trusted publishing con OIDC de GitHub Actions · A · 12h ([10-post-mvp.md](10-post-mvp.md))
 - `V03-02` Mirror R2 "Verified Archive" · A · 16h ([10-post-mvp.md](10-post-mvp.md))
 - `V03-03` Publicación desde GitLab · A · 12h ([10-post-mvp.md](10-post-mvp.md))
+- `V03-04` Transporte MCP HTTP remoto de solo lectura · B · 12h ([10-post-mvp.md](10-post-mvp.md))
 
 <!-- board:end -->

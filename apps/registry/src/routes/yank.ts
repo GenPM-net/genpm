@@ -8,7 +8,7 @@ import { purgePackage } from '../cache.js';
 import type { AppEnv } from '../env.js';
 import { httpError } from '../http.js';
 import { newId } from '../ids.js';
-import { requireAuth } from '../middleware/auth.js';
+import { requireAuth, tokenAllows } from '../middleware/auth.js';
 import { fullName, repoOf } from './util.js';
 
 const Body = z.strictObject({ reason: z.string().trim().min(3).max(280) });
@@ -37,7 +37,8 @@ export const yank = new Hono<AppEnv>().post(
     const name = fullName(c);
     const pkg = await repo.packageByName(name);
     // Sin permiso ⇒ 404, no 403: no se revela la existencia de recursos inaccesibles (security §5).
-    if (!pkg || !(await canWrite(c, actor, pkg.owner_id))) throw httpError('E_NOT_FOUND', { name });
+    if (!pkg || !tokenAllows(actor, name) || !(await canWrite(c, actor, pkg.owner_id)))
+      throw httpError('E_NOT_FOUND', { name });
     const v = await repo.version(pkg.id, c.req.param('version'));
     if (!v) throw httpError('E_NO_MATCHING_VERSION', { name, range: c.req.param('version') });
     const now = Date.now();

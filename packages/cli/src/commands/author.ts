@@ -8,6 +8,7 @@ import {
   getStored,
   getToken,
   init,
+  oidcToken,
   pollDeviceFlow,
   publish,
   RegistryClient,
@@ -141,6 +142,8 @@ export const publishCmd = (ctx: Ctx) =>
     run: ({ args }) =>
       run(ctx, async () => {
         const o = await coreOptions(ctx);
+        // En GitHub Actions sin GENPM_TOKEN: trusted publishing (OIDC) si el scope autorizó este repositorio.
+        o.token ??= await oidcToken(o.registry);
         if (!o.token) throw fail('E_AUTH');
         const r = await publish({
           cwd: ctx.flags.cwd,

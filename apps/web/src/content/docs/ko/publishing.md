@@ -57,3 +57,17 @@ genpm yank @acme/billing@1.2.0 --reason "Stripe API 2026-09에서 webhook이 깨
 ## CI
 
 `genpm init --workflow`는 `v*` 태그를 푸시하면 게시하는 GitHub Actions 워크플로를 추가합니다(시크릿은 `GENPM_TOKEN`).
+
+### 토큰 없이: 신뢰할 수 있는 게시
+
+[신뢰할 수 있는 게시](/settings/publishing)에서 저장소를 한 번 승인하세요(워크플로 파일이나 environment 하나로 제한할 수도 있습니다). 그런 다음 job에 `id-token: write`를 주고 `GENPM_TOKEN`을 제거하세요. `genpm publish`가 Actions에 OIDC 토큰을 요청하면 GenPM이 그 저장소에서 내 scope에만 게시할 수 있는 15분짜리 토큰으로 교환합니다.
+
+```yaml
+permissions:
+  contents: read
+  id-token: write   # trusted publishing
+steps:
+  - uses: actions/checkout@v4
+    with: { fetch-depth: 0 }
+  - run: npx -y @genpm-net/cli publish --yes
+```

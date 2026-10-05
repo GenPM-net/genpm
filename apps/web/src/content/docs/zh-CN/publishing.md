@@ -57,3 +57,17 @@ genpm yank @acme/billing@1.2.0 --reason "在 Stripe API 2026-09 下 webhook 失�
 ## CI
 
 `genpm init --workflow` 会添加一个 GitHub Actions 工作流，在推送 `v*` 标签时发布，并使用 `GENPM_TOKEN` 作为密钥。
+
+### 无需令牌：可信发布
+
+在[可信发布](/settings/publishing)中授权一次仓库（也可以只允许某个工作流文件或 environment）。然后给 job 加上 `id-token: write` 并删除 `GENPM_TOKEN`：`genpm publish` 会向 Actions 请求 OIDC 令牌，GenPM 将其兑换为一个 15 分钟、只能从该仓库发布到你的 scope 的令牌。
+
+```yaml
+permissions:
+  contents: read
+  id-token: write   # trusted publishing
+steps:
+  - uses: actions/checkout@v4
+    with: { fetch-depth: 0 }
+  - run: npx -y @genpm-net/cli publish --yes
+```

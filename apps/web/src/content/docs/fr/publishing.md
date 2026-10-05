@@ -57,3 +57,17 @@ Votre scope est votre identifiant GitHub ou une de vos organisations. Des scopes
 ## CI
 
 `genpm init --workflow` ajoute un workflow GitHub Actions qui publie quand vous poussez un tag `v*`, avec `GENPM_TOKEN` comme secret.
+
+### Sans jeton : publication de confiance
+
+Autorisez le dépôt une fois dans [Publication de confiance](/settings/publishing) (éventuellement un seul fichier de workflow ou un environment). Donnez ensuite `id-token: write` au job et supprimez `GENPM_TOKEN` : `genpm publish` demande un jeton OIDC à Actions et GenPM l’échange contre un jeton de 15 minutes qui ne peut publier que dans votre scope depuis ce dépôt.
+
+```yaml
+permissions:
+  contents: read
+  id-token: write   # trusted publishing
+steps:
+  - uses: actions/checkout@v4
+    with: { fetch-depth: 0 }
+  - run: npx -y @genpm-net/cli publish --yes
+```

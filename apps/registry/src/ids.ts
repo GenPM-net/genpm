@@ -15,7 +15,20 @@ export function ulid(now = Date.now()): string {
   return time + rand;
 }
 
-export type IdPrefix = 'acc' | 'reg' | 'scp' | 'pkg' | 'ver' | 'tok' | 'spn' | 'aud' | 'rep' | 'adv' | 'ses' | 'lead';
+export type IdPrefix =
+  | 'acc'
+  | 'reg'
+  | 'scp'
+  | 'pkg'
+  | 'ver'
+  | 'tok'
+  | 'spn'
+  | 'aud'
+  | 'rep'
+  | 'adv'
+  | 'ses'
+  | 'lead'
+  | 'tp';
 
 export function newId(prefix: IdPrefix, now?: number): string {
   return `${prefix}_${ulid(now)}`;

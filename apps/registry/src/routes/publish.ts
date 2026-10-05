@@ -33,7 +33,7 @@ import { purgePackage } from '../cache.js';
 import type { Actor, AppEnv } from '../env.js';
 import { httpError } from '../http.js';
 import { newId } from '../ids.js';
-import { requireAuth } from '../middleware/auth.js';
+import { requireAuth, tokenAllows } from '../middleware/auth.js';
 import { clientIp, rateLimit } from '../middleware/rate-limit.js';
 import { GitHub, parseGithubRepo } from '../services/github.js';
 import { indexNow } from '../services/indexnow.js';
@@ -169,6 +169,8 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   // 1–2 · nombre y permisos sobre el scope
   const parts = parseName(body.name);
   if (!parts) throw httpError('E_BAD_REQUEST', { detail: 'name' });
+  // Tokens restringidos (`allowed_packages`, trusted publishing): fuera de su lista no pueden publicar.
+  if (!tokenAllows(actor, body.name)) throw httpError('E_FORBIDDEN_SCOPE', { scope: parts.scope });
   const { scope, claim } = await authorizeScope(c, actor, parts.scope);
 
   // 3 · el repo pertenece al owner de GitHub del scope
@@ -176,6 +178,9 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   if (!gh || gh.owner.toLowerCase() !== scope.git_owner.toLowerCase()) {
     throw httpError('E_REPO_NOT_ALLOWED', { repo: body.repo, scope: parts.scope });
   }
+  // Trusted publishing: el token OIDC solo vale para el repositorio que lo pidió.
+  if (actor.repository && actor.repository.toLowerCase() !== `${gh.owner}/${gh.repo}`.toLowerCase())
+    throw httpError('E_REPO_NOT_ALLOWED', { repo: body.repo, scope: parts.scope });
   const github = new GitHub(c.env);
   const info = await github.repo(gh.owner, gh.repo);
   if (!info) throw httpError('E_REF_NOT_FOUND', { ref: body.ref, repo: body.repo });
