@@ -73,7 +73,8 @@
     "retry": "再試行",
     "files": "{count, plural, other {# ファイル}}",
     "tokens": "約 {count} トークン",
-    "noResults": "結果がありません"
+    "noResults": "結果がありません",
+    "cancel": "キャンセル"
   },
   "home": {
     "eyebrow": "コード · コンテキスト · コネクション",
@@ -392,7 +393,9 @@
     "revoke": "失効",
     "revokeConfirm": "{name} を失効させますか？これを使っている CI ジョブは失敗します。",
     "showOnce": "今すぐこのトークンをコピーしてください。再表示はできません。",
-    "empty": "トークンはまだありません。"
+    "empty": "トークンはまだありません。",
+    "newTitle": "新しいトークン",
+    "listTitle": "トークン一覧"
   },
   "dashboard": {
     "title": "ダッシュボード",
@@ -422,7 +425,9 @@
     "deprecateMessage": "利用者に表示するメッセージ",
     "deprecatePlaceholder": "代わりに @scope/other を使ってください",
     "deprecateConfirm": "非推奨としてマーク",
-    "legend": "濃い棒: CLI からのインストール。色付きの棒: AI エージェント（MCP）経由のインストール。"
+    "legend": "濃い棒: CLI からのインストール。色付きの棒: AI エージェント（MCP）経由のインストール。",
+    "activityEmpty": "まだ何もありません。サインイン、新しいトークン、公開がここに表示されます。",
+    "deprecateTitle": "{name} を非推奨にする"
   },
   "publisher": {
     "packages": "{count, plural, other {# パッケージ}}",
@@ -799,5 +804,11 @@
     "scimTitle": "プロビジョニング（SCIM 2.0）",
     "scimHelp": "ID プロバイダーがメンバーを自動で追加・削除できるようにします。そこで削除されたメンバーは、組織のプライベートレジストリにすぐアクセスできなくなります。トークンは一度だけ表示され、再発行すると以前のものは無効になります。",
     "scimGenerate": "SCIM トークンを生成"
+  },
+  "account": {
+    "nav": "アカウント",
+    "personal": "アカウント",
+    "publishing": "公開",
+    "staff": "管理"
   }
 }

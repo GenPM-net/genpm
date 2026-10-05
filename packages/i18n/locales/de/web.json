@@ -73,7 +73,8 @@
     "retry": "Erneut versuchen",
     "files": "{count, plural, one {# Datei} other {# Dateien}}",
     "tokens": "~{count} Tokens",
-    "noResults": "Keine Ergebnisse"
+    "noResults": "Keine Ergebnisse",
+    "cancel": "Abbrechen"
   },
   "home": {
     "eyebrow": "Code · Kontext · Verbindungen",
@@ -392,7 +393,9 @@
     "revoke": "Widerrufen",
     "revokeConfirm": "{name} widerrufen? CI-Jobs, die ihn nutzen, schlagen fehl.",
     "showOnce": "Kopiere diesen Token jetzt. Du wirst ihn nicht wieder sehen.",
-    "empty": "Noch keine Tokens."
+    "empty": "Noch keine Tokens.",
+    "newTitle": "Neues Token",
+    "listTitle": "Deine Tokens"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -422,7 +425,9 @@
     "deprecateMessage": "Hinweis für Nutzer",
     "deprecatePlaceholder": "Nutze stattdessen @scope/anderes",
     "deprecateConfirm": "Als veraltet markieren",
-    "legend": "Dunkle Balken: Installationen über die CLI. Farbige Balken: Installationen über einen KI-Agenten (MCP)."
+    "legend": "Dunkle Balken: Installationen über die CLI. Farbige Balken: Installationen über einen KI-Agenten (MCP).",
+    "activityEmpty": "Noch nichts. Anmeldungen, neue Tokens und Veröffentlichungen erscheinen hier.",
+    "deprecateTitle": "{name} als veraltet markieren"
   },
   "publisher": {
     "packages": "{count, plural, one {# Paket} other {# Pakete}}",
@@ -799,5 +804,11 @@
     "scimTitle": "Provisionierung (SCIM 2.0)",
     "scimHelp": "Lass deinen Identitätsanbieter Mitglieder automatisch anlegen und entfernen. Wer dort entfernt wird, verliert sofort den Zugriff auf die privaten Registries der Organisation. Das Token wird nur einmal angezeigt; ein neues widerruft das alte.",
     "scimGenerate": "SCIM-Token erzeugen"
+  },
+  "account": {
+    "nav": "Konto",
+    "personal": "Konto",
+    "publishing": "Veröffentlichung",
+    "staff": "Verwaltung"
   }
 }

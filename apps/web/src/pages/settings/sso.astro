@@ -1,7 +1,7 @@
 ---
 // /settings/sso (V10-02): SSO OIDC por organización. Owners/admins configuran el IdP; los miembros vinculan su cuenta.
 import { env } from 'cloudflare:workers';
-import Base from '../../layouts/Base.astro';
+import Account from '../../layouts/Account.astro';
 import { requireSession, sessionExpired } from '../../lib/auth.js';
 import { registryFetch } from '../../lib/registry.js';
 
@@ -55,7 +55,7 @@ if (Astro.request.method === 'POST') {
 }
 const meRes = await registryFetch('/v1/me', { token, locale });
 if (meRes.status === 401) return sessionExpired(Astro);
-const me = (await meRes.json()) as { orgs: Array<{ handle: string; role: string }> };
+const me = (await meRes.json()) as { staff?: boolean; orgs: Array<{ handle: string; role: string }> };
 const orgs = await Promise.all(
   me.orgs.map(async (o) => {
     const r = await registryFetch(`/v1/orgs/${o.handle}/sso`, { token, locale });
@@ -66,11 +66,9 @@ const orgs = await Promise.all(
 const redirectUri = `${env.SITE_ORIGIN}/auth/sso/callback`;
 Astro.response.headers.set('Cache-Control', 'private, no-store');
 ---
-<Base title={t.t('web.sso.title')} noindex>
-  <div class="wrap" style="max-width:860px">
-    <div class="phead"><h1>{t.t('web.sso.title')}</h1><p>{t.t('web.sso.lede')}</p></div>
+<Account title={t.t('web.sso.title')} lede={t.t('web.sso.lede')} active="sso" staff={me.staff === true}>
     {notice && <div class="banner" style={`--c:${notice.ok ? 'var(--code-ink)' : 'var(--danger)'}`}><b>{notice.ok ? '✔' : '!'}</b><span>{notice.text}</span></div>}
-    {orgs.length === 0 && <p class="hint">{t.t('web.sso.noOrgs')}</p>}
+    {orgs.length === 0 && <div class="empty sm"><p>{t.t('web.sso.noOrgs')}</p></div>}
     {orgs.map((o) => (
       <section class="sec"><div class="sec-h"><div><h2>{o.org}</h2><p>{o.enabled ? t.t(o.enforce ? 'web.sso.enforced' : 'web.sso.enabled') : t.t('web.sso.disabled')}</p></div></div>
         {o.enabled && (
@@ -89,8 +87,8 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
           </form>
         )}
         {o.admin && o.enabled && (
-          <div style="margin-top:20px">
-            <h3>{t.t('web.sso.scimTitle')}</h3>
+          <div style="margin-top:24px;display:grid;gap:8px;justify-items:start">
+            <h3 style="font-size:16px">{t.t('web.sso.scimTitle')}</h3>
             <p class="hint">{t.t('web.sso.scimHelp')}</p>
             {scimIssued?.org === o.org ? (
               <div class="term"><div class="bar"><span>{scimIssued.baseUrl}</span><button class="cp" type="button" data-copy="scim-token">{t.t('web.common.copy')}</button></div><pre id="scim-token">{scimIssued.token}</pre></div>
@@ -101,5 +99,4 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
         )}
       </section>
     ))}
-  </div>
-</Base>
+</Account>

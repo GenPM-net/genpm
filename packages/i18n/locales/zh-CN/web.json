@@ -73,7 +73,8 @@
     "retry": "重试",
     "files": "{count, plural, other {# 个文件}}",
     "tokens": "约 {count} 个 token",
-    "noResults": "无结果"
+    "noResults": "无结果",
+    "cancel": "取消"
   },
   "home": {
     "eyebrow": "代码 · 上下文 · 连接",
@@ -392,7 +393,9 @@
     "revoke": "吊销",
     "revokeConfirm": "吊销 {name}？使用它的 CI 任务将会失败。",
     "showOnce": "请立即复制此令牌。它不会再次显示。",
-    "empty": "还没有令牌。"
+    "empty": "还没有令牌。",
+    "newTitle": "新令牌",
+    "listTitle": "你的令牌"
   },
   "dashboard": {
     "title": "控制台",
@@ -422,7 +425,9 @@
     "deprecateMessage": "向用户显示的提示",
     "deprecatePlaceholder": "请改用 @scope/other",
     "deprecateConfirm": "标记为弃用",
-    "legend": "深色柱：通过 CLI 安装。彩色柱：通过 AI 代理（MCP）安装。"
+    "legend": "深色柱：通过 CLI 安装。彩色柱：通过 AI 代理（MCP）安装。",
+    "activityEmpty": "暂无记录。登录、新令牌和发布会显示在这里。",
+    "deprecateTitle": "弃用 {name}"
   },
   "publisher": {
     "packages": "{count, plural, other {# 个包}}",
@@ -799,5 +804,11 @@
     "scimTitle": "自动预配（SCIM 2.0）",
     "scimHelp": "让身份提供商自动添加和移除成员。在那里移除某人会立即切断其对组织私有注册表的访问。令牌只显示一次；重新生成会使之前的令牌失效。",
     "scimGenerate": "生成 SCIM 令牌"
+  },
+  "account": {
+    "nav": "账户",
+    "personal": "账户",
+    "publishing": "发布",
+    "staff": "管理"
   }
 }

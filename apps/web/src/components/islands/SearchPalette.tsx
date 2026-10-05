@@ -19,6 +19,7 @@ export default function SearchPalette(props: { locale: string; prefix: string; l
   const [q, setQ] = useState('');
   const [rows, setRows] = useState<Row[]>([]);
   const [idx, setIdx] = useState(0);
+  const [loading, setLoading] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const last = useRef<Element | null>(null);
 
@@ -65,14 +66,18 @@ export default function SearchPalette(props: { locale: string; prefix: string; l
   useEffect(() => {
     if (!open) return;
     const ctrl = new AbortController();
+    // Mientras llega la respuesta se mantienen los resultados anteriores y no se anuncia «sin resultados».
+    setLoading(true);
     const h = setTimeout(async () => {
       try {
         const res = await fetch(`/search.json?q=${encodeURIComponent(q.trim())}&limit=8`, { signal: ctrl.signal });
         const j = (await res.json()) as { r: Row[] };
         setRows(j.r ?? []);
         setIdx(0);
+        setLoading(false);
       } catch {
-        /* abortado o sin red */
+        // Abortada por una tecla posterior (llega otra respuesta) o sin red (se deja de esperar).
+        if (!ctrl.signal.aborted) setLoading(false);
       }
     }, 200);
     return () => {
@@ -126,14 +131,22 @@ export default function SearchPalette(props: { locale: string; prefix: string; l
         <div id="plist" class="opts" role="listbox">
           {rows.length ? (
             rows.map((r, i) => (
-              <div key={r.n} id={`pal-${i}`} class="opt" role="option" tabIndex={-1} aria-selected={i === idx}>
+              <div
+                key={r.n}
+                id={`pal-${i}`}
+                class="opt"
+                role="option"
+                tabIndex={-1}
+                aria-selected={i === idx}
+                onMouseEnter={() => setIdx(i)}
+              >
                 <a href={`${props.prefix}/p/${r.n}`}>
                   <b>{r.n}</b>
                   <span>{r.s}</span>
                 </a>
               </div>
             ))
-          ) : (
+          ) : loading ? null : (
             <div class="none">
               {props.labels.none.replace('{query}', q)} <a href={`${props.prefix}/publish`}>{props.labels.publish}</a>
             </div>

@@ -109,7 +109,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
             ))}
           </ul>
         </details>
-        <button class="btn sm ghost theme" type="button" data-theme-toggle aria-label={t.t('web.nav.theme')}><Ico name="moon" style="width:15px;height:15px" /></button>
+        <button class="btn sm ghost theme" type="button" data-theme-toggle aria-label={t.t('web.nav.theme')}><span class="i-dark"><Ico name="moon" style="width:15px;height:15px" /></span><span class="i-light"><Ico name="sun" style="width:15px;height:15px" /></span></button>
         {session ? (
           <a class="btn sm signin" href={href(locale, '/dashboard')}>{session.handle}</a>
         ) : (
@@ -134,7 +134,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
                 <li><a href={href(l, path)} lang={l} hreflang={l} aria-current={l === locale ? 'true' : undefined}>{langName(l)}</a></li>
               ))}
             </ul>
-            <button class="btn sm" type="button" data-theme-toggle><Ico name="moon" style="width:15px;height:15px" />{t.t('web.nav.theme')}</button>
+            <button class="btn sm" type="button" data-theme-toggle><span class="i-dark"><Ico name="moon" style="width:15px;height:15px" /></span><span class="i-light"><Ico name="sun" style="width:15px;height:15px" /></span>{t.t('web.nav.theme')}</button>
           </div>
         </div>
       </div>

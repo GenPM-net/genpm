@@ -2,7 +2,7 @@
 // /settings/publishing (V03-01): trusted publishing. Por cada scope que administras (el tuyo y las orgs donde eres
 // owner/admin), qué repositorios de GitHub (Actions) o proyectos de GitLab (CI, V03-03) pueden publicar con OIDC, sin tokens. POST con verificación
 // de Origin (CSRF).
-import Base from '../../layouts/Base.astro';
+import Account from '../../layouts/Account.astro';
 import { requireSession, sessionExpired } from '../../lib/auth.js';
 import { href } from '../../lib/i18n.js';
 import { registryFetch } from '../../lib/registry.js';
@@ -86,16 +86,14 @@ const gitlabYaml = `publish:
   script:
     - npx -y @genpm-net/cli publish --yes`;
 ---
-<Base title={t.t('web.trusted.title')} noindex>
-  <div class="wrap" style="max-width:860px">
-    <div class="phead"><h1>{t.t('web.trusted.title')}</h1><p>{t.t('web.trusted.lede')}</p></div>
+<Account title={t.t('web.trusted.title')} lede={t.t('web.trusted.lede')} active="publishing">
     {notice && <div class="banner" style={`--c:${notice.ok ? 'var(--code-ink)' : 'var(--danger)'}`}><b>{notice.ok ? '✔' : '!'}</b><span>{notice.text}</span></div>}
-    {scopes.length === 0 && <p class="hint">{t.t('web.trusted.noScopes')} <a href={href(locale, '/publish')}>{t.t('web.nav.publish')}</a></p>}
+    {scopes.length === 0 && <div class="empty sm"><p>{t.t('web.trusted.noScopes')}</p><a class="btn sm primary" href={href(locale, '/publish')}>{t.t('web.nav.publish')}</a></div>}
     {scopes.map((s) => (
       <section class="sec"><div class="sec-h"><h2>{s.scope}</h2></div>
-        {s.publishers.length === 0 ? <p class="hint">{t.t('web.trusted.none')}</p> : (
-          <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.trusted.repository')}</th><th>{t.t('web.trusted.workflow')}</th><th>{t.t('web.trusted.environment')}</th><th><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
-            {s.publishers.map((p) => <tr><td class="mono">{p.provider === 'gitlab' ? `gitlab.com/${p.repository}` : p.repository}</td><td class="mono">{p.workflow ?? t.t('web.trusted.any')}</td><td>{p.environment ?? t.t('web.trusted.any')}</td><td><form method="post"><input type="hidden" name="scope" value={s.scope} /><input type="hidden" name="delete" value={p.id} /><button class="btn sm ghost" type="submit">{t.t('web.trusted.remove')}</button></form></td></tr>)}
+        {s.publishers.length === 0 ? <div class="empty sm"><p>{t.t('web.trusted.none')}</p></div> : (
+          <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.trusted.repository')}</th><th>{t.t('web.trusted.workflow')}</th><th>{t.t('web.trusted.environment')}</th><th class="act"><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
+            {s.publishers.map((p) => <tr><td class="mono">{p.provider === 'gitlab' ? `gitlab.com/${p.repository}` : p.repository}</td><td class="mono">{p.workflow ?? t.t('web.trusted.any')}</td><td>{p.environment ?? t.t('web.trusted.any')}</td><td class="act"><form method="post"><input type="hidden" name="scope" value={s.scope} /><input type="hidden" name="delete" value={p.id} /><button class="btn sm ghost danger" type="submit">{t.t('web.trusted.remove')}</button></form></td></tr>)}
           </tbody></table></div>
         )}
         <form method="post" class="builder" style="margin-top:16px">
@@ -109,10 +107,9 @@ const gitlabYaml = `publish:
       </section>
     ))}
     <section class="sec"><div class="sec-h"><h2>{t.t('web.trusted.howTitle')}</h2></div>
-      <p>{t.t('web.trusted.how')}</p>
-      <div class="term"><div class="bar"><span>.github/workflows/release.yml</span><button class="cp" type="button" data-copy="tp-yaml">{t.t('web.common.copy')}</button></div><pre id="tp-yaml">{yaml}</pre></div>
-      <p style="margin-top:16px">{t.t('web.trusted.howGitlab')}</p>
-      <div class="term"><div class="bar"><span>.gitlab-ci.yml</span><button class="cp" type="button" data-copy="tp-gitlab">{t.t('web.common.copy')}</button></div><pre id="tp-gitlab">{gitlabYaml}</pre></div>
+      <p style="color:var(--ink-2);max-width:70ch">{t.t('web.trusted.how')}</p>
+      <div class="term" style="margin-top:12px"><div class="bar"><span>.github/workflows/release.yml</span><button class="cp" type="button" data-copy="tp-yaml">{t.t('web.common.copy')}</button></div><pre id="tp-yaml">{yaml}</pre></div>
+      <p style="margin-top:24px;color:var(--ink-2);max-width:70ch">{t.t('web.trusted.howGitlab')}</p>
+      <div class="term" style="margin-top:12px"><div class="bar"><span>.gitlab-ci.yml</span><button class="cp" type="button" data-copy="tp-gitlab">{t.t('web.common.copy')}</button></div><pre id="tp-gitlab">{gitlabYaml}</pre></div>
     </section>
-  </div>
-</Base>
+</Account>

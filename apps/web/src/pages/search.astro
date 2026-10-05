@@ -55,14 +55,16 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=30, stale-while-rev
         {mcp && <input type="hidden" name="mcp" value="1" />}{k && <input type="hidden" name="k" value={k} />}
       </form>
     </div>
-    <div class="srch">
-      <aside class="filters" aria-label={t.t('web.search.filters')}>
+    <div class="srch" id="srch">
+      <aside class="filters" id="filters" aria-label={t.t('web.search.filters')}>
         <form method="get" action={href(locale, '/search')} id="ff">
           <input type="hidden" name="q" value={q} />
           <fieldset><legend class="k">{t.t('web.search.layers')}</legend><label><input type="checkbox" name="mcp" value="1" checked={mcp} />{t.t('web.search.hasMcp')}</label></fieldset>
           <fieldset><legend class="k">{t.t('web.search.keyword')}</legend>
-            <label><input type="radio" name="k" value="" checked={!k} />{t.t('web.search.anyKeyword')}</label>
-            {keywords.map((kw) => <label><input type="radio" name="k" value={kw} checked={k === kw} />{kw}</label>)}
+            <div class="chips">
+              <label><input type="radio" name="k" value="" checked={!k} />{t.t('web.search.anyKeyword')}</label>
+              {keywords.map((kw) => <label><input type="radio" name="k" value={kw} checked={k === kw} />{kw}</label>)}
+            </div>
           </fieldset>
           <input type="hidden" name="sort" value={sort} />
           <noscript><button class="btn sm" type="submit">{t.t('web.search.apply')}</button></noscript>
@@ -70,7 +72,10 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=30, stale-while-rev
       </aside>
       <div class="results" id="results">
         <div class="rbar">
-          <span class="q">{q && <b>"{q}" · </b>}{t.t('web.search.results', { count: data.total })}</span>
+          <span class="row" style="gap:12px">
+            <button class="btn sm ftoggle" type="button" aria-controls="filters" aria-expanded="false" data-ftoggle>{t.t('web.search.filters')}{(mcp || k) && <em>{Number(mcp) + Number(!!k)}</em>}</button>
+            <span class="q">{q && <b>"{q}" · </b>}{t.t('web.search.results', { count: data.total })}</span>
+          </span>
           <form method="get" action={href(locale, '/search')}>
             <input type="hidden" name="q" value={q} />{mcp && <input type="hidden" name="mcp" value="1" />}{k && <input type="hidden" name="k" value={k} />}
             <label class="hint">{t.t('web.search.sort')} <select class="sel" name="sort" data-autosubmit>
@@ -102,6 +107,16 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=30, stale-while-rev
     </div>
   </div>
   <script>
+    // Filtros plegables en móvil: empiezan cerrados para que los resultados se vean sin hacer scroll.
+    const srch = document.getElementById('srch');
+    srch?.setAttribute('data-fold', '');
+    document.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-ftoggle]');
+      if (!btn || !srch) return;
+      const open = !srch.hasAttribute('data-open');
+      srch.toggleAttribute('data-open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
     for (const s of document.querySelectorAll('select[data-autosubmit]')) s.addEventListener('change', () => s.closest('form')?.submit());
     document.getElementById('ff')?.addEventListener('change', (e) => (e.currentTarget as HTMLFormElement).submit());
 
@@ -132,6 +147,7 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=30, stale-while-rev
             if (next && cur) cur.replaceWith(next);
           }
           document.title = doc.title;
+          document.querySelector('[data-ftoggle]')?.setAttribute('aria-expanded', String(!!srch?.hasAttribute('data-open')));
           history.replaceState(null, '', url);
           document.getElementById('ff')?.addEventListener('change', (e) => (e.currentTarget as HTMLFormElement).submit());
           for (const s of document.querySelectorAll('select[data-autosubmit]')) s.addEventListener('change', () => s.closest('form')?.submit());

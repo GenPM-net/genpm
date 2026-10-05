@@ -73,7 +73,8 @@
     "retry": "Tentar de novo",
     "files": "{count, plural, one {# arquivo} other {# arquivos}}",
     "tokens": "~{count} tokens",
-    "noResults": "Sem resultados"
+    "noResults": "Sem resultados",
+    "cancel": "Cancelar"
   },
   "home": {
     "eyebrow": "Código · Contexto · Conexões",
@@ -392,7 +393,9 @@
     "revoke": "Revogar",
     "revokeConfirm": "Revogar {name}? Os jobs de CI que o usam vão falhar.",
     "showOnce": "Copie este token agora. Você não vai vê-lo de novo.",
-    "empty": "Ainda não há tokens."
+    "empty": "Ainda não há tokens.",
+    "newTitle": "Novo token",
+    "listTitle": "Seus tokens"
   },
   "dashboard": {
     "title": "Painel",
@@ -422,7 +425,9 @@
     "deprecateMessage": "Mensagem para quem usa",
     "deprecatePlaceholder": "Use @scope/outro no lugar",
     "deprecateConfirm": "Marcar como obsoleto",
-    "legend": "Barras escuras: instalações pelo CLI. Barras coloridas: instalações por um agente de IA (MCP)."
+    "legend": "Barras escuras: instalações pelo CLI. Barras coloridas: instalações por um agente de IA (MCP).",
+    "activityEmpty": "Ainda não há nada. Aqui você verá logins, novos tokens e publicações.",
+    "deprecateTitle": "Marcar {name} como obsoleto"
   },
   "publisher": {
     "packages": "{count, plural, one {# pacote} other {# pacotes}}",
@@ -799,5 +804,11 @@
     "scimTitle": "Provisionamento (SCIM 2.0)",
     "scimHelp": "Deixe o seu provedor de identidade adicionar e remover membros automaticamente. Remover alguém lá corta na hora o acesso aos registries privados da organização. O token só aparece uma vez; gerar outro revoga o anterior.",
     "scimGenerate": "Gerar token SCIM"
+  },
+  "account": {
+    "nav": "Conta",
+    "personal": "Conta",
+    "publishing": "Publicação",
+    "staff": "Administração"
   }
 }

@@ -108,6 +108,9 @@ export function initSite() {
     }
     if (el.closest('[data-theme-toggle]')) {
       const dark = root.dataset.theme !== 'dark';
+      // Fundido de colores solo durante el cambio de tema (no en hovers ni en la carga).
+      root.classList.add('theming');
+      window.setTimeout(() => root.classList.remove('theming'), 320);
       root.dataset.theme = dark ? 'dark' : 'light';
       try {
         localStorage.setItem('genpm-theme', dark ? 'dark' : 'light');
@@ -135,7 +138,37 @@ export function initSite() {
     }
   }
   wireTabs(document);
+  initToc();
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const sheet = document.getElementById('sheet');
+    if (sheet && !sheet.hidden) {
+      sheet.hidden = true;
+      document.querySelector<HTMLElement>('[data-menu]')?.setAttribute('aria-expanded', 'false');
+    }
+  });
   initConsent();
+}
+
+/** Índice de las docs: marca la sección que se está leyendo para no perder el hilo en páginas largas. */
+function initToc() {
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.dtoc a[href^="#"]')];
+  if (!links.length || !('IntersectionObserver' in window)) return;
+  const byId = new Map(links.map((a) => [decodeURIComponent(a.hash.slice(1)), a]));
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        for (const a of links) a.removeAttribute('aria-current');
+        byId.get(e.target.id)?.setAttribute('aria-current', 'location');
+      }
+    },
+    { rootMargin: '-72px 0px -65% 0px' },
+  );
+  for (const id of byId.keys()) {
+    const h = document.getElementById(id);
+    if (h) io.observe(h);
+  }
 }
 
 /** Banner de consentimiento: sin decisión se muestra; con «Aceptar» se carga PostHog; con «Rechazar» nada. */

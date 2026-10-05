@@ -2,7 +2,7 @@
 // /admin/analytics (ADR-027, solo staff): visitas, búsquedas, instalaciones y actividad del registry, contadas en el
 // servidor sin cookies ni identificadores. Los mapas de calor y grabaciones (con consentimiento) viven en PostHog.
 import { env } from 'cloudflare:workers';
-import Base from '../../layouts/Base.astro';
+import Account from '../../layouts/Account.astro';
 import { requireSession, sessionExpired } from '../../lib/auth.js';
 import { compact } from '../../lib/format.js';
 import { href } from '../../lib/i18n.js';
@@ -94,20 +94,16 @@ const lists: Array<{ title: string; rows: KV[] }> =
     : [];
 const posthog = env.POSTHOG_KEY ? `${env.POSTHOG_UI_HOST ?? 'https://eu.posthog.com'}` : null;
 ---
-<Base title={t.t('web.admin.title')} noindex>
-  <div class="wrap adm">
-    <div class="phead">
-      <div>
-        <h1>{t.t('web.admin.title')}</h1>
-        <p class="lede">{t.t('web.admin.lede')}</p>
-      </div>
-      <nav class="row" aria-label={t.t('web.admin.range')}>
-        {RANGES.map((d) => <a class:list={['btn sm', { ghost: d !== days }]} aria-current={d === days ? 'page' : undefined} href={`${href(locale, '/admin/analytics')}?days=${d}`}>{t.t('web.admin.days', { days: d })}</a>)}
-        {posthog && <a class="btn sm" href={posthog} rel="noopener" target="_blank">{t.t('web.admin.heatmaps')}</a>}
-      </nav>
-    </div>
+<Account title={t.t('web.admin.title')} lede={t.t('web.admin.lede')} active="analytics" staff>
+  <div class="row" slot="actions">
+    <nav class="seg" aria-label={t.t('web.admin.range')}>
+      {RANGES.map((d) => <a aria-current={d === days ? 'page' : undefined} href={`${href(locale, '/admin/analytics')}?days=${d}`}>{t.t('web.admin.days', { days: d })}</a>)}
+    </nav>
+    {posthog && <a class="btn sm" href={posthog} rel="noopener" target="_blank">{t.t('web.admin.heatmaps')}</a>}
+  </div>
+  <div class="adm">
     {!data && <div class="empty"><p>{t.t('web.admin.error')}</p></div>}
-    {data && !data.configured && <p class="warn-note" role="status">{t.t('web.admin.notConfigured')}</p>}
+    {data && !data.configured && <div class="banner" style="--c:var(--warn)" role="status"><b>!</b><span>{t.t('web.admin.notConfigured')}</span></div>}
     {data && (
       <>
         <div class="kpis">
@@ -123,14 +119,14 @@ const posthog = env.POSTHOG_KEY ? `${env.POSTHOG_UI_HOST ?? 'https://eu.posthog.
         </div>
 
         <section class="sec"><div class="sec-h"><h2>{t.t('web.admin.daily')}</h2></div>
-          <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.admin.colDay')}</th><th>{t.t('web.admin.colPeople')}</th><th>{t.t('web.admin.colInstalls')}</th><th>{t.t('web.admin.colBots')}</th><th>{t.t('web.admin.colPublishes')}</th></tr></thead><tbody>
+          <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.admin.colDay')}</th><th>{t.t('web.admin.colPeople')}</th><th>{t.t('web.admin.colInstalls')}</th><th class="num">{t.t('web.admin.colBots')}</th><th class="num">{t.t('web.admin.colPublishes')}</th></tr></thead><tbody>
             {rows.map((r) => (
               <tr>
-                <td class="tnum">{r.day}</td>
-                <td><span class="bar" style={`--w:${(r.people / peak) * 100}%`}></span><span class="tnum">{r.people}</span></td>
-                <td><span class="bar i" style={`--w:${(r.installs / peak) * 100}%`}></span><span class="tnum">{r.installs}</span></td>
-                <td class="tnum">{r.bots}</td>
-                <td class="tnum">{r.publishes}</td>
+                <td>{r.day}</td>
+                <td><span class="meter"><span class="tnum">{r.people}</span><span class="bar" style={`--w:${(r.people / peak) * 100}%`}></span></span></td>
+                <td><span class="meter"><span class="tnum">{r.installs}</span><span class="bar i" style={`--w:${(r.installs / peak) * 100}%`}></span></span></td>
+                <td class="num">{r.bots}</td>
+                <td class="num">{r.publishes}</td>
               </tr>
             ))}
           </tbody></table></div>
@@ -156,31 +152,37 @@ const posthog = env.POSTHOG_KEY ? `${env.POSTHOG_UI_HOST ?? 'https://eu.posthog.
       </>
     )}
   </div>
-</Base>
+</Account>
 
 <style>
-  .adm .lede { color: var(--ink-2); margin-top: 6px; max-width: 70ch; }
-  .adm .phead { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: flex-end; }
-  .adm .row { display: flex; flex-wrap: wrap; gap: 8px; }
-  .warn-note { border: 1px solid var(--warn); padding: 12px 16px; margin: 16px 0; }
-  .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); border: 1px solid var(--line); margin: 24px 0; }
-  .kpis > div { padding: 18px; min-width: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); margin: -1px 0 0 -1px; }
-  .kpis b { display: block; font-size: 28px; font-weight: 600; letter-spacing: -0.03em; }
-  .kpis .k { color: var(--ink-3); font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .bar { display: inline-block; height: 8px; width: calc(var(--w) * 0.6); min-width: 1px; background: var(--ink); margin-right: 8px; vertical-align: middle; }
+  .adm { display: grid; gap: 24px; }
+  .seg a { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); border-radius: 2px; white-space: nowrap; }
+  .seg a:hover { color: var(--ink); background: var(--wash); }
+  .seg a[aria-current='page'] { background: var(--ink); color: var(--paper); }
+  /* KPIs: separadores de 1 px; los de la última columna y fila se recortan con overflow (sin líneas dobles). */
+  .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+  .kpis > div { padding: 18px; min-width: 0; display: grid; gap: 6px; align-content: start; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 0 -1px -1px 0; }
+  .kpis b { display: block; font-size: 28px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+  .kpis .k { color: var(--ink-3); font-size: 11px; line-height: 1.5; }
+  .meter { display: inline-grid; grid-template-columns: 4ch 120px; align-items: center; gap: 10px; }
+  .meter .tnum { text-align: right; }
+  .bar { display: block; height: 8px; width: var(--w); min-width: 1px; background: var(--ink); border-radius: 1px; }
   .bar.i { background: var(--mcp); }
-  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
-  .card { border: 1px solid var(--line); padding: 16px; min-width: 0; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .card { border: 1px solid var(--line); border-radius: var(--r); padding: 16px; min-width: 0; }
   .card.wide { grid-column: 1 / -1; }
   .card h2 { font-size: 15px; margin-bottom: 10px; }
   .card ol { list-style: none; padding: 0; margin: 0; }
-  .card li { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; border-top: 1px solid var(--line-2); }
+  .card li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-2); }
+  .card li b { color: var(--ink); font-weight: 600; }
   .card li span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
   .zero { color: var(--danger); font-style: normal; font-size: 12px; margin-left: 8px; }
-  .muted { color: var(--ink-3); }
-  .foot { margin-top: 24px; font-size: 13px; }
+  .muted { color: var(--ink-3); font-size: 14px; }
+  .foot { font-size: 13px; }
+  .adm .sec { padding-top: 8px; border-top: 0; }
   @media (max-width: 760px) {
     .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .grid { grid-template-columns: 1fr; }
+    .meter { grid-template-columns: 4ch 64px; }
   }
 </style>

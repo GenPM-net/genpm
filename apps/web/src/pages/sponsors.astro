@@ -69,8 +69,8 @@ if (session) Astro.response.headers.set('Cache-Control', 'private, no-store');
     </div></section>
     {mine.length > 0 && (
       <section class="sec"><div class="sec-h"><h2>{t.t('web.sponsors.mine')}</h2></div>
-        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.sponsors.package')}</th><th>{t.t('web.sponsors.keyword')}</th><th>{t.t('web.sponsors.dates')}</th><th>{t.t('web.sponsors.state')}</th><th>{t.t('web.sponsors.stats')}</th></tr></thead><tbody>
-          {mine.map((m) => <tr><td class="mono">{m.package}</td><td>{m.keyword ?? '—'}</td><td>{m.startsAt.slice(0, 10)} → {m.endsAt.slice(0, 10)}</td><td>{t.t(`web.sponsors.status.${m.status}` as 'web.sponsors.status.active')}</td><td>{m.impressions} / {m.clicks}</td></tr>)}
+        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.sponsors.package')}</th><th>{t.t('web.sponsors.keyword')}</th><th>{t.t('web.sponsors.dates')}</th><th>{t.t('web.sponsors.state')}</th><th class="num">{t.t('web.sponsors.stats')}</th></tr></thead><tbody>
+          {mine.map((m) => <tr><td class="mono">{m.package}</td><td>{m.keyword ?? '—'}</td><td>{m.startsAt.slice(0, 10)} → {m.endsAt.slice(0, 10)}</td><td>{t.t(`web.sponsors.status.${m.status}` as 'web.sponsors.status.active')}</td><td class="num">{m.impressions} / {m.clicks}</td></tr>)}
         </tbody></table></div>
       </section>
     )}

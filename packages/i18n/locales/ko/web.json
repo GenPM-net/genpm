@@ -73,7 +73,8 @@
     "retry": "다시 시도",
     "files": "{count, plural, other {파일 #개}}",
     "tokens": "약 {count}토큰",
-    "noResults": "결과 없음"
+    "noResults": "결과 없음",
+    "cancel": "취소"
   },
   "home": {
     "eyebrow": "코드 · 컨텍스트 · 커넥션",
@@ -392,7 +393,9 @@
     "revoke": "폐기",
     "revokeConfirm": "{name}을(를) 폐기할까요? 이 토큰을 쓰는 CI 작업은 실패합니다.",
     "showOnce": "지금 이 토큰을 복사하세요. 다시 볼 수 없습니다.",
-    "empty": "아직 토큰이 없습니다."
+    "empty": "아직 토큰이 없습니다.",
+    "newTitle": "새 토큰",
+    "listTitle": "내 토큰"
   },
   "dashboard": {
     "title": "대시보드",
@@ -422,7 +425,9 @@
     "deprecateMessage": "사용자에게 보여줄 메시지",
     "deprecatePlaceholder": "대신 @scope/other를 사용하세요",
     "deprecateConfirm": "지원 중단으로 표시",
-    "legend": "진한 막대: CLI로 설치. 색 막대: AI 에이전트(MCP)를 통한 설치."
+    "legend": "진한 막대: CLI로 설치. 색 막대: AI 에이전트(MCP)를 통한 설치.",
+    "activityEmpty": "아직 없습니다. 로그인, 새 토큰, 게시 내역이 여기에 표시됩니다.",
+    "deprecateTitle": "{name} 지원 중단"
   },
   "publisher": {
     "packages": "{count, plural, other {패키지 #개}}",
@@ -799,5 +804,11 @@
     "scimTitle": "프로비저닝(SCIM 2.0)",
     "scimHelp": "ID 공급자가 멤버를 자동으로 추가하고 제거하게 하세요. 그곳에서 제거된 멤버는 조직의 비공개 레지스트리에 즉시 접근할 수 없습니다. 토큰은 한 번만 표시되며 새로 만들면 이전 토큰은 폐기됩니다.",
     "scimGenerate": "SCIM 토큰 생성"
+  },
+  "account": {
+    "nav": "계정",
+    "personal": "계정",
+    "publishing": "게시",
+    "staff": "관리"
   }
 }

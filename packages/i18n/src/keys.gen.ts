@@ -402,6 +402,7 @@ export interface MessageParams {
   "web.common.files": { count: number };
   "web.common.tokens": { count: string | number };
   "web.common.noResults": undefined;
+  "web.common.cancel": undefined;
   "web.home.eyebrow": undefined;
   "web.home.title": undefined;
   "web.home.lede": undefined;
@@ -701,6 +702,8 @@ export interface MessageParams {
   "web.tokens.revokeConfirm": { name: string | number };
   "web.tokens.showOnce": undefined;
   "web.tokens.empty": undefined;
+  "web.tokens.newTitle": undefined;
+  "web.tokens.listTitle": undefined;
   "web.dashboard.title": undefined;
   "web.dashboard.myPackages": undefined;
   "web.dashboard.activity": undefined;
@@ -727,6 +730,8 @@ export interface MessageParams {
   "web.dashboard.deprecatePlaceholder": undefined;
   "web.dashboard.deprecateConfirm": undefined;
   "web.dashboard.legend": undefined;
+  "web.dashboard.activityEmpty": undefined;
+  "web.dashboard.deprecateTitle": { name: string | number };
   "web.publisher.packages": { count: number };
   "web.publisher.installs": { count: string | number };
   "web.publisher.reserved": undefined;
@@ -1043,6 +1048,10 @@ export interface MessageParams {
   "web.sso.scimTitle": undefined;
   "web.sso.scimHelp": undefined;
   "web.sso.scimGenerate": undefined;
+  "web.account.nav": undefined;
+  "web.account.personal": undefined;
+  "web.account.publishing": undefined;
+  "web.account.staff": undefined;
 }
 
 export type MessageKey = keyof MessageParams;

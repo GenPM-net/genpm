@@ -73,7 +73,8 @@
     "retry": "Reintentar",
     "files": "{count, plural, one {# archivo} other {# archivos}}",
     "tokens": "~{count} tokens",
-    "noResults": "Sin resultados"
+    "noResults": "Sin resultados",
+    "cancel": "Cancelar"
   },
   "home": {
     "eyebrow": "Código · Contexto · Conexiones",
@@ -392,7 +393,9 @@
     "revoke": "Revocar",
     "revokeConfirm": "¿Revocar {name}? Los jobs de CI que lo usen fallarán.",
     "showOnce": "Copia este token ahora. No volverás a verlo.",
-    "empty": "Aún no tienes tokens."
+    "empty": "Aún no tienes tokens.",
+    "newTitle": "Nuevo token",
+    "listTitle": "Tus tokens"
   },
   "dashboard": {
     "title": "Panel",
@@ -422,7 +425,9 @@
     "deprecateMessage": "Mensaje para quien lo use",
     "deprecatePlaceholder": "Usa @scope/otro en su lugar",
     "deprecateConfirm": "Marcar como obsoleto",
-    "legend": "Barras oscuras: instalaciones desde el CLI. Barras de color: instalaciones a través de un agente de IA (MCP)."
+    "legend": "Barras oscuras: instalaciones desde el CLI. Barras de color: instalaciones a través de un agente de IA (MCP).",
+    "activityEmpty": "Aún no hay nada. Aquí verás inicios de sesión, tokens nuevos y publicaciones.",
+    "deprecateTitle": "Marcar {name} como obsoleto"
   },
   "publisher": {
     "packages": "{count, plural, one {# paquete} other {# paquetes}}",
@@ -799,5 +804,11 @@
     "scimTitle": "Aprovisionamiento (SCIM 2.0)",
     "scimHelp": "Deja que tu proveedor de identidad dé de alta y de baja a los miembros automáticamente. Dar de baja a alguien allí corta al momento su acceso a los registros privados de la organización. El token solo se muestra una vez; generar otro revoca el anterior.",
     "scimGenerate": "Generar token SCIM"
+  },
+  "account": {
+    "nav": "Cuenta",
+    "personal": "Cuenta",
+    "publishing": "Publicación",
+    "staff": "Administración"
   }
 }

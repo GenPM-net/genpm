@@ -1075,7 +1075,8 @@ button {
 
 /* Footer */
 .foot {
-  border-top: 1px solid var(--line);
+  /* La línea superior va alineada con el contenido (como las de .sec), no con el borde exterior de .wrap. */
+  background: linear-gradient(var(--line), var(--line)) no-repeat top center / calc(100% - 48px) 1px;
   padding-block: 48px 28px;
   display: grid;
   gap: 36px;
@@ -1140,6 +1141,11 @@ button {
   border-radius: 50%;
   background: var(--code);
   display: block;
+}
+@media (max-width: 640px) {
+  .foot {
+    background-size: calc(100% - 32px) 1px;
+  }
 }
 @media (max-width: 760px) {
   .foot .cols {
@@ -1559,10 +1565,22 @@ button {
   gap: 6px;
   align-items: center;
 }
+/* Tablas: caja con cabecera sobre fondo wash, filas con hover, números a la derecha y celdas de texto que se ajustan.
+   Van siempre dentro de .scroll, que hace scroll horizontal y muestra un borde de sombra plana si hay más contenido. */
+.scroll:has(> table.tbl) {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background:
+    linear-gradient(to right, var(--paper) 40%, transparent) left / 24px 100% no-repeat local,
+    linear-gradient(to left, var(--paper) 40%, transparent) right / 24px 100% no-repeat local,
+    linear-gradient(to right, var(--line-2), transparent) left / 6px 100% no-repeat scroll,
+    linear-gradient(to left, var(--line-2), transparent) right / 6px 100% no-repeat scroll;
+}
 table.tbl {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13.5px;
+  font-size: 14px;
+  line-height: 1.45;
 }
 table.tbl th {
   font-family: var(--f-mono);
@@ -1572,18 +1590,69 @@ table.tbl th {
   letter-spacing: 0.08em;
   color: var(--ink-3);
   text-align: left;
-  padding: 0 12px 10px 0;
-  border-bottom: 1px solid var(--line-2);
+  padding: 10px 16px;
+  background: var(--wash);
+  border-bottom: 1px solid var(--line);
   white-space: nowrap;
 }
 table.tbl td {
-  padding: 12px 12px 12px 0;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--line);
   vertical-align: middle;
   white-space: nowrap;
+  color: var(--ink-2);
+}
+table.tbl tbody tr:last-child td {
+  border-bottom: 0;
+}
+table.tbl tbody tr {
+  transition: background var(--duration-fast) var(--ease-out);
+}
+table.tbl tbody tr:hover {
+  background: color-mix(in srgb, var(--wash) 70%, transparent);
 }
 table.tbl td:first-child {
   font-family: var(--f-mono);
+  color: var(--ink);
+}
+table.tbl td a {
+  color: var(--ink);
+  border-bottom: 1px solid var(--line-2);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+table.tbl td a:hover {
+  border-color: var(--ink);
+}
+table.tbl td a.btn {
+  border-bottom: 1px solid var(--line-2);
+}
+/* Números alineados a la derecha con cifras tabulares: se comparan de un vistazo. */
+table.tbl .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+/* Texto largo (descripciones, detalles): se ajusta en vez de ensanchar la tabla. */
+table.tbl .txt {
+  white-space: normal;
+  min-width: 24ch;
+  max-width: 64ch;
+}
+/* Columna de acciones: pegada a la derecha y lo más estrecha posible. */
+table.tbl .act {
+  width: 1%;
+  text-align: right;
+}
+table.tbl .act .row {
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+}
+table.tbl .sub {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--f-sans);
+  font-size: 12.5px;
+  color: var(--ink-3);
+  white-space: normal;
 }
 table.tbl tr.y td {
   color: var(--ink-3);
@@ -1594,6 +1663,9 @@ table.tbl tr.y td:first-child {
 .scroll {
   overflow-x: auto;
   min-width: 0;
+}
+.tbl-note {
+  margin-top: 10px;
 }
 .side {
   padding: 28px 0 40px 28px;
@@ -1653,7 +1725,7 @@ table.tbl tr.y td:first-child {
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
-  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 .kv dd a {
   border-bottom: 1px solid var(--line-2);
@@ -1875,9 +1947,56 @@ table.tbl tr.y td:first-child {
   border-right: 1px solid var(--line);
   min-width: 0;
 }
+/* Formularios sueltos con class="builder" (settings, dashboard): caja con padding, campos en rejilla que se adapta al
+   ancho y botón alineado a la izquierda en su propia fila. */
+form.builder {
+  padding: 20px;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: end;
+  border-radius: var(--r);
+  background: var(--paper);
+}
+form.builder > .btn,
+form.builder > .check,
+form.builder > .hint,
+form.builder > p,
+form.builder > fieldset {
+  grid-column: 1 / -1;
+}
+form.builder > .btn {
+  justify-self: start;
+}
 .field {
   display: grid;
   gap: 6px;
+  min-width: 0;
+}
+label.field,
+fieldset.field > legend {
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+fieldset.field {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+fieldset.field > legend {
+  padding: 0;
+  margin-bottom: 8px;
+}
+fieldset.field .check {
+  font-family: var(--f-mono);
+  font-size: 13px;
+}
+.field input:not(.mono) {
+  font-family: var(--f-sans);
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--ink-3);
 }
 .field label {
   font-family: var(--f-mono);
@@ -1910,8 +2029,19 @@ table.tbl tr.y td:first-child {
   font-family: var(--f-mono);
   font-size: 13px;
 }
+.field input,
+.field textarea,
+.field select {
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+.field input:hover,
+.field textarea:hover,
+.field select:hover {
+  border-color: var(--ink-3);
+}
 .field input:focus,
-.field textarea:focus {
+.field textarea:focus,
+.field select:focus {
   outline: 0;
   border-color: var(--ink);
 }
@@ -2054,7 +2184,8 @@ table.tbl tr.y td:first-child {
   position: fixed;
   inset: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.82);
+  /* Fondo del color del papel con transparencia: en oscuro también oscurece (antes era siempre blanco). */
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -2336,6 +2467,8 @@ table.tbl tr.y td:first-child {
   color: var(--ink-2);
 }
 .modal {
+  /* <dialog> modal centrado: el preflight de Tailwind (margin: 0) lo pegaba a la esquina superior izquierda. */
+  margin: auto;
   border: 1px solid var(--line-2);
   border-radius: var(--r);
   padding: 0;
@@ -2633,4 +2766,584 @@ table.tbl tr.y td:first-child {
 .foot .made-by:hover {
   color: var(--ink);
   border-bottom-color: var(--ink);
+}
+
+/* ——— UX: fluidez, lectura y consistencia (BR-18) ——— */
+
+/* Navegación entre páginas con fundido corto (View Transitions entre documentos; sin JS). La cabecera no se anima. */
+@view-transition {
+  navigation: auto;
+}
+.hdr {
+  view-transition-name: hdr;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-base);
+  animation-timing-function: var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+/* Respuesta táctil: los controles reaccionan al pulsar y al pasar el ratón sin saltos. */
+.btn {
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+.btn:active:not(:disabled),
+.cp:active,
+.seg button:active {
+  transform: translateY(1px);
+}
+.hnav a,
+.dnav a,
+.acct-nav a,
+.foot li a,
+.lang summary,
+.cp,
+.seg button,
+.pk-tabs [role="tab"],
+.clients [role="tab"],
+.runner button,
+.filters .chips label {
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+.cp {
+  transition-property: background, color;
+}
+/* Paneles de pestañas: aparecen con un fundido breve en lugar de un corte seco. */
+[data-panel]:not([hidden]) {
+  animation: panel-in var(--duration-base) var(--ease-out);
+}
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-panel]:not([hidden]) {
+    animation: none;
+  }
+  .btn:active:not(:disabled),
+  .cp:active,
+  .seg button:active {
+    transform: none;
+  }
+}
+/* Enlaces dentro de texto: subrayado visible al pasar, para saber qué se puede pulsar. */
+.md a,
+.kv dd a,
+.hint a,
+.phead p a {
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+.md a:hover,
+.hint a:hover,
+.phead p a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+.hint a,
+.phead p a {
+  border-bottom: 1px solid var(--line-2);
+}
+html {
+  scroll-padding-top: calc(var(--header) + 16px);
+}
+
+/* Estado con punto de color (scan, roles, estados de reportes): legible sin depender solo del color. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.pill::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--ink-3));
+  flex: none;
+}
+.pill.ok {
+  --c: var(--code);
+  color: var(--code-ink);
+}
+.pill.warn {
+  --c: var(--warn);
+  color: var(--warn);
+}
+.pill.bad {
+  --c: var(--danger);
+  color: var(--danger);
+}
+
+/* Vacío compacto (listas y tablas sin datos dentro de una sección). */
+.empty.sm {
+  padding: 20px;
+  gap: 6px;
+  border-radius: var(--r);
+  color: var(--ink-3);
+  font-size: 14px;
+}
+.empty.sm p {
+  max-width: 60ch;
+}
+
+/* ——— Área de cuenta: dashboard, settings y admin con la misma navegación lateral ——— */
+.acct {
+  display: grid;
+  grid-template-columns: 208px minmax(0, 1fr);
+  gap: 48px;
+  padding-block: 40px 80px;
+}
+.acct-nav {
+  position: sticky;
+  top: calc(var(--header) + 24px);
+  align-self: start;
+  display: grid;
+  gap: 2px;
+}
+.acct-nav .k {
+  padding: 0 10px;
+  margin: 18px 0 6px;
+}
+.acct-nav .k:first-child {
+  margin-top: 0;
+}
+.acct-nav a,
+.acct-nav button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: var(--r);
+  font-size: 14px;
+  color: var(--ink-2);
+  text-align: left;
+  width: 100%;
+}
+.acct-nav a:hover,
+.acct-nav button:hover {
+  background: var(--wash);
+  color: var(--ink);
+}
+.acct-nav a[aria-current="page"] {
+  color: var(--ink);
+  font-weight: 600;
+  background: var(--wash);
+  box-shadow: inset 2px 0 0 var(--ink);
+}
+.acct-nav form {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.acct-main {
+  min-width: 0;
+  display: grid;
+  gap: 24px;
+  align-content: start;
+}
+.acct-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.acct-head h1 {
+  font-size: clamp(28px, 3.4vw, 38px);
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  font-variation-settings: "wdth" 88;
+}
+.acct-head p {
+  color: var(--ink-2);
+  margin-top: 8px;
+  max-width: 64ch;
+}
+.acct-head .row {
+  gap: 8px;
+}
+/* Dentro del área de cuenta las secciones son más compactas que en las páginas de producto. */
+.acct .sec {
+  padding-block: 28px 0;
+}
+.acct .sec-h {
+  margin-bottom: 16px;
+}
+.acct .sec-h h2 {
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  margin-top: 0;
+  font-variation-settings: normal;
+}
+.acct .sec-h p {
+  margin-top: 4px;
+  font-size: 14px;
+}
+.acct .banner {
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .acct {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding-top: 16px;
+  }
+  .acct-nav {
+    position: static;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-inline: -16px;
+    padding: 0 16px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .acct-nav .k {
+    display: none;
+  }
+  .acct-nav a,
+  .acct-nav button {
+    width: auto;
+    white-space: nowrap;
+    padding: 7px 12px;
+    border: 1px solid var(--line);
+  }
+  .acct-nav a[aria-current="page"] {
+    box-shadow: none;
+    border-color: var(--ink);
+  }
+  .acct-nav form {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+}
+
+/* Mini gráfico de 30 días en tablas: barras + totales en una línea. */
+.spark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.spark svg {
+  display: block;
+  flex: none;
+}
+.spark .sub {
+  margin: 0;
+}
+
+/* Panel flotante nativo (atributo popover): no lo recorta el scroll de la tabla y se cierra con Esc o clic fuera. */
+.pop[popover] {
+  /* El preflight de Tailwind pone margin: 0; sin esto el panel aparecería en la esquina superior izquierda. */
+  margin: auto;
+  text-align: left;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r);
+  padding: 0;
+  width: min(420px, calc(100% - 32px));
+  color: var(--ink);
+  background: var(--paper);
+}
+.pop[popover]::backdrop {
+  background: rgba(11, 13, 17, 0.35);
+}
+.pop form {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+.pop h2 {
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+.pop .row {
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* ——— Búsqueda: resultados enteros clicables, palabras clave como chips y filtros plegables en móvil ——— */
+.ritem {
+  position: relative;
+}
+.ritem .nm a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.ritem .nm a:focus-visible {
+  outline: 0;
+}
+.ritem:has(.nm a:focus-visible) {
+  outline: 2px solid var(--code-ink);
+  outline-offset: -2px;
+}
+.ritem .cmd {
+  position: relative;
+  z-index: 1;
+}
+.filters fieldset + fieldset {
+  padding-top: 4px;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.filters .chips label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--ink-2);
+  background: var(--paper);
+  cursor: pointer;
+}
+.filters .chips label:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.filters .chips input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+.filters .chips label:has(input:checked) {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.filters .chips label:has(input:focus-visible) {
+  outline: 2px solid var(--code-ink);
+  outline-offset: 2px;
+}
+.ftoggle {
+  display: none;
+}
+@media (max-width: 820px) {
+  .ftoggle {
+    display: inline-flex;
+  }
+  .ftoggle em {
+    font-style: normal;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--code-ink);
+  }
+  /* Con JS los filtros empiezan plegados en móvil; sin JS siguen visibles. */
+  .srch[data-fold] .filters {
+    display: none;
+  }
+  .srch[data-fold][data-open] .filters {
+    display: block;
+  }
+  .filters {
+    display: block;
+  }
+}
+.filters form {
+  display: grid;
+  gap: 24px;
+}
+
+/* Tarjetas de paquete: el pie (capas e instalaciones) siempre abajo, aunque el resumen sea corto. */
+.pcard {
+  grid-template-rows: auto 1fr auto;
+}
+
+/* ——— Docs y legales: ritmo vertical de lectura (el markdown fluye en bloque, sin huecos dobles) ——— */
+.dbody.md {
+  display: block;
+}
+.dbody.md p,
+.dbody.md ul,
+.dbody.md ol,
+.dbody.md blockquote,
+.dbody.md .scroll,
+.dbody.md table {
+  margin: 0 0 1em;
+}
+.dbody.md li + li {
+  margin-top: 0.3em;
+}
+.dbody.md h1 {
+  margin: 0 0 0.5em;
+}
+.dbody.md h2 {
+  margin: 2em 0 0.6em;
+}
+.dbody.md h3 {
+  margin: 1.6em 0 0.5em;
+}
+.dbody.md pre,
+.dbody.md .term,
+.dbody.md .shiki {
+  margin: 0 0 1.2em;
+  border-radius: var(--r);
+}
+.dbody.md .crumb {
+  margin-bottom: 20px;
+}
+.dbody.md .banner {
+  margin-bottom: 20px;
+}
+.dbody.md .lead,
+.dbody.md h1 + p {
+  font-size: 17px;
+  color: var(--ink-2);
+}
+.dbody.md .dfoot {
+  margin-top: 48px;
+}
+.dbody p,
+.dbody li {
+  max-width: 70ch;
+}
+.dnav,
+.dtoc {
+  position: sticky;
+  top: var(--header);
+  align-self: start;
+  max-height: calc(100dvh - var(--header));
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.dtoc a {
+  padding: 3px 0 3px 10px;
+  border-left: 1px solid var(--line);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+.dtoc a:hover {
+  border-left-color: var(--ink-3);
+}
+.dtoc a[aria-current="location"] {
+  color: var(--ink);
+  border-left-color: var(--ink);
+}
+@media (max-width: 760px) {
+  .dnav {
+    position: static;
+    max-height: none;
+  }
+}
+
+/* Acciones destructivas: discretas en reposo, rojas al pasar para que no se pulsen por error. */
+.btn.danger:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: var(--paper);
+}
+a.link {
+  border-bottom: 1px solid var(--line-2);
+  color: var(--ink);
+}
+a.link:hover {
+  border-bottom-color: var(--ink);
+}
+
+/* Docs: con la navegación y el índice fijos (sticky), las líneas verticales van en la columna central para que
+   lleguen hasta abajo aunque el menú sea más corto que el artículo. */
+.dnav {
+  border-right: 0;
+}
+.dtoc {
+  border-left: 0;
+}
+.docs > .dbody {
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+@media (max-width: 1024px) {
+  .docs > .dbody {
+    border-right: 0;
+  }
+}
+@media (max-width: 760px) {
+  .docs > .dbody {
+    border-left: 0;
+  }
+}
+form.builder {
+  max-width: 720px;
+}
+table.tbl .spark .sub {
+  white-space: nowrap;
+}
+table.tbl .sub.mono {
+  font-family: var(--f-mono);
+  font-size: 12px;
+}
+/* Botón de tema: muestra el modo al que cambia (luna en claro, sol en oscuro). */
+[data-theme-toggle] .i-dark,
+[data-theme-toggle] .i-light {
+  display: inline-flex;
+}
+[data-theme-toggle] .i-light,
+:root[data-theme="dark"] [data-theme-toggle] .i-dark {
+  display: none;
+}
+:root[data-theme="dark"] [data-theme-toggle] .i-light {
+  display: inline-flex;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root.theming,
+  :root.theming * {
+    transition:
+      background-color var(--duration-base) var(--ease-out),
+      border-color var(--duration-base) var(--ease-out),
+      color var(--duration-base) var(--ease-out),
+      fill var(--duration-base) var(--ease-out) !important;
+  }
+}
+/* Rejilla de tarjetas: cada tarjeta lleva su borde completo y se solapa 1 px con la vecina. Así no quedan líneas
+   colgando sobre huecos vacíos cuando la última fila está incompleta. */
+.cards {
+  border: 0;
+  padding: 1px 0 0 1px;
+}
+.pcard {
+  border: 1px solid var(--line);
+  margin: -1px 0 0 -1px;
+}
+/* Secciones que son a la vez .wrap (portada): la línea superior se alinea con el contenido, como en el resto. */
+.wrap.sec {
+  border-top: 0;
+  background: linear-gradient(var(--line), var(--line)) no-repeat top center / calc(100% - 48px) 1px;
+}
+@media (max-width: 640px) {
+  .wrap.sec {
+    background-size: calc(100% - 32px) 1px;
+  }
 }

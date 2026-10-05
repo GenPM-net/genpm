@@ -22,9 +22,9 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=300');
 <Base title={t.t('web.security.advisories')} description={t.t('web.meta.advisoriesDescription')} stale={res.stale}>
   <div class="wrap">
     <div class="phead"><h1>{t.t('web.security.advisories')}</h1><a class="hint" href="/security/advisories.json">{t.t('web.security.feed')}</a></div>
-    {list.length === 0 ? <p class="hint" style="padding-bottom:64px">{t.t('web.security.advisoriesEmpty')}</p> : (
+    {list.length === 0 ? <div class="empty sm" style="margin-bottom:64px"><p>{t.t('web.security.advisoriesEmpty')}</p></div> : (
       <div class="scroll" style="margin-bottom:64px"><table class="tbl"><thead><tr><th>ID</th><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.security.severity')}</th><th>{t.t('web.security.affected')}</th><th>{t.t('web.security.patched')}</th></tr></thead><tbody>
-        {list.map((a) => <tr><td><code>{a.id}</code></td><td><a href={href(locale, `/p/${a.package}`)}>{a.package}</a><br /><span class="hint">{a.title}</span></td><td style={a.severity === 'high' || a.severity === 'critical' ? 'color:var(--danger)' : 'color:var(--warn)'}>{a.severity}</td><td><code>{a.affected}</code></td><td>{a.patched ?? '—'}</td></tr>)}
+        {list.map((a) => <tr><td><code>{a.id}</code></td><td class="txt"><a href={href(locale, `/p/${a.package}`)}>{a.package}</a><span class="sub">{a.title}</span></td><td><span class:list={['pill', a.severity === 'high' || a.severity === 'critical' ? 'bad' : 'warn']}>{a.severity}</span></td><td><code>{a.affected}</code></td><td>{a.patched ?? '—'}</td></tr>)}
       </tbody></table></div>
     )}
   </div>

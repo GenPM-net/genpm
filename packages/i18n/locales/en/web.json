@@ -73,7 +73,8 @@
     "retry": "Retry",
     "files": "{count, plural, one {# file} other {# files}}",
     "tokens": "~{count} tokens",
-    "noResults": "No results"
+    "noResults": "No results",
+    "cancel": "Cancel"
   },
   "home": {
     "eyebrow": "Code · Context · Connections",
@@ -392,7 +393,9 @@
     "revoke": "Revoke",
     "revokeConfirm": "Revoke {name}? CI jobs using it will fail.",
     "showOnce": "Copy this token now. You will not see it again.",
-    "empty": "No tokens yet."
+    "empty": "No tokens yet.",
+    "newTitle": "New token",
+    "listTitle": "Your tokens"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -422,7 +425,9 @@
     "deprecateMessage": "Message shown to users",
     "deprecatePlaceholder": "Use @scope/other instead",
     "deprecateConfirm": "Mark as deprecated",
-    "legend": "Dark bars: installs from the CLI. Colored bars: installs through an AI agent (MCP)."
+    "legend": "Dark bars: installs from the CLI. Colored bars: installs through an AI agent (MCP).",
+    "activityEmpty": "Nothing yet. Sign-ins, new tokens and publishes will show up here.",
+    "deprecateTitle": "Deprecate {name}"
   },
   "publisher": {
     "packages": "{count, plural, one {# package} other {# packages}}",
@@ -799,5 +804,11 @@
     "scimTitle": "Provisioning (SCIM 2.0)",
     "scimHelp": "Let your identity provider add and remove members automatically. Removing someone there cuts their access to the organization's private registries at once. The token is shown only once; generating a new one revokes the previous.",
     "scimGenerate": "Generate SCIM token"
+  },
+  "account": {
+    "nav": "Account",
+    "personal": "Account",
+    "publishing": "Publishing",
+    "staff": "Administration"
   }
 }

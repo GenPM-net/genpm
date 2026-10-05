@@ -1,7 +1,7 @@
 ---
 // /dashboard (web-ui-spec §5.9): mis paquetes (instalaciones CLI vs MCP de 30 días, deprecar), actividad reciente.
 // Formularios POST: Astro verifica el Origin (CSRF).
-import Base from '../layouts/Base.astro';
+import Account from '../layouts/Account.astro';
 import { requireSession, sessionExpired } from '../lib/auth.js';
 import { ago, compact } from '../lib/format.js';
 import { href } from '../lib/i18n.js';
@@ -63,7 +63,7 @@ const days = Array.from({ length: 30 }, (_, i) =>
 function chart(daily: Array<{ day: string; cli: number; mcp: number }> = []): string {
   const by = new Map(daily.map((d) => [d.day, d]));
   const max = Math.max(1, ...daily.map((d) => d.cli + d.mcp));
-  const w = 4;
+  const w = 3;
   const h = 28;
   const bars = days
     .map((d, i) => {
@@ -74,7 +74,9 @@ function chart(daily: Array<{ day: string; cli: number; mcp: number }> = []): st
       return `<rect x="${i * (w + 1)}" y="${h - hc - hm}" width="${w}" height="${hm}" fill="var(--mcp)"/><rect x="${i * (w + 1)}" y="${h - hc}" width="${w}" height="${hc}" fill="var(--ink)"/>`;
     })
     .join('');
-  return `<svg width="${days.length * (w + 1)}" height="${h}" viewBox="0 0 ${days.length * (w + 1)} ${h}" aria-hidden="true">${bars}</svg>`;
+  const width = days.length * (w + 1);
+  // Línea base: el gráfico se lee como gráfico aunque el paquete aún no tenga instalaciones.
+  return `<svg width="${width}" height="${h + 1}" viewBox="0 0 ${width} ${h + 1}" aria-hidden="true"><rect x="0" y="${h}" width="${width}" height="1" fill="var(--line-2)"/>${bars}</svg>`;
 }
 const totals = (d: Array<{ cli: number; mcp: number }> = []) =>
   d.reduce((a, x) => ({ cli: a.cli + x.cli, mcp: a.mcp + x.mcp }), { cli: 0, mcp: 0 });
@@ -98,41 +100,52 @@ function describe(a: { action: string; subject: string | null; metadata: Record<
   return t.raw(`web.dashboard.events.${key}`, { subject: a.subject ?? '…', client });
 }
 ---
-<Base title={t.t('web.dashboard.title')} noindex>
-  <div class="wrap">
-    <div class="phead"><h1>{t.t('web.dashboard.title')}</h1><div class="row"><a class="btn sm" href={href(locale, '/settings/profile')}>{t.t('web.profile.title')}</a><a class="btn sm" href={href(locale, '/settings/tokens')}>{t.t('web.nav.tokens')}</a><form method="post" action="/logout"><button class="btn sm ghost" type="submit">{t.t('web.nav.signOut')}</button></form></div></div>
-    {notice && <div class="banner" style={`--c:${notice.ok ? 'var(--code-ink)' : 'var(--danger)'}`}><b>{notice.ok ? '✔' : '!'}</b><span>{notice.text}</span></div>}
-    <section class="sec"><div class="sec-h"><h2>{t.t('web.dashboard.myPackages')}</h2></div>
-      {pk.packages.length === 0 ? (
-        <div class="empty"><p>{t.t('web.dashboard.empty')}</p><a class="btn primary" href={href(locale, '/publish')}>{t.t('web.dashboard.emptyCta')}</a></div>
-      ) : (
-        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.pkg.version')}</th><th>{t.t('web.pkg.scan')}</th><th>{t.t('web.pkg.quality')}</th><th>{t.t('web.dashboard.chart')}</th><th>{t.t('web.pkg.installs')}</th><th><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
-          {pk.packages.map((p) => {
+<Account title={t.t('web.dashboard.title')} active="dashboard">
+  {notice && <div class="banner" style={`--c:${notice.ok ? 'var(--code-ink)' : 'var(--danger)'}`}><b>{notice.ok ? '✔' : '!'}</b><span>{notice.text}</span></div>}
+  <section class="sec"><div class="sec-h"><h2>{t.t('web.dashboard.myPackages')}</h2></div>
+    {pk.packages.length === 0 ? (
+      <div class="empty"><p>{t.t('web.dashboard.empty')}</p><a class="btn primary" href={href(locale, '/publish')}>{t.t('web.dashboard.emptyCta')}</a></div>
+    ) : (
+      <>
+        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.pkg.version')}</th><th>{t.t('web.pkg.scan')}</th><th class="num">{t.t('web.pkg.quality')}</th><th>{t.t('web.dashboard.chart')}</th><th class="num">{t.t('web.pkg.installs')}</th><th class="act"><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
+          {pk.packages.map((p, i) => {
             const tt = totals(p.daily);
             return (
               <tr>
                 <td><a href={href(locale, `/p/${p.name}`)}>{p.name}</a>{p.deprecated ? <span class="badge" style="margin-left:8px">{t.t('web.dashboard.deprecatedBadge')}</span> : null}</td>
-                <td>{p.version ?? '—'}</td>
-                <td>{p.scan ?? '—'}</td>
-                <td class="tnum">{p.quality ?? '—'}</td>
-                <td><Fragment set:html={chart(p.daily)} /><div class="hint">{t.t('web.dashboard.split', { cli: tt.cli, mcp: tt.mcp })}</div></td>
-                <td class="tnum">{compact(locale, p.installs30d)}</td>
-                <td>
+                <td class="mono">{p.version ?? '—'}</td>
+                <td>{p.scan ? <span class:list={['pill', { ok: p.scan === 'passed', warn: p.scan === 'pending' || p.scan === 'flagged', bad: p.scan === 'failed' }]}>{t.t(`common.scan.${p.scan}` as 'common.scan.passed')}</span> : '—'}</td>
+                <td class="num">{p.quality ?? '—'}</td>
+                <td><div class="spark"><Fragment set:html={chart(p.daily)} /><span class="sub">{t.t('web.dashboard.split', { cli: tt.cli, mcp: tt.mcp })}</span></div></td>
+                <td class="num">{compact(locale, p.installs30d)}</td>
+                <td class="act">
                   {p.deprecated ? (
                     <form method="post"><input type="hidden" name="name" value={p.name} /><input type="hidden" name="action" value="undeprecate" /><button class="btn sm ghost" type="submit">{t.t('web.dashboard.undeprecate')}</button></form>
                   ) : (
-                    <details><summary class="btn sm ghost">{t.t('web.dashboard.deprecate')}</summary><form method="post" class="builder" style="grid-template-columns:1fr;min-width:260px;margin-top:8px"><input type="hidden" name="name" value={p.name} /><label class="field">{t.t('web.dashboard.deprecateMessage')}<input name="message" required minlength="3" maxlength="280" placeholder={t.t('web.dashboard.deprecatePlaceholder')} /></label><button class="btn sm" type="submit">{t.t('web.dashboard.deprecateConfirm')}</button></form></details>
+                    <>
+                      <button class="btn sm ghost" type="button" popovertarget={`dep-${i}`}>{t.t('web.dashboard.deprecate')}</button>
+                      <div class="pop" id={`dep-${i}`} popover>
+                        <form method="post">
+                          <h2>{t.t('web.dashboard.deprecateTitle', { name: p.name })}</h2>
+                          <input type="hidden" name="name" value={p.name} />
+                          <label class="field">{t.t('web.dashboard.deprecateMessage')}<input name="message" required minlength="3" maxlength="280" placeholder={t.t('web.dashboard.deprecatePlaceholder')} /></label>
+                          <div class="row"><button class="btn sm ghost" type="button" popovertarget={`dep-${i}`} popovertargetaction="hide">{t.t('web.common.cancel')}</button><button class="btn sm primary" type="submit">{t.t('web.dashboard.deprecateConfirm')}</button></div>
+                        </form>
+                      </div>
+                    </>
                   )}
                 </td>
               </tr>
             );
           })}
         </tbody></table></div>
-        <p class="hint" style="margin-top:8px">{t.t('web.dashboard.legend')}</p>
-      )}
-    </section>
-    <section class="sec"><div class="sec-h"><h2>{t.t('web.dashboard.activity')}</h2></div>
+        <p class="hint tbl-note">{t.t('web.dashboard.legend')}</p>
+      </>
+    )}
+  </section>
+  <section class="sec"><div class="sec-h"><h2>{t.t('web.dashboard.activity')}</h2></div>
+    {act.activity.length === 0 ? <div class="empty sm"><p>{t.t('web.dashboard.activityEmpty')}</p></div> : (
       <ul class="checklist">{act.activity.map((a) => <li><span>{describe(a)} <span class="when">· {ago(locale, a.at)}</span></span></li>)}</ul>
-    </section>
-  </div>
-</Base>
+    )}
+  </section>
+</Account>

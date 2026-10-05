@@ -32,3 +32,11 @@
 - [ ] `BR-16` **TODO** Test de 5 segundos de la home con 5 desarrolladores: ¿entienden qué hace GenPM? · F · 2h · deps: D5-W-23
 - [x] `BR-17` **DONE** Revisión de accesibilidad del prototipo (teclado, foco, lectores de pantalla) antes de construir la web · D · 1h · deps: BR-05
   - Hecha sobre la web construida (15 páginas): lang, título, un h1, <main>, alt, nombres accesibles, labels, ids únicos, sin tabindex positivo, skip link, :focus-visible, tabs con flechas, <dialog> nativo. Corregidos los saltos de encabezado (footer h4→h2, h3 sin h2 previo → h2.h3).
+
+## Pulido de UX
+
+- [x] `BR-18` **DONE** Pulido de UI/UX de la web sin tocar la identidad: tablas legibles, área de cuenta con navegación común, filtros y lectura más cómodos, transiciones suaves · D · 4h · deps: D5-W-23
+  - Tablas en caja con cabecera sobre `wash`, hover por fila, números a la derecha (`.num`), texto largo que se ajusta (`.txt`), acciones a la derecha (`.act`), estados con punto (`.pill`) y sombra plana si hay scroll horizontal.
+  - `layouts/Account.astro`: dashboard, settings y admin con la misma navegación lateral (pestañas con scroll en móvil), cabecera compacta y vacíos explicados. Deprecar abre un `popover` nativo.
+  - Búsqueda: palabras clave como chips, filtros plegables en móvil, resultado entero clicable. Paleta ⌘K sin «sin resultados» mientras carga. Docs con ritmo vertical, menús fijos e índice que marca la sección actual.
+  - Fluidez: View Transitions entre páginas, fundido de pestañas y de cambio de tema, respuesta al pulsar; todo respeta `prefers-reduced-motion`. Bugs: `<dialog>` y popover pegados a la esquina (preflight de Tailwind), fondo de ⌘K blanco en oscuro, formularios `.builder` sin padding, líneas de la portada y el pie desalineadas.

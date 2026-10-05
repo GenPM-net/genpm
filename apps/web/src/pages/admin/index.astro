@@ -1,7 +1,7 @@
 ---
 // /admin (solo staff, V02-08): cola de moderación — versiones en cuarentena o marcadas, reportes abiertos,
 // destacados, patrocinios y leads. Cada acción es un POST (Astro verifica el Origin) que deja rastro en audit_log.
-import Base from '../../layouts/Base.astro';
+import Account from '../../layouts/Account.astro';
 import { requireSession, sessionExpired } from '../../lib/auth.js';
 import { ago } from '../../lib/format.js';
 import { href } from '../../lib/i18n.js';
@@ -82,20 +82,19 @@ const q = (await res.json()) as {
 Astro.response.headers.set('Cache-Control', 'private, no-store');
 const when = (ms: number) => ago(locale, new Date(ms).toISOString());
 ---
-<Base title={t.t('web.admin.queueTitle')} noindex>
-  <div class="wrap">
-    <div class="phead"><h1>{t.t('web.admin.queueTitle')}</h1><div class="row"><a class="btn sm" href={href(locale, '/admin/analytics')}>{t.t('web.admin.title')}</a><a class="btn sm ghost" href={href(locale, '/status')}>{t.t('web.status.title')}</a></div></div>
+<Account title={t.t('web.admin.queueTitle')} active="admin" staff>
+    <div class="row" slot="actions"><a class="btn sm ghost" href={href(locale, '/status')}>{t.t('web.status.title')}</a></div>
     {notice && <div class="banner" style={`--c:${notice.ok ? 'var(--code-ink)' : 'var(--danger)'}`}><b>{notice.ok ? '✔' : '!'}</b><span>{notice.text}</span></div>}
 
     <section class="sec"><div class="sec-h"><h2>{t.t('web.admin.versions', { count: q.versions.length })}</h2></div>
-      {q.versions.length === 0 ? <p class="hint">{t.t('web.admin.empty')}</p> : (
-        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.pkg.scan')}</th><th>{t.t('web.admin.findings')}</th><th><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
+      {q.versions.length === 0 ? <div class="empty sm"><p>{t.t('web.admin.empty')}</p></div> : (
+        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.pkg.scan')}</th><th>{t.t('web.admin.findings')}</th><th class="act"><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
           {q.versions.map((v) => (
             <tr>
-              <td><a href={href(locale, `/p/${v.name}?v=${v.version}`)}>{v.name}@{v.version}</a><div class="hint">{when(v.at)} · {v.status}</div></td>
-              <td>{v.scan}</td>
-              <td>{v.findings.map((f) => <div class="hint">{f.rule}{f.path && ` · ${f.path}`} · {f.detail}</div>)}</td>
-              <td><div class="row" style="gap:6px">
+              <td><a href={href(locale, `/p/${v.name}?v=${v.version}`)}>{v.name}@{v.version}</a><span class="sub">{when(v.at)} · {v.status}</span></td>
+              <td><span class:list={['pill', { ok: v.scan === 'passed', warn: v.scan === 'pending' || v.scan === 'flagged', bad: v.scan === 'failed' }]}>{v.scan}</span></td>
+              <td class="txt">{v.findings.map((f) => <div class="hint">{f.rule}{f.path && ` · ${f.path}`} · {f.detail}</div>)}</td>
+              <td class="act"><div class="row" style="gap:6px">
                 <form method="post"><input type="hidden" name="kind" value="version" /><input type="hidden" name="id" value={v.id} /><input type="hidden" name="value" value="release" /><button class="btn sm" type="submit">{t.t('web.admin.release')}</button></form>
                 {v.status !== 'quarantined' && <form method="post"><input type="hidden" name="kind" value="version" /><input type="hidden" name="id" value={v.id} /><input type="hidden" name="value" value="quarantine" /><button class="btn sm ghost" type="submit">{t.t('web.admin.quarantine')}</button></form>}
               </div></td>
@@ -106,14 +105,14 @@ const when = (ms: number) => ago(locale, new Date(ms).toISOString());
     </section>
 
     <section class="sec"><div class="sec-h"><h2>{t.t('web.admin.reports', { count: q.reports.length })}</h2></div>
-      {q.reports.length === 0 ? <p class="hint">{t.t('web.admin.empty')}</p> : (
-        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.admin.reason')}</th><th>{t.t('web.admin.details')}</th><th><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
+      {q.reports.length === 0 ? <div class="empty sm"><p>{t.t('web.admin.empty')}</p></div> : (
+        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.admin.reason')}</th><th>{t.t('web.admin.details')}</th><th class="act"><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
           {q.reports.map((r) => (
             <tr>
-              <td><a href={href(locale, `/p/${r.name}`)}>{r.name}{r.version && `@${r.version}`}</a><div class="hint">{when(r.at)}{r.reporter && ` · @${r.reporter}`} · {r.status}</div></td>
+              <td><a href={href(locale, `/p/${r.name}`)}>{r.name}{r.version && `@${r.version}`}</a><span class="sub">{when(r.at)}{r.reporter && ` · @${r.reporter}`} · {r.status}</span></td>
               <td>{r.reason}</td>
-              <td style="max-width:420px">{r.details}</td>
-              <td><div class="row" style="gap:6px">
+              <td class="txt">{r.details}</td>
+              <td class="act"><div class="row" style="gap:6px">
                 {['triaged', 'actioned', 'dismissed'].filter((s) => s !== r.status).map((s) => <form method="post"><input type="hidden" name="kind" value="report" /><input type="hidden" name="id" value={r.id} /><input type="hidden" name="value" value={s} /><button class="btn sm ghost" type="submit">{t.t(`web.admin.reportStatus.${s}` as 'web.admin.reportStatus.triaged')}</button></form>)}
               </div></td>
             </tr>
@@ -123,33 +122,32 @@ const when = (ms: number) => ago(locale, new Date(ms).toISOString());
     </section>
 
     <section class="sec"><div class="sec-h"><h2>{t.t('web.admin.featured')}</h2></div>
-      <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.admin.rank')}</th><th><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
+      <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th class="num">{t.t('web.admin.rank')}</th><th class="act"><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
         {q.featured.map((f) => (
-          <tr><td><a href={href(locale, `/p/${f.name}`)}>{f.name}</a></td><td class="tnum">{f.rank ?? '—'}</td>
-            <td><form method="post" class="row" style="gap:6px"><input type="hidden" name="kind" value="featured" /><input type="hidden" name="id" value={f.id} /><input name="value" type="number" min="1" max="99" value={f.rank ?? ''} class="sel" style="width:72px" aria-label={t.t('web.admin.rank')} /><button class="btn sm ghost" type="submit">{t.t('web.admin.save')}</button></form></td></tr>
+          <tr><td><a href={href(locale, `/p/${f.name}`)}>{f.name}</a></td><td class="num">{f.rank ?? '—'}</td>
+            <td class="act"><form method="post" class="row" style="gap:6px;flex-wrap:nowrap"><input type="hidden" name="kind" value="featured" /><input type="hidden" name="id" value={f.id} /><input name="value" type="number" min="1" max="99" value={f.rank ?? ''} class="sel" style="width:72px" aria-label={t.t('web.admin.rank')} /><button class="btn sm ghost" type="submit">{t.t('web.admin.save')}</button></form></td></tr>
         ))}
       </tbody></table></div>
-      <p class="hint">{t.t('web.admin.featuredHint')}</p>
+      <p class="hint tbl-note">{t.t('web.admin.featuredHint')}</p>
     </section>
 
     <section class="sec"><div class="sec-h"><h2>{t.t('web.admin.sponsorships', { count: q.sponsorships.length })}</h2></div>
-      {q.sponsorships.length === 0 ? <p class="hint">{t.t('web.admin.empty')}</p> : (
-        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.admin.placement')}</th><th>{t.t('web.admin.period')}</th><th>{t.t('web.admin.performance')}</th></tr></thead><tbody>
-          {q.sponsorships.map((s) => <tr><td>{s.name}</td><td>{s.placement}{s.target && ` · ${s.target}`} · {s.status}</td><td>{new Date(s.startsAt).toISOString().slice(0, 10)} → {new Date(s.endsAt).toISOString().slice(0, 10)}</td><td class="tnum">{t.t('web.admin.perf', { views: s.impressions, clicks: s.clicks })}</td></tr>)}
+      {q.sponsorships.length === 0 ? <div class="empty sm"><p>{t.t('web.admin.empty')}</p></div> : (
+        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.pkg.packages')}</th><th>{t.t('web.admin.placement')}</th><th>{t.t('web.admin.period')}</th><th class="num">{t.t('web.admin.performance')}</th></tr></thead><tbody>
+          {q.sponsorships.map((s) => <tr><td>{s.name}</td><td>{s.placement}{s.target && ` · ${s.target}`} · {s.status}</td><td>{new Date(s.startsAt).toISOString().slice(0, 10)} → {new Date(s.endsAt).toISOString().slice(0, 10)}</td><td class="num">{t.t('web.admin.perf', { views: s.impressions, clicks: s.clicks })}</td></tr>)}
         </tbody></table></div>
       )}
     </section>
 
     <section class="sec"><div class="sec-h"><h2>{t.t('web.admin.leads', { count: q.leads.length })}</h2></div>
-      {q.leads.length === 0 ? <p class="hint">{t.t('web.admin.empty')}</p> : (
-        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.admin.contact')}</th><th>{t.t('web.admin.details')}</th><th><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
+      {q.leads.length === 0 ? <div class="empty sm"><p>{t.t('web.admin.empty')}</p></div> : (
+        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.admin.contact')}</th><th>{t.t('web.admin.details')}</th><th class="act"><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
           {q.leads.map((l) => (
-            <tr><td><a href={`mailto:${l.email}`}>{l.email}</a><div class="hint">{l.kind}{l.company && ` · ${l.company}`} · {when(l.at)} · {l.status}</div></td>
-              <td style="max-width:420px">{l.details && Object.entries(l.details).filter(([k]) => k !== 'ip').map(([k, v]) => <div class="hint">{k}: {String(v)}</div>)}</td>
-              <td><div class="row" style="gap:6px">{['contacted', 'won', 'lost'].filter((s) => s !== l.status).map((s) => <form method="post"><input type="hidden" name="kind" value="lead" /><input type="hidden" name="id" value={l.id} /><input type="hidden" name="value" value={s} /><button class="btn sm ghost" type="submit">{t.t(`web.admin.leadStatus.${s}` as 'web.admin.leadStatus.won')}</button></form>)}</div></td></tr>
+            <tr><td><a href={`mailto:${l.email}`}>{l.email}</a><span class="sub">{l.kind}{l.company && ` · ${l.company}`} · {when(l.at)} · {l.status}</span></td>
+              <td class="txt">{l.details && Object.entries(l.details).filter(([k]) => k !== 'ip').map(([k, v]) => <div class="hint">{k}: {String(v)}</div>)}</td>
+              <td class="act"><div class="row" style="gap:6px">{['contacted', 'won', 'lost'].filter((s) => s !== l.status).map((s) => <form method="post"><input type="hidden" name="kind" value="lead" /><input type="hidden" name="id" value={l.id} /><input type="hidden" name="value" value={s} /><button class="btn sm ghost" type="submit">{t.t(`web.admin.leadStatus.${s}` as 'web.admin.leadStatus.won')}</button></form>)}</div></td></tr>
           ))}
         </tbody></table></div>
       )}
     </section>
-  </div>
-</Base>
+</Account>

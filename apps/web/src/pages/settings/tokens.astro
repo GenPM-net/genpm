@@ -1,7 +1,7 @@
 ---
 // /settings/tokens (web-ui-spec §5.10): crear (se muestra una vez), listar por prefijo y revocar. Formularios POST
 // (Astro verifica el Origin: protección CSRF).
-import Base from '../../layouts/Base.astro';
+import Account from '../../layouts/Account.astro';
 import { requireSession, sessionExpired } from '../../lib/auth.js';
 import { ago } from '../../lib/format.js';
 import { registryFetch } from '../../lib/registry.js';
@@ -45,26 +45,25 @@ const list = (listRes.ok ? await listRes.json() : { tokens: [] }) as {
 };
 Astro.response.headers.set('Cache-Control', 'private, no-store');
 ---
-<Base title={t.t('web.tokens.title')} noindex>
-  <div class="wrap">
-    <div class="phead"><h1>{t.t('web.tokens.title')}</h1><p>{t.t('web.tokens.lede')}</p></div>
-    {created && <div class="banner" style="--c:var(--code-ink)"><b>✔</b><span>{t.t('web.tokens.showOnce')}<div class="cmd sm" style="margin-top:8px"><code id="newtok">{created.token}</code><button class="cp" type="button" data-copy="newtok">{t.t('web.common.copy')}</button></div></span></div>}
-    {error && <div class="banner" style="--c:var(--danger)"><b>!</b><span>{error}</span></div>}
-    <form method="post" class="builder" style="grid-template-columns:1fr;max-width:560px;margin-top:24px">
-      <label class="field">{t.t('web.tokens.name')}<input name="name" required maxlength="64" /></label>
-      <fieldset class="field"><legend>{t.t('web.tokens.scopes')}</legend><label class="check"><input type="checkbox" name="scopes" value="read" checked /> read</label><label class="check"><input type="checkbox" name="scopes" value="publish" /> publish</label></fieldset>
-      <label class="field">{t.t('web.tokens.expiry')}<select class="sel" name="days">{[30, 90, 365].map((d) => <option value={d}>{t.t('web.tokens.days', { count: d })}</option>)}</select></label>
+<Account title={t.t('web.tokens.title')} lede={t.t('web.tokens.lede')} active="tokens">
+  {created && <div class="banner" style="--c:var(--code-ink)"><b>✔</b><span>{t.t('web.tokens.showOnce')}<div class="cmd sm" style="margin-top:8px"><code id="newtok">{created.token}</code><button class="cp" type="button" data-copy="newtok">{t.t('web.common.copy')}</button></div></span></div>}
+  {error && <div class="banner" style="--c:var(--danger)"><b>!</b><span>{error}</span></div>}
+  <section class="sec"><div class="sec-h"><h2>{t.t('web.tokens.listTitle')}</h2></div>
+    {list.tokens.length === 0 ? <div class="empty sm"><p>{t.t('web.tokens.empty')}</p></div> : (
+      <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.tokens.name')}</th><th>{t.t('web.tokens.scopes')}</th><th>{t.t('web.tokens.lastUsed')}</th><th>{t.t('web.tokens.expires')}</th><th class="act"><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
+        {list.tokens.map((k) => <tr><td>{k.name}<span class="sub mono">{k.prefix}…</span></td><td><span class="row" style="gap:4px">{k.scopes.map((s) => <span class="badge">{s}</span>)}</span></td><td>{k.lastUsedAt ? ago(locale, k.lastUsedAt) : t.t('web.tokens.never')}</td><td>{k.expiresAt ? ago(locale, k.expiresAt) : t.t('web.tokens.never')}</td><td class="act"><form method="post" data-confirm={t.t('web.tokens.revokeConfirm', { name: k.name })}><input type="hidden" name="action" value="revoke" /><input type="hidden" name="id" value={k.id} /><button class="btn sm ghost danger" type="submit">{t.t('web.tokens.revoke')}</button></form></td></tr>)}
+      </tbody></table></div>
+    )}
+  </section>
+  <section class="sec"><div class="sec-h"><h2>{t.t('web.tokens.newTitle')}</h2></div>
+    <form method="post" class="builder" style="max-width:640px">
+      <label class="field">{t.t('web.tokens.name')}<input name="name" required maxlength="64" placeholder="github-actions" /></label>
+      <label class="field">{t.t('web.tokens.expiry')}<select name="days">{[30, 90, 365].map((d) => <option value={d}>{t.t('web.tokens.days', { count: d })}</option>)}</select></label>
+      <fieldset class="field"><legend>{t.t('web.tokens.scopes')}</legend><div class="row" style="gap:20px"><label class="check"><input type="checkbox" name="scopes" value="read" checked /> read</label><label class="check"><input type="checkbox" name="scopes" value="publish" /> publish</label></div></fieldset>
       <button class="btn primary" type="submit">{t.t('web.tokens.create')}</button>
     </form>
-    <section class="sec">
-      {list.tokens.length === 0 ? <p class="hint">{t.t('web.tokens.empty')}</p> : (
-        <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.tokens.name')}</th><th>{t.t('web.tokens.scopes')}</th><th>{t.t('web.tokens.lastUsed')}</th><th>{t.t('web.tokens.expires')}</th><th></th></tr></thead><tbody>
-          {list.tokens.map((k) => <tr><td>{k.name} <code>{k.prefix}…</code></td><td>{k.scopes.join(', ')}</td><td>{k.lastUsedAt ? ago(locale, k.lastUsedAt) : t.t('web.tokens.never')}</td><td>{k.expiresAt ? ago(locale, k.expiresAt) : t.t('web.tokens.never')}</td><td><form method="post" data-confirm={t.t('web.tokens.revokeConfirm', { name: k.name })}><input type="hidden" name="action" value="revoke" /><input type="hidden" name="id" value={k.id} /><button class="btn sm ghost" type="submit">{t.t('web.tokens.revoke')}</button></form></td></tr>)}
-        </tbody></table></div>
-      )}
-    </section>
-  </div>
+  </section>
   <script>
     document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((f) => f.addEventListener('submit', (e) => { if (!confirm(f.dataset.confirm)) e.preventDefault(); }));
   </script>
-</Base>
+</Account>

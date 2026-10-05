@@ -66,7 +66,7 @@
 - `⌘K` / `Ctrl+K` / `/` abren la paleta de búsqueda (instantánea, debounce 150 ms, 5 resultados, `Enter` → paquete, `⌘Enter` → copia el comando de instalación).
 - Selector de idioma `🌐` (8 idiomas, nombre de cada idioma en su propia lengua: English, Español, Português (Brasil), Français, Deutsch, 日本語, 简体中文, 한국어); los de nivel 2 marcados *beta*. Mantiene la ruta actual al cambiar (`/p/@core/auth` → `/es/p/@core/auth`).
 - Toggle de tema (**claro por defecto**, oscuro opcional; respeta la elección guardada en `localStorage`).
-- Logueado: avatar → Dashboard, Tokens, Sign out.
+- Logueado: avatar → Dashboard, Tokens, Sign out (el resto de ajustes, en la navegación del área de cuenta, §5.8b).
 - Móvil (< 768 px): logo + icono de búsqueda + menú hamburguesa (sheet lateral).
 
 **Footer:** Producto (Docs, MCP, Publish, Changelog) · Empresa (Sponsors, Enterprise, Blog) · Comunidad (GitHub, Discord, X) · Legal (Terms, Privacy, Policy, Report abuse) · Estado del sistema.
@@ -207,6 +207,9 @@ Selector de cliente (Claude Code · Cursor · VS Code · Windsurf · Codex) → 
 ### 5.8 Login `/login` — P0
 Botón único "Continue with GitHub" (OAuth web flow) con texto de permisos solicitados (`read:user`, `read:org`) y por qué. Redirección a la página de origen.
 
+### 5.8b Área de cuenta (dashboard, settings, admin)
+Todas las páginas con sesión (`/dashboard`, `/settings/*`, `/admin/*`) comparten `layouts/Account.astro`: navegación lateral fija agrupada en *Account* (Dashboard, Profile, Tokens), *Publishing* (Trusted publishing, Private registries, SSO) y, solo para staff, *Administration* (Moderation, Analytics), con "Sign out" al final. En móvil (< 900 px) la navegación pasa a una fila de pestañas con scroll horizontal. Cabecera compacta (título + lede + acciones) y secciones más densas que en las páginas de producto. Cada lista vacía explica qué aparecerá ahí.
+
 ### 5.9 Dashboard `/dashboard` — P1
 - Tabla "My packages": nombre, última versión, escaneo, instalaciones 30 d, acciones (ver, deprecar).
 - Actividad reciente (desde `audit_log` del usuario): publicaciones, yanks, tokens.
@@ -242,11 +245,13 @@ Modal desde la página de paquete: motivo (malware, prompt injection, spam, typo
 | `MarkdownRenderer` | README y reglas | **Contenido no confiable**: sanitizado (sin HTML crudo, sin `<script>`, imágenes proxied, enlaces `rel="nofollow ugc noopener"`) |
 | `RulesViewer` | Reglas + contador de tokens + hallazgos del escáner resaltados | Toggle rendered/raw |
 | `VersionTable` | Semver, SHA, fecha, estado | Yanked tachado con motivo |
+| `table.tbl` | Tablas de datos (versiones, dashboard, tokens, admin…) | Siempre dentro de `.scroll`: caja con cabecera sobre `wash`, hover por fila, `.num` (números a la derecha, cifras tabulares), `.txt` (texto largo que se ajusta), `.act` (acciones a la derecha), `.sub` (dato secundario bajo el principal) y `.pill` para estados (punto + texto, nunca solo color) |
 | `Sparkline` | Instalaciones 12 semanas | SVG inline, sin librería |
 | `SearchPalette` | ⌘K | Isla Preact; navegación con flechas; `role="combobox"` |
 | `Tabs` | Tabs de paquete | URL hash (`#rules`) para enlaces profundos; patrón ARIA tabs |
 | `Banner` | deprecated / yanked / quarantined / unavailable | Colores de estado + icono + texto |
-| `EmptyState` · `Skeleton` · `Toast` | Estados | — |
+| `EmptyState` · `Skeleton` · `Toast` | Estados | `.empty.sm` para vacíos dentro de una sección |
+| Movimiento | View Transitions entre páginas, fundido al cambiar de pestaña y de tema, respuesta al pulsar | Duraciones de los tokens (`--duration-*`); todo se desactiva con `prefers-reduced-motion` |
 
 ## 7. Estados y errores
 

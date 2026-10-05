@@ -1,0 +1,84 @@
+---
+// Área de cuenta (dashboard, settings y admin): misma navegación lateral en todas las páginas para saber dónde estás
+// y llegar a cualquier ajuste en un clic. En móvil la navegación pasa a una fila de pestañas con scroll.
+import { href } from '../lib/i18n.js';
+import { registryFetch } from '../lib/registry.js';
+import Base from './Base.astro';
+
+export type AccountPage =
+  | 'dashboard'
+  | 'profile'
+  | 'tokens'
+  | 'publishing'
+  | 'registries'
+  | 'sso'
+  | 'admin'
+  | 'analytics';
+
+interface Props {
+  title: string;
+  lede?: string;
+  active: AccountPage;
+  /** Si la página ya sabe si la cuenta es staff, se ahorra la consulta a /v1/me. */
+  staff?: boolean;
+}
+const { title, lede, active } = Astro.props;
+const { t, locale, session } = Astro.locals;
+let staff = Astro.props.staff;
+if (staff === undefined && session) {
+  const res = await registryFetch('/v1/me', { token: session.token, locale }).catch(() => null);
+  staff = res?.ok ? ((await res.json()) as { staff?: boolean }).staff === true : false;
+}
+const groups: Array<{ label: string; links: Array<{ id: AccountPage; path: string; label: string }> }> = [
+  {
+    label: t.t('web.account.personal'),
+    links: [
+      { id: 'dashboard', path: '/dashboard', label: t.t('web.dashboard.title') },
+      { id: 'profile', path: '/settings/profile', label: t.t('web.profile.title') },
+      { id: 'tokens', path: '/settings/tokens', label: t.t('web.nav.tokens') },
+    ],
+  },
+  {
+    label: t.t('web.account.publishing'),
+    links: [
+      { id: 'publishing', path: '/settings/publishing', label: t.t('web.trusted.title') },
+      { id: 'registries', path: '/settings/registries', label: t.t('web.registries.title') },
+      { id: 'sso', path: '/settings/sso', label: t.t('web.sso.title') },
+    ],
+  },
+  ...(staff
+    ? [
+        {
+          label: t.t('web.account.staff'),
+          links: [
+            { id: 'admin' as const, path: '/admin', label: t.t('web.admin.queueTitle') },
+            { id: 'analytics' as const, path: '/admin/analytics', label: t.t('web.admin.title') },
+          ],
+        },
+      ]
+    : []),
+];
+---
+<Base title={title} noindex>
+  <div class="wrap acct">
+    <nav class="acct-nav" aria-label={t.t('web.account.nav')}>
+      {groups.map((g) => (
+        <>
+          <span class="k">{g.label}</span>
+          {g.links.map((l) => <a href={href(locale, l.path)} aria-current={l.id === active ? 'page' : undefined}>{l.label}</a>)}
+        </>
+      ))}
+      <form method="post" action="/logout"><button type="submit">{t.t('web.nav.signOut')}</button></form>
+    </nav>
+    <div class="acct-main">
+      <header class="acct-head">
+        <div>
+          <h1>{title}</h1>
+          {lede && <p>{lede}</p>}
+        </div>
+        <slot name="actions" />
+      </header>
+      <slot />
+    </div>
+  </div>
+</Base>

@@ -14,7 +14,7 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=3600');
     <section class="sec" style="padding-top:40px"><div class="sec-h"><div><div class="k">{t.t('web.mcp.step1')}</div><h2>{t.t('web.mcp.step1Title')}</h2></div></div><ClientsBlock /></section>
     <section class="sec"><div class="sec-h"><div><div class="k">{t.t('web.mcp.step2')}</div><h2>{t.t('web.mcp.step2Title')}</h2><p>{t.t('web.mcp.step2Text')}</p></div></div>
       <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.mcp.tool')}</th><th>{t.t('web.mcp.does')}</th></tr></thead><tbody>
-        {tools.map((x) => <tr><td style="color:var(--mcp)">genpm_{x}</td><td style="white-space:normal;color:var(--ink-2)">{t.raw(`web.mcp.t_${x}`)}</td></tr>)}
+        {tools.map((x) => <tr><td style="color:var(--mcp)">genpm_{x}</td><td class="txt">{t.raw(`web.mcp.t_${x}`)}</td></tr>)}
       </tbody></table></div>
     </section>
     <section class="sec"><div class="sec-h"><div><div class="k">{t.t('web.mcp.safety')}</div><h2>{t.t('web.mcp.safetyTitle')}</h2></div></div>
