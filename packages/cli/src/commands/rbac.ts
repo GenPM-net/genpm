@@ -6,9 +6,11 @@ import {
   accessList,
   accessVisibility,
   registryCreate,
+  registryDomain,
   registryList,
   registryMember,
   registryShow,
+  registryVerifyDomain,
   teamCreate,
   teamDelete,
   teamList,
@@ -103,6 +105,44 @@ export const registryCmd = (ctx: Ctx) =>
               }),
             ),
           )(),
+      }),
+      domain: defineCommand({
+        meta: { name: 'domain', description: ctx.t.t('cli.desc.registryDomain') },
+        args: {
+          slug: pos(ctx, 'slug'),
+          domain: { type: 'positional', description: ctx.t.t('cli.arg.rbac.domain'), required: false },
+          remove: { type: 'boolean', description: ctx.t.t('cli.arg.rbac.removeDomain') },
+          ...globalArgs(ctx),
+        },
+        run: ({ args }) =>
+          run(ctx, async () => {
+            const o = await coreOptions(ctx);
+            if (args.remove || !args.domain)
+              return done(ctx, await registryDomain({ ...o, slug: args.slug, domain: null }));
+            const r = await registryDomain({ ...o, slug: args.slug, domain: args.domain });
+            if (ctx.flags.json) return json({ ok: true, ...r });
+            if ('txt' in r && r.txt && r.cname)
+              line(
+                ctx,
+                ctx.t.t('cli.rbac.domainSteps', {
+                  txtName: r.txt.name,
+                  txtValue: r.txt.value,
+                  domain: r.cname.name,
+                  target: r.cname.value,
+                  slug: args.slug,
+                }),
+              );
+          })(),
+      }),
+      verify: defineCommand({
+        meta: { name: 'verify', description: ctx.t.t('cli.desc.registryVerify') },
+        args: { slug: pos(ctx, 'slug'), ...globalArgs(ctx) },
+        run: ({ args }) =>
+          run(ctx, async () => {
+            const r = await registryVerifyDomain({ ...(await coreOptions(ctx)), slug: args.slug });
+            if (ctx.flags.json) return json({ ok: true, ...r });
+            line(ctx, `${ctx.c.green('✔')} ${ctx.t.t('cli.rbac.domainActive', { url: r.url ?? r.domain })}`);
+          })(),
       }),
       rm: defineCommand({
         meta: { name: 'rm', description: ctx.t.t('cli.desc.registryRm') },

@@ -37,6 +37,9 @@ export type Env = {
   /** Rollup de Analytics Engine vía SQL API (cron horario). */
   CF_ACCOUNT_ID?: string;
   CF_AE_TOKEN?: string;
+  /** Dominios propios (V10-03): zona de Cloudflare for SaaS y token con permiso de custom hostnames. */
+  CF_SAAS_ZONE_ID?: string;
+  CF_SAAS_TOKEN?: string;
   GITHUB_RAW_BASE?: string;
 };
 

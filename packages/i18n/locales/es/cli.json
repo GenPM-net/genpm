@@ -42,7 +42,9 @@
     "accessLs": "Muestra la visibilidad y los permisos de un paquete",
     "accessSet": "Cambia la visibilidad: internal o private",
     "accessGrant": "Da read, write o admin a user:<usuario> o team:<org>/<equipo>",
-    "accessRevoke": "Retira un permiso"
+    "accessRevoke": "Retira un permiso",
+    "registryDomain": "Configura un dominio propio para un registro (o quítalo con --remove)",
+    "registryVerify": "Comprueba el registro TXT y activa el dominio propio"
   },
   "arg": {
     "cwd": "Directorio de trabajo",
@@ -97,7 +99,9 @@
       "visibility": "internal o private",
       "owner": "Dueño: tu usuario o una organización que administras",
       "role": "Rol: admin, publisher o reader",
-      "teamRole": "Rol en el equipo: maintainer o member"
+      "teamRole": "Rol en el equipo: maintainer o member",
+      "domain": "Dominio, p. ej. packages.acme.com",
+      "removeDomain": "Quita el dominio propio"
     }
   },
   "label": {
@@ -251,6 +255,8 @@
     "done": "Hecho.",
     "none": "Todavía no hay nada aquí.",
     "created": "Registro {slug} creado: {url}",
-    "configHint": "Apunta tu scope a él en .genpmrc e inicia sesión con genpm login --registry <url>:"
+    "configHint": "Apunta tu scope a él en .genpmrc e inicia sesión con genpm login --registry <url>:",
+    "domainSteps": "Publica estos registros DNS y luego ejecuta genpm registry verify {slug}:\n  TXT   {txtName} = {txtValue}\n  CNAME {domain} → {target}",
+    "domainActive": "Dominio propio activo: {url}"
   }
 }

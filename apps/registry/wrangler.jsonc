@@ -41,7 +41,8 @@
   "triggers": { "crons": ["0 * * * *", "15 3 * * *", "0 4 * * SUN"] },
   "routes": [
     { "pattern": "api.genpm.net", "custom_domain": true },
-    { "pattern": "mcp.genpm.net", "custom_domain": true }
+    { "pattern": "mcp.genpm.net", "custom_domain": true },
+    { "pattern": "domains.genpm.net", "custom_domain": true }
   ],
   "env": {
     "staging": {

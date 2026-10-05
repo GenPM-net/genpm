@@ -42,7 +42,9 @@
     "accessLs": "Show the visibility and grants of a package",
     "accessSet": "Set the visibility: internal or private",
     "accessGrant": "Grant read, write or admin to user:<handle> or team:<org>/<team>",
-    "accessRevoke": "Revoke a grant"
+    "accessRevoke": "Revoke a grant",
+    "registryDomain": "Set a custom domain for a registry (or remove it with --remove)",
+    "registryVerify": "Check the TXT record and activate the custom domain"
   },
   "arg": {
     "cwd": "Working directory",
@@ -97,7 +99,9 @@
       "visibility": "internal or private",
       "owner": "Owner: your handle or an organization you administer",
       "role": "Role: admin, publisher or reader",
-      "teamRole": "Team role: maintainer or member"
+      "teamRole": "Team role: maintainer or member",
+      "domain": "Domain, e.g. packages.acme.com",
+      "removeDomain": "Remove the custom domain"
     }
   },
   "label": {
@@ -251,6 +255,8 @@
     "done": "Done.",
     "none": "Nothing here yet.",
     "created": "Registry {slug} created: {url}",
-    "configHint": "Point your scope to it in .genpmrc and sign in with genpm login --registry <url>:"
+    "configHint": "Point your scope to it in .genpmrc and sign in with genpm login --registry <url>:",
+    "domainSteps": "Publish these DNS records, then run genpm registry verify {slug}:\n  TXT   {txtName} = {txtValue}\n  CNAME {domain} → {target}",
+    "domainActive": "Custom domain active: {url}"
   }
 }

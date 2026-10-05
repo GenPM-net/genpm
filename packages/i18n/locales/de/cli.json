@@ -42,7 +42,9 @@
     "accessLs": "Zeigt Sichtbarkeit und Berechtigungen eines Pakets",
     "accessSet": "Setzt die Sichtbarkeit: internal oder private",
     "accessGrant": "Gewährt read, write oder admin an user:<name> oder team:<org>/<team>",
-    "accessRevoke": "Entzieht eine Berechtigung"
+    "accessRevoke": "Entzieht eine Berechtigung",
+    "registryDomain": "Legt eine eigene Domain für ein Registry fest (oder entfernt sie mit --remove)",
+    "registryVerify": "Prüft den TXT-Eintrag und aktiviert die eigene Domain"
   },
   "arg": {
     "cwd": "Arbeitsverzeichnis",
@@ -97,7 +99,9 @@
       "visibility": "internal oder private",
       "owner": "Besitzer: dein Name oder eine Organisation, die du verwaltest",
       "role": "Rolle: admin, publisher oder reader",
-      "teamRole": "Teamrolle: maintainer oder member"
+      "teamRole": "Teamrolle: maintainer oder member",
+      "domain": "Domain, z. B. packages.acme.com",
+      "removeDomain": "Entfernt die eigene Domain"
     }
   },
   "label": {
@@ -251,6 +255,8 @@
     "done": "Erledigt.",
     "none": "Hier gibt es noch nichts.",
     "created": "Registry {slug} angelegt: {url}",
-    "configHint": "Verweise deinen Scope in .genpmrc darauf und melde dich mit genpm login --registry <url> an:"
+    "configHint": "Verweise deinen Scope in .genpmrc darauf und melde dich mit genpm login --registry <url> an:",
+    "domainSteps": "Lege diese DNS-Einträge an und führe dann genpm registry verify {slug} aus:\n  TXT   {txtName} = {txtValue}\n  CNAME {domain} → {target}",
+    "domainActive": "Eigene Domain aktiv: {url}"
   }
 }

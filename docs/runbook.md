@@ -178,6 +178,20 @@ alertas de Workers Observability si la cuenta las tiene) o con un monitor extern
 Si la cuenta no ofrece alertas por porcentaje de errores, basta un monitor de disponibilidad externo (cualquiera gratuito)
 sobre las dos URL y revisar los errores con `npx wrangler tail genpm-registry --status error`.
 
+## 3.2 Dominios propios de registros privados (V10-03)
+
+Una vez, para activar los dominios propios (sin esto, verificar el TXT activa el dominio en D1 pero no hay certificado):
+
+1. Cloudflare → zona `genpm.net` → SSL/TLS → **Custom Hostnames**: activar Cloudflare for SaaS y poner como fallback
+   origin `domains.genpm.net` (el Worker `genpm-registry` ya lo sirve como custom domain).
+2. Workers Routes de la zona: ruta `*/*` **solo para custom hostnames** → `genpm-registry` (en el panel: "Route for
+   custom hostnames"); no tocar las rutas de `genpm.net` ni `api.genpm.net`.
+3. Token con permiso *SSL and Certificates: Edit* sobre la zona y secretos:
+   `npx wrangler secret put CF_SAAS_ZONE_ID` y `npx wrangler secret put CF_SAAS_TOKEN` (en `apps/registry`).
+
+El cliente publica `TXT _genpm-challenge.<dominio>` y `CNAME <dominio> → domains.genpm.net`, y ejecuta
+`genpm registry verify <slug>`. Quitarlo: `genpm registry domain <slug> --remove` (borra también el custom hostname).
+
 ## 4. Entornos
 
 | Entorno | Web | API | D1 | Clave de firma |

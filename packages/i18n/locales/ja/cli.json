@@ -42,7 +42,9 @@
     "accessLs": "パッケージの公開範囲と権限を表示します",
     "accessSet": "公開範囲を設定します: internal または private",
     "accessGrant": "user:<ハンドル> または team:<org>/<team> に read、write、admin を付与します",
-    "accessRevoke": "権限を取り消します"
+    "accessRevoke": "権限を取り消します",
+    "registryDomain": "レジストリの独自ドメインを設定します（--remove で削除）",
+    "registryVerify": "TXT レコードを確認して独自ドメインを有効にします"
   },
   "arg": {
     "cwd": "作業ディレクトリ",
@@ -97,7 +99,9 @@
       "visibility": "internal または private",
       "owner": "所有者: 自分のハンドル、または管理している組織",
       "role": "ロール: admin、publisher、reader",
-      "teamRole": "チームのロール: maintainer または member"
+      "teamRole": "チームのロール: maintainer または member",
+      "domain": "ドメイン（例: packages.acme.com）",
+      "removeDomain": "独自ドメインを削除します"
     }
   },
   "label": {
@@ -251,6 +255,8 @@
     "done": "完了しました。",
     "none": "まだ何もありません。",
     "created": "レジストリ {slug} を作成しました: {url}",
-    "configHint": ".genpmrc で scope をこのレジストリに向け、genpm login --registry <url> でサインインします:"
+    "configHint": ".genpmrc で scope をこのレジストリに向け、genpm login --registry <url> でサインインします:",
+    "domainSteps": "次の DNS レコードを公開してから genpm registry verify {slug} を実行してください:\n  TXT   {txtName} = {txtValue}\n  CNAME {domain} → {target}",
+    "domainActive": "独自ドメインが有効になりました: {url}"
   }
 }

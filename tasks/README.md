@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-05. No editar a mano. -->
 
-**76 %** completado · 204/267 tareas · 303.5h estimadas pendientes
+**77 %** completado · 205/267 tareas · 291.5h estimadas pendientes
 
-TODO 35 · DOING 4 · DONE 204 · BLOCKED 24 · CUT 0
+TODO 34 · DOING 4 · DONE 205 · BLOCKED 24 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -87,7 +87,7 @@ TODO 35 · DOING 4 · DONE 204 · BLOCKED 24 · CUT 0
 | [Día 7 · Lanzamiento](07-dia-7-lanzamiento.md) | `▓▓░░░░░░░░░░` 18 % | 2/11 | 16.5h |
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 16/17 | 2h |
-| [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓▓▓▓░░░░` 63 % | 25/40 | 250.5h |
+| [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓▓▓▓░░░░` 65 % | 26/40 | 238.5h |
 
 **En curso**
 
@@ -134,6 +134,6 @@ TODO 35 · DOING 4 · DONE 204 · BLOCKED 24 · CUT 0
 - `V011-13` Activar PostHog en producción: proyecto en región EU, DPA aceptado, retención 30 días/12 meses, POSTHOG_KEY en wrangler.jsonc y despliegue de la web · F · 0.5h ([10-post-mvp.md](10-post-mvp.md))
 - `V03-06` Auditoría de seguridad externa · F · 8h ([10-post-mvp.md](10-post-mvp.md))
 - `V10-02` SSO · A · 24h ([10-post-mvp.md](10-post-mvp.md))
-- `V10-03` Dominio propio por registro · A · 12h ([10-post-mvp.md](10-post-mvp.md))
+- `V10-04` Auditoría exportable · A · 12h ([10-post-mvp.md](10-post-mvp.md))
 
 <!-- board:end -->

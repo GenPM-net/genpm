@@ -25,6 +25,7 @@ import { resolve } from './routes/resolve.js';
 import { search } from './routes/search.js';
 import { oidc, trusted } from './routes/trusted.js';
 import { yank } from './routes/yank.js';
+import { isOwnHost } from './services/domains.js';
 
 export function createApp() {
   const app = new Hono<AppEnv>();
@@ -57,6 +58,18 @@ export function createApp() {
     const headers = new Headers(c.req.raw.headers);
     headers.set('genpm-registry', m[1]!);
     return app.fetch(new Request(url, { method: c.req.method, headers, body: c.req.raw.body }), c.env, c.executionCtx);
+  });
+  // Dominio propio de un registro (V10-03): `https://packages.acme.com/v1/…` ≡ `/r/<slug>/v1/…`.
+  app.use('*', async (c, next) => {
+    const host = new URL(c.req.url).hostname;
+    if (isOwnHost(host) || c.req.header('genpm-registry')) return next();
+    const row = await c.env.DB.prepare('SELECT slug FROM registries WHERE custom_domain = ?1')
+      .bind(host)
+      .first<{ slug: string }>();
+    if (!row) throw httpError('E_NOT_FOUND', { name: host });
+    const headers = new Headers(c.req.raw.headers);
+    headers.set('genpm-registry', row.slug);
+    return app.fetch(new Request(c.req.raw, { headers }), c.env, c.executionCtx);
   });
   app.use('*', async (c, next) => {
     const url = new URL(c.req.url);

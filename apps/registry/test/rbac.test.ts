@@ -1,5 +1,5 @@
 // V10-01: registros privados con RBAC (api-spec §5.4).
-import { env } from 'cloudflare:test';
+import { env, SELF } from 'cloudflare:test';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { FakeGitHub } from './fake-github.js';
 import { account, call } from './helpers.js';
@@ -144,5 +144,41 @@ describe('private registries', () => {
       n: number;
     }>();
     expect(audit!.n).toBeGreaterThanOrEqual(3);
+  });
+});
+
+describe('custom domains (V10-03)', () => {
+  it('verifies a TXT record, then serves the registry on that host', async () => {
+    const put = await call('/v1/registries/corp-int/domain', req(owner, { domain: 'packages.corp.example' }, 'PUT'));
+    expect(put.status).toBe(200);
+    const { txt } = (await put.json()) as { txt: { name: string; value: string } };
+    expect(txt.name).toBe('_genpm-challenge.packages.corp.example');
+    expect((await call('/v1/registries/corp-int/domain', req(owner, { domain: 'evil.genpm.net' }, 'PUT'))).status).toBe(
+      400,
+    );
+    // Sin el TXT publicado, no se activa.
+    const dns = (answer: string[]) =>
+      ({
+        fetch: async () => Response.json({ Answer: answer.map((data) => ({ data: `"${data}"` })) }),
+      }) as unknown as FakeGitHub;
+    expect((await call('/v1/registries/corp-int/domain/verify', req(owner, {}), dns(['nope']))).status).toBe(409);
+    const ok = await call('/v1/registries/corp-int/domain/verify', req(owner, {}), dns([txt.value]));
+    expect(ok.status).toBe(200);
+    expect(await ok.json()).toMatchObject({ status: 'active', url: 'https://packages.corp.example' });
+    // El host del cliente sirve ese registro (y sigue siendo privado).
+    const viaHost = await SELF.fetch('https://packages.corp.example/v1/resolve/@corp/secret', {
+      headers: { authorization: `Bearer ${owner}` },
+    });
+    expect(viaHost.status).toBe(200);
+    expect((await SELF.fetch('https://packages.corp.example/v1/search?q=x')).status).toBe(404);
+    expect((await SELF.fetch('https://unknown.example/v1/search?q=x')).status).toBe(404);
+    expect((await call('/v1/registries/corp-int/domain', req(owner, undefined, 'DELETE'))).status).toBe(200);
+    expect(
+      (
+        await SELF.fetch('https://packages.corp.example/v1/resolve/@corp/secret', {
+          headers: { authorization: `Bearer ${owner}` },
+        })
+      ).status,
+    ).toBe(404);
   });
 });

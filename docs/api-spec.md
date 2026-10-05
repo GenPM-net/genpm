@@ -78,7 +78,9 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | PUT/DELETE | `/v1/orgs/:org/teams/:team/members/:handle` | token (owner/admin o maintainer) | ✅ | `{ role: maintainer\|member }`; solo miembros de la org |
 | GET/PUT | `/v1/packages/:scope/:name/access` | token (admin del paquete) | ✅ | Visibilidad (`internal`\|`private`) y grants; solo registros privados |
 | PUT/DELETE | `/v1/packages/:scope/:name/grants` | token (admin del paquete) | ✅ | `{ principal: user:<h>\|team:<org>/<team>, permission }`; DELETE con `?principal=` |
-| * | `/r/:slug/v1/…` | según la ruta | ✅ | Igual que `/v1/…` con `genpm-registry: <slug>` |
+| PUT/DELETE | `/v1/registries/:slug/domain` | token (admin) | ✅ | Dominio propio (V10-03): `{ domain }` ⇒ TXT `_genpm-challenge.<dominio>` y CNAME a `domains.genpm.net` |
+| POST | `/v1/registries/:slug/domain/verify` | token (admin) | ✅ | Comprueba el TXT (DoH), fija `custom_domain` y da de alta el custom hostname (Cloudflare for SaaS); 409 si aún no está |
+| * | `/r/:slug/v1/…` y `https://<dominio propio>/v1/…` | según la ruta | ✅ | Igual que `/v1/…` con `genpm-registry: <slug>` |
 | GET | `/v1/recipes`, `/v1/recipes/:slug` | — | ✅ | Recetas compose (V03-05): `{ name, summary, p: [specs] }`. Staff: `PUT/DELETE /v1/admin/recipes/:slug` con `{ s?, p }` (cada paquete debe existir) |
 | POST | `/mcp` (y raíz de `mcp.genpm.net`) | — | ✅ | MCP remoto de solo lectura (V03-04): JSON-RPC Streamable HTTP sin estado, tools `genpm_search` y `genpm_info` |
 | POST | `/v1/auth/oidc/exchange` | — (JWT OIDC de GitHub Actions o GitLab CI) | ✅ | Trusted publishing (V03-01, GitLab V03-03/ADR-028): token `publish` de 15 min, restringido al scope y al repo (`owner/repo` o `gitlab.com/<ruta>`) |

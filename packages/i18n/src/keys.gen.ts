@@ -44,6 +44,8 @@ export interface MessageParams {
   "cli.desc.accessSet": undefined;
   "cli.desc.accessGrant": undefined;
   "cli.desc.accessRevoke": undefined;
+  "cli.desc.registryDomain": undefined;
+  "cli.desc.registryVerify": undefined;
   "cli.arg.cwd": undefined;
   "cli.arg.registry": undefined;
   "cli.arg.json": undefined;
@@ -96,6 +98,8 @@ export interface MessageParams {
   "cli.arg.rbac.owner": undefined;
   "cli.arg.rbac.role": undefined;
   "cli.arg.rbac.teamRole": undefined;
+  "cli.arg.rbac.domain": undefined;
+  "cli.arg.rbac.removeDomain": undefined;
   "cli.label.resolved": undefined;
   "cli.label.dependency": undefined;
   "cli.label.skip": undefined;
@@ -201,6 +205,8 @@ export interface MessageParams {
   "cli.rbac.none": undefined;
   "cli.rbac.created": { slug: string | number; url: string | number };
   "cli.rbac.configHint": undefined;
+  "cli.rbac.domainSteps": { slug: string | number; txtName: string | number; txtValue: string | number; domain: string | number; target: string | number };
+  "cli.rbac.domainActive": { url: string | number };
   "common.product.tagline": undefined;
   "common.layers.code": undefined;
   "common.layers.context": undefined;

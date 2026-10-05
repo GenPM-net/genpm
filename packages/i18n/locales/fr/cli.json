@@ -42,7 +42,9 @@
     "accessLs": "Affiche la visibilité et les droits d’un paquet",
     "accessSet": "Définit la visibilité : internal ou private",
     "accessGrant": "Accorde read, write ou admin à user:<identifiant> ou team:<org>/<équipe>",
-    "accessRevoke": "Révoque un droit"
+    "accessRevoke": "Révoque un droit",
+    "registryDomain": "Définit un domaine personnalisé pour un registre (ou le retire avec --remove)",
+    "registryVerify": "Vérifie l’enregistrement TXT et active le domaine personnalisé"
   },
   "arg": {
     "cwd": "Répertoire de travail",
@@ -97,7 +99,9 @@
       "visibility": "internal ou private",
       "owner": "Propriétaire : votre identifiant ou une organisation que vous administrez",
       "role": "Rôle : admin, publisher ou reader",
-      "teamRole": "Rôle dans l’équipe : maintainer ou member"
+      "teamRole": "Rôle dans l’équipe : maintainer ou member",
+      "domain": "Domaine, ex. packages.acme.com",
+      "removeDomain": "Retire le domaine personnalisé"
     }
   },
   "label": {
@@ -251,6 +255,8 @@
     "done": "Terminé.",
     "none": "Rien ici pour l’instant.",
     "created": "Registre {slug} créé : {url}",
-    "configHint": "Faites pointer votre scope vers lui dans .genpmrc et connectez-vous avec genpm login --registry <url> :"
+    "configHint": "Faites pointer votre scope vers lui dans .genpmrc et connectez-vous avec genpm login --registry <url> :",
+    "domainSteps": "Publiez ces enregistrements DNS, puis lancez genpm registry verify {slug} :\n  TXT   {txtName} = {txtValue}\n  CNAME {domain} → {target}",
+    "domainActive": "Domaine personnalisé actif : {url}"
   }
 }

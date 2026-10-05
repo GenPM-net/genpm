@@ -13,6 +13,16 @@ import { newId } from '../ids.js';
 import { requireAuth } from '../middleware/auth.js';
 import { BINDING_HOST } from '../middleware/rate-limit.js';
 import { atLeast, grantOf, type RegistryRole, registryRole } from '../services/access.js';
+import {
+  addCustomHostname,
+  CNAME_TARGET,
+  challengeName,
+  DOMAIN_RE,
+  isOwnHost,
+  removeCustomHostname,
+  verifyTxt,
+} from '../services/domains.js';
+import { newToken } from '../services/tokens.js';
 import { fullName, repoOf } from './util.js';
 
 /** Subdominios y rutas que nunca pueden ser el slug de un registro. */
@@ -185,6 +195,73 @@ export const registries = new Hono<AppEnv>()
       audit(c, 'registry.member', 'account', who.id, { handle: who.handle, role: body.data.role }),
     ]);
     return c.json({ ok: true, handle: who.handle, kind: who.kind, role: body.data.role });
+  })
+  // Dominio propio (V10-03): PUT pide el dominio y devuelve el TXT a publicar; POST …/verify lo comprueba y lo activa.
+  .put('/:slug/domain', requireAuth('publish'), async (c) => {
+    const r = await registryFor(c, 'admin');
+    const body = z
+      .strictObject({ domain: z.string().toLowerCase().regex(DOMAIN_RE) })
+      .safeParse(await c.req.json().catch(() => null));
+    if (!body.success || isOwnHost(body.data.domain)) throw httpError('E_BAD_REQUEST', { detail: 'domain' });
+    const token = `genpm-verify-${newToken().slice(4, 36)}`;
+    const domain = body.data.domain;
+    c.set('tenant', { registryId: r.id, slug: r.slug });
+    await c.env.DB.batch([
+      c.env.DB.prepare("UPDATE registries SET settings = json_set(settings, '$.domain', json(?1)) WHERE id = ?2").bind(
+        JSON.stringify({ name: domain, token, requestedAt: Date.now() }),
+        r.id,
+      ),
+      audit(c, 'registry.domain_request', 'registry', r.id, { domain }),
+    ]);
+    return c.json({
+      domain,
+      status: 'pending_verification',
+      txt: { name: challengeName(domain), value: token },
+      cname: { name: domain, value: CNAME_TARGET },
+    });
+  })
+  .post('/:slug/domain/verify', requireAuth('publish'), async (c) => {
+    const r = await registryFor(c, 'admin');
+    const row = await c.env.DB.prepare("SELECT json_extract(settings, '$.domain') AS d FROM registries WHERE id = ?1")
+      .bind(r.id)
+      .first<{ d: string | null }>();
+    const pending = row?.d ? (JSON.parse(row.d) as { name: string; token: string }) : null;
+    if (!pending) throw httpError('E_NOT_FOUND', { name: 'domain' });
+    if (!(await verifyTxt(pending.name, pending.token)))
+      return c.json(
+        {
+          domain: pending.name,
+          status: 'pending_verification',
+          txt: { name: challengeName(pending.name), value: pending.token },
+        },
+        409,
+      );
+    c.set('tenant', { registryId: r.id, slug: r.slug });
+    try {
+      await c.env.DB.batch([
+        c.env.DB.prepare(
+          "UPDATE registries SET custom_domain = ?1, settings = json_remove(settings, '$.domain') WHERE id = ?2",
+        ).bind(pending.name, r.id),
+        audit(c, 'registry.domain', 'registry', r.id, { domain: pending.name }),
+      ]);
+    } catch (e) {
+      if (String(e).includes('UNIQUE')) throw httpError('E_BAD_REQUEST', { detail: 'domain taken' });
+      throw e;
+    }
+    const ssl = await addCustomHostname(c.env, pending.name);
+    return c.json({ domain: pending.name, status: 'active', ssl, url: `https://${pending.name}` });
+  })
+  .delete('/:slug/domain', requireAuth('publish'), async (c) => {
+    const r = await registryFor(c, 'admin');
+    if (r.custom_domain) await removeCustomHostname(c.env, r.custom_domain);
+    c.set('tenant', { registryId: r.id, slug: r.slug });
+    await c.env.DB.batch([
+      c.env.DB.prepare(
+        "UPDATE registries SET custom_domain = NULL, settings = json_remove(settings, '$.domain') WHERE id = ?1",
+      ).bind(r.id),
+      audit(c, 'registry.domain_remove', 'registry', r.id, { domain: r.custom_domain }),
+    ]);
+    return c.json({ ok: true });
   })
   .delete('/:slug/members/:handle', requireAuth('publish'), async (c) => {
     const r = await registryFor(c, 'admin');

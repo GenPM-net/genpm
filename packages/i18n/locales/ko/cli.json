@@ -42,7 +42,9 @@
     "accessLs": "패키지의 공개 범위와 권한을 표시합니다",
     "accessSet": "공개 범위 설정: internal 또는 private",
     "accessGrant": "user:<핸들> 또는 team:<org>/<team>에 read, write, admin 권한을 부여합니다",
-    "accessRevoke": "권한을 회수합니다"
+    "accessRevoke": "권한을 회수합니다",
+    "registryDomain": "레지스트리의 사용자 지정 도메인을 설정합니다(--remove로 제거)",
+    "registryVerify": "TXT 레코드를 확인하고 사용자 지정 도메인을 활성화합니다"
   },
   "arg": {
     "cwd": "작업 디렉터리",
@@ -97,7 +99,9 @@
       "visibility": "internal 또는 private",
       "owner": "소유자: 내 핸들 또는 관리하는 조직",
       "role": "역할: admin, publisher 또는 reader",
-      "teamRole": "팀 역할: maintainer 또는 member"
+      "teamRole": "팀 역할: maintainer 또는 member",
+      "domain": "도메인(예: packages.acme.com)",
+      "removeDomain": "사용자 지정 도메인을 제거합니다"
     }
   },
   "label": {
@@ -251,6 +255,8 @@
     "done": "완료했습니다.",
     "none": "아직 아무것도 없습니다.",
     "created": "레지스트리 {slug}를 만들었습니다: {url}",
-    "configHint": ".genpmrc에서 scope를 이 레지스트리로 지정하고 genpm login --registry <url>로 로그인하세요:"
+    "configHint": ".genpmrc에서 scope를 이 레지스트리로 지정하고 genpm login --registry <url>로 로그인하세요:",
+    "domainSteps": "다음 DNS 레코드를 게시한 뒤 genpm registry verify {slug}를 실행하세요:\n  TXT   {txtName} = {txtValue}\n  CNAME {domain} → {target}",
+    "domainActive": "사용자 지정 도메인이 활성화되었습니다: {url}"
   }
 }

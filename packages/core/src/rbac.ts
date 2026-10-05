@@ -133,3 +133,24 @@ export async function accessGrant(
   if (!['read', 'write', 'admin'].includes(opts.permission)) throw usage('permission: read | write | admin');
   return c.api('PUT', base, { principal: principal(opts.principal), permission: opts.permission });
 }
+
+// ───────────── Dominio propio (V10-03) ─────────────
+
+export type DomainStatus = {
+  domain: string;
+  status: 'pending_verification' | 'active';
+  txt?: { name: string; value: string };
+  cname?: { name: string; value: string };
+  url?: string;
+};
+
+export async function registryDomain(opts: CommonOptions & { slug: string; domain: string | null }) {
+  const c = await client(opts);
+  const path = `/v1/registries/${slug(opts.slug)}/domain`;
+  if (opts.domain === null) return c.api<{ ok: boolean }>('DELETE', path);
+  return c.api<DomainStatus>('PUT', path, { domain: opts.domain.toLowerCase() });
+}
+
+export async function registryVerifyDomain(opts: CommonOptions & { slug: string }) {
+  return (await client(opts)).api<DomainStatus>('POST', `/v1/registries/${slug(opts.slug)}/domain/verify`, {});
+}

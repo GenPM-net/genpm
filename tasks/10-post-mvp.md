@@ -79,7 +79,8 @@
 - [x] `V10-01` **DONE** Registros privados (shared tenancy) con RBAC: teams y package_grants (migración aditiva api-spec §5.4) · A · 60h · deps: V03-01
   - ✅ 2026-10-05 (ADR-029): migración 0009, tenant privado en el middleware (404 a no miembros, `private, no-store`), `/r/:slug`, visibilidad `internal`/`private` con grants en Repo, publicación de repos privados con la App por dueño, rutas `/v1/registries`, `/v1/orgs/:org/teams`, `/v1/packages/…/access|grants`; CLI `genpm registry|team|access`; web `/settings/registries`; docs en 8 idiomas. Pendiente fundador: aplicar la migración en producción.
 - [ ] `V10-02` **TODO** SSO · A · 24h · deps: V10-01
-- [ ] `V10-03` **TODO** Dominio propio por registro · A · 12h · deps: V10-01
+- [x] `V10-03` **DONE** Dominio propio por registro · A · 12h · deps: V10-01
+  - ✅ 2026-10-05: `PUT/DELETE /v1/registries/:slug/domain` + `POST …/verify` (TXT por DoH), enrutado por host en el Worker, alta en Cloudflare for SaaS si hay `CF_SAAS_*`; CLI `genpm registry domain|verify`. Pendiente fundador: runbook §3.2 (Custom Hostnames, ruta y secretos).
 - [ ] `V10-04` **TODO** Auditoría exportable · A · 12h · deps: V10-01
 - [ ] `V10-05` **TODO** Facturación con Stripe · A · 24h · deps: V10-01
 - [ ] `V10-06` **TODO** Patrocinios self-serve · W · 24h · deps: V10-05
