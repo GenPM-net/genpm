@@ -96,6 +96,8 @@ export const add = (ctx: Ctx) =>
       ...globalArgs(ctx),
     },
     async run({ args }) {
+      // Tiempo total que ve el usuario: resolver, descargar, verificar y escribir (no solo la escritura).
+      const started = Date.now();
       try {
         const specs = [args.spec, ...args._.filter((a) => a !== args.spec)].filter(Boolean) as string[];
         const pl = await plan({
@@ -184,7 +186,7 @@ export const add = (ctx: Ctx) =>
         line(ctx);
         line(
           ctx,
-          `${ctx.c.green('✔')} ${ctx.t.t('cli.add.injected', { count: result.installed.length, seconds: result.durationMs / 1000 })}`,
+          `${ctx.c.green('✔')} ${ctx.t.t('cli.add.injected', { count: result.installed.length, seconds: (Date.now() - started) / 1000 })}`,
         );
         if (result.mcpWritten.length)
           line(ctx, `  ${ctx.t.t('cli.add.mcpWritten', { files: result.mcpWritten.join(', ') })}`);

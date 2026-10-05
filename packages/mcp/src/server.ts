@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import {
   apply,
   audit,
+  clientFromAgent,
   findRoot,
   getToken,
   type InstallPlan,
@@ -159,6 +160,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
       // Lectura de paquetes privados con el token del usuario; el MCP nunca publica ni gestiona credenciales.
       token: await getToken(registry, { env }).catch(() => null),
       client: 'mcp' as const,
+      agentClient: clientFromAgent(server.server.getClientVersion()?.name),
       telemetry: telemetryEnabled(env),
       fetchImpl: options.fetchImpl,
       log: (line: string) => {
@@ -255,7 +257,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
         };
         const m = r.manifest;
         const text = [
-          `${m.n}@${m.v} (${m.c.slice(0, 7)}) → ${m.d} · scan ${r.scan}${r.installed ? ` · installed ${r.installed.v} (${r.installed.drift} files modified)` : ''}`,
+          `${m.n}@${m.v} (${m.c.slice(0, 7)}) → ${m.d} · scan ${r.scan}${r.installed ? ` · installed ${r.installed.v} (${r.installed.drift} files changed)` : ''}`,
           `${JSON.stringify(m)}`,
           rules,
           r.rulesTruncated ? 'Rules truncated: call again with fullRules:true to read everything.' : '',

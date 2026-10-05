@@ -39,11 +39,22 @@ export async function findRoot(cwd: string, home = homedir()): Promise<string> {
 
 /** Señales de detección por cliente (architecture §7.3). `agents` siempre está activo. */
 const SIGNALS: Record<Exclude<Client, 'agents'>, string[]> = {
-  claude: ['CLAUDE.md', '.claude'],
+  // `.mcp.json` en la raíz es la config MCP de proyecto de Claude Code (la que escribe `genpm mcp setup --client claude`).
+  claude: ['CLAUDE.md', '.claude', '.mcp.json'],
   cursor: ['.cursor', '.cursorrules'],
   copilot: ['.github/copilot-instructions.md', '.vscode'],
   windsurf: ['.windsurf', '.windsurfrules'],
 };
+
+/** Cliente de IA a partir del `clientInfo.name` del handshake MCP ('claude-code', 'cursor-vscode', 'Visual Studio Code'…). */
+export function clientFromAgent(name: string | undefined | null): Client | null {
+  if (!name) return null;
+  if (/claude/i.test(name)) return 'claude';
+  if (/cursor/i.test(name)) return 'cursor';
+  if (/windsurf|codeium/i.test(name)) return 'windsurf';
+  if (/copilot|visual studio code|vscode/i.test(name)) return 'copilot';
+  return null;
+}
 
 export function isClient(s: string): s is Client {
   return (CLIENTS as readonly string[]).includes(s);

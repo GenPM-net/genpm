@@ -65,7 +65,7 @@ Rules
 `;
 
 exports[`other commands > list, outdated, remove with drift 1`] = `
-"  @core/auth  1.2.0  src/lib/auth  <auth7>  1 file modified
+"  @core/auth  1.2.0  src/lib/auth  <auth7>  1 file changed
   @core/db    1.0.3  src/lib/db    <db7>  clean
 "
 `;

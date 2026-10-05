@@ -53,6 +53,8 @@ export type PlanInput = {
   cwd: string;
   dest?: string;
   clients?: string[];
+  /** Cliente de IA conectado por MCP: se añade a los detectados (no los sustituye). */
+  agentClient?: Client | null;
   force?: boolean;
   allowAutorun?: boolean;
   registry?: string;
@@ -194,6 +196,8 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
   const root = await findRoot(input.cwd, input.home);
   const rc = await loadRc(root, input.home);
   const clients = await detectClients(root, input.clients ?? rc.clients);
+  // El agente que hace la petición por MCP recibe su contexto aunque el proyecto aún no tenga sus archivos.
+  if (input.agentClient && !clients.includes(input.agentClient)) clients.push(input.agentClient);
   const packageManager = await detectPackageManager(root);
   const lock = await readLock(root);
   const installed = Object.entries(lock.p).map(([n, e]) => `${n}@${e.v}`);

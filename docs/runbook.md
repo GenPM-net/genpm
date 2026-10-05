@@ -82,9 +82,13 @@ Los manifiestos se firman con Ed25519 (`security.md` §4.3). El cliente lleva fi
 
 1. **Activar la clave siguiente** (ya está en los clientes publicados):
 
+   `SIGNING_KEY_ID` es una variable de `wrangler.jsonc`, no un secreto (`wrangler secret put` falla con el nombre ya en
+   uso): se cambia ahí y se despliega.
+
    ```bash
    cd apps/registry
-   npx wrangler secret put SIGNING_KEY_ID      # k2
+   # wrangler.jsonc → "SIGNING_KEY_ID": "k2"
+   npx wrangler deploy
    npx wrangler d1 execute genpm-registry --remote --command \
      "UPDATE signing_keys SET status = CASE id WHEN 'k2' THEN 'active' WHEN 'k1' THEN 'retired' ELSE status END"
    ```
@@ -156,7 +160,7 @@ Post-mortem público y sin culpables para toda incidencia alta o crítica.
 
 | Entorno | Web | API | D1 | Clave de firma |
 |---|---|---|---|---|
-| staging | https://staging.genpm.net (noindex) | https://api.staging.genpm.net | `genpm-registry-staging` | `s1` (solo staging) |
+| staging | https://staging.genpm.net (noindex) | https://api.staging.genpm.net | `genpm-registry-staging` | `s3` activa (solo staging; `s2` retirada en el ensayo del 2026-10-05) |
 | producción | https://genpm.net | https://api.genpm.net | `genpm-registry` | `k1` activa, `k2` siguiente |
 
 La zona `genpm.net` está en Cloudflare (plan Free) desde el 2026-10-04; el correo sigue en Piensa (`mx.buzondecorreo.com`)
@@ -170,7 +174,8 @@ pnpm --filter @genpm/registry exec wrangler deploy [--env staging]   # API
 pnpm --filter @genpm/web deploy:staging                              # web staging
 pnpm --filter @genpm/web run deploy                                  # web producción (exige owner.json completo)
 GENPM_REGISTRY=https://api.staging.genpm.net \
-GENPM_PUBLIC_KEYS='{"s1":"HT1CBlCFIllWWGS8QUvAcEb_SMUL66MvnUfuOc0m6bc"}' genpm search db   # CLI contra staging
+GENPM_PUBLIC_KEYS='{"s3":"GEiaJcRe0ZALkojvz2M1cPuyhkWgx7VcMO2tA4wzgn0"}' \
+GENPM_ROOT_PUBLIC_KEY=NxO4gCEuAoawEYWXwL5D2gcBdO13fJGC05gDoN-O8vc genpm search db                  # CLI contra staging
 ```
 
 ### 4.1 Credenciales externas

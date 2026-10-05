@@ -90,6 +90,12 @@ const LICENSES = [
   'Unlicense',
 ];
 
+/** Scope del paquete: el del nombre sugerido (genpm.json del repo) o el dueño del repo. */
+const scopeOf = (c: Check) =>
+  /^@([a-z0-9][a-z0-9-]*)\//.exec(String(c.suggested['n'] ?? ''))?.[1] ?? c.repo.owner.toLowerCase();
+
+const withDefaults = (o: unknown) => ({ x: 'AGENTS.md', ...(o as Record<string, unknown>) });
+
 const pretty = (o: unknown) => `${JSON.stringify(canonicalObject(o as Record<string, unknown>), null, 2)}\n`;
 
 function Item(props: { ok: boolean | null; title: string; text: string; children?: preact.ComponentChildren }) {
@@ -178,11 +184,12 @@ export default function PublishWizard({ labels: L, locale }: { labels: WizardLab
 
   const manifest = useMemo(() => {
     if (!check) return null;
-    // El scope lo fija el dueño del repo (ADR-006): solo se edita el nombre tras la barra.
+    // El scope no se edita (ADR-006): el del genpm.json del repo o, si no hay, el del dueño. Una org puede tener scopes
+    // con otro nombre (GenPM-net publica @core/*); el registry comprueba igualmente los permisos.
     const o: Record<string, unknown> = {
       ...check.suggested,
       $: 1,
-      n: `@${check.repo.owner.toLowerCase()}/${form.n.trim().toLowerCase()}`,
+      n: `@${scopeOf(check)}/${form.n.trim().toLowerCase()}`,
       v: form.v.trim(),
       d: form.d.trim(),
     };
@@ -309,7 +316,8 @@ export default function PublishWizard({ labels: L, locale }: { labels: WizardLab
   const errFor = (key: string) => issues.find((i) => i.path === key || i.path.startsWith(`${key}.`))?.message;
   const json = pretty(manifest);
   const inRepo = check.manifest.status === 'ok' && check.manifest.data ? pretty(check.manifest.data) : null;
-  const manifestOk = inRepo !== null && inRepo === json;
+  // Se compara con los valores por defecto aplicados: un genpm.json sin "x" equivale a "x": "AGENTS.md".
+  const manifestOk = inRepo !== null && pretty(withDefaults(check.manifest.data)) === pretty(withDefaults(manifest));
   const rulesOk = check.rules.status === 'ok';
   const version = form.v.trim();
   const tag = check.tags.find((t) => t === `v${version}` || t === version) ?? null;
@@ -383,7 +391,7 @@ export default function PublishWizard({ labels: L, locale }: { labels: WizardLab
             <div class="field">
               <label for="wz-n">{L.fName}</label>
               <div class="wz-scoped" aria-invalid={errFor('n') ? 'true' : 'false'}>
-                <span>@{repo.owner.toLowerCase()}/</span>
+                <span>@{check ? scopeOf(check) : repo.owner.toLowerCase()}/</span>
                 <input
                   id="wz-n"
                   class="mono"

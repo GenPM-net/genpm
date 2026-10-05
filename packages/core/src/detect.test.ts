@@ -3,7 +3,15 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { loadRc, mergeRc, parseRc, registryFor } from './config.js';
-import { detect, detectClients, detectPackageManager, findRoot, isEmptyDir, readPackageDeps } from './detect.js';
+import {
+  clientFromAgent,
+  detect,
+  detectClients,
+  detectPackageManager,
+  findRoot,
+  isEmptyDir,
+  readPackageDeps,
+} from './detect.js';
 
 let dir: string;
 beforeEach(async () => {
@@ -122,5 +130,16 @@ describe('.genpmrc', () => {
     await writeFile(join(dir, '.genpmrc'), 'lang=pt-BR');
     expect((await loadRc(dir, join(dir, 'nohome'))).lang).toBe('pt-BR');
     expect(await loadRc(null, join(dir, 'nohome'))).toEqual({ scopes: {} });
+  });
+});
+
+describe('cliente de IA conectado por MCP', () => {
+  it('reconoce los nombres de clientInfo de los clientes MCP', () => {
+    expect(clientFromAgent('claude-code')).toBe('claude');
+    expect(clientFromAgent('cursor-vscode')).toBe('cursor');
+    expect(clientFromAgent('Visual Studio Code')).toBe('copilot');
+    expect(clientFromAgent('windsurf-client')).toBe('windsurf');
+    expect(clientFromAgent('mcp-inspector')).toBeNull();
+    expect(clientFromAgent(undefined)).toBeNull();
   });
 });

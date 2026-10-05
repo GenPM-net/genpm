@@ -28,6 +28,9 @@ export async function loadPackage(
   if (pkgRes.status === 451) return 'quarantined';
   const pkg = pkgRes.data;
   if (!pkg) return pkgRes.status === 404 ? null : 'unavailable';
+  // El registry sirve los metadatos de un paquete en cuarentena (status) y responde 451 solo al resolver: la web no
+  // debe ofrecer instalarlo (runbook §1).
+  if (pkg.status === 'quarantined') return 'quarantined';
   let manifest = pkg.latest;
   if (version && version !== manifest?.version) {
     const v = await registryGet<LongManifest>(`/v1/packages/${name}/versions/${version}`, locale);

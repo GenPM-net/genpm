@@ -227,7 +227,7 @@ Muestra manifiesto resuelto en forma larga, dependencias, MCP, env, licencia, es
 ### `genpm list` (`ls`) ✅
 
 ```
-  @core/auth   1.2.0  src/lib/auth   1b9d3a0   3 files modified
+  @core/auth   1.2.0  src/lib/auth   1b9d3a0   3 files changed
   @core/db     1.0.3  src/lib/db     77ac0d2   clean
 ```
 Drift = comparación de hashes con `.genpm/files/<slug>.json`. `--json` ⇒ `[{n,v,c,d,drift:{modified:[…],deleted:[…],added:[…]}}]`.
@@ -243,7 +243,7 @@ Drift = comparación de hashes con `.genpm/files/<slug>.json`. `--json` ⇒ `[{n
 
 Compara el lock con `resolve?range=latest` (en paralelo, máx. 8 concurrentes):
 ```
-  @core/auth   1.2.0 → 1.3.1   minor   3 files modified locally
+  @core/auth   1.2.0 → 1.3.1   minor   3 files changed locally
   @core/db     1.0.3 → 2.0.0   major   clean
 ```
 Exit 0 aunque haya desactualizados (`--exit-code` ⇒ exit 4 si hay alguno, útil en CI).

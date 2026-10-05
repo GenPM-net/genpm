@@ -108,7 +108,7 @@
   },
   "list": {
     "empty": "No GenPM packages in this project.",
-    "drift": "{count, plural, =0 {clean} one {# file modified} other {# files modified}}"
+    "drift": "{count, plural, =0 {clean} one {# file changed} other {# files changed}}"
   },
   "remove": {
     "done": "Removed {name}",
