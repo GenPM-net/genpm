@@ -24,14 +24,15 @@ Appointing a data protection officer is not required (art. 37 GDPR, art. 34 LOPD
 | Install events: package, version, client (`cli`/`mcp`), CLI version and country (derived from the IP, which is not stored) | Public install counters and aggregated statistics | Legitimate interest in measuring registry usage | Aggregated daily; individual events, 90 days |
 | IP address, turned into a hash with a daily-rotated salt | Rate limiting and abuse prevention | Legitimate interest in service security (art. 6.1.f, recital 49) | 30 days at most |
 | Technical server logs (Cloudflare Workers) | Diagnose errors and attacks | Legitimate interest in service security and continuity | 7 days at most |
-| Web analytics: searches made, package viewed, language and path (no IP or identifiers) | Know what people search for and use, to improve the service | Legitimate interest in measuring usage in aggregate (art. 6.1.f) | 3 months (Cloudflare Analytics Engine) |
+| Web analytics: page views, searches, package viewed, language, path, referring domain, campaign, country and whether the visit is a bot (no IP or identifiers) | Know what people search for and use, and where visits come from, to improve the service | Legitimate interest in measuring usage in aggregate (art. 6.1.f) | 3 months (Cloudflare Analytics Engine) |
+| **Only if you accept optional analytics:** clicks, scrolling, pages visited and a session recording with form fields hidden, a random browser identifier, browser and device type (PostHog). Account pages are never recorded and your IP is not forwarded | Heatmaps and finding where people get stuck, to improve the site | Your consent (art. 6.1.a GDPR and art. 22.2 LSSI-CE), which you can withdraw any time from "Cookie preferences" in the footer | Events, 12 months; recordings, 30 days |
 | Sponsors or enterprise form: email, company, team size, IDE and message | Answer your request | Pre-contractual steps at your request (art. 6.1.b) | 12 months unless we reach an agreement |
 | Package reports: your account, the package, the reason and your description | Review the reported content and communicate the decision | Legal obligation under the EU Digital Services Act, art. 16 (art. 6.1.c GDPR) | 2 years after the decision |
 | Emails you send us | Handle your request or the exercise of your rights | Legitimate interest in answering you or, where applicable, a legal obligation | As long as needed and up to 2 years afterwards |
 
 These periods are enforced automatically: a daily job deletes or anonymizes whatever has expired.
 
-**What we never process:** the contents of your project, your `.env` files or your environment variable values. We use no advertising or cross-site tracking cookies, and your browser sends nothing for analytics: we count the pages you request on our servers (see the [Cookie Policy](/cookies)).
+**What we never process:** the contents of your project, your `.env` files or your environment variable values. We use no advertising or cross-site tracking cookies. Unless you accept optional analytics, your browser sends nothing for analytics: we count the pages you request on our servers (see the [Cookie Policy](/cookies)).
 
 **CLI and MCP telemetry:** with `GENPM_TELEMETRY=0` or `DO_NOT_TRACK=1` the client sends `client=none` and the registry does not store the event. You can object this way at any time.
 
@@ -46,6 +47,7 @@ We do not sell or share your data with third parties. These providers process it
 | Provider | Service | Location |
 |---|---|---|
 | Cloudflare, Inc. | Hosting (Workers), database (D1), delivery network, anti-bot protection (Turnstile) and aggregated analytics | EU and US |
+| PostHog, Inc. | Optional web analytics (heatmaps and session recordings), only with your consent | EU (Frankfurt, Germany) |
 | Piensa Solutions (Arsys Internet, S.L.U.) | Domain and email | Spain |
 
 **GitHub, Inc.** acts as an independent controller when you sign in with GitHub and when the registry reads public repositories; its own [privacy statement](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement) applies.
@@ -56,7 +58,7 @@ We only disclose data to authorities when a law requires it.
 
 ## 4. International transfers
 
-Cloudflare, Inc. and GitHub, Inc. participate in the EU-US Data Privacy Framework, recognized by the European Commission's adequacy decision of 10 July 2023 (art. 45 GDPR). Their contracts also include the Commission's standard contractual clauses (art. 46 GDPR).
+Cloudflare, Inc. and GitHub, Inc. participate in the EU-US Data Privacy Framework, recognized by the European Commission's adequacy decision of 10 July 2023 (art. 45 GDPR). Their contracts also include the Commission's standard contractual clauses (art. 46 GDPR). PostHog hosts the data in the EU; any access from the US is covered by the Commission's standard contractual clauses (art. 46 GDPR).
 
 ## 5. Your rights
 

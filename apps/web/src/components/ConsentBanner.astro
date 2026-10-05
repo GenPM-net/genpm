@@ -1,0 +1,28 @@
+---
+// Banner de consentimiento (ADR-027): solo existe si hay POSTHOG_KEY. Aceptar y Rechazar tienen el mismo peso visual,
+// no hay casillas premarcadas y se puede cambiar de opinión desde el pie («Preferencias de cookies»). Se muestra con JS
+// (lib/client.ts) cuando aún no hay decisión: sin JS no se muestra y tampoco se carga PostHog.
+import { env } from 'cloudflare:workers';
+import { href } from '../lib/i18n.js';
+
+const { t, locale } = Astro.locals;
+const key = env.POSTHOG_KEY;
+---
+{key && (
+  <section class="consent" data-consent data-ph-key={key} data-ph-ui={env.POSTHOG_UI_HOST || 'https://eu.posthog.com'} role="dialog" aria-labelledby="consent-t" aria-describedby="consent-d" hidden>
+    <h2 id="consent-t">{t.t('web.consent.title')}</h2>
+    <p id="consent-d">{t.t('web.consent.body')} <a href={href(locale, '/cookies')}>{t.t('web.consent.more')}</a></p>
+    <div class="consent-a">
+      <button class="btn sm" type="button" data-consent-choice="denied">{t.t('web.consent.reject')}</button>
+      <button class="btn sm" type="button" data-consent-choice="granted">{t.t('web.consent.accept')}</button>
+    </div>
+  </section>
+)}
+<style>
+  .consent { position: fixed; inset: auto 16px 16px auto; z-index: 60; max-width: 420px; background: var(--paper); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 8px 30px rgb(0 0 0 / 0.12); padding: 18px; }
+  .consent h2 { font-size: 15px; margin-bottom: 6px; }
+  .consent p { font-size: 14px; color: var(--ink-2); }
+  .consent-a { display: flex; gap: 8px; margin-top: 14px; }
+  .consent-a .btn { flex: 1; justify-content: center; }
+  @media (max-width: 520px) { .consent { inset: auto 16px 16px 16px; max-width: none; } }
+</style>

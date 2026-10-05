@@ -4,6 +4,7 @@
 import { defineMiddleware } from 'astro:middleware';
 import { env } from 'cloudflare:workers';
 import { createT, PSEUDO } from '@genpm/i18n';
+import { recordEvent } from './lib/analytics.js';
 import { splitLocale } from './lib/i18n.js';
 import { withRequest } from './lib/request-context.js';
 
@@ -73,5 +74,13 @@ const handle: Parameters<typeof defineMiddleware>[0] = async (ctx, next) => {
   if (!res.headers.has('Content-Language') && html) res.headers.set('Content-Language', locale);
   // Con sesión, el HTML lleva datos de la cuenta (menú, panel): nunca de una caché compartida ni sin revalidar.
   if (session && html) res.headers.set('Cache-Control', 'private, no-cache');
+  // Página vista contada en el servidor (lib/analytics.ts): solo HTML servido con éxito o 404, nunca recursos.
+  if (ctx.request.method === 'GET' && html && (res.status === 200 || res.status === 404))
+    recordEvent('page_view', res.status === 404 ? '404' : path, {
+      request: ctx.request,
+      locale,
+      path: res.status === 404 ? '/404' : path,
+      member: !!session,
+    });
   return res;
 };

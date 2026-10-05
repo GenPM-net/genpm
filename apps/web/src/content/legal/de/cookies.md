@@ -6,7 +6,7 @@ Diese Richtlinie entspricht Artikel 22.2 des spanischen Gesetzes 34/2002 über D
 
 ## Kurz gesagt
 
-genpm.net **verwendet nur technische Cookies und Einstellungen, die du selbst wählst** und die für den angeforderten Dienst unbedingt erforderlich sind. Sie sind von der Einwilligungspflicht ausgenommen (Art. 22.2 LSSI-CE), deshalb gibt es kein Cookie-Banner. Wir verwenden keine Analyse-, Werbe- oder Tracking-Cookies, weder eigene noch von Dritten. Die Analyse erfolgt auf unseren Servern anhand der Seiten, die du aufrufst (Suchen und angesehene Pakete): Dein Browser sendet dafür nichts, auf deinem Gerät wird nichts gespeichert und weder deine IP noch eine Kennung werden erfasst.
+genpm.net verwendet **technische Cookies und Einstellungen, die du selbst wählst** und die keiner Einwilligung bedürfen (Art. 22.2 LSSI-CE), sowie **eine optionale Analyse, die nur läuft, wenn du sie im Hinweis bei deinem ersten Besuch akzeptierst**. „Akzeptieren“ und „Ablehnen“ sind gleichwertig: Lehnst du ab oder triffst keine Wahl, wird kein Analyseskript geladen und nichts davon auf deinem Gerät gespeichert. Wir verwenden keine Werbe-Cookies. Unabhängig davon zählen wir auf unseren Servern die Seiten, die du aufrufst (Seitenaufrufe, Suchen, Pakete, Herkunft und Land, ohne IP oder Kennungen): Dabei wird nichts in deinem Browser gespeichert.
 
 ## Was wir in deinem Browser speichern
 
@@ -16,6 +16,18 @@ genpm.net **verwendet nur technische Cookies und Einstellungen, die du selbst w�
 | `__Host-genpm_oauth` | Technisches Cookie | GenPM | Die GitHub-Anmeldung vor Fälschung schützen (CSRF) | 10 Minuten |
 | `genpm-theme` | Lokaler Speicher | GenPM | Den gewählten hellen oder dunklen Modus merken | Bis du ihn löschst |
 | `genpm-lang-dismissed` | Lokaler Speicher | GenPM | Keine andere Sprache mehr vorschlagen, nachdem du den Hinweis geschlossen hast | Bis du ihn löschst |
+| `genpm_consent` | Einstellungs-Cookie | GenPM | Speichern, ob du die optionale Analyse akzeptiert oder abgelehnt hast | 6 Monate |
+
+## Optionale Analyse (nur mit deiner Zustimmung)
+
+Wenn du auf „Akzeptieren“ klickst, nutzen wir **PostHog** (PostHog, Inc., Daten in der EU gespeichert) für Heatmaps von Klicks und Scrollen sowie anonyme Sitzungsaufzeichnungen mit verborgenen Formularfeldern. Kontoseiten (Anmeldung, Tokens, Dashboard und Veröffentlichen) werden nie aufgezeichnet, und die Anfragen laufen über unsere eigene Domain, ohne deine IP weiterzugeben.
+
+| Name | Typ | Anbieter | Zweck | Dauer |
+|---|---|---|---|---|
+| `ph_<schlüssel>_posthog` | Analyse-Cookie und lokaler Speicher | PostHog (Dritter, Auftragsverarbeiter von GenPM) | Zufällige Kennung, um deine Besuche und die aufgezeichnete Sitzung zusammenzufassen | 12 Monate |
+| `ph_*` in `sessionStorage` | Analyse-Sitzungsspeicher | PostHog | Aufzeichnung der laufenden Sitzung | Bis du den Tab schließt |
+
+**Meinung ändern:** Klicke im Footer jeder Seite auf „Cookie-Einstellungen“. Wenn du die Einwilligung widerrufst, laden wir PostHog nicht mehr und löschen seine Cookies und seinen Speicher aus deinem Browser. Der Widerruf ist so einfach wie die Einwilligung und schränkt nichts ein, was du auf der Website tun kannst.
 
 ## Sicherheit durch Cloudflare
 
@@ -29,4 +41,4 @@ Du kannst Cookies und lokalen Speicher in den Einstellungen deines Browsers lös
 
 Der CLI `genpm` und der Server `@genpm-net/mcp` verwenden keine Cookies. Zur Installations-Telemetrie und wie du sie abschaltest, siehe die [Datenschutzerklärung](/privacy).
 
-Sollten wir jemals Cookies hinzufügen, die deine Einwilligung erfordern, fragen wir dich vor der Nutzung und aktualisieren diese Richtlinie.
+Wenn wir die verwendeten Cookies ändern, aktualisieren wir diese Richtlinie und bitten dich bei geändertem Zweck erneut um deine Einwilligung.

@@ -269,7 +269,7 @@ Modal desde la página de paquete: motivo (malware, prompt injection, spam, typo
 
 **Seguridad web:** CSP estricta (`default-src 'self'`; imágenes de GitHub vía proxy propio), cookies `__Host-` HttpOnly/Secure/SameSite=Lax, CSRF token en formularios autenticados, Turnstile en formularios públicos, sanitización de todo Markdown de terceros.
 
-**Analítica (sin cookies):** Cloudflare Web Analytics + eventos propios a Analytics Engine: `search` (query, nº resultados), `copy_install` (paquete, runner, tab), `tab_view` (tab), `sponsored_impression`/`sponsored_click` (campaña), `mcp_setup_copy` (cliente), `publish_cta`.
+**Analítica (ADR-027), en dos capas:** (1) **en el servidor, sin cookies ni consentimiento**: eventos a Analytics Engine `page_view` (ruta, dominio de procedencia, país, campaña `utm_source`/`ref`), `search` (query, nº resultados), `pkg_view`, `sponsored_impression`/`sponsored_click` (campaña, clic vía `?sc=`), cada uno marcado `bot`/`human`/`member`; panel `/admin/analytics` (staff). El navegador no envía balizas. (2) **Solo con consentimiento** (banner con «Aceptar»/«Rechazar» del mismo peso, `genpm_consent`, reabrible desde el pie): PostHog Cloud EU vía proxy propio `/ph/*` (CSP `'self'`) con mapas de calor, grabaciones enmascaradas (nunca páginas de cuenta), `copy_install`, `tab_view` y `mcp_setup_copy`. Sin `POSTHOG_KEY` no hay banner ni PostHog.
 
 **i18n:** 8 idiomas desde el lanzamiento (nivel 1 `en`, `es`, `pt-BR`; nivel 2 beta `fr`, `de`, `ja`, `zh-CN`, `ko`) con Astro i18n routing, `hreflang`, fuentes CJK por ruta, propiedades CSS lógicas (preparado para RTL) y banner de sugerencia según `Accept-Language` (sin redirección automática). Detalle: [i18n §4.4](i18n.md#44-web).
 

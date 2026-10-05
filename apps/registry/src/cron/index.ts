@@ -7,6 +7,7 @@
 
 import type { Env } from '../env.js';
 import { newId } from '../ids.js';
+import { aeConfigured, aeDataset, aeQuery } from '../services/ae.js';
 import { GitHub, parseGithubRepo } from '../services/github.js';
 import { activeSigningKey, sign } from '../services/signing.js';
 
@@ -19,23 +20,16 @@ type Row = { name: string; client: string; day: string; n: number | string };
  * los logs del Worker, porque si no los contadores se quedan en 0 sin ninguna señal (pasó en el lanzamiento).
  */
 async function aeRows(env: Env, fetchImpl: typeof fetch, since: string): Promise<Row[] | null> {
-  if (!env.CF_ACCOUNT_ID || !env.CF_AE_TOKEN) {
+  if (!aeConfigured(env)) {
     if (env.ENVIRONMENT === 'production' || env.ENVIRONMENT === 'staging')
       console.warn(JSON.stringify({ level: 'alert', event: 'installs_rollup_skipped', reason: 'missing CF_AE_TOKEN' }));
     return null;
   }
-  const dataset = env.ENVIRONMENT === 'staging' ? 'genpm_installs_staging' : 'genpm_installs';
-  const sql = `SELECT blob1 AS name, blob3 AS client, formatDateTime(timestamp, '%Y-%m-%d') AS day, SUM(_sample_interval) AS n FROM ${dataset} WHERE timestamp >= toDateTime('${since} 00:00:00') AND blob3 IN ('cli', 'mcp') GROUP BY name, client, day FORMAT JSON`;
-  const res = await fetchImpl(
-    `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/analytics_engine/sql`,
-    {
-      method: 'POST',
-      headers: { authorization: `Bearer ${env.CF_AE_TOKEN}` },
-      body: sql,
-    },
+  return aeQuery<Row>(
+    env,
+    `SELECT blob1 AS name, blob3 AS client, formatDateTime(timestamp, '%Y-%m-%d') AS day, SUM(_sample_interval) AS n FROM ${aeDataset(env, 'installs')} WHERE timestamp >= toDateTime('${since} 00:00:00') AND blob3 IN ('cli', 'mcp') GROUP BY name, client, day FORMAT JSON`,
+    fetchImpl,
   );
-  if (!res.ok) throw new Error(`analytics engine ${res.status}`);
-  return ((await res.json()) as { data: Row[] }).data;
 }
 
 /** Clientes que instalan. `web` (lecturas del .md antes de ADR-027) no es una instalación. */

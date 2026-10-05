@@ -6,7 +6,7 @@ Esta política cumpre o artigo 22.2 da Lei espanhola 34/2002 de Serviços da Soc
 
 ## Resumo
 
-genpm.net **usa apenas cookies técnicos e preferências que você mesmo escolhe**, indispensáveis para prestar o serviço que você solicita. Estão isentos de consentimento, por isso não há banner de cookies. Não usamos cookies de analítica, publicidade ou rastreamento, próprios ou de terceiros. A analítica é feita nos nossos servidores a partir das páginas que você pede (buscas e pacotes vistos): o seu navegador não envia nada para isso, nada é guardado no seu dispositivo e não registramos o seu IP nem nenhum identificador.
+O genpm.net usa **cookies técnicos e de preferências que você mesmo escolhe**, isentos de consentimento (art. 22.2 LSSI-CE), e **uma analítica opcional que só é ativada se você aceitar** no aviso que aparece na sua primeira visita. "Aceitar" e "Recusar" têm o mesmo peso: se você recusar ou não escolher, nenhum script de analítica é carregado e nada dele é guardado no seu dispositivo. Não usamos cookies de publicidade. À parte, contamos nos nossos servidores as páginas que você pede (páginas vistas, buscas, pacotes, origem e país, sem IP nem identificadores): isso não guarda nada no seu navegador.
 
 ## O que guardamos no seu navegador
 
@@ -16,6 +16,18 @@ genpm.net **usa apenas cookies técnicos e preferências que você mesmo escolhe
 | `__Host-genpm_oauth` | Cookie técnico | GenPM | Proteger o login com GitHub contra falsificação (CSRF) | 10 minutos |
 | `genpm-theme` | Armazenamento local | GenPM | Lembrar o modo claro ou escuro escolhido | Até você apagar |
 | `genpm-lang-dismissed` | Armazenamento local | GenPM | Não sugerir outro idioma depois que você fechou o aviso | Até você apagar |
+| `genpm_consent` | Cookie de preferência | GenPM | Lembrar se você aceitou ou recusou a analítica opcional | 6 meses |
+
+## Analítica opcional (só se você aceitar)
+
+Se você clicar em "Aceitar", usamos o **PostHog** (PostHog, Inc., com os dados hospedados na UE) para ver mapas de calor de cliques e rolagem e gravações anônimas da sessão, com os campos de formulário ocultos. As páginas da conta (login, tokens, painel e publicação) nunca são gravadas, e as requisições passam pelo nosso próprio domínio sem repassar o seu IP.
+
+| Nome | Tipo | Titular | Finalidade | Duração |
+|---|---|---|---|---|
+| `ph_<chave>_posthog` | Cookie e armazenamento local de analítica | PostHog (terceiro, operador da GenPM) | Identificador aleatório para agrupar as suas visitas e a sessão gravada | 12 meses |
+| `ph_*` em `sessionStorage` | Armazenamento de sessão de analítica | PostHog | Manter a gravação da sessão em curso | Até fechar a aba |
+
+**Mudar de ideia:** clique em "Preferências de cookies" no rodapé de qualquer página. Se você retirar o consentimento, deixamos de carregar o PostHog e apagamos do seu navegador os cookies e o armazenamento dele. Retirar é tão fácil quanto dar e não limita nada do que você pode fazer no site.
 
 ## Segurança da Cloudflare
 
@@ -29,4 +41,4 @@ Você pode apagar ou bloquear cookies e o armazenamento local nas configuraçõe
 
 O CLI `genpm` e o servidor `@genpm-net/mcp` não usam cookies. Sobre a telemetria de instalações e como desativá-la, veja a [Política de privacidade](/privacy).
 
-Se um dia adicionarmos cookies que exijam seu consentimento, pediremos antes de usá-los e atualizaremos esta política.
+Se mudarmos os cookies que usamos, atualizaremos esta política e, se a finalidade mudar, pediremos o seu consentimento de novo.

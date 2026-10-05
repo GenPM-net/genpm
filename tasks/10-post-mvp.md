@@ -15,14 +15,19 @@
 - [x] `V011-06` **DONE** Crear el token `CF_AE_TOKEN` (Account Analytics: Read) y cargarlo en producción y staging · F · 0.5h · deps: D6-P-03
   - `wrangler secret put CF_AE_TOKEN` y `wrangler secret put CF_AE_TOKEN --env staging` en apps/registry. Comprobar: en la siguiente hora en punto desaparece `installs_rollup_skipped` de los logs; el cron de las 03:15 recupera los últimos 30 días (ADR-027).
   - ✅ 2026-10-05: el fundador cargó el secreto en producción y staging. Queda confirmar en los logs que ya no aparece `installs_rollup_skipped`; la recuperación de 30 días llega al desplegar esta rama.
-- [ ] `V011-07` **TODO** Cloudflare Web Analytics sin cookies: alta del sitio, beacon en Base.astro y CSP ampliada · W · 1h · deps: V011-06
-- [ ] `V011-08` **TODO** Eventos de producto en el navegador: POST /e same-origin con sendBeacon a Analytics Engine (copy_install, tab_view, mcp_setup_copy, publish_cta) · W · 3h · deps: V011-07
-  - Sin cookies, sin IP ni identificadores; lista cerrada de eventos validada con zod; rate limit; textos y ruta truncados como en lib/analytics.ts.
-- [ ] `V011-09` **TODO** Eventos de servidor que faltan: búsquedas sin resultados, publish_ok, login y sponsored_impression/click · A · 2h · deps: V011-06
-- [ ] `V011-10` **TODO** Panel /admin/analytics (solo staff) sobre la SQL API de AE: visitas, top búsquedas, demanda no cubierta y embudo visita → copia → instalación · W · 6h · deps: V011-08, V011-09
-- [ ] `V011-11` **TODO** Decidir ADR-027 capa 2 (mapas de calor con consentimiento) y revisar el texto legal del banner · F · 1h · deps: V011-10
-- [ ] `V011-12` **TODO** PostHog Cloud EU con opt-in: banner con rechazar igual de visible, proxy /ph/*, mapas de calor y grabaciones enmascaradas, políticas actualizadas · W · 8h · deps: V011-11
-  - DoD: sin consentimiento no se carga ningún script ni se escribe nada en el navegador (test e2e); cambiar de opinión desde el pie de página; política de cookies, privacidad y registro de actividades actualizados.
+- [x] `V011-07` **DONE** Analítica de servidor sin consentimiento: page_view con procedencia, país, campaña y bot/persona/sesión · W · 2h · deps: V011-06
+  - ✅ 2026-10-05: sustituye a Cloudflare Web Analytics (su baliza también exige consentimiento, ADR-027). Middleware de la web + lib/analytics.ts; robots separados por user-agent sin guardarlo.
+- [x] `V011-08` **DONE** Eventos de producto del navegador (copy_install, tab_view, mcp_setup_copy) solo con consentimiento, vía PostHog · W · 2h · deps: V011-07
+- [x] `V011-09` **DONE** Eventos de servidor que faltan: búsquedas sin resultados, publish_ok, login y sponsored_impression/click · A · 2h · deps: V011-06
+  - ✅ 2026-10-05: nº de resultados en `search`; impresiones y clics (`?sc=`) de patrocinados; publicaciones, logins y cuentas nuevas salen de D1 (audit_log/accounts) en el panel.
+- [x] `V011-10` **DONE** Panel /admin/analytics (solo staff) sobre la SQL API de AE: visitas, top búsquedas, demanda no cubierta y embudo visita → copia → instalación · W · 6h · deps: V011-08, V011-09
+  - ✅ 2026-10-05: `GET /v1/admin/analytics` (staff; resto 404) + página en 8 idiomas. El embudo es vista de paquete → instalación (la copia solo se mide con consentimiento, en PostHog).
+- [x] `V011-11` **DONE** Decidir ADR-027 capa 2 (mapas de calor con consentimiento) y revisar el texto legal del banner · F · 1h · deps: V011-10
+  - ✅ 2026-10-05: el fundador decide añadir el banner. Revisión por abogado sigue en `D6-P-08`.
+- [x] `V011-12` **DONE** PostHog Cloud EU con opt-in: banner con rechazar igual de visible, proxy /ph/*, mapas de calor y grabaciones enmascaradas, políticas actualizadas · W · 8h · deps: V011-11
+  - ✅ 2026-10-05: probado en Chromium con `wrangler dev`: sin decisión o con «Rechazar» no se descarga PostHog ni se escribe nada `ph_*`; con «Aceptar» se carga por `/ph`; el banner se reabre desde el pie. Cookies, privacidad (8 idiomas) y registro de actividades actualizados.
+- [ ] `V011-13` **TODO** Activar PostHog en producción: proyecto en región EU, DPA aceptado, retención 30 días/12 meses, POSTHOG_KEY en wrangler.jsonc y despliegue de la web · F · 0.5h · deps: V011-12
+  - Hasta entonces no hay banner ni PostHog; la capa de servidor y el panel funcionan ya.
 
 ## v0.2 · +2 semanas
 

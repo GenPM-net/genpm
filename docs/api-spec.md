@@ -73,6 +73,7 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | GET/POST/DELETE | `/v1/tokens` | cookie | ✅ | Gestión de tokens en la web |
 | POST | `/v1/reports` | token/cookie | ✅ | Reportar paquete (abuso/malware) |
 | POST | `/v1/leads` | — (Turnstile) | ⏳ P1 | Formularios de `/sponsors` y `/enterprise` |
+| GET | `/v1/admin/analytics?days=1..90` | token/cookie (staff; resto ⇒ 404) | ✅ | Panel `/admin/analytics` (ADR-027): Analytics Engine (web e instalaciones) + D1 (publicaciones, logins, cuentas). `private, no-store` |
 | GET | `/v1/badge/:scope/:name.svg` | — | ✅ | Badge para READMEs |
 | GET | `/v1/advisories?p=@core/auth@1.2.0,…` | — | ✅ | `genpm audit`: advisories, versiones retiradas y cuarentenas para una lista de paquetes |
 | GET | `/v1/keys` | — | ✅ | Claves públicas de firma vigentes + lista de revocación firmada |
@@ -123,7 +124,7 @@ Camino crítico de la instalación. Cuenta como evento de instalación (Analytic
 | `range` | `latest` | Rango semver (`^1.2.0`), versión exacta o dist-tag (`latest`, `next`). |
 | `deps` | `0` | `1` ⇒ incluye la clausura plana de dependencias `g` resuelta en el servidor. |
 | `installed` | — | Lista `n@v` ya instalados en el proyecto (`installed=@core/db@1.0.3`), para que el resolutor los reutilice si satisfacen. |
-| `client` | `cli` | `cli`/`mcp`/`web` — solo telemetría. |
+| `client` | `cli` | `cli`/`mcp`/`none` — solo telemetría. Solo `cli` y `mcp` cuentan como instalación; `none` lo envían `GENPM_TELEMETRY=0`/`DO_NOT_TRACK=1`, `--dry-run`, la vista previa `dryRun` del MCP y la página `.md` de la web (ADR-027). |
 
 Algoritmo de resolución de `deps`:
 1. Cola BFS desde la raíz; para cada `g` acumula rangos por nombre.

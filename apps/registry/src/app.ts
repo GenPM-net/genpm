@@ -8,6 +8,7 @@ import { notFound, onError } from './middleware/problem.js';
 import { rateLimit } from './middleware/rate-limit.js';
 import { tenant } from './middleware/tenant.js';
 import { leads, myPackages, reports, tokens } from './routes/account.js';
+import { admin } from './routes/admin.js';
 import { auth, me } from './routes/auth.js';
 import { advisories, badge, featured, scopes, stats } from './routes/discovery.js';
 import { health } from './routes/health.js';
@@ -61,6 +62,7 @@ export function createApp() {
   app.route('/v1/tokens', tokens);
   app.route('/v1/reports', reports);
   app.route('/v1/leads', leads);
+  app.route('/v1/admin', admin);
   app.onError(onError);
   app.notFound(notFound);
   return app;

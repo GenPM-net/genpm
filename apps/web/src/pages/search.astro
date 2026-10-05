@@ -12,7 +12,6 @@ import { registryGet, type SearchResponse } from '../lib/registry.js';
 const { t, locale } = Astro.locals;
 const url = Astro.url;
 const q = (url.searchParams.get('q') ?? '').slice(0, 100);
-if (q) recordEvent('search', q.trim().toLowerCase(), locale, '/search', Astro.request.headers.get('user-agent'));
 const k = (url.searchParams.get('k') ?? '').toLowerCase().replace(/[^a-z0-9-]/g, '');
 const mcp = url.searchParams.get('mcp') === '1';
 const sortParam = url.searchParams.get('sort');
@@ -25,6 +24,22 @@ if (mcp) p.set('mcp', '1');
 if (cursor) p.set('cursor', cursor);
 const res = await registryGet<SearchResponse>(`/v1/search?${p}`, locale);
 const data = res.data ?? { results: [], sponsored: null, next: null, total: 0 };
+// Solo la primera página: paginar no es otra búsqueda. Con 0 resultados es demanda no cubierta (web-ui-spec §5.2).
+if (q && !cursor && res.data)
+  recordEvent('search', q.trim().toLowerCase(), {
+    request: Astro.request,
+    locale,
+    path: Astro.locals.path,
+    member: !!Astro.locals.session,
+    results: data.total,
+  });
+if (data.sponsored)
+  recordEvent('sponsored_impression', data.sponsored.campaignId, {
+    request: Astro.request,
+    locale,
+    path: Astro.locals.path,
+    member: !!Astro.locals.session,
+  });
 const keywords = [...new Set(data.results.flatMap((r) => r.keywords))].slice(0, 12);
 const nextUrl = data.next
   ? `${href(locale, '/search')}?${new URLSearchParams({ ...(q ? { q } : {}), ...(k ? { k } : {}), ...(mcp ? { mcp: '1' } : {}), sort, cursor: data.next })}`
@@ -66,7 +81,7 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=30, stale-while-rev
           </form>
         </div>
         {data.sponsored && (
-          <a class="ritem sp" href={href(locale, `/p/${data.sponsored.name}`)} data-sponsored={data.sponsored.campaignId}>
+          <a class="ritem sp" href={`${href(locale, `/p/${data.sponsored.name}`)}?sc=${encodeURIComponent(data.sponsored.campaignId)}`} rel="sponsored" data-sponsored={data.sponsored.campaignId}>
             <div class="nm"><span class="spons">{t.t('web.common.sponsored')}</span><b>{data.sponsored.name}</b><span class="v">{data.sponsored.version}</span></div><p>{data.sponsored.summary}</p>
           </a>
         )}

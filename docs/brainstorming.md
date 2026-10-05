@@ -262,7 +262,7 @@ GenPM lo presta el fundador como persona física con domicilio en España. Conse
 - **Ley española y versión vinculante en español** (es, en y pt-BR publicados; el resto de idiomas muestra el inglés). Consumidores: juzgados de su domicilio.
 - **Aviso legal** (LSSI-CE art. 10) y **punto único de contacto** (DSA arts. 11-12): hello@genpm.net. Los datos del titular viven en `owner.json` y `pnpm --filter @genpm/web deploy` falla si falta alguno (`scripts/check-legal.mjs`).
 - **Privacidad** (RGPD art. 13 + LOPDGDD): tabla de datos/finalidad/base/plazo, encargados (Cloudflare, Piensa), GitHub como responsable independiente, transferencias vía Data Privacy Framework + CCT, derechos ante la AEPD, edad mínima 14 años. Primera capa informativa junto a cada formulario y al login.
-- **Cookies** (LSSI art. 22.2, guía AEPD): solo cookies técnicas y preferencias elegidas por el usuario ⇒ exentas de consentimiento y **sin banner**. Regla: cualquier cookie o almacenamiento no esencial (analítica de terceros, píxeles, embeds) exige antes un banner con rechazo tan fácil como aceptar y actualizar la política. La web no carga recursos de terceros salvo Turnstile en formularios (CSP `img-src 'self'`).
+- **Cookies** (LSSI art. 22.2, guía AEPD): solo cookies técnicas y preferencias elegidas por el usuario ⇒ exentas de consentimiento y **sin banner**. Regla: cualquier cookie o almacenamiento no esencial (analítica de terceros, píxeles, embeds) exige antes un banner con rechazo tan fácil como aceptar y actualizar la política. La web no carga recursos de terceros salvo Turnstile en formularios (CSP `img-src 'self'`). **Actualizado por ADR-027:** con `POSTHOG_KEY` hay banner y analítica opcional con consentimiento.
 - **Moderación (DSA arts. 14-18):** la Política de paquetes describe normas, detección, medidas, notificación sin cuenta, exposición de motivos y recurso. Como microempresa, GenPM está exento de las obligaciones de plataformas en línea de la sección 3 (art. 19), pero ofrece recurso igualmente.
 - La Ley de Accesibilidad (Directiva 2019/882) exime a microempresas de servicios; aun así la web cumple WCAG 2.1 AA (Lighthouse 100).
 - **Pendiente humano:** revisión de un abogado antes del lanzamiento con tráfico de pago (patrocinios) y valorar publicar un domicilio profesional en lugar del personal.
@@ -324,39 +324,36 @@ pertenece a otro usuario desde enero de 2025.
 `npx @genpm-net/cli …` y `npx -y @genpm-net/mcp`; `genpm upgrade` propone `@genpm-net/cli@latest`. Sustituye a los nombres
 de paquete npm de ADR-025 y anteriores. Los paquetes internos del monorepo (`@genpm/core`, `@genpm/manifest`…) no se
 publican y conservan su nombre. La vía principal sigue siendo el binario nativo.
-### ADR-027 · Analítica de producto en dos capas: sin consentimiento por defecto, mapas de calor solo con opt-in — 🟡 Propuesta (2026-10-05, pendiente del fundador)
+### ADR-027 · Analítica en dos capas: servidor sin consentimiento + PostHog con banner — ✅ Decidida (fundador, 2026-10-05)
 
-**Contexto:** tras el lanzamiento la home marcaba 0 instalaciones aunque había visitas. Causas: (1) faltaba el secreto
-`CF_AE_TOKEN`, así que el cron horario no podía leer Analytics Engine y no movía nada a D1 sin dar ninguna señal
-(corregido: ahora avisa en los logs con `installs_rollup_skipped` y el cron diario reprocesa 30 días, así que nada se
-pierde mientras AE conserve los eventos, 90 días); (2) los 304 de `/v1/resolve` perdían la cabecera `genpm-version` y no
-se contaban (corregido); (3) la cifra de la home son **instalaciones** (llamadas a `resolve` desde CLI/MCP), no visitas:
-las visitas de la web solo se escriben en el dataset `genpm_web_events` (`search`, `pkg_view`) y no hay ningún panel
-que las enseñe. web-ui-spec §8 prevé Cloudflare Web Analytics, pero la CSP lo bloquearía y nunca se activó.
+**Contexto:** tras el lanzamiento la home marcaba 0 instalaciones aunque había uso. Causas, todas corregidas: faltaba
+`CF_AE_TOKEN` y el cron no avisaba (ahora registra `installs_rollup_skipped` y el cron de las 03:15 reprocesa 30 días);
+los 304 de `/v1/resolve` perdían `genpm-version`; la ventana `NOW() - 2 días` dejaba parcial el día más antiguo y el
+upsert le restaba instalaciones cada hora (ahora días UTC completos, borrados y reescritos); y se contaban como
+instalaciones cosas que no lo son: lecturas del `.md` de la web (`client=web`), `genpm add --dry-run` y la vista previa
+`dryRun` del MCP (ahora `client=none`). Además, la web solo medía búsquedas y paquetes vistos, sin separar robots, y
+nadie podía ver los datos. El fundador quiere medirlo todo, mapas de calor incluidos, y acepta poner banner.
 
-**Restricción legal (ADR-024):** sin banner mientras todo sea técnico o sin identificadores. Mapas de calor y grabación
-de sesiones necesitan almacenamiento en el navegador o identificar la sesión ⇒ **consentimiento previo** (LSSI art.
-22.2, EDPB 2/2023), con "Rechazar" tan visible como "Aceptar".
+**Restricción legal:** cualquier script que lea o escriba en el navegador con fines de analítica (cookies, almacenamiento
+o balizas) exige consentimiento previo (art. 22.2 LSSI-CE, EDPB 2/2023). Por eso el 2026-10-04 se quitó la baliza `/e`.
 
-**Propuesta:**
+**Decisión:**
 
-| Capa | Herramienta (gratis) | Qué mide | Consentimiento |
-|---|---|---|---|
-| 0 · Ya disponible | Dashboard de Cloudflare: zona genpm.net → Analytics → Traffic; Workers → genpm-web → Metrics/Logs | Peticiones, visitas, países, errores | No (lado servidor) |
-| 1 · Siempre activa | **Cloudflare Web Analytics** (beacon sin cookies) | Páginas vistas, referrers, países, dispositivos, Core Web Vitals | No (sin cookies ni ID) |
-| 1 · Siempre activa | **Eventos propios en Analytics Engine** + `POST /e` same-origin con `navigator.sendBeacon` | Embudo de producto: `search` (y búsquedas sin resultados), `pkg_view`, `copy_install`, `tab_view`, `mcp_setup_copy`, `publish_cta`, `publish_ok`, `login`, `sponsored_*` | No (sin cookies, sin IP, sin ID) |
-| 1 · Siempre activa | **Panel `/admin/analytics`** (solo staff) sobre la SQL API de AE | Tendencias, top búsquedas, demanda no cubierta, embudo visita → copia → instalación | — |
-| 2 · Solo con opt-in | **PostHog Cloud EU** (open source MIT, 1 M eventos y 5 000 grabaciones/mes gratis) vía proxy propio `genpm.net/ph/*` | Mapas de calor (clics, scroll), grabación de sesiones con textos enmascarados, embudos, retención | **Sí**: banner + política de cookies actualizada |
+| Capa | Qué | Consentimiento |
+|---|---|---|
+| 1 · Servidor | Eventos a Analytics Engine desde el Worker de la web: `page_view` (ruta, dominio de procedencia, país, campaña `utm_source`/`ref`), `search` (+ nº de resultados), `pkg_view`, `sponsored_impression`/`sponsored_click`, cada uno marcado `bot`/`human`/`member` (con sesión). Sin IP, sin user-agent guardado, sin identificadores | No: no hay acceso al terminal |
+| 1 · Panel | `/admin/analytics` (solo staff) sobre `GET /v1/admin/analytics`: KPIs, serie diaria personas/instalaciones/robots, procedencia, campañas, páginas, países, paquetes, búsquedas (marcando las que no dan resultados), instalaciones por paquete, país y versión del CLI, publicaciones, logins y cuentas nuevas | — |
+| 2 · Navegador | **PostHog Cloud EU** (open source, plan gratuito: 1 M eventos y 5 000 grabaciones al mes): mapas de calor, autocaptura, grabaciones con inputs enmascarados (nunca en páginas de cuenta), `copy_install`/`tab_view`/`mcp_setup_copy`. Se carga con import dinámico solo tras «Aceptar», a través del proxy propio `/ph/*` (CSP `'self'`, sin reenviar IP ni cookies de genpm) | **Sí**: banner con «Aceptar» y «Rechazar» del mismo peso, cookie de preferencia `genpm_consent` (6 meses), «Preferencias de cookies» en el pie y en /cookies para retirarlo (borra cookies y almacenamiento `ph_*`) |
 
-Alternativas descartadas: Microsoft Clarity (gratis e ilimitado, pero no es open source, envía datos a EE. UU. y también
-exige banner); Plausible/Umami autoalojados (open source, pero sin mapas de calor y duplican lo que da Cloudflare);
-OpenReplay autoalojado (demasiada infraestructura para un fundador en solitario). Si PostHog deja de ser gratis, el
-sustituto open source autoalojable es el propio PostHog (Docker) u OpenReplay.
+Alternativas descartadas: Cloudflare Web Analytics (su baliza también requiere consentimiento y la capa 1 ya da lo
+mismo sin él), Microsoft Clarity (no es open source, datos en EE. UU.), Plausible/Umami (sin mapas de calor),
+OpenReplay autoalojado (demasiada infraestructura).
 
-**Consecuencias:** la capa 1 no cambia ADR-024 (sin banner); solo amplía la CSP con `static.cloudflareinsights.com`
-(script) y `cloudflareinsights.com` (connect). La capa 2 sí modifica ADR-024 (pasa a haber banner) y exige actualizar
-privacidad, cookies y el registro de actividades de tratamiento; PostHog queda como encargado del tratamiento (DPA). La
-telemetría del CLI (INV-6) no se toca: el CLI nunca envía nada a PostHog. Tareas: `V011-06` … `V011-12`.
+**Consecuencias:** sustituye la regla «sin banner» de ADR-024 cuando `POSTHOG_KEY` está configurada (sin ella no hay
+banner ni PostHog). Política de cookies y de privacidad (8 idiomas) y registro de actividades (actividad 11)
+actualizados; PostHog, Inc. pasa a ser encargado (DPA en su panel, región EU, retención 30 días de grabaciones y 12
+meses de eventos). La telemetría del CLI (INV-6) no cambia de datos: solo deja de contar las vistas previas. Tareas:
+`V011-06` … `V011-12`.
 
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 

@@ -24,14 +24,15 @@ No es obligatorio designar un delegado de protección de datos (art. 37 RGPD y a
 | Eventos de instalación: paquete, versión, cliente (`cli`/`mcp`), versión del CLI y país (deducido de la IP, que no se guarda) | Contadores públicos de instalaciones y estadísticas agregadas | Interés legítimo en medir el uso del registro | Agregados por día; eventos individuales, 90 días |
 | Dirección IP, convertida en un hash con una sal que rota cada día | Limitar el número de peticiones y prevenir abusos | Interés legítimo en la seguridad del servicio (art. 6.1.f y considerando 49) | 30 días como máximo |
 | Registros técnicos del servidor (Cloudflare Workers) | Diagnosticar errores y ataques | Interés legítimo en la seguridad y continuidad del servicio | 7 días como máximo |
-| Analítica de la web: búsquedas hechas, paquete visto, idioma y ruta (sin IP ni identificadores) | Saber qué se busca y qué se usa para mejorar el servicio | Interés legítimo en medir el uso de forma agregada (art. 6.1.f) | 3 meses (Analytics Engine de Cloudflare) |
+| Analítica de la web: páginas vistas, búsquedas, paquete visto, idioma, ruta, dominio de procedencia, campaña, país y si la visita es de un robot (sin IP ni identificadores) | Saber qué se busca y qué se usa, y de dónde llegan las visitas, para mejorar el servicio | Interés legítimo en medir el uso de forma agregada (art. 6.1.f) | 3 meses (Analytics Engine de Cloudflare) |
+| **Solo si aceptas la analítica opcional:** clics, desplazamiento, páginas visitadas y grabación de la sesión con los campos de formulario ocultos, identificador aleatorio del navegador, navegador y tipo de dispositivo (PostHog). Las páginas de cuenta nunca se graban y tu IP no se reenvía | Mapas de calor y detectar dónde se atasca la gente para mejorar la web | Tu consentimiento (art. 6.1.a RGPD y art. 22.2 LSSI-CE), que puedes retirar cuando quieras desde «Preferencias de cookies» en el pie de página | Eventos, 12 meses; grabaciones, 30 días |
 | Formulario de patrocinios o de empresas: email, empresa, tamaño del equipo, IDE y mensaje | Responder a tu solicitud | Medidas precontractuales a petición tuya (art. 6.1.b) | 12 meses, salvo que lleguemos a un acuerdo |
 | Denuncias de paquetes: tu cuenta, el paquete, el motivo y tu descripción | Revisar el contenido denunciado y comunicar la decisión | Obligación legal del Reglamento (UE) 2022/2065 de Servicios Digitales, art. 16 (art. 6.1.c RGPD) | 2 años desde la decisión |
 | Correos que nos envías | Atender tu consulta o el ejercicio de tus derechos | Interés legítimo en responderte o, en su caso, obligación legal | Lo necesario para resolverla y hasta 2 años después |
 
 Estos plazos se aplican solos: un proceso diario borra o anonimiza lo que ha caducado.
 
-**Lo que nunca tratamos:** el contenido de tu proyecto, tus archivos `.env` o los valores de tus variables de entorno. Tampoco usamos cookies publicitarias ni de seguimiento entre sitios, y tu navegador no envía nada para la analítica: contamos en nuestros servidores las páginas que pides (ver la [Política de cookies](/cookies)).
+**Lo que nunca tratamos:** el contenido de tu proyecto, tus archivos `.env` o los valores de tus variables de entorno. Tampoco usamos cookies publicitarias ni de seguimiento entre sitios. Salvo que aceptes la analítica opcional, tu navegador no envía nada para la analítica: contamos en nuestros servidores las páginas que pides (ver la [Política de cookies](/cookies)).
 
 **Telemetría del CLI y del servidor MCP:** con `GENPM_TELEMETRY=0` o `DO_NOT_TRACK=1`, el cliente envía `client=none` y el registro no guarda el evento. Puedes oponerte así en cualquier momento.
 
@@ -46,6 +47,7 @@ No vendemos ni cedemos tus datos a terceros. Los tratan por cuenta nuestra estos
 | Proveedor | Servicio | Ubicación |
 |---|---|---|
 | Cloudflare, Inc. | Alojamiento (Workers), base de datos (D1), red de entrega, protección antibots (Turnstile) y analítica agregada | UE y EE. UU. |
+| PostHog, Inc. | Analítica opcional de la web (mapas de calor y grabación de sesiones), solo con tu consentimiento | UE (Fráncfort, Alemania) |
 | Piensa Solutions (Arsys Internet, S.L.U.) | Dominio y correo electrónico | España |
 
 **GitHub, Inc.** actúa como responsable independiente cuando inicias sesión con tu cuenta de GitHub y cuando el registro lee repositorios públicos; se rige por su propia [declaración de privacidad](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement).
@@ -56,7 +58,7 @@ Solo comunicaremos datos a autoridades cuando una norma nos obligue.
 
 ## 4. Transferencias internacionales
 
-Cloudflare, Inc. y GitHub, Inc. están adheridas al Marco de Privacidad de Datos UE-EE. UU. (Data Privacy Framework), reconocido por la Decisión de adecuación de la Comisión Europea de 10 de julio de 2023 (art. 45 RGPD). Además, sus contratos incluyen las cláusulas contractuales tipo de la Comisión (art. 46 RGPD).
+Cloudflare, Inc. y GitHub, Inc. están adheridas al Marco de Privacidad de Datos UE-EE. UU. (Data Privacy Framework), reconocido por la Decisión de adecuación de la Comisión Europea de 10 de julio de 2023 (art. 45 RGPD). Además, sus contratos incluyen las cláusulas contractuales tipo de la Comisión (art. 46 RGPD). PostHog aloja los datos en la UE; si accede a ellos desde EE. UU., lo hace con las cláusulas contractuales tipo de la Comisión (art. 46 RGPD).
 
 ## 5. Tus derechos
 

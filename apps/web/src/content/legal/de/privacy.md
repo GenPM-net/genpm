@@ -24,14 +24,15 @@ Die Benennung eines Datenschutzbeauftragten ist nicht erforderlich (Art. 37 DSGV
 | Installationsereignisse: Paket, Version, Client (`cli`/`mcp`), CLI-Version und Land (aus der IP abgeleitet, die nicht gespeichert wird) | Öffentliche Installationszähler und aggregierte Statistiken | Berechtigtes Interesse, die Nutzung der Registry zu messen | Täglich aggregiert; Einzelereignisse 90 Tage |
 | IP-Adresse, gehasht mit einem täglich wechselnden Salt | Ratenbegrenzung und Missbrauchsabwehr | Berechtigtes Interesse an der Sicherheit des Dienstes (Art. 6.1.f, Erwägungsgrund 49) | Höchstens 30 Tage |
 | Technische Serverprotokolle (Cloudflare Workers) | Fehler und Angriffe diagnostizieren | Berechtigtes Interesse an Sicherheit und Betrieb des Dienstes | Höchstens 7 Tage |
-| Webanalyse: durchgeführte Suchen, angesehenes Paket, Sprache und Pfad (ohne IP oder Kennungen) | Wissen, was gesucht und genutzt wird, um den Dienst zu verbessern | Berechtigtes Interesse an aggregierter Nutzungsmessung (Art. 6.1.f) | 3 Monate (Cloudflare Analytics Engine) |
+| Webanalyse: Seitenaufrufe, Suchen, angesehenes Paket, Sprache, Pfad, verweisende Domain, Kampagne, Land und ob der Besuch von einem Bot stammt (ohne IP oder Kennungen) | Wissen, was gesucht und genutzt wird und woher Besuche kommen, um den Dienst zu verbessern | Berechtigtes Interesse an aggregierter Nutzungsmessung (Art. 6.1.f) | 3 Monate (Cloudflare Analytics Engine) |
+| **Nur wenn du der optionalen Analyse zustimmst:** Klicks, Scrollen, besuchte Seiten und eine Sitzungsaufzeichnung mit verborgenen Formularfeldern, eine zufällige Browserkennung, Browser und Gerätetyp (PostHog). Kontoseiten werden nie aufgezeichnet und deine IP wird nicht weitergegeben | Heatmaps und erkennen, wo Menschen hängen bleiben, um die Website zu verbessern | Deine Einwilligung (Art. 6.1.a DSGVO und Art. 22.2 LSSI-CE), die du jederzeit über „Cookie-Einstellungen“ im Footer widerrufen kannst | Ereignisse 12 Monate; Aufzeichnungen 30 Tage |
 | Formular für Sponsoren oder Unternehmen: E-Mail, Firma, Teamgröße, IDE und Nachricht | Deine Anfrage beantworten | Vorvertragliche Maßnahmen auf deine Anfrage (Art. 6.1.b) | 12 Monate, sofern keine Vereinbarung zustande kommt |
 | Paketmeldungen: dein Konto, das Paket, der Grund und deine Beschreibung | Den gemeldeten Inhalt prüfen und die Entscheidung mitteilen | Rechtliche Pflicht nach Art. 16 des EU-Gesetzes über digitale Dienste (Art. 6.1.c DSGVO) | 2 Jahre nach der Entscheidung |
 | E-Mails, die du uns schickst | Deine Anfrage oder die Ausübung deiner Rechte bearbeiten | Berechtigtes Interesse, dir zu antworten, oder gegebenenfalls eine rechtliche Pflicht | So lange wie nötig und bis zu 2 Jahre danach |
 
 Diese Fristen werden automatisch durchgesetzt: Ein täglicher Prozess löscht oder anonymisiert, was abgelaufen ist.
 
-**Was wir nie verarbeiten:** den Inhalt deines Projekts, deine `.env`-Dateien oder die Werte deiner Umgebungsvariablen. Wir verwenden keine Werbe- oder websiteübergreifenden Tracking-Cookies, und dein Browser sendet nichts für die Analyse: Wir zählen auf unseren Servern die Seiten, die du aufrufst (siehe [Cookie-Richtlinie](/cookies)).
+**Was wir nie verarbeiten:** den Inhalt deines Projekts, deine `.env`-Dateien oder die Werte deiner Umgebungsvariablen. Wir verwenden keine Werbe- oder websiteübergreifenden Tracking-Cookies. Sofern du der optionalen Analyse nicht zustimmst, sendet dein Browser nichts für die Analyse: Wir zählen auf unseren Servern die Seiten, die du aufrufst (siehe [Cookie-Richtlinie](/cookies)).
 
 **Telemetrie von CLI und MCP:** Mit `GENPM_TELEMETRY=0` oder `DO_NOT_TRACK=1` sendet der Client `client=none`, und die Registry speichert das Ereignis nicht. So kannst du jederzeit widersprechen.
 
@@ -46,6 +47,7 @@ Wir verkaufen deine Daten nicht und geben sie nicht an Dritte weiter. Diese Anbi
 | Anbieter | Leistung | Standort |
 |---|---|---|
 | Cloudflare, Inc. | Hosting (Workers), Datenbank (D1), Auslieferungsnetz, Bot-Schutz (Turnstile) und aggregierte Statistiken | EU und USA |
+| PostHog, Inc. | Optionale Webanalyse (Heatmaps und Sitzungsaufzeichnungen), nur mit deiner Einwilligung | EU (Frankfurt, Deutschland) |
 | Piensa Solutions (Arsys Internet, S.L.U.) | Domain und E-Mail | Spanien |
 
 **GitHub, Inc.** handelt als eigenständiger Verantwortlicher, wenn du dich mit GitHub anmeldest und wenn die Registry öffentliche Repositories liest; es gilt die eigene [Datenschutzerklärung von GitHub](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement).
@@ -56,7 +58,7 @@ Wir geben Daten nur an Behörden weiter, wenn ein Gesetz es verlangt.
 
 ## 4. Internationale Übermittlungen
 
-Cloudflare, Inc. und GitHub, Inc. nehmen am EU-US-Datenschutzrahmen teil, der durch den Angemessenheitsbeschluss der Europäischen Kommission vom 10. Juli 2023 anerkannt ist (Art. 45 DSGVO). Ihre Verträge enthalten außerdem die Standardvertragsklauseln der Kommission (Art. 46 DSGVO).
+Cloudflare, Inc. und GitHub, Inc. nehmen am EU-US-Datenschutzrahmen teil, der durch den Angemessenheitsbeschluss der Europäischen Kommission vom 10. Juli 2023 anerkannt ist (Art. 45 DSGVO). Ihre Verträge enthalten außerdem die Standardvertragsklauseln der Kommission (Art. 46 DSGVO). PostHog speichert die Daten in der EU; ein Zugriff aus den USA ist durch die Standardvertragsklauseln der Kommission abgedeckt (Art. 46 DSGVO).
 
 ## 5. Deine Rechte
 

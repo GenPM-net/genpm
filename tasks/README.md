@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-05. No editar a mano. -->
 
-**70 %** completado · 185/266 tareas · 538h estimadas pendientes
+**72 %** completado · 191/267 tareas · 517.5h estimadas pendientes
 
-TODO 53 · DOING 4 · DONE 185 · BLOCKED 24 · CUT 0
+TODO 48 · DOING 4 · DONE 191 · BLOCKED 24 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -87,7 +87,7 @@ TODO 53 · DOING 4 · DONE 185 · BLOCKED 24 · CUT 0
 | [Día 7 · Lanzamiento](07-dia-7-lanzamiento.md) | `▓▓░░░░░░░░░░` 18 % | 2/11 | 16.5h |
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 16/17 | 2h |
-| [Post-MVP](10-post-mvp.md) | `▓▓░░░░░░░░░░` 15 % | 6/39 | 485h |
+| [Post-MVP](10-post-mvp.md) | `▓▓▓▓░░░░░░░░` 30 % | 12/40 | 464.5h |
 
 **En curso**
 
@@ -131,9 +131,9 @@ TODO 53 · DOING 4 · DONE 185 · BLOCKED 24 · CUT 0
 - `D7-01` Vídeo demo de 90–120 s con el guion del objetivo (PLAN §1) · T · 3h ([07-dia-7-lanzamiento.md](07-dia-7-lanzamiento.md))
 - `D7-04` Hilo en X de 6 posts (esqueleto de branding §9) · F · 1h ([07-dia-7-lanzamiento.md](07-dia-7-lanzamiento.md))
 - `BR-16` Test de 5 segundos de la home con 5 desarrolladores: ¿entienden qué hace GenPM? · F · 2h ([09-marca-diseno.md](09-marca-diseno.md))
-- `V011-07` Cloudflare Web Analytics sin cookies: alta del sitio, beacon en Base.astro y CSP ampliada · W · 1h ([10-post-mvp.md](10-post-mvp.md))
-- `V011-09` Eventos de servidor que faltan: búsquedas sin resultados, publish_ok, login y sponsored_impression/click · A · 2h ([10-post-mvp.md](10-post-mvp.md))
+- `V011-13` Activar PostHog en producción: proyecto en región EU, DPA aceptado, retención 30 días/12 meses, POSTHOG_KEY en wrangler.jsonc y despliegue de la web · F · 0.5h ([10-post-mvp.md](10-post-mvp.md))
 - `V02-01` genpm diff y update con merge 3-way · B · 24h ([10-post-mvp.md](10-post-mvp.md))
 - `V02-03` Dependents ("Used by") en API y página de paquete · A · 6h ([10-post-mvp.md](10-post-mvp.md))
+- `V02-04` Puntuación de calidad de paquetes · A · 8h ([10-post-mvp.md](10-post-mvp.md))
 
 <!-- board:end -->

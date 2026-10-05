@@ -1,4 +1,7 @@
-// JS mínimo del sitio (sin framework): copiar, tabs ARIA, menú móvil, tema, runner y analítica sin cookies.
+// JS mínimo del sitio (sin framework): copiar, tabs ARIA, menú móvil, tema, runner y consentimiento de analítica
+// (PostHog solo tras «Aceptar», lib/consent.ts).
+import { clearTracking, readChoice, startTracking, stopTracking, track, writeChoice } from './consent.js';
+
 function toast(msg: string) {
   const t = document.getElementById('toast');
   if (!t) return;
@@ -43,7 +46,10 @@ function wireTabs(root: ParentNode) {
       }
     };
     tabs.forEach((tab, i) => {
-      tab.addEventListener('click', () => select(tab, true));
+      tab.addEventListener('click', () => {
+        select(tab, true);
+        track('tab_view', { tab: tab.dataset.tab ?? '' });
+      });
       tab.addEventListener('keydown', (e) => {
         const d =
           e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
@@ -78,6 +84,7 @@ export function initSite() {
       e.preventDefault();
       const src = document.getElementById(b.dataset.copy!);
       if (src) void copy(src.textContent ?? '', b, root.dataset.copiedtoast ?? 'Copied');
+      if (b.dataset.event) track(b.dataset.event, { pkg: b.dataset.pkgname ?? '' });
       return;
     }
     const sha = el.closest<HTMLElement>('[data-copysha]');
@@ -128,4 +135,35 @@ export function initSite() {
     }
   }
   wireTabs(document);
+  initConsent();
+}
+
+/** Banner de consentimiento: sin decisión se muestra; con «Aceptar» se carga PostHog; con «Rechazar» nada. */
+function initConsent() {
+  const box = document.querySelector<HTMLElement>('[data-consent]');
+  if (!box) return;
+  const key = box.dataset.phKey!;
+  const ui = box.dataset.phUi!;
+  const choice = readChoice(document.cookie);
+  if (choice === 'granted') void startTracking(key, ui);
+  else {
+    clearTracking();
+    if (choice === null) box.hidden = false;
+  }
+  document.addEventListener('click', (e) => {
+    const el = e.target as HTMLElement;
+    const pick = el.closest<HTMLElement>('[data-consent-choice]');
+    if (pick) {
+      const c = pick.dataset.consentChoice === 'granted' ? 'granted' : 'denied';
+      writeChoice(c);
+      box.hidden = true;
+      if (c === 'granted') void startTracking(key, ui);
+      else stopTracking();
+      return;
+    }
+    if (el.closest('[data-consent-open]')) {
+      box.hidden = false;
+      box.querySelector<HTMLElement>('[data-consent-choice]')?.focus();
+    }
+  });
 }

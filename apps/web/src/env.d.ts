@@ -12,6 +12,10 @@ type WebEnv = {
   TURNSTILE_SITE_KEY?: string;
   TURNSTILE_SECRET_KEY?: string;
   SESSION_PEPPER?: string;
+  /** Clave pública del proyecto de PostHog (phc_…). Vacía = sin banner ni PostHog (ADR-027). */
+  POSTHOG_KEY?: string;
+  /** UI de PostHog para el enlace del panel (por defecto https://eu.posthog.com). */
+  POSTHOG_UI_HOST?: string;
 };
 
 declare global {

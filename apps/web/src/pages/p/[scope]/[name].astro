@@ -29,7 +29,22 @@ if (view === 'unavailable') {
   return Astro.rewrite('/500');
 }
 const quarantined = view === 'quarantined';
-if (!quarantined) recordEvent('pkg_view', name, locale, '/p', Astro.request.headers.get('user-agent'));
+// Clic en un resultado patrocinado: llega con ?sc=<campaña> (el canonical no lleva el parámetro).
+const sc = Astro.url.searchParams.get('sc');
+if (sc && /^[A-Za-z0-9_-]{1,40}$/.test(sc))
+  recordEvent('sponsored_click', sc, {
+    request: Astro.request,
+    locale,
+    path: Astro.locals.path,
+    member: !!Astro.locals.session,
+  });
+if (!quarantined)
+  recordEvent('pkg_view', name, {
+    request: Astro.request,
+    locale,
+    path: Astro.locals.path,
+    member: !!Astro.locals.session,
+  });
 const v = quarantined ? null : view;
 const m = v?.manifest;
 const p = v?.pkg;

@@ -10,7 +10,9 @@
   "vars": {
     "ENVIRONMENT": "production",
     "SITE_ORIGIN": "https://genpm.net",
-    "REGISTRY_URL": "https://api.genpm.net"
+    "REGISTRY_URL": "https://api.genpm.net",
+    // Clave pública del proyecto de PostHog Cloud EU (phc_…). Vacía = sin banner ni PostHog (ADR-027).
+    "POSTHOG_KEY": ""
   },
   "services": [{ "binding": "REGISTRY", "service": "genpm-registry" }],
   "analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "genpm_web_events" }],
@@ -21,7 +23,8 @@
       "vars": {
         "ENVIRONMENT": "staging",
         "SITE_ORIGIN": "https://staging.genpm.net",
-        "REGISTRY_URL": "https://api.staging.genpm.net"
+        "REGISTRY_URL": "https://api.staging.genpm.net",
+        "POSTHOG_KEY": ""
       },
       "services": [{ "binding": "REGISTRY", "service": "genpm-registry-staging" }],
       "analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "genpm_web_events_staging" }],

@@ -13,7 +13,8 @@
 | 4 | Instalaciones | Usuarios del CLI/MCP | Paquete, versión, cliente, versión, país (de la IP, no guardada) | Contadores y estadísticas | 6.1.f | Cloudflare (Analytics Engine) | EE. UU. | Eventos 90 d (retención de Analytics Engine); agregados diarios |
 | 5 | Seguridad | Cualquiera | Hash de IP con sal diaria (audit_log, leads) | Rate limit, abuso, auditoría | 6.1.f (cons. 49) | Cloudflare | EE. UU. | 30 d (cron diario) |
 | 6 | Logs técnicos | Cualquiera | Petición, errores (Workers Logs) | Diagnóstico | 6.1.f | Cloudflare | EE. UU. | ≤ 7 d (retención de Workers Logs) |
-| 7 | Analítica web | Visitantes | Búsqueda, paquete visto, idioma, ruta; sin IP ni identificadores | Mejorar el servicio | 6.1.f | Cloudflare (Analytics Engine) | EE. UU. | 3 meses (retención de Analytics Engine) |
+| 7 | Analítica web | Visitantes | Página vista, búsqueda (y nº de resultados), paquete visto, idioma, ruta, dominio de procedencia, campaña, país, robot/persona/con sesión; sin IP ni identificadores | Mejorar el servicio | 6.1.f | Cloudflare (Analytics Engine) | EE. UU. | 3 meses (retención de Analytics Engine) |
+| 11 | Analítica opcional (ADR-027) | Visitantes que la aceptan | Clics, desplazamiento, páginas, grabación de sesión con formularios enmascarados (nunca páginas de cuenta), ID aleatorio del navegador, navegador y dispositivo; sin IP (el proxy `/ph` no la reenvía) | Mapas de calor y mejora de la web | 6.1.a + art. 22.2 LSSI (banner, retirada en el pie) | PostHog, Inc. (Cloud EU, Fráncfort) | EE. UU. solo para acceso de soporte (CCT) | Eventos 12 meses y grabaciones 30 días (configurar en el proyecto de PostHog) |
 | 8 | Leads | Empresas y patrocinadores | Email, empresa, tamaño, IDE, mensaje | Responder | 6.1.b (precontractual) | Cloudflare | EE. UU. | 12 meses salvo acuerdo (cron diario) |
 | 9 | Denuncias (DSA art. 16) | Denunciantes | Cuenta, paquete, motivo, descripción | Moderación y comunicación | 6.1.c | Cloudflare | EE. UU. | Cerradas: 2 años (cron diario) |
 | 10 | Correo | Remitentes | Email y contenido | Atender consultas y derechos | 6.1.f / 6.1.c | Piensa Solutions (Arsys) | No (España) | Lo necesario + 2 años (manual) |
@@ -33,10 +34,12 @@ de administración; rate limits; CSP estricta; copias en D1 (Time Travel 30 d). 
 | 4 Instalaciones | Medir el uso del registro y mostrar contadores públicos útiles para elegir paquetes | Solo datos técnicos mínimos; la IP no se guarda | Esperable en un gestor de paquetes (npm, PyPI lo hacen); oposición sencilla: `GENPM_TELEMETRY=0` / `DO_NOT_TRACK=1` |
 | 5 Seguridad | Evitar abusos y ataques | Hash con sal diaria, 30 días | Considerando 49 RGPD; impacto mínimo |
 | 6 Logs | Diagnosticar fallos | ≤ 7 días | Impacto mínimo |
-| 7 Analítica | Mejorar búsqueda y contenido | Sin IP ni identificadores, solo en el servidor (sin acceso al terminal: no aplica el art. 22.2 LSSI) | Datos agregados, sin perfiles |
+| 7 Analítica | Mejorar búsqueda y contenido, saber de dónde llegan las visitas | Sin IP ni identificadores, solo en el servidor (sin acceso al terminal: no aplica el art. 22.2 LSSI); el país y el dominio de procedencia ya vienen en la petición | Datos agregados, sin perfiles |
 | 1 Email (avisos) | Avisar de incidentes de seguridad en los paquetes del usuario | No se muestra ni se usa para marketing | Esperable y en interés del propio usuario |
 
 ## Pendiente del responsable
 
 - Revisión jurídica de los textos legales (tarea `D6-P-08`).
 - Si se activan Turnstile o newsletter, añadir la actividad aquí y en la política.
+- Actividad 11: firmar el DPA de PostHog (se acepta en su panel), elegir la región EU al crear el proyecto y fijar
+  la retención de grabaciones en 30 días y de eventos en 12 meses antes de poner `POSTHOG_KEY` en producción.

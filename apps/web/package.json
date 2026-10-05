@@ -20,6 +20,7 @@
     "@genpm/manifest": "workspace:*",
     "astro": "^7.3.0",
     "marked": "^18.0.0",
+    "posthog-js": "^1.436.1",
     "preact": "^10.27.0",
     "shiki": "^4.5.0",
     "workers-og": "^0.0.27"

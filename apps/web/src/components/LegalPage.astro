@@ -1,4 +1,5 @@
 ---
+import { env } from 'cloudflare:workers';
 import owner from '../content/legal/owner.json';
 import Base from '../layouts/Base.astro';
 import { localizeLinks } from '../lib/i18n.js';
@@ -29,5 +30,6 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=86400');
     <h1>{meta['title']}</h1>
     <p class="hint">{t.t('web.legal.updated', { date: new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(meta['updated']!)) })}{locale !== 'es' && ` · ${t.t('web.legal.binding')}`}</p>
     <Fragment set:html={html} />
+    {Astro.props.doc === 'cookies' && env.POSTHOG_KEY && <p><button class="btn" type="button" data-consent-open>{t.t('web.consent.settings')}</button></p>}
   </article></div>
 </Base>

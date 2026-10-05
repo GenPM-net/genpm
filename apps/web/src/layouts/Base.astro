@@ -2,6 +2,8 @@
 // Layout global (web-ui-spec §4): header sticky con búsqueda, nav, idioma y tema; footer; skip link y landmarks.
 import { isBeta, LOCALES, negotiateAcceptLanguage } from '@genpm/i18n';
 import '../styles/global.css';
+import { env } from 'cloudflare:workers';
+import ConsentBanner from '../components/ConsentBanner.astro';
 import Ico from '../components/Ico.astro';
 import Icons from '../components/Icons.astro';
 import SearchPalette from '../components/islands/SearchPalette.tsx';
@@ -146,7 +148,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
         <div><h2>{t.t('web.footer.product')}</h2><ul><li><a href={href(locale, '/docs')}>{t.t('web.nav.docs')}</a></li><li><a href={href(locale, '/mcp')}>{t.t('web.nav.mcp')}</a></li><li><a href={href(locale, '/publish')}>{t.t('web.nav.publish')}</a></li><li><a href={href(locale, '/search')}>{t.t('web.footer.browse')}</a></li></ul></div>
         <div><h2>{t.t('web.footer.company')}</h2><ul><li><a href={href(locale, '/sponsors')}>{t.t('web.footer.sponsors')}</a></li><li><a href={href(locale, '/enterprise')}>{t.t('web.footer.enterprise')}</a></li><li><a href={href(locale, '/security')}>{t.t('web.footer.security')}</a></li><li><a href={href(locale, '/security/advisories')}>{t.t('web.footer.advisories')}</a></li></ul></div>
         <div><h2>{t.t('web.footer.community')}</h2><ul><li><a href="https://github.com/genpm-net/genpm" rel="noopener">GitHub</a></li><li><a href="/llms.txt">llms.txt</a></li></ul></div>
-        <div><h2>{t.t('web.footer.legal')}</h2><ul><li><a href={href(locale, '/terms')}>{t.t('web.footer.terms')}</a></li><li><a href={href(locale, '/privacy')}>{t.t('web.footer.privacy')}</a></li><li><a href={href(locale, '/policy')}>{t.t('web.footer.policy')}</a></li><li><a href={href(locale, '/cookies')}>{t.t('web.footer.cookies')}</a></li><li><a href={href(locale, '/legal')}>{t.t('web.footer.legalNotice')}</a></li><li><a href={`${href(locale, '/security')}#report`}>{t.t('web.footer.report')}</a></li></ul></div>
+        <div><h2>{t.t('web.footer.legal')}</h2><ul><li><a href={href(locale, '/terms')}>{t.t('web.footer.terms')}</a></li><li><a href={href(locale, '/privacy')}>{t.t('web.footer.privacy')}</a></li><li><a href={href(locale, '/policy')}>{t.t('web.footer.policy')}</a></li><li><a href={href(locale, '/cookies')}>{t.t('web.footer.cookies')}</a></li>{env.POSTHOG_KEY && <li><button class="linkbtn" type="button" data-consent-open>{t.t('web.consent.settings')}</button></li>}<li><a href={href(locale, '/legal')}>{t.t('web.footer.legalNotice')}</a></li><li><a href={`${href(locale, '/security')}#report`}>{t.t('web.footer.report')}</a></li></ul></div>
       </div>
       <div class="base"><span>© 2026 GenPM · {t.t('web.footer.beta')} · <span set:html={t.t('web.footer.madeBy', { name: '<a href="https://yohangel.com" rel="author noopener" target="_blank" class="made-by">Yohangel Ramos</a>' })} /></span><span class="status"><i></i>{t.t('web.footer.status')}</span></div>
     </footer>
@@ -167,6 +169,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
       }}
     />
     <div class="toast" id="toast" role="status" aria-live="polite" hidden><i></i><span></span></div>
+    <ConsentBanner />
     <script>
       import { initSite } from '../lib/client.js';
       initSite();

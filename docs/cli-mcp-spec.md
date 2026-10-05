@@ -116,7 +116,7 @@ tarball, solo GitHub).
 | `-q, --quiet` | — | Solo errores. |
 | — | `GENPM_TOKEN` | Token para CI (prioridad sobre `~/.genpm/auth.json`). |
 | — | `GENPM_CACHE_DIR` | Caché (default `~/.genpm/cache`). |
-| — | `GENPM_TELEMETRY=0` / `DO_NOT_TRACK=1` | Desactiva el conteo anónimo (envía `client=none`, el registry no registra el evento). |
+| — | `GENPM_TELEMETRY=0` / `DO_NOT_TRACK=1` | Desactiva el conteo anónimo (envía `client=none`, el registry no registra el evento). `--dry-run` y la vista previa `dryRun` del MCP tampoco cuentan. |
 
 Precedencia de configuración: flags > env > `.genpmrc` del proyecto > `~/.genpmrc` > defaults.
 En modo no interactivo (no TTY o `--json`) cualquier prompt sin respuesta por flag ⇒ `E_CONFIRM_REQUIRED` (exit 2).
