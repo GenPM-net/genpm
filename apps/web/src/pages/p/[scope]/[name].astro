@@ -8,10 +8,10 @@ import ReportDialog from '../../../components/ReportDialog.astro';
 import Base from '../../../layouts/Base.astro';
 import { recordEvent } from '../../../lib/analytics.js';
 import { ago, bytes, compact, shortSha, sparkline } from '../../../lib/format.js';
+import { sourceLinks } from '../../../lib/github.js';
 import { highlight, langFor } from '../../../lib/highlight.js';
 import { href } from '../../../lib/i18n.js';
 import { renderMarkdown } from '../../../lib/markdown.js';
-import { sourceLinks } from '../../../lib/github.js';
 import { loadPackage } from '../../../lib/package.js';
 
 const { scope, name: short } = Astro.params;
