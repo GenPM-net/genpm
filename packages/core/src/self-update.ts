@@ -39,15 +39,27 @@ export function assetName(target: BinaryTarget): string {
 }
 
 export type InstallMethod =
-  | { kind: 'binary'; target: BinaryTarget; path: string }
+  /** `manager`: el binario lo gestiona Homebrew o Scoop; se actualiza con su comando, no con `genpm upgrade`. */
+  | { kind: 'binary'; target: BinaryTarget; path: string; manager?: { via: 'Homebrew' | 'Scoop'; command: string } }
   | { kind: 'npx'; command: string }
   | { kind: 'npm'; command: string };
+
+/** Homebrew (`…/Cellar/genpm/…`) o Scoop (`…\\scoop\\apps\\genpm\\…`) según la ruta del binario. */
+export function binaryManager(path: string): { manager?: { via: 'Homebrew' | 'Scoop'; command: string } } {
+  if (/[\\/]Cellar[\\/]genpm[\\/]/.test(path)) return { manager: { via: 'Homebrew', command: 'brew upgrade genpm' } };
+  if (/[\\/]scoop[\\/]apps[\\/]genpm[\\/]/i.test(path))
+    return { manager: { via: 'Scoop', command: 'scoop update genpm' } };
+  return {};
+}
 
 export function installMethod(
   opts: { target?: BinaryTarget | null; execPath?: string; argv1?: string; env?: NodeJS.ProcessEnv } = {},
 ): InstallMethod {
   const target = opts.target === undefined ? binaryTarget() : opts.target;
-  if (target) return { kind: 'binary', target, path: opts.execPath ?? process.execPath };
+  if (target) {
+    const path = opts.execPath ?? process.execPath;
+    return { kind: 'binary', target, path, ...binaryManager(path) };
+  }
   const env = opts.env ?? process.env;
   const script = opts.argv1 ?? process.argv[1] ?? '';
   // npx/`npm exec` marcan npm_command=exec; pnpm dlx y npx ejecutan desde una caché temporal.

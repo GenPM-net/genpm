@@ -34,6 +34,18 @@ genpm doctor
 
 `git` 2.25 이상을 권장합니다. GenPM은 커밋 단위로 패키지를 가져올 때 이를 사용합니다(없으면 GitHub tarball을 사용).
 
+## Homebrew와 Scoop
+
+```bash
+brew install genpm-net/tap/genpm                                        # macOS, Linux
+```
+
+```powershell
+scoop bucket add genpm https://github.com/GenPM-net/scoop-bucket; scoop install genpm/genpm   # Windows
+```
+
+업데이트는 패키지 매니저로 합니다(`brew upgrade genpm`, `scoop update genpm`). `genpm upgrade`도 이렇게 안내합니다.
+
 ## 업데이트
 
 ```bash

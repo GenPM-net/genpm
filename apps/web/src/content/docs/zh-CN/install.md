@@ -34,6 +34,18 @@ genpm doctor
 
 仍建议安装 `git` 2.25+：GenPM 用它按提交获取包（没有时会改用 GitHub 的 tarball）。
 
+## Homebrew 和 Scoop
+
+```bash
+brew install genpm-net/tap/genpm                                        # macOS, Linux
+```
+
+```powershell
+scoop bucket add genpm https://github.com/GenPM-net/scoop-bucket; scoop install genpm/genpm   # Windows
+```
+
+更新由包管理器完成（`brew upgrade genpm`、`scoop update genpm`），`genpm upgrade` 会提示你。
+
 ## 更新
 
 ```bash

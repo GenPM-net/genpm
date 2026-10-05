@@ -31,6 +31,7 @@ export const upgradeCmd = (ctx: Ctx) =>
         }
         if (method.kind !== 'binary')
           throw fail('E_UPGRADE_UNSUPPORTED', { via: method.kind, command: method.command });
+        if (method.manager) throw fail('E_UPGRADE_UNSUPPORTED', method.manager);
         line(ctx, ctx.c.dim(ctx.t.t('cli.upgrade.downloading', { version: latest, asset: assetName(method.target) })));
         const { sha256 } = await upgradeBinary({ version: latest, target: method.target, path: method.path });
         if (ctx.flags.json) return json({ ok: true, from: current, to: latest, path: method.path, sha256 });

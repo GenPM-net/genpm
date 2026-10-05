@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 import {
   assetName,
   BINARY_TARGETS,
+  binaryManager,
   checkUpgrade,
   cleanupOldBinary,
   installMethod,
@@ -186,4 +187,15 @@ describe('upgradeBinary', () => {
       }
     },
   );
+});
+
+describe('binario gestionado por Homebrew o Scoop', () => {
+  it('detecta la ruta y propone su comando de actualización', () => {
+    expect(binaryManager('/opt/homebrew/Cellar/genpm/0.1.3/bin/genpm').manager?.command).toBe('brew upgrade genpm');
+    expect(binaryManager('/home/linuxbrew/.linuxbrew/Cellar/genpm/0.1.3/bin/genpm').manager?.via).toBe('Homebrew');
+    expect(binaryManager('C:\\Users\\a\\scoop\\apps\\genpm\\current\\genpm.exe').manager?.command).toBe(
+      'scoop update genpm',
+    );
+    expect(binaryManager('/Users/a/.genpm/bin/genpm')).toEqual({});
+  });
 });

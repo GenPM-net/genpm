@@ -9,7 +9,8 @@
 - [ ] `V011-02` **DOING** Binario nativo de genpm para macOS, Linux y Windows con instaladores de una línea y genpm upgrade (ADR-025) · B · 8h · deps: D5-B-04
   - DoD: `release.yml` verde en macOS, Linux y Windows (smoke del binario + install.sh + install.ps1 en PowerShell 5.1 y 7); autorrevisión diferida (ADR-023) de `scripts/install/` y `core/src/self-update.ts` antes del primer tag. El release real espera a la apertura del repo (D6-P-07).
 - [ ] `V011-03` **TODO** Firma de código de los binarios: Apple Developer ID + notarización y Authenticode · F · 6h · deps: V011-02
-- [ ] `V011-04` **TODO** Canales de paquetes para el binario: Homebrew tap, Scoop y winget · B · 4h · deps: V011-02
+- [x] `V011-04` **DONE** Canales de paquetes para el binario: Homebrew tap, Scoop y winget · B · 4h · deps: V011-02
+  - Hecho el 2026-10-05: `brew install genpm-net/tap/genpm` (GenPM-net/homebrew-tap, auditado y checksum verificado) y Scoop (GenPM-net/scoop-bucket, hashes verificados); `genpm upgrade` remite a `brew upgrade`/`scoop update`. winget queda fuera hasta firmar los binarios (V011-03): exige PR a microsoft/winget-pkgs.
 - [x] `V011-05` **DONE** genpm mcp serve en el binario para usar el MCP sin Node · B · 4h · deps: V011-02
 
 ## v0.2 · +2 semanas

@@ -186,6 +186,16 @@ GENPM_PUBLIC_KEYS='{"s3":"GEiaJcRe0ZALkojvz2M1cPuyhkWgx7VcMO2tA4wzgn0"}' \
 GENPM_ROOT_PUBLIC_KEY=NxO4gCEuAoawEYWXwL5D2gcBdO13fJGC05gDoN-O8vc genpm search db                  # CLI contra staging
 ```
 
+### 4.0 Publicar una versión del CLI
+
+1. Versión en `packages/core/src/version.ts` y en los `package.json` de core, cli y mcp; tests en verde.
+2. Binarios: `cd packages/cli && BUN=$(npx -y bun@latest -e "console.log(process.execPath)") node scripts/build-binaries.mjs`.
+3. `gh release create vX.Y.Z -R GenPM-net/genpm-releases --latest dist-bin/*` (binarios + `SHA256SUMS`).
+4. Homebrew y Scoop: `node scripts/release/package-channels.mjs X.Y.Z packages/cli/dist-bin/SHA256SUMS <clon de
+   GenPM-net/homebrew-tap> <clon de GenPM-net/scoop-bucket>`, commit y push en ambos.
+5. npm (`@genpm-net/cli`, `@genpm-net/mcp`): `npm publish --access public` en cada paquete, con 2FA del fundador
+   (o el job de `release.yml` con `NPM_TOKEN` cuando el repo sea público).
+
 ### 4.1 Credenciales externas
 
 | Credencial | Dónde vive | Notas |

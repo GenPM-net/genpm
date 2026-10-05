@@ -34,6 +34,18 @@ genpm doctor
 
 Ainda se recomenda `git` 2.25+: o GenPM o usa para baixar os pacotes por commit (sem ele, usa os tarballs do GitHub).
 
+## Homebrew e Scoop
+
+```bash
+brew install genpm-net/tap/genpm                                        # macOS, Linux
+```
+
+```powershell
+scoop bucket add genpm https://github.com/GenPM-net/scoop-bucket; scoop install genpm/genpm   # Windows
+```
+
+As atualizações vêm do gerenciador de pacotes (`brew upgrade genpm`, `scoop update genpm`); o `genpm upgrade` avisa.
+
 ## Atualizar
 
 ```bash
