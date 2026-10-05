@@ -1879,6 +1879,38 @@ table.tbl tr.y td:first-child {
   display: grid;
   gap: 6px;
 }
+/* Formularios sueltos (ajustes, tokens, contacto…): tarjeta de una columna con relleno. `.builder` sin `form` sigue
+   siendo el contenedor de dos columnas del asistente de publicación. */
+form.builder {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding: 24px;
+  border-radius: var(--r);
+  background: var(--paper);
+}
+form.builder > .btn {
+  justify-self: start;
+}
+label.field,
+fieldset.field > legend {
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+fieldset.field {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+fieldset.field > legend {
+  padding: 0;
+  margin-bottom: 6px;
+}
+label.field .check,
+fieldset.field .check {
+  font-family: var(--f-sans, inherit);
+}
 .field label {
   font-family: var(--f-mono);
   font-size: 11.5px;
