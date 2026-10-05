@@ -71,3 +71,20 @@ steps:
     with: { fetch-depth: 0 }
   - run: npx -y @genpm-net/cli publish --yes
 ```
+
+### GitLab から
+
+GitLab のプロジェクトは信頼済みパブリッシングでのみ公開できます。[信頼済みパブリッシング](/settings/publishing) でホストに GitLab を選んで公開プロジェクト（例: `my-group/sub/my-package`）を承認し、audience が `genpm` の `id_tokens` を `GENPM_ID_TOKEN` という名前で宣言します。`genpm publish` はそれを、そのプロジェクトからのみ公開できる 15 分間のトークンに交換します。個人トークンでは GitLab のリポジトリを公開できません。
+
+```yaml
+# .gitlab-ci.yml
+publish:
+  image: node:22
+  rules:
+    - if: $CI_COMMIT_TAG
+  id_tokens:
+    GENPM_ID_TOKEN:
+      aud: genpm
+  script:
+    - npx -y @genpm-net/cli publish --yes
+```

@@ -512,6 +512,7 @@ export interface MessageParams {
   "web.pkg.usedByShort": undefined;
   "web.pkg.quality": undefined;
   "web.pkg.qualityScore": { score: number };
+  "web.pkg.gitlab": undefined;
   "web.report.title": { name: string | number };
   "web.report.reason": undefined;
   "web.report.malware": undefined;
@@ -921,6 +922,8 @@ export interface MessageParams {
   "web.trusted.add": undefined;
   "web.trusted.howTitle": undefined;
   "web.trusted.how": undefined;
+  "web.trusted.provider": undefined;
+  "web.trusted.howGitlab": undefined;
 }
 
 export type MessageKey = keyof MessageParams;

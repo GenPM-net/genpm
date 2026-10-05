@@ -71,3 +71,20 @@ steps:
     with: { fetch-depth: 0 }
   - run: npx -y @genpm-net/cli publish --yes
 ```
+
+### Pelo GitLab
+
+Projetos do GitLab só publicam com publicação confiável: autorize o projeto público (por exemplo `meu-grupo/sub/meu-pacote`) em [Publicação confiável](/settings/publishing) escolhendo GitLab como host e declare um `id_tokens` com audiência `genpm` chamado `GENPM_ID_TOKEN`. O `genpm publish` troca esse token por um de 15 minutos que só publica a partir desse projeto. Tokens pessoais não publicam repositórios do GitLab.
+
+```yaml
+# .gitlab-ci.yml
+publish:
+  image: node:22
+  rules:
+    - if: $CI_COMMIT_TAG
+  id_tokens:
+    GENPM_ID_TOKEN:
+      aud: genpm
+  script:
+    - npx -y @genpm-net/cli publish --yes
+```

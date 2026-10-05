@@ -4,11 +4,13 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { CACHE, cached, purgePackage } from '../cache.js';
-import type { AppEnv } from '../env.js';
+import type { AppEnv, Env } from '../env.js';
 import { httpError } from '../http.js';
 import { newId } from '../ids.js';
 import { requireAuth, tokenAllows } from '../middleware/auth.js';
-import { GitHub, parseGithubRepo } from '../services/github.js';
+import { GitHub } from '../services/github.js';
+import { GitLab } from '../services/gitlab.js';
+import { sourceHost } from '../services/source-host.js';
 import { VERSION } from './health.js';
 import { fullName, repoOf } from './util.js';
 import { canWrite } from './yank.js';
@@ -61,16 +63,39 @@ export const mePrefs = new Hono<AppEnv>().patch('/', requireAuth(), async (c) =>
   return c.json({ ok: true, locale: parsed.data.locale });
 });
 
-type GhCompare = {
-  files?: Array<{
-    filename: string;
-    status: string;
-    additions: number;
-    deletions: number;
-    patch?: string;
-    previous_filename?: string;
-  }>;
+type Changed = { filename: string; status: string; additions: number; deletions: number; patch?: string };
+
+async function githubCompare(env: Env, path: string, from: string, to: string): Promise<Changed[] | null> {
+  const data = await new GitHub(env).json<{ files?: Changed[] }>(`/repos/${path}/compare/${from}...${to}`);
+  return data ? (data.files ?? []) : null;
+}
+
+type GlDiff = {
+  old_path: string;
+  new_path: string;
+  new_file: boolean;
+  deleted_file: boolean;
+  renamed_file: boolean;
+  diff: string;
 };
+
+/** GitLab no da additions/deletions por archivo: se cuentan del parche (cabeceras `@@` aparte). */
+async function gitlabCompare(env: Env, path: string, from: string, to: string): Promise<Changed[] | null> {
+  const data = await new GitLab(env).json<{ diffs?: GlDiff[] }>(
+    `/api/v4/projects/${encodeURIComponent(path)}/repository/compare?from=${from}&to=${to}&straight=true`,
+  );
+  if (!data) return null;
+  return (data.diffs ?? []).map((d) => {
+    const lines = d.diff.split('\n');
+    return {
+      filename: d.new_path,
+      status: d.new_file ? 'added' : d.deleted_file ? 'removed' : d.renamed_file ? 'renamed' : 'modified',
+      additions: lines.filter((l) => l.startsWith('+') && !l.startsWith('+++')).length,
+      deletions: lines.filter((l) => l.startsWith('-') && !l.startsWith('---')).length,
+      ...(d.diff ? { patch: d.diff } : {}),
+    };
+  });
+}
 
 /**
  * GET /v1/packages/:scope/:name/compare?from=1.0.0&to=1.1.0 — diff entre dos versiones publicadas, limitado a `i` y
@@ -91,14 +116,15 @@ export const compare = new Hono<AppEnv>().get(
     if (!from || !to)
       throw httpError('E_NO_MATCHING_VERSION', { name, range: `${c.req.query('from')}..${c.req.query('to')}` });
     if (from.status === 'quarantined' || to.status === 'quarantined') throw httpError('E_QUARANTINED', { name });
-    const gh = parseGithubRepo(pkg.repo_url);
-    if (!gh) throw httpError('E_NOT_FOUND', { name });
-    const data = await new GitHub(c.env).json<GhCompare>(
-      `/repos/${gh.owner}/${gh.repo}/compare/${from.commit_sha}...${to.commit_sha}`,
-    );
-    if (!data) throw httpError('E_UPSTREAM_GIT', { detail: 'compare unavailable' });
+    const src = sourceHost(c.env, pkg.repo_url);
+    if (!src) throw httpError('E_NOT_FOUND', { name });
+    const changed =
+      src.kind === 'github'
+        ? await githubCompare(c.env, src.path, from.commit_sha, to.commit_sha)
+        : await gitlabCompare(c.env, src.path, from.commit_sha, to.commit_sha);
+    if (!changed) throw httpError('E_UPSTREAM_GIT', { detail: 'compare unavailable' });
     const prefix = to.include_path === '.' ? '' : `${to.include_path}/`;
-    const files = (data.files ?? [])
+    const files = changed
       .filter((f) => f.filename.startsWith(prefix))
       .slice(0, 300)
       .map((f) => ({
@@ -106,7 +132,7 @@ export const compare = new Hono<AppEnv>().get(
         status: f.status,
         additions: f.additions,
         deletions: f.deletions,
-        // GitHub omite el parche en archivos grandes o binarios.
+        // El host omite el parche en archivos grandes o binarios.
         patch: f.patch && f.patch.length <= 60_000 ? f.patch : null,
       }));
     return c.json({

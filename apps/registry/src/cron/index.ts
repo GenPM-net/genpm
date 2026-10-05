@@ -8,9 +8,10 @@
 import type { Env } from '../env.js';
 import { newId } from '../ids.js';
 import { aeConfigured, aeDataset, aeQuery } from '../services/ae.js';
-import { GitHub, parseGithubRepo } from '../services/github.js';
+import { GitHub } from '../services/github.js';
 import { recomputeQuality } from '../services/quality.js';
 import { activeSigningKey, sign } from '../services/signing.js';
+import { sourceHost } from '../services/source-host.js';
 
 const DAY = 86_400_000;
 
@@ -117,7 +118,6 @@ export async function syncSponsorships(env: Env, now = Date.now()): Promise<void
 
 /** Auditoría tag → SHA de las versiones latest y detección de repos inaccesibles o recreados (repojacking). */
 export async function auditTags(env: Env, limit = 200): Promise<{ moved: string[]; unavailable: string[] }> {
-  const gh = new GitHub(env);
   const { results } = await env.DB.prepare(
     `SELECT p.id AS pid, p.full_name, p.repo_url, p.git_repo_id, p.registry_id, v.id AS vid, v.git_ref, v.commit_sha
      FROM packages p JOIN package_versions v ON v.id = p.latest_version_id
@@ -138,10 +138,10 @@ export async function auditTags(env: Env, limit = 200): Promise<{ moved: string[
   const unavailable: string[] = [];
   const now = Date.now();
   for (const r of results) {
-    const coords = parseGithubRepo(r.repo_url);
-    if (!coords) continue;
+    const src = sourceHost(env, r.repo_url);
+    if (!src) continue;
     try {
-      const repo = await gh.repo(coords.owner, coords.repo);
+      const repo = await src.repo();
       if (!repo || (r.git_repo_id && repo.id !== r.git_repo_id)) {
         unavailable.push(r.full_name);
         await env.DB.batch([
@@ -159,7 +159,7 @@ export async function auditTags(env: Env, limit = 200): Promise<{ moved: string[
         continue;
       }
       if (/^[0-9a-f]{40}$/.test(r.git_ref)) continue;
-      const sha = await gh.commitSha(coords.owner, coords.repo, r.git_ref);
+      const sha = await src.commitSha(r.git_ref);
       if (sha && sha !== r.commit_sha) {
         moved.push(r.full_name);
         await env.DB.prepare(

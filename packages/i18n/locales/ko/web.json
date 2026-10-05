@@ -247,7 +247,8 @@
     "usedByNone": "아직 이 패키지에 의존하는 공개 패키지가 없습니다.",
     "usedByShort": "사용처",
     "quality": "품질",
-    "qualityScore": "{score, number}/100"
+    "qualityScore": "{score, number}/100",
+    "gitlab": "GitLab"
   },
   "report": {
     "title": "{name} 신고",
@@ -724,6 +725,8 @@
     "remove": "제거",
     "add": "저장소 승인",
     "howTitle": "워크플로",
-    "how": "job 권한에 id-token: write를 추가하고 genpm publish를 실행하세요. GENPM_TOKEN이 없으면 Actions에 OIDC 토큰을 요청해 자동으로 교환합니다."
+    "how": "job 권한에 id-token: write를 추가하고 genpm publish를 실행하세요. GENPM_TOKEN이 없으면 Actions에 OIDC 토큰을 요청해 자동으로 교환합니다.",
+    "provider": "호스트",
+    "howGitlab": "GitLab CI: aud가 genpm인 id_tokens를 GENPM_ID_TOKEN으로 선언하고 genpm publish를 실행하세요. GitLab 프로젝트는 신뢰할 수 있는 게시로만 게시할 수 있으며 공개 프로젝트여야 합니다."
   }
 }

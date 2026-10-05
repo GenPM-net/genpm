@@ -1,5 +1,5 @@
 // POST /v1/publish (api-spec §4.5). INV-7: el registry nunca confía en el manifiesto del cliente; recibe coordenadas
-// (repo + ref) y lee la verdad de GitHub en el commit resuelto. Cualquier fallo de los pasos 1–10 aborta sin escribir.
+// (repo + ref) y lee la verdad del host (GitHub o GitLab) en el commit resuelto. Cualquier fallo de los pasos 1–10 aborta sin escribir.
 
 import {
   canonicalize,
@@ -36,10 +36,10 @@ import { newId } from '../ids.js';
 import { requireAuth, tokenAllows } from '../middleware/auth.js';
 import { clientIp, rateLimit } from '../middleware/rate-limit.js';
 import { archiveVersion } from '../services/archive.js';
-import { GitHub, parseGithubRepo } from '../services/github.js';
 import { indexNow } from '../services/indexnow.js';
 import { recomputeQuality } from '../services/quality.js';
 import { sign } from '../services/signing.js';
+import { type SourceHost, sourceHost } from '../services/source-host.js';
 import { hashIp } from '../services/tokens.js';
 import { repoOf } from './util.js';
 
@@ -114,20 +114,18 @@ async function authorizeScope(
 
 /** Paso 8: árbol del commit (tarball) filtrado por `i` + `.genpmignore` y escaneado con las reglas deterministas. */
 async function scanCommit(
-  gh: GitHub,
-  owner: string,
-  repo: string,
+  src: SourceHost,
   sha: string,
   include: string,
   contextPath: string,
 ): Promise<{ report: ScanReport; rules: string | null; allPaths: string[]; gz: Uint8Array }> {
   // Bytes del tar.gz tal cual: se escanean y, si hay bucket, se guardan como Verified Archive (V03-02).
-  const gz = new Uint8Array(await new Response(await gh.tarball(owner, repo, sha)).arrayBuffer());
+  const gz = new Uint8Array(await new Response(await src.tarball(sha)).arrayBuffer());
   const tar = readTar(
     await gunzip(new Blob([gz]).stream() as ReadableStream<Uint8Array>, LIMITS.packageBytes * 4),
     (_p, size) => size <= LIMITS.fileBytes,
   );
-  // codeload antepone `<repo>-<sha>/` a cada ruta.
+  // codeload antepone `<repo>-<sha>/` a cada ruta (GitLab, `<project>-<sha>-<sha>/`).
   const strip = (p: string) => p.slice(p.indexOf('/') + 1);
   const ignoreEntry = tar.find(
     (e) => e.type === 'file' && relativeToInclude(include, strip(e.path)) === '.genpmignore',
@@ -176,16 +174,16 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   if (!tokenAllows(actor, body.name)) throw httpError('E_FORBIDDEN_SCOPE', { scope: parts.scope });
   const { scope, claim } = await authorizeScope(c, actor, parts.scope);
 
-  // 3 · el repo pertenece al owner de GitHub del scope
-  const gh = parseGithubRepo(body.repo);
-  if (!gh || gh.owner.toLowerCase() !== scope.git_owner.toLowerCase()) {
-    throw httpError('E_REPO_NOT_ALLOWED', { repo: body.repo, scope: parts.scope });
-  }
+  // 3 · el repo pertenece al owner de GitHub del scope; GitLab (V03-03, ADR-028) solo vía trusted publishing, porque
+  // la autorización del proyecto la dio el dueño del scope al registrarlo como editor de confianza.
+  const src = sourceHost(c.env, body.repo);
+  const repoNotAllowed = () => httpError('E_REPO_NOT_ALLOWED', { repo: body.repo, scope: parts.scope });
+  if (!src) throw repoNotAllowed();
+  if (src.kind === 'github' && src.owner.toLowerCase() !== scope.git_owner.toLowerCase()) throw repoNotAllowed();
+  if (src.kind === 'gitlab' && (claim || !actor.repository)) throw repoNotAllowed();
   // Trusted publishing: el token OIDC solo vale para el repositorio que lo pidió.
-  if (actor.repository && actor.repository.toLowerCase() !== `${gh.owner}/${gh.repo}`.toLowerCase())
-    throw httpError('E_REPO_NOT_ALLOWED', { repo: body.repo, scope: parts.scope });
-  const github = new GitHub(c.env);
-  const info = await github.repo(gh.owner, gh.repo);
+  if (actor.repository && actor.repository.toLowerCase() !== src.identity.toLowerCase()) throw repoNotAllowed();
+  const info = await src.repo();
   if (!info) throw httpError('E_REF_NOT_FOUND', { ref: body.ref, repo: body.repo });
   if (info.private) throw httpError('E_REPO_NOT_ALLOWED', { repo: body.repo, scope: parts.scope });
 
@@ -193,21 +191,24 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   if (checkRef(body.ref)) throw httpError('E_REF_MUTABLE', { ref: body.ref });
   const isSha = SHA1_RE.test(body.ref);
   if (!isSha) {
-    if (!(await github.isTag(gh.owner, gh.repo, body.ref))) {
-      if (await github.isBranch(gh.owner, gh.repo, body.ref)) throw httpError('E_REF_MUTABLE', { ref: body.ref });
+    if (!(await src.isTag(body.ref))) {
+      if (await src.isBranch(body.ref)) throw httpError('E_REF_MUTABLE', { ref: body.ref });
       throw httpError('E_REF_NOT_FOUND', { ref: body.ref, repo: body.repo });
     }
   }
 
   // 5 · ref → SHA `c`; repojacking: el id numérico del repo no puede cambiar entre versiones
-  const sha = await github.commitSha(gh.owner, gh.repo, body.ref);
+  const sha = await src.commitSha(body.ref);
   if (!sha) throw httpError('E_REF_NOT_FOUND', { ref: body.ref, repo: body.repo });
   if (isSha && sha !== body.ref) throw httpError('E_REF_NOT_FOUND', { ref: body.ref, repo: body.repo });
   const existing = await repo.packageByName(body.name);
   if (existing?.git_repo_id && existing.git_repo_id !== info.id) throw httpError('E_REPO_CHANGED', { name: body.name });
+  // Cambiar de host (GitHub ↔ GitLab) también es otro repositorio: los ids numéricos no son comparables entre hosts.
+  if (existing && sourceHost(c.env, existing.repo_url)?.kind !== src.kind)
+    throw httpError('E_REPO_CHANGED', { name: body.name });
 
-  // 6 · manifiesto leído de GitHub en `c` (nunca del cliente)
-  const manifestFile = await github.raw(gh.owner, gh.repo, sha, body.manifestPath, 64 * 1024);
+  // 6 · manifiesto leído del host en `c` (nunca del cliente)
+  const manifestFile = await src.raw(sha, body.manifestPath, 64 * 1024);
   if (manifestFile.status !== 'ok')
     throw httpError('E_MANIFEST_INVALID', {}, { issues: [{ path: body.manifestPath, message: manifestFile.status }] });
   let source: unknown;
@@ -236,7 +237,7 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   // 8 · reglas `x` y escaneo del árbol del commit
   const include = m.i ?? '.';
   const contextPath = m.x ?? 'AGENTS.md';
-  const { report, rules, allPaths, gz } = await scanCommit(github, gh.owner, gh.repo, sha, include, contextPath);
+  const { report, rules, allPaths, gz } = await scanCommit(src, sha, include, contextPath);
   const warnings: Array<{ code: string; detail: string }> = [];
   if (rules === null) {
     if (m.x) throw httpError('E_CONTEXT_MISSING', { path: contextPath });
@@ -256,8 +257,8 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
     );
   }
 
-  // 9 · licencia: prevalece la detectada por GitHub
-  const ghLicense = await github.license(gh.owner, gh.repo);
+  // 9 · licencia: prevalece la detectada por el host
+  const ghLicense = await src.license();
   const license = ghLicense ?? m.l ?? 'NOASSERTION';
   if (ghLicense && m.l && ghLicense !== m.l)
     warnings.push({ code: 'W_LICENSE_MISMATCH', detail: `${m.l} → ${ghLicense}` });
@@ -279,7 +280,7 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
 
   // 11 · manifiesto resuelto canónico + firma; batch atómico
   const resolved = toResolved(m, {
-    r: `https://github.com/${gh.owner}/${gh.repo}`,
+    r: src.url,
     t: isSha ? sha : body.ref,
     c: sha,
     l: license,
@@ -318,7 +319,7 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
         .prepare(
           'INSERT INTO scopes (id, registry_id, name, owner_id, git_host, git_owner, is_reserved, created_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, ?7)',
         )
-        .bind(claim.id, tenant.registryId, claim.name, claim.owner_id, 'github.com', claim.git_owner, now),
+        .bind(claim.id, tenant.registryId, claim.name, claim.owner_id, src.host, claim.git_owner, now),
     );
   }
   if (!existing) {

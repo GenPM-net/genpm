@@ -1,4 +1,4 @@
-// core/fetch (architecture §7.1): caché inmutable por SHA → git por SHA (sparse + partial clone) → tarball.
+// core/fetch (architecture §7.1): caché inmutable por SHA → git por SHA (sparse + partial clone) → tarball (GitHub o GitLab).
 // INV-1: tras el fetch se verifica `rev-parse HEAD === c` y el hash git de CADA archivo contra el árbol del commit,
 // de modo que ningún filtro, conversión de fin de línea o servidor malicioso puede alterar los bytes inyectados.
 
@@ -163,20 +163,33 @@ async function viaGit(tmp: string, r: string, c: string, i: string, opts: FetchO
   return entries;
 }
 
+/** URL del tar.gz anclado al SHA: codeload (GitHub) o el API de archivos de GitLab (V03-03). */
+function tarballUrl(r: string, c: string): { url: string; host: string } | null {
+  const gh = r.match(/^https:\/\/github\.com\/([A-Za-z0-9-]+)\/([A-Za-z0-9._-]+)$/);
+  if (gh) return { url: `https://codeload.github.com/${gh[1]}/${gh[2]}/tar.gz/${c}`, host: 'codeload.github.com' };
+  const gl = r.match(/^https:\/\/gitlab\.com\/((?:[A-Za-z0-9_.-]+\/)+[A-Za-z0-9_.-]+)$/);
+  if (gl && !gl[1]!.split('/').some((s) => s === '.' || s === '..'))
+    return {
+      url: `https://gitlab.com/api/v4/projects/${encodeURIComponent(gl[1]!)}/repository/archive.tar.gz?sha=${c}`,
+      host: 'gitlab.com',
+    };
+  return null;
+}
+
 async function viaTarball(tmp: string, r: string, c: string, i: string, opts: FetchOptions): Promise<TreeEntry[]> {
-  const m = r.match(/^https:\/\/github\.com\/([A-Za-z0-9-]+)\/([A-Za-z0-9._-]+)$/);
-  if (!m) throw fail('E_GIT_MISSING');
+  const t = tarballUrl(r, c);
+  if (!t) throw fail('E_GIT_MISSING');
   const doFetch = opts.fetchImpl ?? fetch;
   // La URL ya está anclada al SHA; nunca se siguen redirecciones a otro host (security §4.1).
-  const url = `https://codeload.github.com/${m[1]}/${m[2]}/tar.gz/${c}`;
-  opts.log?.(`GET ${url}`);
+  opts.log?.(`GET ${t.url}`);
   let res: Response;
   try {
-    res = await doFetch(url, { redirect: 'error', signal: AbortSignal.timeout(opts.timeoutMs ?? 60_000) });
+    res = await doFetch(t.url, { redirect: 'error', signal: AbortSignal.timeout(opts.timeoutMs ?? 60_000) });
   } catch {
-    throw fail('E_NETWORK', { host: 'codeload.github.com' });
+    throw fail('E_NETWORK', { host: t.host });
   }
-  if (!res.ok || !res.body) throw fail('E_UPSTREAM_GIT', { detail: `codeload ${res.status}` });
+  if (!res.ok || !res.body) throw fail('E_UPSTREAM_GIT', { detail: `${t.host} ${res.status}` });
+  // `git archive` (codeload y GitLab) escribe el commit en el comentario pax global: se exige al extraer.
   return extractTarball(tmp, r, c, i, await gunzip(res.body, 200 * 1024 * 1024));
 }
 
@@ -240,12 +253,7 @@ export async function fetchSource(
         return [await viaGit(tmp, r, c, i, opts), 'git'];
       } catch (e) {
         // Fallback tarball solo si el host no permite fetch por SHA o falla la red; nunca ante un fallo de integridad.
-        if (
-          strategy === 'git' ||
-          (e as { code?: string }).code !== 'E_UPSTREAM_GIT' ||
-          !r.startsWith('https://github.com/')
-        )
-          throw e;
+        if (strategy === 'git' || (e as { code?: string }).code !== 'E_UPSTREAM_GIT' || !tarballUrl(r, c)) throw e;
         await rm(tmp, { recursive: true, force: true });
         await mkdir(tmp, { recursive: true });
         return [await viaTarball(tmp, r, c, i, opts), 'tarball'];

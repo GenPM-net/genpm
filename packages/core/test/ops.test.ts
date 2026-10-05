@@ -226,7 +226,11 @@ describe('author: init & validate', () => {
     expect(normalizeGitRemote('git@github.com:genpm-net/auth.git')).toBe('https://github.com/genpm-net/auth');
     expect(normalizeGitRemote('https://github.com/genpm-net/auth.git')).toBe('https://github.com/genpm-net/auth');
     expect(normalizeGitRemote('ssh://git@github.com/genpm-net/auth')).toBe('https://github.com/genpm-net/auth');
-    expect(normalizeGitRemote('https://gitlab.com/a/b')).toBeNull();
+    expect(normalizeGitRemote('https://gitlab.com/a/b')).toBe('https://gitlab.com/a/b');
+    expect(normalizeGitRemote('git@gitlab.com:grp/sub/lib.git')).toBe('https://gitlab.com/grp/sub/lib');
+    expect(normalizeGitRemote('https://gitlab-ci-token:xyz@gitlab.com/grp/lib.git')).toBe('https://gitlab.com/grp/lib');
+    expect(normalizeGitRemote('https://gitlab.com/a/../b')).toBeNull();
+    expect(normalizeGitRemote('https://bitbucket.org/a/b')).toBeNull();
   });
 });
 

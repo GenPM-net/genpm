@@ -160,6 +160,26 @@ describe('tarball fallback', () => {
   });
 });
 
+describe('GitLab tarball (V03-03)', () => {
+  it('downloads the archive pinned to the SHA from the GitLab API, subgroups included', async () => {
+    const repo = await makeRepo({ 'a.ts': 'a', 'AGENTS.md': '# r' });
+    const { execFileSync } = await import('node:child_process');
+    const tgz = execFileSync('git', ['archive', '--format=tar.gz', `--prefix=lib-${repo.sha}-${repo.sha}/`, repo.sha], {
+      cwd: repo.dir,
+    });
+    const fetchImpl = vi.fn(async () => new Response(tgz)) as unknown as typeof fetch;
+    const r = 'https://gitlab.com/acme/sub/lib';
+    const res = await fetchSource({ r, c: repo.sha }, { cacheDir, strategy: 'tarball', fetchImpl });
+    expect(res.entries.map((e) => e.path).sort()).toEqual(['AGENTS.md', 'a.ts']);
+    expect(vi.mocked(fetchImpl).mock.calls[0]![0]).toBe(
+      `https://gitlab.com/api/v4/projects/acme%2Fsub%2Flib/repository/archive.tar.gz?sha=${repo.sha}`,
+    );
+    await expect(
+      fetchSource({ r: 'https://gitlab.com/acme/../x', c: repo.sha }, { cacheDir, strategy: 'tarball', fetchImpl }),
+    ).rejects.toMatchObject({ code: 'E_GIT_MISSING' });
+  });
+});
+
 describe('helpers', () => {
   it('derives cache keys and git blob hashes', () => {
     expect(repoCacheKey('https://github.com/genpm-net/auth')).toBe('github.com/genpm-net/auth');

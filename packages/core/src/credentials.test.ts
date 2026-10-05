@@ -7,7 +7,7 @@ describe('oidcToken (trusted publishing)', () => {
     const fetchImpl = (async (url: string, init?: RequestInit) => {
       calls.push(`${init?.method ?? 'GET'} ${url}`);
       if (url.startsWith('https://actions.example')) {
-        expect((init?.headers as Record<string, string>).authorization).toBe('bearer req-token');
+        expect((init!.headers as Record<string, string>).authorization).toBe('bearer req-token');
         return Response.json({ value: 'jwt.from.actions' });
       }
       expect(JSON.parse(String(init?.body))).toEqual({ token: 'jwt.from.actions' });
@@ -22,6 +22,17 @@ describe('oidcToken (trusted publishing)', () => {
       'GET https://actions.example/token?api-version=2.0&audience=genpm',
       'POST https://api.genpm.net/v1/auth/oidc/exchange',
     ]);
+  });
+  it('exchanges a GitLab CI id_token from GENPM_ID_TOKEN directly', async () => {
+    const calls: string[] = [];
+    const fetchImpl = (async (url: string, init?: RequestInit) => {
+      calls.push(`${init?.method ?? 'GET'} ${url}`);
+      expect(JSON.parse(String(init?.body))).toEqual({ token: 'jwt.from.gitlab' });
+      return Response.json({ token: 'gpm_gl' });
+    }) as typeof fetch;
+    const env = { GENPM_ID_TOKEN: 'jwt.from.gitlab' };
+    expect(await oidcToken('https://api.genpm.net', { env, fetchImpl })).toBe('gpm_gl');
+    expect(calls).toEqual(['POST https://api.genpm.net/v1/auth/oidc/exchange']);
   });
   it('returns null outside Actions, when disabled or when the registry refuses', async () => {
     const no = (async () => new Response('', { status: 401 })) as unknown as typeof fetch;

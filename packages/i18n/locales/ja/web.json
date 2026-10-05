@@ -247,7 +247,8 @@
     "usedByNone": "まだこのパッケージに依存する公開パッケージはありません。",
     "usedByShort": "利用元",
     "quality": "品質",
-    "qualityScore": "{score, number}/100"
+    "qualityScore": "{score, number}/100",
+    "gitlab": "GitLab"
   },
   "report": {
     "title": "{name} を報告",
@@ -724,6 +725,8 @@
     "remove": "削除",
     "add": "リポジトリを承認",
     "howTitle": "ワークフロー",
-    "how": "ジョブの権限に id-token: write を追加し、genpm publish を実行します。GENPM_TOKEN がなければ Actions に OIDC トークンを要求し、自動で交換します。"
+    "how": "ジョブの権限に id-token: write を追加し、genpm publish を実行します。GENPM_TOKEN がなければ Actions に OIDC トークンを要求し、自動で交換します。",
+    "provider": "ホスト",
+    "howGitlab": "GitLab CI: aud を genpm にした id_tokens を GENPM_ID_TOKEN として宣言し、genpm publish を実行します。GitLab プロジェクトは信頼済みパブリッシング経由でのみ公開でき、公開プロジェクトである必要があります。"
   }
 }

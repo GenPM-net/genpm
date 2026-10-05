@@ -1,4 +1,4 @@
-// GitHub falso para tests de contrato (api-spec §10): API, raw y codeload (tar.gz) en memoria.
+// GitHub (y GitLab, V03-03) falsos para tests de contrato (api-spec §10): API, raw y tarballs en memoria.
 
 export type FakeFile = string | { content: string; mode?: number; symlink?: string };
 export type FakeRepo = {
@@ -102,6 +102,61 @@ export class FakeGitHub {
     return repo.tags[ref] ?? repo.branches?.[ref] ?? null;
   }
 
+  /** Proyectos de gitlab.com por ruta (`group/sub/project`), con licencia como clave de GitLab (`mit`). */
+  gitlab = new Map<string, FakeRepo>();
+
+  addGitlab(path: string, repo: FakeRepo): this {
+    this.gitlab.set(path.toLowerCase(), repo);
+    return this;
+  }
+
+  /** Respuesta de /repository/compare por proyecto de GitLab. */
+  gitlabDiffs: Record<string, unknown[]> = {};
+
+  private gitlabFetch(
+    url: URL,
+    parts: string[],
+    json: (b: unknown, s?: number) => Response,
+  ): Promise<Response> | Response {
+    const notFound = () => json({ message: '404 Not Found' }, 404);
+    if (url.pathname === '/oauth/discovery/keys') return json({ keys: this.jwks });
+    if (parts[0] !== 'api' || parts[1] !== 'v4' || parts[2] !== 'projects') return notFound();
+    const path = parts[3]!;
+    const repo = this.gitlab.get(path.toLowerCase());
+    if (!repo) return notFound();
+    const rest = parts.slice(4);
+    if (rest.length === 0)
+      return json({
+        id: repo.id,
+        visibility: repo.private ? 'private' : 'public',
+        path_with_namespace: path,
+        ...(url.searchParams.get('license') === 'true' ? { license: repo.license ? { key: repo.license } : null } : {}),
+      });
+    if (rest[0] !== 'repository') return notFound();
+    if (rest[1] === 'tags') return repo.tags[rest[2]!] ? json({ name: rest[2] }) : notFound();
+    if (rest[1] === 'branches') return repo.branches?.[rest[2]!] ? json({ name: rest[2] }) : notFound();
+    if (rest[1] === 'commits') {
+      const sha = this.resolve(repo, rest[2]!);
+      return sha ? json({ id: sha }) : notFound();
+    }
+    if (rest[1] === 'compare') return json({ diffs: this.gitlabDiffs[path] ?? [] });
+    if (rest[1] === 'files' && rest[3] === 'raw') {
+      const f = repo.commits[url.searchParams.get('ref') ?? '']?.[rest[2]!];
+      if (f === undefined) return notFound();
+      return new Response(typeof f === 'string' ? f : f.content);
+    }
+    if (rest[1] === 'archive.tar.gz') {
+      const sha = url.searchParams.get('sha') ?? '';
+      const files = repo.commits[sha];
+      if (!files) return notFound();
+      const name = path.split('/').pop()!;
+      return tarGz(`${name}-${sha}-${sha}`, files).then(
+        (gz) => new Response(gz as BodyInit, { headers: { 'content-type': 'application/gzip' } }),
+      );
+    }
+    return notFound();
+  }
+
   /** Claves públicas del emisor OIDC de GitHub Actions (trusted publishing). */
   jwks: JsonWebKey[] = [];
 
@@ -116,6 +171,7 @@ export class FakeGitHub {
       new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
     const notFound = () => json({ message: 'Not Found' }, 404);
     const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
+    if (url.host === 'gitlab.com') return this.gitlabFetch(url, parts, json);
     if (url.host === 'token.actions.githubusercontent.com' && url.pathname === '/.well-known/jwks')
       return json({ keys: this.jwks });
     if (url.host === 'api.github.com') {

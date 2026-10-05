@@ -1,4 +1,5 @@
-// Trusted publishing (V03-01, security §4.2): POST /v1/auth/oidc/exchange canjea el token OIDC de GitHub Actions por
+// Trusted publishing (V03-01, security §4.2): POST /v1/auth/oidc/exchange canjea el token OIDC de GitHub Actions o
+// de GitLab CI (V03-03) por
 // un token `publish` de 15 minutos, restringido a los scopes que autorizaron ese repositorio y solo válido desde él.
 // El dueño del scope gestiona las autorizaciones en /v1/scopes/:scope/trusted-publishers.
 
@@ -11,7 +12,8 @@ import { newId } from '../ids.js';
 import { requireAuth } from '../middleware/auth.js';
 import { rateLimit } from '../middleware/rate-limit.js';
 import { GitHub } from '../services/github.js';
-import { verifyGithubOidc, workflowPath } from '../services/oidc.js';
+import { GitLab, parseGitlabRepo } from '../services/gitlab.js';
+import { verifyCiOidc } from '../services/oidc.js';
 import { hashToken, newToken } from '../services/tokens.js';
 
 const TTL_MS = 15 * 60_000;
@@ -31,22 +33,21 @@ type TrustedRow = {
 export const oidc = new Hono<AppEnv>().post('/oidc/exchange', rateLimit('exchange'), async (c) => {
   const body = z.strictObject({ token: z.string().min(20).max(8192) }).safeParse(await c.req.json().catch(() => null));
   if (!body.success) throw httpError('E_BAD_REQUEST', { detail: 'token' });
-  const claims = await verifyGithubOidc(body.data.token);
-  if (!claims) throw httpError('E_AUTH');
-  const wf = workflowPath(claims);
+  const id_ = await verifyCiOidc(body.data.token);
+  if (!id_) throw httpError('E_AUTH');
   const { results } = await c.env.DB.prepare(
     `SELECT t.id, t.scope_id, s.name AS scope, s.owner_id, t.repository, t.repository_id, t.workflow, t.environment, t.created_at
      FROM trusted_publishers t JOIN scopes s ON s.id = t.scope_id
-     WHERE t.registry_id = ?1 AND t.provider = 'github' AND t.repository = ?2`,
+     WHERE t.registry_id = ?1 AND t.provider = ?2 AND t.repository = ?3`,
   )
-    .bind(c.get('tenant').registryId, claims.repository)
+    .bind(c.get('tenant').registryId, id_.provider, id_.path)
     .all<TrustedRow>();
   const matches = results.filter(
     (r) =>
       // Repo recreado con el mismo nombre (repojacking) ⇒ id distinto ⇒ no vale.
-      (!r.repository_id || r.repository_id === String(claims.repository_id)) &&
-      (!r.workflow || r.workflow === wf) &&
-      (!r.environment || r.environment === claims.environment),
+      (!r.repository_id || r.repository_id === id_.repositoryId) &&
+      (!r.workflow || r.workflow === id_.workflow) &&
+      (!r.environment || r.environment === id_.environment),
   );
   if (!matches.length) throw httpError('E_AUTH');
   // Un token pertenece a una cuenta: la del dueño del primer scope autorizado (y solo sus scopes).
@@ -65,7 +66,7 @@ export const oidc = new Hono<AppEnv>().post('/oidc/exchange', rateLimit('exchang
       token.slice(0, 8),
       await hashToken(c.env.TOKEN_PEPPER!, token),
       JSON.stringify(scopes.map((s) => `${s}/*`)),
-      claims.repository,
+      id_.repository,
       now + TTL_MS,
       now,
     ),
@@ -77,15 +78,16 @@ export const oidc = new Hono<AppEnv>().post('/oidc/exchange', rateLimit('exchang
       owner,
       id,
       JSON.stringify({
-        repository: claims.repository,
-        workflow: wf,
-        ref: claims.ref ?? null,
-        run: claims.run_id ?? null,
+        provider: id_.provider,
+        repository: id_.repository,
+        workflow: id_.workflow,
+        ref: id_.ref,
+        run: id_.run,
       }),
       now,
     ),
   ]);
-  return c.json({ token, expiresAt: new Date(now + TTL_MS).toISOString(), scopes, repository: claims.repository });
+  return c.json({ token, expiresAt: new Date(now + TTL_MS).toISOString(), scopes, repository: id_.repository });
 });
 
 /** ¿Puede el actor administrar el scope? (dueño, o owner/admin de la org dueña). */
@@ -97,15 +99,29 @@ async function canAdminScope(c: { env: AppEnv['Bindings'] }, actor: Actor, owner
   return !!m && ['owner', 'admin'].includes(m.role);
 }
 
-const Add = z.strictObject({
-  repository: z.string().regex(/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/),
-  workflow: z
-    .string()
-    .regex(/^\.github\/workflows\/[A-Za-z0-9_./-]+\.ya?ml$/)
-    .nullable()
-    .optional(),
-  environment: z.string().min(1).max(100).nullable().optional(),
-});
+const Add = z.discriminatedUnion('provider', [
+  z.strictObject({
+    provider: z.literal('github'),
+    repository: z.string().regex(/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/),
+    workflow: z
+      .string()
+      .regex(/^\.github\/workflows\/[A-Za-z0-9_./-]+\.ya?ml$/)
+      .nullable()
+      .optional(),
+    environment: z.string().min(1).max(100).nullable().optional(),
+  }),
+  // GitLab (V03-03): ruta completa con subgrupos; `workflow` es el archivo de CI (`.gitlab-ci.yml` por defecto).
+  z.strictObject({
+    provider: z.literal('gitlab'),
+    repository: z.string().max(500),
+    workflow: z
+      .string()
+      .regex(/^(?!.*\.\.)[A-Za-z0-9_./-]+\.ya?ml$/)
+      .nullable()
+      .optional(),
+    environment: z.string().min(1).max(100).nullable().optional(),
+  }),
+]);
 
 const SCOPE = '/:scope{@[a-z0-9][a-z0-9-]*}/trusted-publishers';
 
@@ -150,30 +166,50 @@ export const trusted = new Hono<AppEnv>()
   })
   .post(SCOPE, requireAuth('publish'), async (c) => {
     const scope = await scopeFor(c);
-    const parsed = Add.safeParse(await c.req.json().catch(() => null));
+    const input = await c.req.json().catch(() => null);
+    // Sin `provider` ⇒ GitHub (compatibilidad con V03-01).
+    const parsed = Add.safeParse(
+      input && typeof input === 'object' && !('provider' in input) ? { ...input, provider: 'github' } : input,
+    );
     if (!parsed.success) throw httpError('E_BAD_REQUEST', { detail: parsed.error.issues[0]?.path.join('.') ?? 'body' });
-    const [owner, repoName] = parsed.data.repository.split('/') as [string, string];
-    // ADR-018: un scope solo publica desde repos de su dueño de GitHub.
-    if (owner.toLowerCase() !== scope.git_owner.toLowerCase())
-      throw httpError('E_REPO_NOT_ALLOWED', { repo: parsed.data.repository, scope: `@${scope.name}` });
-    const info = await new GitHub(c.env).repo(owner, repoName);
-    if (!info) throw httpError('E_REF_NOT_FOUND', { ref: '-', repo: parsed.data.repository });
+    const { provider, repository } = parsed.data;
+    let repoId: number;
+    if (provider === 'github') {
+      const [owner, repoName] = repository.split('/') as [string, string];
+      // ADR-018: un scope solo publica desde repos de su dueño de GitHub.
+      if (owner.toLowerCase() !== scope.git_owner.toLowerCase())
+        throw httpError('E_REPO_NOT_ALLOWED', { repo: repository, scope: `@${scope.name}` });
+      const info = await new GitHub(c.env).repo(owner, repoName);
+      if (!info) throw httpError('E_REF_NOT_FOUND', { ref: '-', repo: repository });
+      repoId = info.id;
+    } else {
+      // ADR-028: GitLab no tiene cuenta vinculada; la autorización explícita del dueño del scope es la prueba.
+      // Solo proyectos públicos (el registry tiene que poder leer el código).
+      if (!parseGitlabRepo(`https://gitlab.com/${repository}`))
+        throw httpError('E_BAD_REQUEST', { detail: 'repository' });
+      const info = await new GitLab(c.env).repo(repository);
+      if (!info) throw httpError('E_REF_NOT_FOUND', { ref: '-', repo: `gitlab.com/${repository}` });
+      if (info.private)
+        throw httpError('E_REPO_NOT_ALLOWED', { repo: `gitlab.com/${repository}`, scope: `@${scope.name}` });
+      repoId = info.id;
+    }
     const id = newId('tp');
     const now = Date.now();
     await c.env.DB.batch([
       c.env.DB.prepare(
         `INSERT INTO trusted_publishers (id, registry_id, scope_id, provider, repository, repository_id, workflow, environment, created_by, created_at)
-         VALUES (?1, ?2, ?3, 'github', ?4, ?5, ?6, ?7, ?8, ?9) ON CONFLICT DO NOTHING`,
+         VALUES (?1, ?2, ?3, ?10, ?4, ?5, ?6, ?7, ?8, ?9) ON CONFLICT DO NOTHING`,
       ).bind(
         id,
         c.get('tenant').registryId,
         scope.id,
-        parsed.data.repository,
-        String(info.id),
+        repository,
+        String(repoId),
         parsed.data.workflow ?? null,
         parsed.data.environment ?? null,
         c.get('actor')!.accountId,
         now,
+        provider,
       ),
       c.env.DB.prepare(
         "INSERT INTO audit_log (id, registry_id, actor_id, action, target_type, target_id, metadata, created_at) VALUES (?1, ?2, ?3, 'scope.trust', 'scope', ?4, ?5, ?6)",

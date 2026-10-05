@@ -71,3 +71,20 @@ steps:
     with: { fetch-depth: 0 }
   - run: npx -y @genpm-net/cli publish --yes
 ```
+
+### 从 GitLab 发布
+
+GitLab 项目只能通过可信发布来发布：在 [可信发布](/settings/publishing) 中选择 GitLab 作为托管平台并授权该公开项目（例如 `my-group/sub/my-package`），然后声明一个 audience 为 `genpm`、名为 `GENPM_ID_TOKEN` 的 `id_tokens`。`genpm publish` 会把它兑换成一个只能从该项目发布的 15 分钟令牌。个人令牌不能发布 GitLab 仓库。
+
+```yaml
+# .gitlab-ci.yml
+publish:
+  image: node:22
+  rules:
+    - if: $CI_COMMIT_TAG
+  id_tokens:
+    GENPM_ID_TOKEN:
+      aud: genpm
+  script:
+    - npx -y @genpm-net/cli publish --yes
+```

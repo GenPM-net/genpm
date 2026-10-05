@@ -71,3 +71,20 @@ steps:
     with: { fetch-depth: 0 }
   - run: npx -y @genpm-net/cli publish --yes
 ```
+
+### From GitLab
+
+GitLab projects publish only through trusted publishing: authorize the public project (for example `my-group/sub/my-package`) in [Trusted publishing](/settings/publishing) with GitLab as the host, and declare an `id_tokens` entry with audience `genpm` named `GENPM_ID_TOKEN`. `genpm publish` exchanges it for a 15-minute token that can only publish from that project. Personal tokens cannot publish GitLab repositories.
+
+```yaml
+# .gitlab-ci.yml
+publish:
+  image: node:22
+  rules:
+    - if: $CI_COMMIT_TAG
+  id_tokens:
+    GENPM_ID_TOKEN:
+      aud: genpm
+  script:
+    - npx -y @genpm-net/cli publish --yes
+```

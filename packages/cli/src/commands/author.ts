@@ -142,7 +142,7 @@ export const publishCmd = (ctx: Ctx) =>
     run: ({ args }) =>
       run(ctx, async () => {
         const o = await coreOptions(ctx);
-        // En GitHub Actions sin GENPM_TOKEN: trusted publishing (OIDC) si el scope autorizó este repositorio.
+        // En GitHub Actions o GitLab CI sin GENPM_TOKEN: trusted publishing (OIDC) si el scope autorizó este repositorio.
         o.token ??= await oidcToken(o.registry);
         if (!o.token) throw fail('E_AUTH');
         const r = await publish({

@@ -32,6 +32,8 @@ export type Env = {
   GITHUB_OAUTH_CLIENT_SECRET?: string;
   /** Solo tests: base del API de GitHub (por defecto https://api.github.com). */
   GITHUB_API_BASE?: string;
+  /** Solo tests: base de GitLab (por defecto https://gitlab.com). */
+  GITLAB_API_BASE?: string;
   /** Rollup de Analytics Engine vía SQL API (cron horario). */
   CF_ACCOUNT_ID?: string;
   CF_AE_TOKEN?: string;

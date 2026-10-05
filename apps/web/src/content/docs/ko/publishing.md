@@ -71,3 +71,20 @@ steps:
     with: { fetch-depth: 0 }
   - run: npx -y @genpm-net/cli publish --yes
 ```
+
+### GitLab에서
+
+GitLab 프로젝트는 신뢰할 수 있는 게시로만 게시할 수 있습니다. [신뢰할 수 있는 게시](/settings/publishing)에서 호스트로 GitLab을 선택해 공개 프로젝트(예: `my-group/sub/my-package`)를 승인하고, audience가 `genpm`인 `id_tokens`를 `GENPM_ID_TOKEN`이라는 이름으로 선언하세요. `genpm publish`는 이를 해당 프로젝트에서만 게시할 수 있는 15분짜리 토큰으로 교환합니다. 개인 토큰으로는 GitLab 저장소를 게시할 수 없습니다.
+
+```yaml
+# .gitlab-ci.yml
+publish:
+  image: node:22
+  rules:
+    - if: $CI_COMMIT_TAG
+  id_tokens:
+    GENPM_ID_TOKEN:
+      aud: genpm
+  script:
+    - npx -y @genpm-net/cli publish --yes
+```

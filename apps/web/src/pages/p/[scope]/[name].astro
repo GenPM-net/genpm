@@ -11,6 +11,7 @@ import { ago, bytes, compact, shortSha, sparkline } from '../../../lib/format.js
 import { highlight, langFor } from '../../../lib/highlight.js';
 import { href } from '../../../lib/i18n.js';
 import { renderMarkdown } from '../../../lib/markdown.js';
+import { sourceLinks } from '../../../lib/github.js';
 import { loadPackage } from '../../../lib/package.js';
 
 const { scope, name: short } = Astro.params;
@@ -53,12 +54,7 @@ const scanLabel =
   { passed: 'pkg.scanPassed', flagged: 'pkg.scanFlagged', failed: 'pkg.scanFailed', pending: 'pkg.scanPending' }[
     scan
   ] ?? 'pkg.scanPending';
-const blobBase = m
-  ? `https://github.com/${m.repo.replace('https://github.com/', '')}/blob/${m.commit}/${m.include === '.' ? '' : `${m.include}/`}`
-  : '';
-const rawBase = m
-  ? `https://raw.githubusercontent.com/${m.repo.replace('https://github.com/', '')}/${m.commit}/${m.include === '.' ? '' : `${m.include}/`}`
-  : '';
+const { blobBase, rawBase } = m ? sourceLinks(m.repo, m.commit, m.include) : { blobBase: '', rawBase: '' };
 const readmeHtml =
   typeof v?.readme === 'string' ? renderMarkdown(v.readme, { baseUrl: blobBase, rawBaseUrl: rawBase }) : null;
 const rulesHtml =
@@ -105,7 +101,7 @@ const badgeMd = `[![genpm](https://api.genpm.net/v1/badge/${name}.svg)](https://
             <details class="lang vsel"><summary class="badge" aria-label={t.t('web.pkg.selectVersion')}>{m.version} ▾</summary><ul>{v.versions.map((x) => <li><a href={`${href(locale, latestPath)}?v=${x.v}`} aria-current={x.v === m.version ? 'true' : undefined}>{x.v}{x.yanked && <em>{t.t('web.pkg.yanked')}</em>}</a></li>)}</ul></details>
             {p.publisher?.verified && <span class="badge ver"><Ico name="shield" />{t.t('web.common.verified')}</span>}
             <span class="badge">{m.license}</span>
-            <div class="act"><button class="btn sm ghost" type="button" data-report>{t.t('web.pkg.report')}</button><a class="btn sm" href={m.repo} rel="noopener"><Ico name="gh" style="width:15px;height:15px" />{t.t('web.pkg.github')}</a></div>
+            <div class="act"><button class="btn sm ghost" type="button" data-report>{t.t('web.pkg.report')}</button><a class="btn sm" href={m.repo} rel="noopener">{m.repo.startsWith('https://gitlab.com/') ? t.t('web.pkg.gitlab') : <><Ico name="gh" style="width:15px;height:15px" />{t.t('web.pkg.github')}</>}</a></div>
           </div>
           <p>{m.summary}</p>
           <div class="row" style="gap:6px"><LayerBadges files={files.length} tokens={v.rulesTokens} mcp={v.mcp.map((x) => x.n)} /><span class:list={['badge', { ok: scan === 'passed' }]} style={scan === 'passed' ? undefined : 'color:var(--warn)'}>{t.t(`web.${scanLabel}` as 'web.pkg.scanPassed')}</span></div>

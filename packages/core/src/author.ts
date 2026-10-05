@@ -245,6 +245,11 @@ export function normalizeGitRemote(url: string): string | null {
     /^(?:https|ssh):\/\/(?:[^@/]+@)?github\.com\/([A-Za-z0-9-]+)\/([A-Za-z0-9._-]+?)(?:\.git)?\/?$/,
   );
   if (https) return `https://github.com/${https[1]}/${https[2]}`;
+  // GitLab (V03-03): grupos y subgrupos; en CI el remoto lleva `gitlab-ci-token:…@`, que se descarta.
+  const gl =
+    url.match(/^git@gitlab\.com:((?:[A-Za-z0-9_.-]+\/)+[A-Za-z0-9_.-]+?)(?:\.git)?$/) ??
+    url.match(/^(?:https|ssh):\/\/(?:[^@/]+@)?gitlab\.com\/((?:[A-Za-z0-9_.-]+\/)+[A-Za-z0-9_.-]+?)(?:\.git)?\/?$/);
+  if (gl && !gl[1]!.split('/').some((s) => s === '.' || s === '..')) return `https://gitlab.com/${gl[1]}`;
   return null;
 }
 

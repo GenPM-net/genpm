@@ -247,7 +247,8 @@
     "usedByNone": "Nenhum pacote público depende dele ainda.",
     "usedByShort": "Usado por",
     "quality": "Qualidade",
-    "qualityScore": "{score, number}/100"
+    "qualityScore": "{score, number}/100",
+    "gitlab": "GitLab"
   },
   "report": {
     "title": "Denunciar {name}",
@@ -724,6 +725,8 @@
     "remove": "Remover",
     "add": "Autorizar repositório",
     "howTitle": "Workflow",
-    "how": "Adicione id-token: write às permissões do job e rode genpm publish: sem GENPM_TOKEN ele pede um token OIDC ao Actions e troca automaticamente."
+    "how": "Adicione id-token: write às permissões do job e rode genpm publish: sem GENPM_TOKEN ele pede um token OIDC ao Actions e troca automaticamente.",
+    "provider": "Host",
+    "howGitlab": "GitLab CI: declare id_tokens com aud genpm como GENPM_ID_TOKEN e rode genpm publish. Projetos do GitLab só publicam via publicação confiável e precisam ser públicos."
   }
 }

@@ -130,24 +130,30 @@ export async function pollDeviceFlow(
 
 /**
  * Trusted publishing (V03-01): dentro de GitHub Actions con `permissions: id-token: write`, pide a Actions un token
- * OIDC con audiencia `genpm` y lo canjea en el registry por un token `publish` de 15 minutos. Sin esas variables, o
- * si el registry no tiene autorizado el repositorio, devuelve `null` (el CLI pide entonces `GENPM_TOKEN` o login).
+ * OIDC con audiencia `genpm` y lo canjea en el registry por un token `publish` de 15 minutos. En GitLab CI (V03-03) el
+ * job declara `id_tokens: GENPM_ID_TOKEN: { aud: genpm }` y el token llega ya hecho en esa variable. Sin esas
+ * variables, o si el registry no tiene autorizado el repositorio, devuelve `null` (el CLI pide `GENPM_TOKEN` o login).
  */
 export async function oidcToken(
   registry: string,
   opts: { env?: Record<string, string | undefined>; fetchImpl?: typeof fetch } = {},
 ): Promise<string | null> {
   const env = opts.env ?? process.env;
+  if (env['GENPM_OIDC'] === '0') return null;
   const url = env['ACTIONS_ID_TOKEN_REQUEST_URL'];
   const bearer = env['ACTIONS_ID_TOKEN_REQUEST_TOKEN'];
-  if (!url || !bearer || env['GENPM_OIDC'] === '0') return null;
+  const ready = env['GENPM_ID_TOKEN'];
+  if (!ready && (!url || !bearer)) return null;
   const f = opts.fetchImpl ?? fetch;
   try {
-    const res = await f(`${url}${url.includes('?') ? '&' : '?'}audience=genpm`, {
-      headers: { authorization: `bearer ${bearer}`, accept: 'application/json' },
-    });
-    if (!res.ok) return null;
-    const { value } = (await res.json()) as { value?: string };
+    let value = ready;
+    if (!value) {
+      const res = await f(`${url}${url!.includes('?') ? '&' : '?'}audience=genpm`, {
+        headers: { authorization: `bearer ${bearer}`, accept: 'application/json' },
+      });
+      if (!res.ok) return null;
+      value = ((await res.json()) as { value?: string }).value;
+    }
     if (!value) return null;
     const ex = await f(`${registry.replace(/\/$/, '')}/v1/auth/oidc/exchange`, {
       method: 'POST',

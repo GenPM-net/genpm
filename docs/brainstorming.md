@@ -355,6 +355,26 @@ actualizados; PostHog, Inc. pasa a ser encargado (DPA en su panel, región EU, r
 meses de eventos). La telemetría del CLI (INV-6) no cambia de datos: solo deja de contar las vistas previas. Tareas:
 `V011-06` … `V011-12`.
 
+### ADR-028 · Publicación desde GitLab solo con trusted publishing — ✅ Decidida (Tech Lead, 2026-10-05)
+
+**Contexto:** V03-03 abre la publicación a GitLab (Q7 la dejó fuera del MVP). Un scope nace del login de GitHub de su
+dueño (ADR-006/018), y GitLab no tiene cuenta vinculada en GenPM: no hay forma de comprobar que un usuario de GenPM es
+dueño de un grupo de gitlab.com sin añadir un segundo OAuth.
+
+**Decisión:** no se vinculan cuentas de GitLab. El dueño (u owner/admin) de un scope autoriza en `/settings/publishing`
+un proyecto **público** de gitlab.com como editor de confianza (`provider: 'gitlab'`, ruta con subgrupos, id numérico
+anti-repojacking, archivo de CI y environment opcionales). GitLab CI declara `id_tokens: GENPM_ID_TOKEN: { aud: genpm }`
+y `genpm publish` lo canjea en `POST /v1/auth/oidc/exchange` (emisor `https://gitlab.com`, JWKS
+`/oauth/discovery/keys`, claims `project_path`, `project_id`, `ci_config_ref_uri`, `environment`). El token resultante
+lleva `repository = gitlab.com/<ruta>` y `POST /v1/publish` exige que coincida con el repo publicado: **un repo de
+GitLab no se puede publicar con un token personal**. El registry lee manifiesto, tag/SHA, árbol (tar.gz de
+`/repository/archive.tar.gz?sha=`) y licencia del API público de GitLab, con las mismas reglas que GitHub (solo tags o
+SHA, escaneo, INV-7). Un paquete no cambia de host (`E_REPO_CHANGED`). El CLI instala por git (GitLab admite fetch por
+SHA) y, sin git, con el tar.gz del API anclado al SHA y verificado por su comentario pax.
+
+**Consecuencias:** sustituye a Q7 para GitLab (Bitbucket sigue fuera). `scopes.git_host` sigue siendo `github.com`:
+el scope pertenece a una cuenta de GitHub aunque publique desde GitLab. Sin GitLab autoalojado (solo gitlab.com).
+
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.
@@ -367,7 +387,7 @@ El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó 
 | Q4 | Equipo del sprint | Se asume **2 personas + agentes IA**; con 1 persona aplica el plan de 10 días ([roadmap §7](roadmap-mvp.md#7-plan-de-recorte-en-este-orden)) |
 | Q5 | Mirror R2 | v0.3 ("Verified Archive") |
 | Q6 | Licencias | MIT para CLI/MCP/core/manifest/i18n; Apache-2.0 para registry y web |
-| Q7 | GitLab/Bitbucket | No en el MVP (publish solo GitHub) |
+| Q7 | GitLab/Bitbucket | No en el MVP (publish solo GitHub). GitLab desde v0.3 vía trusted publishing (ADR-028) |
 | Q8 | Scope oficial | `@core`; reservar `@genpm` y la lista de [security §3.2](security.md#32-revisión-humana-y-confianza) |
 | Q9 | Telemetría | Anónima, opt-out (`DO_NOT_TRACK=1`) |
 

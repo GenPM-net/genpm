@@ -247,7 +247,8 @@
     "usedByNone": "目前还没有公开软件包依赖它。",
     "usedByShort": "被使用",
     "quality": "质量",
-    "qualityScore": "{score, number}/100"
+    "qualityScore": "{score, number}/100",
+    "gitlab": "GitLab"
   },
   "report": {
     "title": "举报 {name}",
@@ -724,6 +725,8 @@
     "remove": "移除",
     "add": "授权仓库",
     "howTitle": "工作流",
-    "how": "在 job 权限中加入 id-token: write 并运行 genpm publish：没有 GENPM_TOKEN 时，它会向 Actions 请求 OIDC 令牌并自动兑换。"
+    "how": "在 job 权限中加入 id-token: write 并运行 genpm publish：没有 GENPM_TOKEN 时，它会向 Actions 请求 OIDC 令牌并自动兑换。",
+    "provider": "托管平台",
+    "howGitlab": "GitLab CI：将 aud 为 genpm 的 id_tokens 声明为 GENPM_ID_TOKEN，然后运行 genpm publish。GitLab 项目只能通过可信发布来发布，并且必须是公开项目。"
   }
 }
