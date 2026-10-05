@@ -115,6 +115,13 @@ describe('plan()', () => {
     expect((await readdir(project)).sort()).toEqual(['.cursor', 'CLAUDE.md', 'package.json', 'pnpm-lock.yaml']);
     expect(reg.requests[0]).toContain('/v1/resolve/@core/auth?range=latest&fmt=c&client=cli&deps=1');
   });
+
+  it('rejects direct specs without an immutable ref with E_REF_MUTABLE (cli-mcp-spec §A.4)', async () => {
+    for (const spec of ['gh:genpm-net/db', 'gh:genpm-net/db#main'])
+      await expect(plan(input({ specs: [spec] }))).rejects.toMatchObject({ code: 'E_REF_MUTABLE' });
+    await expect(plan(input({ specs: ['core/db'] }))).rejects.toMatchObject({ code: 'E_USAGE' });
+    expect(reg.requests).toEqual([]);
+  });
 });
 
 describe('apply() · D2-G-02', () => {

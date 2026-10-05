@@ -33,9 +33,11 @@ import { isOwnHost } from './services/domains.js';
 export function createApp() {
   const app = new Hono<AppEnv>();
   // Siempre HTTPS (el CLI ya usa https; esto cubre navegadores y scripts). El Service Binding y los tests no aplican.
+  // En `wrangler dev` la URL llega reescrita al host de la primera ruta (http://api.genpm.net) aunque el cliente use
+  // http://localhost: redirigir ahí crearía un bucle 301 infinito, así que en desarrollo no se fuerza.
   app.use('*', async (c, next) => {
     const url = new URL(c.req.url);
-    if (url.protocol === 'http:' && url.hostname.endsWith('genpm.net')) {
+    if (url.protocol === 'http:' && url.hostname.endsWith('genpm.net') && c.env.ENVIRONMENT !== 'development') {
       url.protocol = 'https:';
       return c.redirect(url.toString(), c.req.method === 'GET' || c.req.method === 'HEAD' ? 301 : 308);
     }

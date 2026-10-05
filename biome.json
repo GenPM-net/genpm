@@ -13,6 +13,7 @@
       "!**/.astro",
       "!**/.wrangler",
       "!docs/design",
+      "!examples",
       "!**/*.gen.ts",
       "!**/worker-configuration.d.ts",
       "!packages/manifest/schema",
