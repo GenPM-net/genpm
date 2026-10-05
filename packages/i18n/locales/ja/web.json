@@ -1,8 +1,11 @@
 {
   "meta": {
     "title": "GenPM — 依存関係ではなく、アーキテクチャをインストール",
-    "description": "GenPM は不変の Git コミットから、ソースコード、AI ルール、MCP 設定をプロジェクトに組み込みます。AI がすでに使い方を知っているモジュールを検索、確認、インストールできます。",
-    "suffix": "GenPM"
+    "description": "GenPM は不変の Git コミットから、ソースコード・AI ルール・MCP 設定をプロジェクトに組み込みます。AI がすぐに使いこなせるモジュールです。",
+    "suffix": "GenPM",
+    "searchDescription": "GenPM のパッケージを探す：認証、決済、メール、AI など。どれもソースコード、AI ルール、MCP 設定付きです。",
+    "advisoriesDescription": "GenPM パッケージのセキュリティ勧告：影響を受けるバージョン、深刻度、修正。JSON フィードと genpm audit でも確認できます。",
+    "scopeDescription": "GenPM で {scope} が公開しているパッケージ（{count} 件）：{names}。"
   },
   "nav": {
     "skip": "本文へスキップ",
@@ -516,5 +519,14 @@
     "loginNotice": "続行すると、利用規約と、プライバシーポリシーに記載された GitHub プロフィールの取り扱いに同意したものとみなされます。",
     "reportNotice": "EU デジタルサービス法に基づき、このパッケージの審査のために報告内容とアカウントを使用します。詳しくはプライバシーポリシーをご覧ください。",
     "termsLink": "利用規約"
+  },
+  "lead": {
+    "errorEmail": "メールアドレスが正しくないようです。確認してもう一度送信してください。",
+    "errorServer": "現在メッセージを送信できませんでした。数分後にもう一度お試しいただくか、{email} までご連絡ください。",
+    "thanksTitle": "ありがとうございます！",
+    "thanksSponsor": "メッセージを受け付けました。2 営業日以内にご返信します。",
+    "thanksEnterprise": "ウェイティングリストに登録しました。プライベートレジストリの提供を開始したらご連絡します。",
+    "back": "GenPM に戻る",
+    "thanksNext": "それまでの間、GenPM をお試しください："
   }
 }

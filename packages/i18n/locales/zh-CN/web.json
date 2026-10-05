@@ -1,8 +1,11 @@
 {
   "meta": {
     "title": "GenPM — 安装架构，而不是依赖",
-    "description": "GenPM 从不可变的 Git 提交将源代码、AI 规则和 MCP 配置注入你的项目。搜索、检查并安装你的 AI 已经会用的模块。",
-    "suffix": "GenPM"
+    "description": "GenPM 从不可变的 Git 提交将源代码、AI 规则和 MCP 配置注入你的项目。你的 AI 直接就会用的模块。",
+    "suffix": "GenPM",
+    "searchDescription": "浏览 GenPM 软件包：认证、支付、邮件、AI 等，每个都附带源代码、AI 规则和 MCP 配置。",
+    "advisoriesDescription": "GenPM 软件包的安全公告：受影响版本、严重程度和修复方式。也提供 JSON 订阅并可通过 genpm audit 查看。",
+    "scopeDescription": "{scope} 在 GenPM 上发布的 {count} 个软件包：{names}。"
   },
   "nav": {
     "skip": "跳到正文",
@@ -516,5 +519,14 @@
     "loginNotice": "继续即表示你接受服务条款，并同意按隐私政策所述处理你的 GitHub 资料。",
     "reportNotice": "根据欧盟《数字服务法》，我们会使用你的举报和账号来审核此包。详见隐私政策。",
     "termsLink": "服务条款"
+  },
+  "lead": {
+    "errorEmail": "这个邮箱地址似乎无效。请检查后重新提交表单。",
+    "errorServer": "暂时无法发送你的消息。请几分钟后再试，或发邮件至 {email}。",
+    "thanksTitle": "谢谢！",
+    "thanksSponsor": "我们已收到你的消息，将在两个工作日内回复。",
+    "thanksEnterprise": "你已加入候补名单。私有注册表开放后我们会第一时间通知你。",
+    "back": "返回 GenPM",
+    "thanksNext": "在此期间，试试 GenPM："
   }
 }

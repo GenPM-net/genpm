@@ -31,7 +31,7 @@ const nextUrl = data.next
   : null;
 Astro.response.headers.set('Cache-Control', 'public, max-age=30, stale-while-revalidate=300');
 ---
-<Base title={q ? `${q} · ${t.t('web.search.title')}` : t.t('web.search.title')} stale={res.stale} nav="search" packages={data.total} canonical={q ? `/search?q=${encodeURIComponent(q)}` : '/search'}>
+<Base title={q ? `${q} · ${t.t('web.search.title')}` : t.t('web.search.title')} description={t.t('web.meta.searchDescription')} stale={res.stale} nav="search" packages={data.total} canonical={q ? `/search?q=${encodeURIComponent(q)}` : '/search'}>
   <div class="wrap">
     <div class="phead" style="padding-bottom:24px">
       <h1>{t.t('web.search.title')}</h1>

@@ -19,7 +19,7 @@ const res = await registryGet<{
 const list = res.data?.advisories ?? [];
 Astro.response.headers.set('Cache-Control', 'public, max-age=300');
 ---
-<Base title={t.t('web.security.advisories')} stale={res.stale}>
+<Base title={t.t('web.security.advisories')} description={t.t('web.meta.advisoriesDescription')} stale={res.stale}>
   <div class="wrap">
     <div class="phead"><h1>{t.t('web.security.advisories')}</h1><a class="hint" href="/security/advisories.json">{t.t('web.security.feed')}</a></div>
     {list.length === 0 ? <p class="hint" style="padding-bottom:64px">{t.t('web.security.advisoriesEmpty')}</p> : (

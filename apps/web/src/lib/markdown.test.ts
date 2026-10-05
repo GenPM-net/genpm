@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { renderMarkdown, slugify } from './markdown.js';
+import { excerpt, renderMarkdown, slugify } from './markdown.js';
 
 describe('renderMarkdown (contenido no confiable)', () => {
   it('escapa el HTML crudo', () => {
@@ -37,7 +37,10 @@ describe('renderMarkdown (contenido no confiable)', () => {
     const headings: Array<{ depth: number; text: string; id: string }> = [];
     const html = renderMarkdown('## Integración rápida\n\n### Don’t', { headings });
     expect(headings.map((h) => h.id)).toEqual(['integracion-rapida', 'don-t']);
-    expect(html).toContain('<h2 id="integracion-rapida">');
+    // Contenido de terceros: un nivel menos (## → h3), para que la página conserve un único <h1>.
+    expect(html).toContain('<h3 id="integracion-rapida">');
+    expect(renderMarkdown('# Título')).toContain('<h2 id="titulo">');
+    expect(renderMarkdown('# Título', { trusted: true })).toContain('<h1 id="titulo">');
   });
 });
 
@@ -54,5 +57,16 @@ describe('slugify for every locale', () => {
     expect(slugify('6. Fermeture de votre compte')).toBe('6-fermeture-de-votre-compte');
     expect(slugify('6. 계정 해지')).toBe('6-계정-해지'.normalize('NFC'));
     expect(slugify('6. アカウントのデータ')).toBe('6-アカウントのデータ');
+  });
+});
+
+describe('excerpt', () => {
+  it('toma el primer párrafo en texto plano y lo corta por palabra', () => {
+    const md =
+      '---\ntitle: X\n---\n# Título\n\nInstala `genpm` con [el script](/docs/install) en **un minuto**.\n\nOtro párrafo.';
+    expect(excerpt(md)).toBe('Instala genpm con el script en un minuto.');
+    const long = excerpt(`Palabra ${'larga '.repeat(60)}`, 50);
+    expect(long.length).toBeLessThanOrEqual(50);
+    expect(long.endsWith('…')).toBe(true);
   });
 });

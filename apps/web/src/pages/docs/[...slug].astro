@@ -3,7 +3,7 @@
 import Base from '../../layouts/Base.astro';
 import { docPage, docPages } from '../../lib/docs.js';
 import { href, localizeLinks } from '../../lib/i18n.js';
-import { renderMarkdown } from '../../lib/markdown.js';
+import { excerpt, renderMarkdown } from '../../lib/markdown.js';
 
 const { t, locale } = Astro.locals;
 const slug = Astro.params.slug ?? 'quickstart';
@@ -18,7 +18,7 @@ const prev = pages[idx - 1];
 const next = pages[idx + 1];
 Astro.response.headers.set('Cache-Control', 'public, max-age=3600');
 ---
-<Base title={page.title} nav="docs" canonical={`/docs/${page.slug}`}>
+<Base title={page.title} description={excerpt(page.body)} nav="docs" canonical={`/docs/${page.slug}`}>
   <div class="wrap"><div class="docs">
     <nav class="dnav" aria-label={t.t('web.docs.title')}>
       {sections.map((s) => (

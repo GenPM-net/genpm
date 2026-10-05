@@ -1,8 +1,11 @@
 {
   "meta": {
     "title": "GenPM — Installiere Architekturen, nicht Abhängigkeiten",
-    "description": "GenPM bindet Quellcode, KI-Regeln und MCP-Konfiguration aus unveränderlichen Git-Commits in dein Projekt ein. Suche, prüfe und installiere Module, mit denen deine KI bereits umgehen kann.",
-    "suffix": "GenPM"
+    "description": "GenPM fügt Quellcode, KI-Regeln und MCP-Konfiguration aus unveränderlichen Git-Commits in dein Projekt ein. Module, die deine KI kennt.",
+    "suffix": "GenPM",
+    "searchDescription": "Durchsuche GenPM-Pakete: Auth, Zahlungen, E-Mail, KI und mehr, jeweils mit Code, KI-Regeln und MCP-Konfiguration.",
+    "advisoriesDescription": "Sicherheitshinweise zu GenPM-Paketen: betroffene Versionen, Schweregrad und Fix. Auch als JSON-Feed und in genpm audit.",
+    "scopeDescription": "{count, plural, one {# Paket} other {# Pakete}} von {scope} auf GenPM: {names}."
   },
   "nav": {
     "skip": "Zum Inhalt springen",
@@ -516,5 +519,14 @@
     "loginNotice": "Mit dem Fortfahren akzeptierst du die Nutzungsbedingungen und die in der Datenschutzerklärung beschriebene Verarbeitung deines GitHub-Profils.",
     "reportNotice": "Wir nutzen deine Meldung und dein Konto, um dieses Paket zu prüfen, wie es das EU-Gesetz über digitale Dienste verlangt. Mehr in der Datenschutzerklärung.",
     "termsLink": "Nutzungsbedingungen"
+  },
+  "lead": {
+    "errorEmail": "Diese E-Mail-Adresse scheint ungültig zu sein. Prüfe sie und sende das Formular erneut.",
+    "errorServer": "Wir konnten deine Nachricht gerade nicht senden. Versuche es in ein paar Minuten erneut oder schreib an {email}.",
+    "thanksTitle": "Danke!",
+    "thanksSponsor": "Wir haben deine Nachricht erhalten und antworten innerhalb von zwei Werktagen.",
+    "thanksEnterprise": "Du stehst auf der Warteliste. Wir melden uns, sobald private Registries starten.",
+    "back": "Zurück zu GenPM",
+    "thanksNext": "Probier GenPM in der Zwischenzeit aus:"
   }
 }

@@ -9,9 +9,14 @@ export const GET: APIRoute = () =>
         ? [
             'User-agent: *',
             'Allow: /',
+            // Páginas privadas, endpoints y el proxy de imágenes; también con prefijo de idioma (/es/dashboard…).
             'Disallow: /dashboard',
-            'Disallow: /settings',
+            'Disallow: /*/dashboard',
             'Disallow: /auth',
+            'Disallow: /logout',
+            'Disallow: /lead',
+            'Disallow: /report',
+            'Disallow: /img',
             'Sitemap: https://genpm.net/sitemap.xml',
           ]
         : ['User-agent: *', 'Disallow: /']

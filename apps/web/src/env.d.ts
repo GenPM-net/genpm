@@ -11,6 +11,7 @@ type WebEnv = {
   GITHUB_OAUTH_CLIENT_SECRET?: string;
   TURNSTILE_SITE_KEY?: string;
   TURNSTILE_SECRET_KEY?: string;
+  SESSION_PEPPER?: string;
 };
 
 declare global {

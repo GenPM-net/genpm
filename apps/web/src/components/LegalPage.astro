@@ -2,7 +2,7 @@
 import owner from '../content/legal/owner.json';
 import Base from '../layouts/Base.astro';
 import { localizeLinks } from '../lib/i18n.js';
-import { renderMarkdown } from '../lib/markdown.js';
+import { excerpt, renderMarkdown } from '../lib/markdown.js';
 
 interface Props {
   doc: 'terms' | 'privacy' | 'policy' | 'cookies' | 'legal';
@@ -24,7 +24,7 @@ const body = m[2]!.replace(/\{\{(\w+)\}\}/g, (_, k: string) => (owner as Record<
 const html = localizeLinks(renderMarkdown(body, { trusted: true }), locale);
 Astro.response.headers.set('Cache-Control', 'public, max-age=86400');
 ---
-<Base title={meta['title']} canonical={`/${Astro.props.doc}`}>
+<Base title={meta['title']} description={excerpt(body)} canonical={`/${Astro.props.doc}`}>
   <div class="wrap"><article class="dbody md" style="max-width:760px;padding-block:48px">
     <h1>{meta['title']}</h1>
     <p class="hint">{t.t('web.legal.updated', { date: new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(meta['updated']!)) })}{locale !== 'es' && ` · ${t.t('web.legal.binding')}`}</p>

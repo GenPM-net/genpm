@@ -64,10 +64,33 @@ export function renderMarkdown(src: string, opts: RenderOptions = {}): string {
       heading(token: Tokens.Heading) {
         const text = this.parser.parseInline(token.tokens);
         const id = slugify(token.text);
-        opts.headings?.push({ depth: token.depth, text: token.text, id });
-        return `<h${token.depth} id="${id}">${text}</h${token.depth}>`;
+        // Contenido de terceros (README, reglas): un nivel menos, para que la página tenga un único <h1> (el nuestro).
+        const depth = opts.trusted ? token.depth : Math.min(token.depth + 1, 6);
+        opts.headings?.push({ depth, text: token.text, id });
+        return `<h${depth} id="${id}">${text}</h${depth}>`;
       },
     },
   });
   return md.parse(src, { async: false }) as string;
+}
+
+/** Primer párrafo de un Markdown como texto plano, para meta descripciones (≤ max caracteres, corta por palabra). */
+export function excerpt(src: string, max = 155): string {
+  const para =
+    src
+      .replace(/^---[\s\S]*?---\s*/, '')
+      .replace(/```[\s\S]*?```/g, '')
+      .split(/\n\s*\n/)
+      .map((b) => b.trim())
+      .find((b) => b && !/^(#|\||>|- |\* |\d+\. |<)/.test(b)) ?? '';
+  const text = para
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/[`*_]/g, '')
+    .replace(/\{\{\w+\}\}/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max - 1);
+  return `${cut.slice(0, Math.max(cut.lastIndexOf(' '), max - 20))}…`;
 }

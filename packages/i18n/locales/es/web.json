@@ -1,8 +1,11 @@
 {
   "meta": {
     "title": "GenPM — Instala arquitecturas, no dependencias",
-    "description": "GenPM inyecta código fuente, reglas de IA y config MCP en tu proyecto desde commits Git inmutables. Busca, inspecciona e instala módulos que tu IA ya sabe usar.",
-    "suffix": "GenPM"
+    "description": "GenPM inyecta código fuente, reglas de IA y config MCP en tu proyecto desde commits de Git inmutables. Módulos que tu IA ya sabe usar.",
+    "suffix": "GenPM",
+    "searchDescription": "Explora los paquetes de GenPM: auth, pagos, email, IA y más, cada uno con su código, reglas de IA y config MCP.",
+    "advisoriesDescription": "Avisos de seguridad de los paquetes de GenPM: versiones afectadas, gravedad y solución. También en JSON y en genpm audit.",
+    "scopeDescription": "{count, plural, one {# paquete publicado} other {# paquetes publicados}} por {scope} en GenPM: {names}."
   },
   "nav": {
     "skip": "Saltar al contenido",
@@ -516,5 +519,14 @@
     "loginNotice": "Al continuar aceptas los Términos del servicio y el tratamiento de tu perfil de GitHub descrito en la Política de privacidad.",
     "reportNotice": "Usamos tu denuncia y tu cuenta para revisar este paquete, como exige la Ley de Servicios Digitales de la UE. Más en la Política de privacidad.",
     "termsLink": "Términos del servicio"
+  },
+  "lead": {
+    "errorEmail": "Ese email no parece válido. Revísalo y vuelve a enviar el formulario.",
+    "errorServer": "No hemos podido enviar tu mensaje ahora. Inténtalo en unos minutos o escribe a {email}.",
+    "thanksTitle": "¡Gracias!",
+    "thanksSponsor": "Hemos recibido tu mensaje y te responderemos en un máximo de dos días hábiles.",
+    "thanksEnterprise": "Ya estás en la lista de espera. Te escribiremos en cuanto abramos los registros privados.",
+    "back": "Volver a GenPM",
+    "thanksNext": "Mientras tanto, puedes probar GenPM:"
   }
 }

@@ -21,6 +21,15 @@ import { yank } from './routes/yank.js';
 
 export function createApp() {
   const app = new Hono<AppEnv>();
+  // Siempre HTTPS (el CLI ya usa https; esto cubre navegadores y scripts). El Service Binding y los tests no aplican.
+  app.use('*', async (c, next) => {
+    const url = new URL(c.req.url);
+    if (url.protocol === 'http:' && url.hostname.endsWith('genpm.net')) {
+      url.protocol = 'https:';
+      return c.redirect(url.toString(), c.req.method === 'GET' || c.req.method === 'HEAD' ? 301 : 308);
+    }
+    await next();
+  });
   app.use('*', requestId, securityHeaders, locale, cors, bodyLimit);
   app.route('/v1/health', health);
   app.use('/v1/*', tenant);

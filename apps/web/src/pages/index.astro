@@ -21,14 +21,39 @@ const s = stats.data ?? { packages: 0, publishers: 0, installs30d: 0, installsTo
 Astro.response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'GenPM',
-  url: 'https://genpm.net',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: 'https://genpm.net/search?q={q}',
-    'query-input': 'required name=q',
-  },
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://genpm.net/#website',
+      name: 'GenPM',
+      url: 'https://genpm.net',
+      inLanguage: ['en', 'es', 'pt-BR', 'fr', 'de', 'ja', 'zh-CN', 'ko'],
+      publisher: { '@id': 'https://genpm.net/#org' },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: 'https://genpm.net/search?q={q}',
+        'query-input': 'required name=q',
+      },
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://genpm.net/#org',
+      name: 'GenPM',
+      url: 'https://genpm.net',
+      logo: 'https://genpm.net/apple-touch-icon.png',
+      email: 'hello@genpm.net',
+      sameAs: ['https://github.com/GenPM-net'],
+    },
+    {
+      '@type': 'SoftwareApplication',
+      name: 'genpm',
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'macOS, Linux, Windows',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+      downloadUrl: 'https://genpm.net/docs/install',
+      publisher: { '@id': 'https://genpm.net/#org' },
+    },
+  ],
 };
 ---
 <Base stale={feat.stale} packages={s.packages} jsonLd={jsonLd}>

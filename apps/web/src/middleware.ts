@@ -13,6 +13,12 @@ export const onRequest = defineMiddleware((ctx, next) => withRequest(ctx.request
 
 const handle: Parameters<typeof defineMiddleware>[0] = async (ctx, next) => {
   const url = new URL(ctx.request.url);
+  // Siempre HTTPS: la primera visita por http:// también (HSTS solo protege las siguientes). En local no aplica.
+  if (url.protocol === 'http:' && url.hostname !== 'localhost' && url.hostname !== '127.0.0.1') {
+    url.protocol = 'https:';
+    if (url.hostname.startsWith('www.')) url.hostname = url.hostname.slice(4);
+    return Response.redirect(url.toString(), ctx.request.method === 'GET' || ctx.request.method === 'HEAD' ? 301 : 308);
+  }
   // www.genpm.net → genpm.net (una sola URL canónica por página).
   if (url.hostname.startsWith('www.')) {
     return Response.redirect(`https://${url.hostname.slice(4)}${url.pathname}${url.search}`, 301);

@@ -1,7 +1,9 @@
 ---
-// Formulario de lead (sponsors/enterprise) con honeypot; se envía por POST a /lead (proxy a /v1/leads).
+// Formulario de lead (sponsors/enterprise) con honeypot y token de tiempo firmado; se envía por POST a /lead (proxy a
+// /v1/leads). Errores con ?error=email|server; el éxito lleva a /thanks.
 import { env } from 'cloudflare:workers';
 import owner from '../content/legal/owner.json';
+import { formToken } from '../lib/form-token.js';
 import { href } from '../lib/i18n.js';
 
 interface Props {
@@ -12,12 +14,23 @@ interface Props {
 }
 const { kind, fields, submit, sent } = Astro.props;
 const { t, locale } = Astro.locals;
+const error = Astro.url.searchParams.get('error');
+const errorText =
+  error === 'email'
+    ? t.t('web.lead.errorEmail')
+    : error === 'server'
+      ? t.t('web.lead.errorServer', { email: owner.email || 'hello@genpm.net' })
+      : null;
+const token = await formToken();
+Astro.response.headers.set('Cache-Control', 'private, no-store');
 ---
 {sent ? <div class="banner" style="--c:var(--code-ink)"><b>✔</b><span>{sent}</span></div> : (
   <form method="post" action={href(locale, '/lead')} class="builder" style="grid-template-columns:1fr;max-width:560px">
+    {errorText && <div class="banner" role="alert" style="--c:var(--danger)"><b>!</b><span>{errorText}</span></div>}
     <input type="hidden" name="kind" value={kind} />
+    <input type="hidden" name="t" value={token} />
     <label class="sr" aria-hidden="true">website<input name="website" tabindex="-1" autocomplete="off" /></label>
-    <label class="field">{t.t('web.sponsors.email')}<input name="email" type="email" required maxlength="254" autocomplete="email" /></label>
+    <label class="field">{t.t('web.sponsors.email')}<input name="email" type="email" required maxlength="254" autocomplete="email" aria-invalid={error === 'email' ? 'true' : undefined} /></label>
     <label class="field">{t.t('web.sponsors.company')}<input name="company" maxlength="120" autocomplete="organization" /></label>
     {fields.map((f) => <label class="field">{f.label}{f.textarea ? <textarea name={f.name} rows="4" maxlength="500" style="border:1px solid var(--line-2);border-radius:var(--r);padding:8px"></textarea> : <input name={f.name} maxlength="120" />}</label>)}
 {env.TURNSTILE_SITE_KEY && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}

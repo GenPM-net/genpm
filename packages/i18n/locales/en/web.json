@@ -1,8 +1,11 @@
 {
   "meta": {
     "title": "GenPM — Install architectures, not dependencies",
-    "description": "GenPM injects source code, AI rules and MCP config into your project from immutable Git commits. Search, inspect and install modules your AI already knows how to use.",
-    "suffix": "GenPM"
+    "description": "GenPM injects source code, AI rules and MCP config into your project from immutable Git commits. Modules your AI already knows how to use.",
+    "suffix": "GenPM",
+    "searchDescription": "Browse GenPM packages: auth, billing, email, AI and more, each with its source code, AI rules and MCP config.",
+    "advisoriesDescription": "Security advisories for GenPM packages: affected versions, severity and fix. Also in a JSON feed and in genpm audit.",
+    "scopeDescription": "{count, plural, one {# package} other {# packages}} published by {scope} on GenPM: {names}."
   },
   "nav": {
     "skip": "Skip to content",
@@ -516,5 +519,14 @@
     "loginNotice": "By continuing you accept the Terms of Service and the processing of your GitHub profile described in the Privacy policy.",
     "reportNotice": "We use your report and your account to review this package, as required by the EU Digital Services Act. More in the Privacy policy.",
     "termsLink": "Terms of Service"
+  },
+  "lead": {
+    "errorEmail": "That email address doesn't look valid. Check it and send the form again.",
+    "errorServer": "We couldn't send your message right now. Try again in a few minutes or write to {email}.",
+    "thanksTitle": "Thank you!",
+    "thanksSponsor": "We got your message and will reply within two business days.",
+    "thanksEnterprise": "You're on the waiting list. We'll write to you as soon as private registries open.",
+    "back": "Back to GenPM",
+    "thanksNext": "Meanwhile, you can try GenPM:"
   }
 }

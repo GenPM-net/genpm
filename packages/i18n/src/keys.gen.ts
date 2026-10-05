@@ -260,6 +260,9 @@ export interface MessageParams {
   "web.meta.title": undefined;
   "web.meta.description": undefined;
   "web.meta.suffix": undefined;
+  "web.meta.searchDescription": undefined;
+  "web.meta.advisoriesDescription": undefined;
+  "web.meta.scopeDescription": { count: number; scope: string | number; names: string | number };
   "web.nav.skip": undefined;
   "web.nav.home": undefined;
   "web.nav.searchPlaceholder": { count: number };
@@ -723,6 +726,13 @@ export interface MessageParams {
   "web.legal.loginNotice": undefined;
   "web.legal.reportNotice": undefined;
   "web.legal.termsLink": undefined;
+  "web.lead.errorEmail": undefined;
+  "web.lead.errorServer": { email: string | number };
+  "web.lead.thanksTitle": undefined;
+  "web.lead.thanksSponsor": undefined;
+  "web.lead.thanksEnterprise": undefined;
+  "web.lead.back": undefined;
+  "web.lead.thanksNext": undefined;
 }
 
 export type MessageKey = keyof MessageParams;

@@ -24,7 +24,9 @@ const { t, locale, path, session } = Astro.locals;
 const site = 'https://genpm.net';
 const pagePath = canonical ?? path;
 const fullTitle = title ? `${title} — ${t.t('web.meta.suffix')}` : t.t('web.meta.title');
-const desc = description ?? t.t('web.meta.description');
+// Meta descripción ≤ 160 caracteres (lo que muestran los buscadores), cortada por palabra.
+const fullDesc = description ?? t.t('web.meta.description');
+const desc = fullDesc.length <= 160 ? fullDesc : `${fullDesc.slice(0, 159).replace(/\s+\S*$/, '')}…`;
 const langName = (l: string) => t.raw(`common.languages.${l}`);
 const suggested = negotiateAcceptLanguage(Astro.request.headers.get('accept-language'));
 const showSuggest = suggested !== locale && locale === 'en' && suggested !== 'en';
@@ -44,6 +46,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="preload" href="/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/jetbrains-mono-latin-400.woff2" as="font" type="font/woff2" crossorigin />
     {fontsCjk && <link rel="stylesheet" href={`/fonts/noto-${locale.toLowerCase()}.css`} />}

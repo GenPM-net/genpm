@@ -1,8 +1,11 @@
 {
   "meta": {
     "title": "GenPM — 의존성이 아닌 아키텍처를 설치하세요",
-    "description": "GenPM은 변경 불가능한 Git 커밋에서 소스 코드, AI 규칙, MCP 설정을 프로젝트에 주입합니다. AI가 이미 사용법을 아는 모듈을 검색하고, 살펴보고, 설치하세요.",
-    "suffix": "GenPM"
+    "description": "GenPM은 변경 불가능한 Git 커밋에서 소스 코드, AI 규칙, MCP 설정을 프로젝트에 주입합니다. AI가 바로 쓸 줄 아는 모듈입니다.",
+    "suffix": "GenPM",
+    "searchDescription": "GenPM 패키지 둘러보기: 인증, 결제, 이메일, AI 등. 모두 소스 코드, AI 규칙, MCP 설정을 포함합니다.",
+    "advisoriesDescription": "GenPM 패키지 보안 권고: 영향받는 버전, 심각도, 해결 방법. JSON 피드와 genpm audit에서도 확인할 수 있습니다.",
+    "scopeDescription": "GenPM에서 {scope}이(가) 게시한 패키지 {count}개: {names}."
   },
   "nav": {
     "skip": "본문으로 건너뛰기",
@@ -516,5 +519,14 @@
     "loginNotice": "계속하면 이용약관과 개인정보처리방침에 설명된 GitHub 프로필 처리에 동의하게 됩니다.",
     "reportNotice": "EU 디지털 서비스법에 따라 이 패키지를 검토하기 위해 신고 내용과 계정을 사용합니다. 자세한 내용은 개인정보처리방침을 참고하세요.",
     "termsLink": "이용약관"
+  },
+  "lead": {
+    "errorEmail": "이메일 주소가 올바르지 않은 것 같습니다. 확인 후 다시 보내 주세요.",
+    "errorServer": "지금은 메시지를 보낼 수 없습니다. 몇 분 후 다시 시도하거나 {email}으로 연락해 주세요.",
+    "thanksTitle": "감사합니다!",
+    "thanksSponsor": "메시지를 받았습니다. 영업일 기준 2일 이내에 답변드리겠습니다.",
+    "thanksEnterprise": "대기자 명단에 등록되었습니다. 비공개 레지스트리를 열면 바로 알려 드리겠습니다.",
+    "back": "GenPM으로 돌아가기",
+    "thanksNext": "그동안 GenPM을 사용해 보세요:"
   }
 }

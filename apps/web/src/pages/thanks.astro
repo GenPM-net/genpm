@@ -1,0 +1,19 @@
+---
+// Página de gracias tras los formularios de sponsors y enterprise (noindex).
+import CommandBlock from '../components/CommandBlock.astro';
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/i18n.js';
+
+const { t, locale } = Astro.locals;
+const kind = Astro.url.searchParams.get('k') === 'enterprise' ? 'enterprise' : 'sponsor';
+---
+<Base title={t.t('web.lead.thanksTitle')} noindex>
+  <div class="wrap"><div class="phead" style="padding-block:96px">
+    <span class="k">✔</span>
+    <h1>{t.t('web.lead.thanksTitle')}</h1>
+    <p>{t.t(kind === 'enterprise' ? 'web.lead.thanksEnterprise' : 'web.lead.thanksSponsor')}</p>
+    <p class="hint" style="margin-top:24px">{t.t('web.lead.thanksNext')}</p>
+    <div style="max-width:560px"><CommandBlock command="npx @genpm-net/cli add @core/auth" /></div>
+    <div class="row" style="margin-top:24px"><a class="btn primary" href={href(locale, '/')}>{t.t('web.lead.back')}</a></div>
+  </div></div>
+</Base>
