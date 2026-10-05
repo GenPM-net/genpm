@@ -75,9 +75,11 @@ genpm compose ./stack.json
 
 团队可以把私有仓库中的软件包放进私有注册表（`genpm registry create acme --owner my-org`，或 [设置 › 私有注册表](/settings/registries)）。对非成员来说它并不存在。在 `.genpmrc` 中把 scope 指向它并登录后，`genpm add` 照常使用。成员可读取 `internal` 软件包；`private` 软件包需要授权（`genpm access grant @acme/api team:my-org/backend read`）。组织需要安装 GenPM 的 GitHub App，注册表才能读取其私有仓库。
 
-```json
-// .genpmrc
-{ "scopes": { "acme": "https://api.genpm.net/r/acme" } }
+```ini
+# .genpmrc
+@acme:registry=https://api.genpm.net/r/acme
+# ENT-03: policy
+policy=https://api.genpm.net/r/acme
 ```
 
 ```bash

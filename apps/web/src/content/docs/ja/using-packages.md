@@ -75,9 +75,11 @@ genpm compose ./stack.json
 
 チームはプライベートリポジトリのパッケージをプライベートレジストリに置けます（`genpm registry create acme --owner my-org`、または [設定 › プライベートレジストリ](/settings/registries)）。メンバー以外には存在しないように見えます。`.genpmrc` で scope をそこに向けてサインインすれば、`genpm add` はいつも通り動きます。メンバーは `internal` のパッケージを読めます。`private` には権限が必要です（`genpm access grant @acme/api team:my-org/backend read`）。レジストリがプライベートリポジトリを読むには、組織に GenPM の GitHub App をインストールしておく必要があります。
 
-```json
-// .genpmrc
-{ "scopes": { "acme": "https://api.genpm.net/r/acme" } }
+```ini
+# .genpmrc
+@acme:registry=https://api.genpm.net/r/acme
+# ENT-03: policy
+policy=https://api.genpm.net/r/acme
 ```
 
 ```bash

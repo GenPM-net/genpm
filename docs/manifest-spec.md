@@ -169,6 +169,8 @@ Formato INI estilo npm; se commitea (sin secretos):
 registry=https://api.genpm.net
 @acme:registry=https://acme.genpm.net
 clients=cursor,claude
+# ENT-03: política de organización (paquetes permitidos, escaneo, licencias, Git directo) de este registro
+policy=https://acme.genpm.net
 ```
 Tokens: solo en `~/.genpm/auth.json` (usuario), indexados por URL de registry.
 

@@ -16,7 +16,9 @@ import {
   type LockEntry,
   type McpServerEntry,
   normalizeMcp,
+  PolicySchema,
   parseSpec,
+  policyViolation,
   type ResolvedManifest,
   type ScanFile,
   type Spec,
@@ -240,6 +242,7 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
   const items: PlanInternal['items'] = [];
   const mirrors = new Map<string, () => Promise<Uint8Array | null>>();
   const seen = new Set<string>();
+  const scans = new Map<string, string>();
   let registryUsed = registryFor(null, rc, input.registry);
 
   for (const raw of input.specs) {
@@ -296,6 +299,7 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
       const verdict = await verifyManifest(m, m.sg, keys, revoked);
       if (!verdict.ok) throw fail('E_SIGNATURE', { name: `${m.n}@${m.v}` }, { reason: verdict.reason });
       const scan = res.scan[m.n];
+      if (scan) scans.set(m.n, scan);
       if (scan === 'flagged' || scan === 'failed') throw fail('E_QUARANTINED', { name: m.n });
       const { sg, ...manifest } = m;
       items.push({
@@ -310,6 +314,28 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
         excluded: [],
         prev: null,
       });
+    }
+  }
+
+  // Política de la organización (ENT-03): `policy=<registro>` en .genpmrc. No se salta con --force.
+  if (rc.policy) {
+    const raw = await new RegistryClient({
+      registry: rc.policy.replace(/\/+$/, ''),
+      token: input.token ?? null,
+      client: input.client ?? 'cli',
+      fetchImpl: input.fetchImpl,
+      log: input.log,
+    }).policy();
+    const parsed = PolicySchema.safeParse(raw);
+    if (!parsed.success) throw fail('E_POLICY', { name: rc.policy, reason: 'invalid policy' });
+    for (const it of items) {
+      const why = policyViolation(parsed.data, {
+        n: it.manifest.n,
+        l: it.manifest.l,
+        scan: scans.get(it.manifest.n) ?? null,
+        direct: it.source !== null,
+      });
+      if (why) throw fail('E_POLICY', { name: it.manifest.n, reason: why });
     }
   }
 

@@ -177,3 +177,12 @@ export const status = new Hono<AppEnv>().get('/', async (c) => {
     ),
   });
 });
+
+/** GET /v1/policy (ENT-03) — política del registro (privado: solo miembros, por el tenant). Público: ninguna. */
+export const policy = new Hono<AppEnv>().get('/', async (c) => {
+  const row = await c.env.DB.prepare("SELECT json_extract(settings, '$.policy') AS p FROM registries WHERE id = ?1")
+    .bind(c.get('tenant').registryId)
+    .first<{ p: string | null }>();
+  c.header('Cache-Control', 'private, no-store');
+  return c.json({ policy: row?.p ? (JSON.parse(row.p) as Record<string, unknown>) : {} });
+});

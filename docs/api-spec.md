@@ -78,6 +78,8 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | PUT/DELETE | `/v1/orgs/:org/teams/:team/members/:handle` | token (owner/admin o maintainer) | ✅ | `{ role: maintainer\|member }`; solo miembros de la org |
 | GET/PUT | `/v1/packages/:scope/:name/access` | token (admin del paquete) | ✅ | Visibilidad (`internal`\|`private`) y grants; solo registros privados |
 | PUT/DELETE | `/v1/packages/:scope/:name/grants` | token (admin del paquete) | ✅ | `{ principal: user:<h>\|team:<org>/<team>, permission }`; DELETE con `?principal=` |
+| PUT | `/v1/registries/:slug/policy` | token (admin) | ✅ | Política (ENT-03): `{ allow?: ["@acme/*"], requireScan?, denyLicenses?, allowDirect? }` |
+| GET | `/v1/policy` | según el tenant | ✅ | Política del registro (`{}` en el público). El CLI/MCP la aplica con `policy=` en `.genpmrc`; al publicar en el privado se rechazan licencias prohibidas (`E_POLICY`) |
 | GET | `/v1/registries/:slug/audit` | token (admin) | ✅ | Auditoría exportable (V10-04): `?from&to&action=<prefijo>&format=json\|csv\|jsonl`; JSON paginado (`next`, `after`), CSV/JSONL hasta 50 000 filas; sin `ip_hash`; CSV protegido contra inyección de fórmulas |
 | PUT/DELETE | `/v1/registries/:slug/domain` | token (admin) | ✅ | Dominio propio (V10-03): `{ domain }` ⇒ TXT `_genpm-challenge.<dominio>` y CNAME a `domains.genpm.net` |
 | POST | `/v1/registries/:slug/domain/verify` | token (admin) | ✅ | Comprueba el TXT (DoH), fija `custom_domain` y da de alta el custom hostname (Cloudflare for SaaS); 409 si aún no está |

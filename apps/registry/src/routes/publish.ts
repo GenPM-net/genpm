@@ -12,8 +12,10 @@ import {
   LIMITS,
   manifestHash,
   normalizeMcp,
+  PolicySchema,
   parseName,
   parseVersionParts,
+  policyViolation,
   readTar,
   relativeToInclude,
   type ScanFile,
@@ -295,6 +297,19 @@ export const publish = new Hono<AppEnv>().post('/', rateLimit('publish'), requir
   const license = ghLicense ?? m.l ?? 'NOASSERTION';
   if (ghLicense && m.l && ghLicense !== m.l)
     warnings.push({ code: 'W_LICENSE_MISMATCH', detail: `${m.l} → ${ghLicense}` });
+
+  // 9b · política del registro privado (ENT-03): licencias prohibidas no entran.
+  if (tenant.private) {
+    const pol = await db
+      .prepare("SELECT json_extract(settings, '$.policy') AS p FROM registries WHERE id = ?1")
+      .bind(tenant.registryId)
+      .first<{ p: string | null }>();
+    const parsedPolicy = pol?.p ? PolicySchema.safeParse(JSON.parse(pol.p)) : null;
+    const why = parsedPolicy?.success
+      ? policyViolation({ denyLicenses: parsedPolicy.data.denyLicenses }, { n: m.n, l: license })
+      : null;
+    if (why) throw httpError('E_POLICY', { name: m.n, reason: why });
+  }
 
   // 10 · typosquatting contra el top-100 de otros scopes ⇒ cuarentena
   const { results: top } = await db

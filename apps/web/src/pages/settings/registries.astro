@@ -69,7 +69,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
     {regs.length === 0 && <p class="hint">{t.t('web.registries.none')}</p>}
     {regs.map((r) => (
       <section class="sec"><div class="sec-h"><div><h2 class="mono">{r.slug}</h2><p>{t.t('web.registries.role', { role: r.role })} · <span class="mono">{r.url}</span></p></div></div>
-        <div class="term"><div class="bar"><span>.genpmrc</span></div><pre>{JSON.stringify({ scopes: { [r.owner ?? r.slug]: r.url } }, null, 2)}</pre></div>
+        <div class="term"><div class="bar"><span>.genpmrc</span></div><pre>{`@${(r.owner ?? r.slug).toLowerCase()}:registry=${r.url}\npolicy=${r.url}`}</pre></div>
         {r.members && (
           <>
             <p><a class="btn sm" href={`/settings/registries/${r.slug}/audit.csv`} download>{t.t('web.registries.audit')}</a></p>

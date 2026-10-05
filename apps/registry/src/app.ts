@@ -14,7 +14,7 @@ import { auth, me } from './routes/auth.js';
 import { advisories, badge, featured, scopes, stats } from './routes/discovery.js';
 import { health } from './routes/health.js';
 import { keys } from './routes/keys.js';
-import { compare, deprecate, mePrefs, status } from './routes/manage.js';
+import { compare, deprecate, mePrefs, policy, status } from './routes/manage.js';
 import { mcpRoutes } from './routes/mcp.js';
 import { myRepos } from './routes/my-repos.js';
 import { packages } from './routes/packages.js';
@@ -120,6 +120,7 @@ export function createApp() {
   app.route('/v1/auth', ssoAuth);
   app.route('/v1/scopes', trusted);
   app.route('/v1/recipes', recipes);
+  app.route('/v1/policy', policy);
   app.route('/v1/registries', registries);
   app.route('/v1/orgs', teams);
   app.route('/v1/orgs', sso);

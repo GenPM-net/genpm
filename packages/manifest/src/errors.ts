@@ -38,6 +38,8 @@ export const ERRORS = {
   E_SCAN_FAILED: { http: 422, exit: 6 },
   E_INSECURE_PERMS: { http: 400, exit: 6 },
   E_QUARANTINED: { http: 451, exit: 6 },
+  /** ENT-03: la política de la organización no permite el paquete (lista permitida, escaneo o licencia). */
+  E_POLICY: { http: 403, exit: 6 },
   E_REF_MUTABLE: { http: 422, exit: 6 },
   E_ADVISORY: { http: 409, exit: 6 },
   E_TOO_LARGE: { http: 422, exit: 6 },

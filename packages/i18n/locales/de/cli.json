@@ -45,7 +45,8 @@
     "accessRevoke": "Entzieht eine Berechtigung",
     "registryDomain": "Legt eine eigene Domain für ein Registry fest (oder entfernt sie mit --remove)",
     "registryVerify": "Prüft den TXT-Eintrag und aktiviert die eigene Domain",
-    "registryAudit": "Exportiert das Audit-Log eines Registrys als JSON Lines"
+    "registryAudit": "Exportiert das Audit-Log eines Registrys als JSON Lines",
+    "registryPolicy": "Legt die Richtlinie der Organisation fest: erlaubte Pakete, Pflicht-Scan, verbotene Lizenzen und direkte Git-Installationen"
   },
   "arg": {
     "cwd": "Arbeitsverzeichnis",
@@ -104,7 +105,12 @@
       "domain": "Domain, z. B. packages.acme.com",
       "removeDomain": "Entfernt die eigene Domain",
       "since": "Nur Einträge seit diesem Datum (ISO 8601)",
-      "action": "Nur Aktionen mit diesem Präfix, z. B. package."
+      "action": "Nur Aktionen mit diesem Präfix, z. B. package.",
+      "allow": "Erlaubte Pakete, durch Kommas getrennt (@acme/*,@core/auth); leer erlaubt alle",
+      "requireScan": "Nur Versionen mit bestandenem Sicherheits-Scan installieren",
+      "denyLicenses": "Verbotene SPDX-Lizenzen, durch Kommas getrennt",
+      "direct": "Direkte Git-Installationen erlauben (gh:owner/repo#ref)",
+      "noDirect": "Direkte Git-Installationen sperren"
     }
   },
   "label": {
@@ -260,6 +266,7 @@
     "created": "Registry {slug} angelegt: {url}",
     "configHint": "Verweise deinen Scope in .genpmrc darauf und melde dich mit genpm login --registry <url> an:",
     "domainSteps": "Lege diese DNS-Einträge an und führe dann genpm registry verify {slug} aus:\n  TXT   {txtName} = {txtValue}\n  CNAME {domain} → {target}",
-    "domainActive": "Eigene Domain aktiv: {url}"
+    "domainActive": "Eigene Domain aktiv: {url}",
+    "policyHint": "Projekte wenden sie mit policy=<Registry-URL> in .genpmrc an (zum Beispiel https://api.genpm.net/r/{slug})."
   }
 }

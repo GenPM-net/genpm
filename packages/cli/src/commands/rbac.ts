@@ -10,6 +10,7 @@ import {
   registryDomain,
   registryList,
   registryMember,
+  registryPolicy,
   registryShow,
   registryVerifyDomain,
   teamCreate,
@@ -72,7 +73,7 @@ export const registryCmd = (ctx: Ctx) =>
             if (ctx.flags.json) return json({ ok: true, ...r });
             line(ctx, `${ctx.c.green('✔')} ${ctx.t.t('cli.rbac.created', { slug: r.slug, url: r.url })}`);
             line(ctx, `  ${ctx.c.dim('›')} ${ctx.t.t('cli.rbac.configHint')}`);
-            line(ctx, `    ${JSON.stringify({ scopes: { [args.owner.replace(/^@/, '')]: r.url } })}`);
+            line(ctx, `    @${args.owner.replace(/^@/, '').toLowerCase()}:registry=${r.url}`);
           })(),
       }),
       show: defineCommand({
@@ -153,6 +154,42 @@ export const registryCmd = (ctx: Ctx) =>
             });
             // Siempre JSON Lines (una entrada por línea): se redirige a un archivo o se procesa con jq.
             for (const e of events) process.stdout.write(`${JSON.stringify(e)}\n`);
+          })(),
+      }),
+      policy: defineCommand({
+        meta: { name: 'policy', description: ctx.t.t('cli.desc.registryPolicy') },
+        args: {
+          slug: pos(ctx, 'slug'),
+          allow: { type: 'string', description: ctx.t.t('cli.arg.rbac.allow') },
+          'require-scan': { type: 'boolean', description: ctx.t.t('cli.arg.rbac.requireScan') },
+          'deny-licenses': { type: 'string', description: ctx.t.t('cli.arg.rbac.denyLicenses') },
+          direct: {
+            type: 'boolean',
+            description: ctx.t.t('cli.arg.rbac.direct'),
+            negativeDescription: ctx.t.t('cli.arg.rbac.noDirect'),
+          },
+          ...globalArgs(ctx),
+        },
+        run: ({ args }) =>
+          run(ctx, async () => {
+            const list = (v?: string) =>
+              v
+                ?.split(',')
+                .map((x) => x.trim())
+                .filter(Boolean);
+            const r = await registryPolicy({
+              ...(await coreOptions(ctx)),
+              slug: args.slug,
+              policy: {
+                ...(args.allow !== undefined ? { allow: list(args.allow) } : {}),
+                ...(args['require-scan'] !== undefined ? { requireScan: args['require-scan'] } : {}),
+                ...(args['deny-licenses'] !== undefined ? { denyLicenses: list(args['deny-licenses']) } : {}),
+                ...(args.direct !== undefined ? { allowDirect: args.direct } : {}),
+              },
+            });
+            if (ctx.flags.json) return json(r);
+            line(ctx, `${ctx.c.green('✔')} ${ctx.t.t('cli.rbac.done')}`);
+            line(ctx, `  ${ctx.c.dim('›')} ${ctx.t.t('cli.rbac.policyHint', { slug: args.slug })}`);
           })(),
       }),
       verify: defineCommand({

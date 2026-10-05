@@ -45,7 +45,8 @@
     "accessRevoke": "権限を取り消します",
     "registryDomain": "レジストリの独自ドメインを設定します（--remove で削除）",
     "registryVerify": "TXT レコードを確認して独自ドメインを有効にします",
-    "registryAudit": "レジストリの監査ログを JSON Lines で出力します"
+    "registryAudit": "レジストリの監査ログを JSON Lines で出力します",
+    "registryPolicy": "組織のポリシーを設定します: 許可するパッケージ、必須のセキュリティスキャン、禁止ライセンス、Git からの直接インストール"
   },
   "arg": {
     "cwd": "作業ディレクトリ",
@@ -104,7 +105,12 @@
       "domain": "ドメイン（例: packages.acme.com）",
       "removeDomain": "独自ドメインを削除します",
       "since": "この日時以降のエントリのみ（ISO 8601）",
-      "action": "このプレフィックスで始まるアクションのみ（例: package.）"
+      "action": "このプレフィックスで始まるアクションのみ（例: package.）",
+      "allow": "許可するパッケージ（カンマ区切り、例: @acme/*,@core/auth）。空ならすべて許可",
+      "requireScan": "セキュリティスキャンに合格したバージョンのみインストール",
+      "denyLicenses": "禁止する SPDX ライセンス（カンマ区切り）",
+      "direct": "Git からの直接インストールを許可（gh:owner/repo#ref）",
+      "noDirect": "Git からの直接インストールを禁止"
     }
   },
   "label": {
@@ -260,6 +266,7 @@
     "created": "レジストリ {slug} を作成しました: {url}",
     "configHint": ".genpmrc で scope をこのレジストリに向け、genpm login --registry <url> でサインインします:",
     "domainSteps": "次の DNS レコードを公開してから genpm registry verify {slug} を実行してください:\n  TXT   {txtName} = {txtValue}\n  CNAME {domain} → {target}",
-    "domainActive": "独自ドメインが有効になりました: {url}"
+    "domainActive": "独自ドメインが有効になりました: {url}",
+    "policyHint": "プロジェクトでは .genpmrc に policy=<レジストリ URL> を書いて適用します（例: https://api.genpm.net/r/{slug}）。"
   }
 }

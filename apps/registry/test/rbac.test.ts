@@ -208,3 +208,27 @@ describe('exportable audit (V10-04)', () => {
     expect((await call('/v1/registries/corp-int/audit?from=yesterday', req(owner))).status).toBe(400);
   });
 });
+
+describe('organization policy (ENT-03)', () => {
+  it('admins set it, members read it and publishing a denied license fails', async () => {
+    expect((await call('/v1/registries/corp-int/policy', req(owner, { allow: ['corp'] }, 'PUT'))).status).toBe(400);
+    const put = await call(
+      '/v1/registries/corp-int/policy',
+      req(owner, { allow: ['@corp/*'], requireScan: true, denyLicenses: ['MIT'] }, 'PUT'),
+    );
+    expect(put.status).toBe(200);
+    expect((await call('/v1/registries/corp-int/policy', req(bob, { allow: [] }, 'PUT'))).status).toBe(403);
+    const got = (await (await call('/r/corp-int/v1/policy', req(bob))).json()) as { policy: { allow: string[] } };
+    expect(got.policy.allow).toEqual(['@corp/*']);
+    expect(((await (await call('/v1/policy')).json()) as { policy: object }).policy).toEqual({});
+    await env.DB.prepare(
+      "UPDATE packages SET full_name = '@corp/secret-old', name = 'secret-old' WHERE full_name = '@corp/secret'",
+    ).run();
+    const pub = await call(
+      '/r/corp-int/v1/publish',
+      req(owner, { name: '@corp/secret', version: '1.0.0', repo: 'https://github.com/corp/secret', ref: 'v1.0.0' }),
+      gh(),
+    );
+    expect(((await pub.json()) as { code: string }).code).toBe('E_POLICY');
+  });
+});

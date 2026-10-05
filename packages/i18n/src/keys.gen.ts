@@ -47,6 +47,7 @@ export interface MessageParams {
   "cli.desc.registryDomain": undefined;
   "cli.desc.registryVerify": undefined;
   "cli.desc.registryAudit": undefined;
+  "cli.desc.registryPolicy": undefined;
   "cli.arg.cwd": undefined;
   "cli.arg.registry": undefined;
   "cli.arg.json": undefined;
@@ -103,6 +104,11 @@ export interface MessageParams {
   "cli.arg.rbac.removeDomain": undefined;
   "cli.arg.rbac.since": undefined;
   "cli.arg.rbac.action": undefined;
+  "cli.arg.rbac.allow": undefined;
+  "cli.arg.rbac.requireScan": undefined;
+  "cli.arg.rbac.denyLicenses": undefined;
+  "cli.arg.rbac.direct": undefined;
+  "cli.arg.rbac.noDirect": undefined;
   "cli.label.resolved": undefined;
   "cli.label.dependency": undefined;
   "cli.label.skip": undefined;
@@ -210,6 +216,7 @@ export interface MessageParams {
   "cli.rbac.configHint": undefined;
   "cli.rbac.domainSteps": { slug: string | number; txtName: string | number; txtValue: string | number; domain: string | number; target: string | number };
   "cli.rbac.domainActive": { url: string | number };
+  "cli.rbac.policyHint": { slug: string | number };
   "common.product.tagline": undefined;
   "common.layers.code": undefined;
   "common.layers.context": undefined;
@@ -323,6 +330,8 @@ export interface MessageParams {
   "errors.E_MCP_SERVE_UNAVAILABLE.fix": undefined;
   "errors.E_NOT_A_PROJECT.message": { path: string | number };
   "errors.E_NOT_A_PROJECT.fix": undefined;
+  "errors.E_POLICY.message": { name: string | number; reason: string | number };
+  "errors.E_POLICY.fix": undefined;
   "web.meta.title": undefined;
   "web.meta.description": undefined;
   "web.meta.suffix": undefined;

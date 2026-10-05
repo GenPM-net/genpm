@@ -180,6 +180,11 @@ export class RegistryClient {
     return this.request<T>(method, path, body).then((r) => r.data);
   }
 
+  /** Política de organización del registro (ENT-03); `{}` si no tiene. */
+  policy() {
+    return this.request<{ policy: Record<string, unknown> }>('GET', '/v1/policy').then((r) => r.data.policy);
+  }
+
   /** Receta compose (V03-05) por slug. */
   recipe(slug: string) {
     return this.request<{ name: string; summary: string | null; p: string[] }>(

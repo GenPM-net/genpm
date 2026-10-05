@@ -45,7 +45,8 @@
     "accessRevoke": "Révoque un droit",
     "registryDomain": "Définit un domaine personnalisé pour un registre (ou le retire avec --remove)",
     "registryVerify": "Vérifie l’enregistrement TXT et active le domaine personnalisé",
-    "registryAudit": "Exporte le journal d’audit d’un registre en JSON Lines"
+    "registryAudit": "Exporte le journal d’audit d’un registre en JSON Lines",
+    "registryPolicy": "Définit la politique de l’organisation : paquets autorisés, analyse obligatoire, licences interdites et installations directes depuis Git"
   },
   "arg": {
     "cwd": "Répertoire de travail",
@@ -104,7 +105,12 @@
       "domain": "Domaine, ex. packages.acme.com",
       "removeDomain": "Retire le domaine personnalisé",
       "since": "Seulement les entrées depuis cette date (ISO 8601)",
-      "action": "Seulement les actions qui commencent par ce préfixe, ex. package."
+      "action": "Seulement les actions qui commencent par ce préfixe, ex. package.",
+      "allow": "Paquets autorisés, séparés par des virgules (@acme/*,@core/auth) ; vide autorise tout",
+      "requireScan": "N’installer que les versions dont l’analyse de sécurité a réussi",
+      "denyLicenses": "Licences SPDX interdites, séparées par des virgules",
+      "direct": "Autoriser les installations directes depuis Git (gh:owner/repo#ref)",
+      "noDirect": "Bloquer les installations directes depuis Git"
     }
   },
   "label": {
@@ -260,6 +266,7 @@
     "created": "Registre {slug} créé : {url}",
     "configHint": "Faites pointer votre scope vers lui dans .genpmrc et connectez-vous avec genpm login --registry <url> :",
     "domainSteps": "Publiez ces enregistrements DNS, puis lancez genpm registry verify {slug} :\n  TXT   {txtName} = {txtValue}\n  CNAME {domain} → {target}",
-    "domainActive": "Domaine personnalisé actif : {url}"
+    "domainActive": "Domaine personnalisé actif : {url}",
+    "policyHint": "Les projets l’appliquent avec policy=<url du registre> dans .genpmrc (par exemple https://api.genpm.net/r/{slug})."
   }
 }

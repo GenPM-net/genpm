@@ -45,7 +45,8 @@
     "accessRevoke": "撤销权限",
     "registryDomain": "为注册表设置自定义域名（或用 --remove 移除）",
     "registryVerify": "检查 TXT 记录并启用自定义域名",
-    "registryAudit": "以 JSON Lines 导出注册表的审计日志"
+    "registryAudit": "以 JSON Lines 导出注册表的审计日志",
+    "registryPolicy": "设置组织策略：允许的软件包、强制安全扫描、禁止的许可证以及直接从 Git 安装"
   },
   "arg": {
     "cwd": "工作目录",
@@ -104,7 +105,12 @@
       "domain": "域名，例如 packages.acme.com",
       "removeDomain": "移除自定义域名",
       "since": "仅此日期之后的条目（ISO 8601）",
-      "action": "仅以此前缀开头的操作，例如 package."
+      "action": "仅以此前缀开头的操作，例如 package.",
+      "allow": "允许的软件包，用逗号分隔（@acme/*,@core/auth）；留空表示全部允许",
+      "requireScan": "只安装通过安全扫描的版本",
+      "denyLicenses": "禁止的 SPDX 许可证，用逗号分隔",
+      "direct": "允许直接从 Git 安装（gh:owner/repo#ref）",
+      "noDirect": "禁止直接从 Git 安装"
     }
   },
   "label": {
@@ -260,6 +266,7 @@
     "created": "已创建注册表 {slug}：{url}",
     "configHint": "在 .genpmrc 中把你的 scope 指向它，并用 genpm login --registry <url> 登录：",
     "domainSteps": "发布以下 DNS 记录，然后运行 genpm registry verify {slug}：\n  TXT   {txtName} = {txtValue}\n  CNAME {domain} → {target}",
-    "domainActive": "自定义域名已启用：{url}"
+    "domainActive": "自定义域名已启用：{url}",
+    "policyHint": "项目在 .genpmrc 中写入 policy=<注册表 URL> 即可应用（例如 https://api.genpm.net/r/{slug}）。"
   }
 }

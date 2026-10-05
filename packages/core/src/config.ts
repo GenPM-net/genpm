@@ -6,7 +6,14 @@ import { join } from 'node:path';
 import { DEFAULT_REGISTRY } from '@genpm/manifest';
 import { readTextOrNull } from './fs/io.js';
 
-export type Rc = { registry?: string; scopes: Record<string, string>; clients?: string[]; lang?: string };
+export type Rc = {
+  registry?: string;
+  scopes: Record<string, string>;
+  clients?: string[];
+  lang?: string;
+  /** ENT-03: registro cuya política de organización se aplica a todo lo que se instala en este proyecto. */
+  policy?: string;
+};
 
 export function parseRc(text: string): Rc {
   const rc: Rc = { scopes: {} };
@@ -26,6 +33,7 @@ export function parseRc(text: string): Rc {
         .map((s) => s.trim())
         .filter(Boolean);
     else if (key === 'lang') rc.lang = value;
+    else if (key === 'policy') rc.policy = value;
   }
   return rc;
 }
@@ -36,6 +44,7 @@ export function mergeRc(...layers: Rc[]): Rc {
     if (l.registry) out.registry = l.registry;
     if (l.clients) out.clients = l.clients;
     if (l.lang) out.lang = l.lang;
+    if (l.policy) out.policy = l.policy;
     Object.assign(out.scopes, l.scopes);
   }
   return out;

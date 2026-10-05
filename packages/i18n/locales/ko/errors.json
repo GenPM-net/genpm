@@ -186,5 +186,9 @@
   "E_NOT_A_PROJECT": {
     "message": "{path}에서 프로젝트를 찾을 수 없습니다.",
     "fix": "프로젝트(package.json 또는 .git이 있는 곳) 안에서 명령을 실행하거나 --cwd <dir>을 전달하세요."
+  },
+  "E_POLICY": {
+    "message": "조직 정책상 {name}은(는) 허용되지 않습니다: {reason}.",
+    "fix": "허용된 패키지를 선택하거나 조직 레지스트리 관리자에게 정책 변경을 요청하세요."
   }
 }

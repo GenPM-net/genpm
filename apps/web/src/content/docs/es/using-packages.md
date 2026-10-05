@@ -75,9 +75,11 @@ genpm compose ./stack.json
 
 Los equipos pueden guardar paquetes de repositorios privados en un registro privado (`genpm registry create acme --owner mi-org`, o [Ajustes › Registros privados](/settings/registries)). No existe para quien no es miembro. Apunta tu scope a él en `.genpmrc` e inicia sesión contra él; `genpm add` funciona igual. Los miembros leen los paquetes `internal`; los `private` necesitan un permiso (`genpm access grant @acme/api team:mi-org/backend read`). La GitHub App de GenPM tiene que estar instalada en la organización para que el registro lea sus repositorios privados.
 
-```json
-// .genpmrc
-{ "scopes": { "acme": "https://api.genpm.net/r/acme" } }
+```ini
+# .genpmrc
+@acme:registry=https://api.genpm.net/r/acme
+# ENT-03: policy
+policy=https://api.genpm.net/r/acme
 ```
 
 ```bash

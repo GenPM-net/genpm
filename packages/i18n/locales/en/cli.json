@@ -45,7 +45,8 @@
     "accessRevoke": "Revoke a grant",
     "registryDomain": "Set a custom domain for a registry (or remove it with --remove)",
     "registryVerify": "Check the TXT record and activate the custom domain",
-    "registryAudit": "Export the audit trail of a registry as JSON Lines"
+    "registryAudit": "Export the audit trail of a registry as JSON Lines",
+    "registryPolicy": "Set the organization policy: allowed packages, required security scan, denied licenses and direct Git installs"
   },
   "arg": {
     "cwd": "Working directory",
@@ -104,7 +105,12 @@
       "domain": "Domain, e.g. packages.acme.com",
       "removeDomain": "Remove the custom domain",
       "since": "Only entries since this date (ISO 8601)",
-      "action": "Only actions starting with this prefix, e.g. package."
+      "action": "Only actions starting with this prefix, e.g. package.",
+      "allow": "Allowed packages, comma separated (@acme/*,@core/auth); empty allows all",
+      "requireScan": "Only install versions whose security scan passed",
+      "denyLicenses": "Denied SPDX licenses, comma separated",
+      "direct": "Allow direct Git installs (gh:owner/repo#ref)",
+      "noDirect": "Block direct Git installs"
     }
   },
   "label": {
@@ -260,6 +266,7 @@
     "created": "Registry {slug} created: {url}",
     "configHint": "Point your scope to it in .genpmrc and sign in with genpm login --registry <url>:",
     "domainSteps": "Publish these DNS records, then run genpm registry verify {slug}:\n  TXT   {txtName} = {txtValue}\n  CNAME {domain} → {target}",
-    "domainActive": "Custom domain active: {url}"
+    "domainActive": "Custom domain active: {url}",
+    "policyHint": "Projects apply it with policy=<registry url> in .genpmrc (for example https://api.genpm.net/r/{slug})."
   }
 }

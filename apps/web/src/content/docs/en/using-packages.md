@@ -75,9 +75,11 @@ genpm compose ./stack.json
 
 Teams can keep packages from private repositories in a private registry (`genpm registry create acme --owner my-org`, or [Settings › Private registries](/settings/registries)). It does not exist for anyone who is not a member. Point your scope to it in `.genpmrc` and sign in against it; `genpm add` works the same. Members read `internal` packages; `private` ones need a grant (`genpm access grant @acme/api team:my-org/backend read`). The GenPM GitHub App must be installed on the organization so the registry can read its private repositories.
 
-```json
-// .genpmrc
-{ "scopes": { "acme": "https://api.genpm.net/r/acme" } }
+```ini
+# .genpmrc
+@acme:registry=https://api.genpm.net/r/acme
+# ENT-03: policy
+policy=https://api.genpm.net/r/acme
 ```
 
 ```bash

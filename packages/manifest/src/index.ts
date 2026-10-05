@@ -4,6 +4,7 @@ export * from './errors.js';
 export * from './files.js';
 export * from './lockfile.js';
 export * from './manifest.js';
+export * from './policy.js';
 export * from './quality.js';
 export * from './recipe.js';
 export * from './scan.js';

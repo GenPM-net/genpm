@@ -61,6 +61,9 @@ export class FakeRegistry {
     return vs.find((p) => p.v === v);
   }
 
+  /** Política de organización (ENT-03) que devuelve /v1/policy. */
+  policy: Record<string, unknown> = {};
+
   /** Recetas compose (V03-05) por slug. */
   recipes: Record<string, { summary: string | null; p: string[] }> = {};
 
@@ -71,6 +74,7 @@ export class FakeRegistry {
     if (url.pathname === '/v1/health') return ok({ ok: true });
     if (url.pathname === '/v1/keys') return ok({ alg: 'Ed25519', keys: [], revocation: this.revocation });
     if (url.pathname === '/v1/advisories') return ok({ advisories: [] });
+    if (url.pathname === '/v1/policy') return ok({ policy: this.policy });
     if (url.pathname === '/v1/recipes')
       return ok({ recipes: Object.entries(this.recipes).map(([name, r]) => ({ name, ...r })) });
     const rc = url.pathname.match(/^\/v1\/recipes\/([a-z0-9-]+)$/);

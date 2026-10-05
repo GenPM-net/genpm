@@ -186,5 +186,9 @@
   "E_NOT_A_PROJECT": {
     "message": "Nenhum projeto encontrado em {path}.",
     "fix": "Execute o comando dentro de um projeto (com package.json ou .git) ou passe --cwd <dir>."
+  },
+  "E_POLICY": {
+    "message": "A política da sua organização não permite {name}: {reason}.",
+    "fix": "Escolha um pacote permitido ou peça a um administrador do registry da sua organização para mudar a política."
   }
 }

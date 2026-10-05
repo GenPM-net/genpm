@@ -1,7 +1,7 @@
 // Gestión de registros privados, equipos y accesos por paquete (V10-01, api-spec §5.4). Validación aquí; el CLI solo
 // formatea. Todo pasa por el registry: permisos y auditoría los aplica el servidor.
 
-import { NAME_RE } from '@genpm/manifest';
+import { NAME_RE, PolicySchema } from '@genpm/manifest';
 import { fail } from './errors.js';
 import { type CommonOptions, clientFor } from './ops.js';
 
@@ -187,4 +187,21 @@ export async function registryAudit(
     after = page.next;
   }
   return out;
+}
+
+// ───────────── Políticas (ENT-03) ─────────────
+
+export async function registryPolicy(
+  opts: CommonOptions & {
+    slug: string;
+    policy: { allow?: string[]; requireScan?: boolean; denyLicenses?: string[]; allowDirect?: boolean };
+  },
+) {
+  const parsed = PolicySchema.safeParse(opts.policy);
+  if (!parsed.success) throw usage(`invalid policy: ${parsed.error.issues[0]?.path.join('.') ?? ''}`);
+  return (await client(opts)).api<{ ok: boolean; policy: unknown }>(
+    'PUT',
+    `/v1/registries/${slug(opts.slug)}/policy`,
+    parsed.data,
+  );
 }

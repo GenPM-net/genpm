@@ -4,6 +4,7 @@
 //   /v1/packages/:scope/:name/access    visibilidad y grants por paquete (solo en registros privados)
 // Sin permiso ⇒ 404 (no revelar existencia). Toda escritura deja rastro en audit_log.
 
+import { PolicySchema } from '@genpm/manifest';
 import type { Context } from 'hono';
 import { Hono } from 'hono';
 import { z } from 'zod';
@@ -195,6 +196,21 @@ export const registries = new Hono<AppEnv>()
       audit(c, 'registry.member', 'account', who.id, { handle: who.handle, role: body.data.role }),
     ]);
     return c.json({ ok: true, handle: who.handle, kind: who.kind, role: body.data.role });
+  })
+  // Políticas (ENT-03): las aplica el registry al publicar aquí y el CLI/MCP en todo proyecto con `policy=` en .genpmrc.
+  .put('/:slug/policy', requireAuth('publish'), async (c) => {
+    const r = await registryFor(c, 'admin');
+    const body = PolicySchema.safeParse(await c.req.json().catch(() => null));
+    if (!body.success) throw httpError('E_BAD_REQUEST', { detail: body.error.issues[0]?.path.join('.') ?? 'policy' });
+    c.set('tenant', { registryId: r.id, slug: r.slug });
+    await c.env.DB.batch([
+      c.env.DB.prepare("UPDATE registries SET settings = json_set(settings, '$.policy', json(?1)) WHERE id = ?2").bind(
+        JSON.stringify(body.data),
+        r.id,
+      ),
+      audit(c, 'registry.policy', 'registry', r.id, body.data),
+    ]);
+    return c.json({ ok: true, policy: body.data });
   })
   // Auditoría exportable (V10-04): solo admins. JSON paginado (`next`) o el rango completo en CSV/JSONL (máx. 50 000).
   .get('/:slug/audit', async (c) => {

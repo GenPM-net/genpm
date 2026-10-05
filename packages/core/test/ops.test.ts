@@ -264,3 +264,17 @@ describe('doctor', () => {
     expect(c2.find((c) => c.id === 'registry')?.status).toBe('fail');
   });
 });
+
+describe('organization policy (ENT-03)', () => {
+  it('blocks packages outside the policy of the registry set in .genpmrc, even with --force', async () => {
+    await writeFile(join(project, '.genpmrc'), `policy=${REGISTRY}\n`);
+    reg.policy = { allow: ['@core/db'] };
+    await expect(plan({ specs: ['@core/auth'], ...common(), force: true })).rejects.toMatchObject({
+      code: 'E_POLICY',
+      details: { params: { name: '@core/auth' } },
+    });
+    expect((await plan({ specs: ['@core/db'], ...common() })).packages.map((p) => p.n)).toEqual(['@core/db']);
+    reg.policy = { allow: ['@core/*'], requireScan: true };
+    await expect(plan({ specs: ['@core/db'], ...common() })).resolves.toBeTruthy();
+  });
+});

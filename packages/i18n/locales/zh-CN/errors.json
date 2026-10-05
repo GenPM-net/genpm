@@ -186,5 +186,9 @@
   "E_NOT_A_PROJECT": {
     "message": "在 {path} 中未找到项目。",
     "fix": "请在项目内（包含 package.json 或 .git）运行该命令，或传入 --cwd <dir>。"
+  },
+  "E_POLICY": {
+    "message": "你所在组织的策略不允许 {name}：{reason}。",
+    "fix": "请选择允许的软件包，或请组织注册表的管理员修改策略。"
   }
 }

@@ -93,5 +93,6 @@
 - [ ] `ENT-01` **TODO** Tenancy dedicada: D1 por cliente vía Workers for Platforms · A · 60h · deps: V10-01
 - [x] `ENT-02` **DONE** SCIM · A · 24h · deps: V10-02
   - ✅ 2026-10-05: `/scim/v2/:org/Users` (alta, filtro, PUT/PATCH `active`, baja) con token por org; la identidad SCIM se vincula en el primer login SSO por email; la baja corta el acceso y quita la membresía; migración 0011; token desde /settings/sso.
-- [ ] `ENT-03` **TODO** Políticas: paquetes permitidos y escaneo obligatorio · A · 24h · deps: V10-01
+- [x] `ENT-03` **DONE** Políticas: paquetes permitidos y escaneo obligatorio · A · 24h · deps: V10-01
+  - ✅ 2026-10-05: `PolicySchema`/`policyViolation` en manifest, `E_POLICY`, `PUT /v1/registries/:slug/policy` y `GET /v1/policy`, `policy=` en .genpmrc aplicado en plan() (también a paquetes públicos y `gh:`, sin `--force` que valga), licencias prohibidas al publicar; CLI `genpm registry policy`.
 - [ ] `ENT-04` **TODO** SLA y soporte dedicado · F · 8h · deps: ENT-01
