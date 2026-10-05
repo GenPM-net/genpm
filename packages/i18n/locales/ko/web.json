@@ -49,7 +49,8 @@
     "status": "모든 시스템 정상",
     "beta": "공개 베타 · 기계 번역(베타)",
     "legalNotice": "법적 고지",
-    "cookies": "쿠키"
+    "cookies": "쿠키",
+    "madeBy": "만든 사람: {name}"
   },
   "common": {
     "copy": "복사",

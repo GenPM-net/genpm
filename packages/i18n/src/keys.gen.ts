@@ -303,6 +303,7 @@ export interface MessageParams {
   "web.footer.beta": undefined;
   "web.footer.legalNotice": undefined;
   "web.footer.cookies": undefined;
+  "web.footer.madeBy": { name: string | number };
   "web.common.copy": undefined;
   "web.common.copied": undefined;
   "web.common.copiedToast": undefined;

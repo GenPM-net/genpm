@@ -49,7 +49,8 @@
     "status": "Todos os sistemas funcionando",
     "beta": "Beta pública · Tradução automática (beta)",
     "legalNotice": "Aviso legal",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "madeBy": "Feito por {name}"
   },
   "common": {
     "copy": "Copiar",

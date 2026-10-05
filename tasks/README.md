@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **71 %** completado · 184/259 tareas · 517h estimadas pendientes
 
-TODO 47 · DOING 4 · DONE 183 · BLOCKED 24 · CUT 1
+TODO 47 · DOING 4 · DONE 184 · BLOCKED 24 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|

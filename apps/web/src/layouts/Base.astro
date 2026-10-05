@@ -55,9 +55,19 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
     <meta property="og:url" content={`${site}${href(locale, pagePath)}`} />
-    <meta property="og:image" content={ogImage ?? `${site}/og/home.png`} />
+    <meta property="og:image" content={ogImage ?? `${site}/og/home-${locale}.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={fullTitle} />
+    <meta property="og:locale" content={locale.replace('-', '_')} />
+    {LOCALES.filter((l) => l !== locale).map((l) => <meta property="og:locale:alternate" content={l.replace('-', '_')} />)}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage ?? `${site}/og/home-${locale}.png`} />
     <meta name="theme-color" content="#FFFFFF" />
+    <meta name="author" content="Yohangel Ramos" />
+    <link rel="author" href="https://yohangel.com" />
     <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />}
     <script>
@@ -138,7 +148,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
         <div><h2>{t.t('web.footer.community')}</h2><ul><li><a href="https://github.com/genpm-net/genpm" rel="noopener">GitHub</a></li><li><a href="/llms.txt">llms.txt</a></li></ul></div>
         <div><h2>{t.t('web.footer.legal')}</h2><ul><li><a href={href(locale, '/terms')}>{t.t('web.footer.terms')}</a></li><li><a href={href(locale, '/privacy')}>{t.t('web.footer.privacy')}</a></li><li><a href={href(locale, '/policy')}>{t.t('web.footer.policy')}</a></li><li><a href={href(locale, '/cookies')}>{t.t('web.footer.cookies')}</a></li><li><a href={href(locale, '/legal')}>{t.t('web.footer.legalNotice')}</a></li><li><a href={`${href(locale, '/security')}#report`}>{t.t('web.footer.report')}</a></li></ul></div>
       </div>
-      <div class="base"><span>© 2026 GenPM · {t.t('web.footer.beta')}</span><span class="status"><i></i>{t.t('web.footer.status')}</span></div>
+      <div class="base"><span>© 2026 GenPM · {t.t('web.footer.beta')} · <span set:html={t.t('web.footer.madeBy', { name: '<a href="https://yohangel.com" rel="author noopener" target="_blank" class="made-by">Yohangel Ramos</a>' })} /></span><span class="status"><i></i>{t.t('web.footer.status')}</span></div>
     </footer>
     <SearchPalette
       client:idle

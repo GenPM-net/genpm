@@ -2595,3 +2595,12 @@ table.tbl tr.y td:first-child {
   background: var(--paper);
   color: var(--ink);
 }
+/* Firma del autor en el pie: discreta, se subraya al pasar. */
+.foot .made-by {
+  color: inherit;
+  border-bottom: 1px solid var(--line-2);
+}
+.foot .made-by:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}

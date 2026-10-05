@@ -1,6 +1,6 @@
 {
   "$comment": "Titular de genpm.net (LSSI-CE art. 10, RGPD art. 13). Rellenar antes del despliegue a producción: `pnpm --filter @genpm/web run deploy` falla si falta algún dato (scripts/check-legal.mjs).",
-  "name": "Yohangel Ram os",
+  "name": "Yohangel Ramos",
   "nif": "54949225v",
   "address": "Calle Zurita 45, 4º7",
   "city": "Madrid",

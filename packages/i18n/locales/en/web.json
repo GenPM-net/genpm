@@ -49,7 +49,8 @@
     "status": "All systems normal",
     "beta": "Public beta",
     "legalNotice": "Legal notice",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "madeBy": "Made by {name}"
   },
   "common": {
     "copy": "Copy",

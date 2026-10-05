@@ -26,7 +26,8 @@
 - [x] `D5-W-13` **DONE** Docs con Starlight en /docs: Quickstart, uso, publicación, referencia del manifiesto, MCP por cliente, códigos de error · W · 4h · deps: D4-C-01
   - Docs propias en Astro (no Starlight): un solo mecanismo de idiomas, sin JS en cliente y la marca del prototipo. Cada página expone su .md. ADR-019.
 - [x] `D5-W-14` **DONE** Página /mcp con selector de cliente, bloques copiables y deeplinks donde existan · W · 2h · deps: D5-W-02
-- [ ] `D5-W-15` **CUT** OG images por paquete con Satori en el edge, cacheadas por versión · W · 2h · deps: BR-10, D5-W-06
+- [x] `D5-W-15` **DONE** OG images por paquete con Satori en el edge, cacheadas por versión · W · 2h · deps: BR-10, D5-W-06
+  - Recuperado el 2026-10-05 para la campaña en redes: /og/p/@scope/name.png generado en el Worker (workers-og: satori + resvg) con nombre, versión, licencia, resumen y capas; home por idioma en public/og/home-<locale>.png (scripts/og-home.py). og:image:width/height/alt, og:locale y tarjetas de X completas.
   - Recorte 2.
   - Recorte: plan de recorte 2 (PLAN §6). Se usa la OG de la home (docs/design/brand/og-home.png); la plantilla por paquete existe (og-template.svg) para v0.1.1.
 - [x] `D5-W-16` **DONE** Superficies para agentes: /llms.txt, /p/@scope/name.md y /search.md · W · 2h · deps: D5-W-06
