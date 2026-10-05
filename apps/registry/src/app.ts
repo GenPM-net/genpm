@@ -85,6 +85,15 @@ export function createApp() {
   app.use('/mcp', requestId, securityHeaders, bodyLimit);
   app.route('/mcp', mcp);
   app.use('*', requestId, securityHeaders, locale, cors, bodyLimit);
+  // Cron de un Worker dedicado (ENT-01), reenviado por el compartido: solo con CRON_SECRET y solo en modo dedicado.
+  app.post('/__cron', async (c) => {
+    if (!c.env.DEDICATED_TENANT || !c.env.CRON_SECRET || c.req.header('x-genpm-cron') !== c.env.CRON_SECRET)
+      throw httpError('E_NOT_FOUND', { name: '/__cron' });
+    const { cron } = (await c.req.json().catch(() => ({}))) as { cron?: string };
+    const { runCron } = await import('./cron/index.js');
+    await runCron(String(cron ?? ''), c.env);
+    return c.json({ ok: true });
+  });
   // SCIM 2.0 (ENT-02): fuera de /v1 (ruta estándar que configura el IdP), con su propio token y rate limit.
   app.use('/scim/*', rateLimit('auth'));
   app.route('/scim/v2', scim);

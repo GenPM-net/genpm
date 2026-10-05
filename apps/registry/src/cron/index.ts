@@ -8,6 +8,7 @@
 import type { Env } from '../env.js';
 import { newId } from '../ids.js';
 import { aeConfigured, aeDataset, aeQuery } from '../services/ae.js';
+import { fanOutCron } from '../services/dedicated.js';
 import { GitHub } from '../services/github.js';
 import { recomputeQuality } from '../services/quality.js';
 import { activeSigningKey, sign } from '../services/signing.js';
@@ -273,6 +274,8 @@ export async function runCron(cron: string, env: Env): Promise<void> {
 }
 
 async function runCronInner(cron: string, env: Env): Promise<void> {
+  // ENT-01: los Workers dedicados no tienen cron propio; se lo reenvía el compartido.
+  await fanOutCron(env, cron);
   if (cron === '0 * * * *') {
     await rollupInstalls(env);
     await resignStale(env);

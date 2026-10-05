@@ -92,7 +92,8 @@
 
 ## Enterprise · +6 meses
 
-- [ ] `ENT-01` **TODO** Tenancy dedicada: D1 por cliente vía Workers for Platforms · A · 60h · deps: V10-01
+- [x] `ENT-01` **DONE** Tenancy dedicada: D1 por cliente vía Workers for Platforms · A · 60h · deps: V10-01
+  - ✅ 2026-10-05 (ADR-032): enrutado al Worker dedicado en el middleware de tenant (falla cerrado), modo `DEDICATED_TENANT`, cron reenviado (`/__cron`), `scripts/provision-dedicated.mjs` (D1, despliegue, secretos, copia de datos). Pendiente fundador: contratar Workers for Platforms y runbook §3.4.
 - [x] `ENT-02` **DONE** SCIM · A · 24h · deps: V10-02
   - ✅ 2026-10-05: `/scim/v2/:org/Users` (alta, filtro, PUT/PATCH `active`, baja) con token por org; la identidad SCIM se vincula en el primer login SSO por email; la baja corta el acceso y quita la membresía; migración 0011; token desde /settings/sso.
 - [x] `ENT-03` **DONE** Políticas: paquetes permitidos y escaneo obligatorio · A · 24h · deps: V10-01

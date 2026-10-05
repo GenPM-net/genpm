@@ -204,6 +204,27 @@ El cliente publica `TXT _genpm-challenge.<dominio>` y `CNAME <dominio> → domai
 
 Sin `STRIPE_SECRET_KEY` no se ofrece la mejora ni la reserva (la web lo oculta y el API responde 404).
 
+## 3.4 Registro dedicado de un cliente Enterprise (ENT-01)
+
+Una vez: contratar **Workers for Platforms**, `npx wrangler dispatch-namespace create genpm-tenants`, descomentar
+`dispatch_namespaces` en `apps/registry/wrangler.jsonc`, `npx wrangler secret put CRON_SECRET` (valor aleatorio largo)
+y desplegar el registry.
+
+Por cliente (desde `apps/registry`, con `CF_API_TOKEN` y los secretos compartidos en el entorno: `SIGNING_KEYS`,
+`GITHUB_APP_ID`, `GITHUB_APP_PRIVATE_KEY`, `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, `CRON_SECRET`):
+
+```bash
+node scripts/provision-dedicated.mjs acme --owner acme-inc --dry-run   # revisar los pasos
+node scripts/provision-dedicated.mjs acme --owner acme-inc --copy      # --copy: trae sus datos del compartido
+```
+
+Crea la D1 `genpm-tenant-acme`, aplica las migraciones, despliega `tenant-acme` en el namespace con
+`DEDICATED_TENANT=acme`, pone los secretos (`TOKEN_PEPPER` nuevo), copia los datos y marca el registro como dedicado
+en el compartido (a partir de ahí todo `/r/acme`, `genpm-registry: acme` y su dominio propio van a su Worker). Los
+usuarios inician sesión de nuevo contra `https://api.genpm.net/r/acme` (sus cuentas y tokens viven en su D1). Al
+actualizar el registry, volver a desplegar cada Worker dedicado: `npx wrangler deploy -c .tenants/<slug>.json
+--dispatch-namespace genpm-tenants` (y `d1 migrations apply`). Verificado, se pueden borrar sus filas del compartido.
+
 ## 4. Entornos
 
 | Entorno | Web | API | D1 | Clave de firma |

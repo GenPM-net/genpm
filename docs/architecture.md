@@ -385,3 +385,9 @@ y la semántica de propiedad. Por eso: PK `TEXT` ULID, unicidad `(registry_id, f
 | Fragmentación de formatos de reglas por IDE | Alta | Medio | Adaptadores aislados en `core/inject/clients/*`, fáciles de actualizar |
 | Repos que desaparecen | Media | Medio | ADR-007: Verified Archive en R2 (✅ V03-02). Al publicar se guarda el tar.gz del commit y una firma del registry sobre su sha256; el CLI lo usa solo si Git y codeload fallan por red o repo inaccesible, y exige firma, sha256 y commit en el comentario pax |
 | Windows: rutas y permisos | Media | Medio | CI en matriz macOS/Linux/Windows desde el día 1 |
+
+## Tenancy (v1.0 / Enterprise)
+
+- **Compartida** (V10-01, ADR-029): registros privados en la D1 común, aislados por `registry_id` (INV-10) y por el middleware de tenant (404 a no miembros). Direcciones: `/r/<slug>`, cabecera `genpm-registry` o dominio propio (V10-03).
+- **Dedicada** (ENT-01, ADR-032): D1 y Worker propios en Workers for Platforms; el Worker compartido solo enruta (`DISPATCHER`) y reenvía el cron.
+- SSO OIDC (V10-02, ADR-030), SCIM (ENT-02), políticas (ENT-03), auditoría exportable (V10-04) y facturación Stripe (V10-05, ADR-031) funcionan igual en ambos modos.

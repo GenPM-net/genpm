@@ -426,6 +426,17 @@ patrocinador reserva un hueco de búsqueda (paquete, palabra clave, 1–12 seman
 y el staff lo aprueba o lo rechaza con reembolso completo (ADR-010: siempre marcado, nunca en el MCP). Stripe sin SDK
 (REST + firma HMAC) para no meter dependencias en el Worker.
 
+### ADR-032 · Tenancy dedicada con Workers for Platforms — ✅ Decidida (Tech Lead, 2026-10-05)
+
+**Decisión:** un registro Enterprise puede vivir en **su propia D1** servida por **su propio Worker** (el mismo código
+del registry, con `DEDICATED_TENANT=<slug>`) dentro del namespace `genpm-tenants`. El Worker compartido solo enruta:
+si el slug resuelto (cabecera, `/r/<slug>` o dominio propio) es `isolation = 'dedicated'`, reenvía la petición entera
+con `env.DISPATCHER.get(script)`; sin el binding falla cerrado (500), nunca cae en la D1 compartida. El Worker dedicado
+solo sirve su slug (cualquier otro, incluido `public`, es 404). Como los Workers de un namespace no tienen Cron
+Triggers, el compartido les reenvía cada ejecución a `POST /__cron` con `CRON_SECRET`. Gracias a los ids ULID con
+prefijo (api-spec §5.2), pasar un cliente de compartido a dedicado es copiar filas (`scripts/provision-dedicated.mjs
+--copy`). Mismas claves de firma (los clientes ya las fijan); cuentas y tokens propios de la D1 del cliente.
+
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

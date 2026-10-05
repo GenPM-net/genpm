@@ -47,6 +47,12 @@ export type Env = {
   STRIPE_PRICE_TEAM?: string;
   /** Precio por semana de un hueco patrocinado en la búsqueda, en céntimos de USD (por defecto 4900). */
   SPONSOR_WEEKLY_CENTS?: string;
+  /** ENT-01: namespace de Workers for Platforms con los Workers de los registros dedicados. */
+  DISPATCHER?: { get(name: string): { fetch(req: Request): Promise<Response> } };
+  /** ENT-01: en el Worker de un registro dedicado, su slug (no reenvía y solo sirve ese registro). */
+  DEDICATED_TENANT?: string;
+  /** ENT-01: secreto compartido para reenviar el cron a los Workers dedicados. */
+  CRON_SECRET?: string;
   /** Solo tests: base del API de Stripe. */
   STRIPE_API_BASE?: string;
   GITHUB_RAW_BASE?: string;
