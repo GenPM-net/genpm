@@ -12,6 +12,16 @@
 - [x] `V011-04` **DONE** Canales de paquetes para el binario: Homebrew tap, Scoop y winget · B · 4h · deps: V011-02
   - Hecho el 2026-10-05: `brew install genpm-net/tap/genpm` (GenPM-net/homebrew-tap, auditado y checksum verificado) y Scoop (GenPM-net/scoop-bucket, hashes verificados); `genpm upgrade` remite a `brew upgrade`/`scoop update`. winget queda fuera hasta firmar los binarios (V011-03): exige PR a microsoft/winget-pkgs.
 - [x] `V011-05` **DONE** genpm mcp serve en el binario para usar el MCP sin Node · B · 4h · deps: V011-02
+- [ ] `V011-06` **TODO** Crear el token `CF_AE_TOKEN` (Account Analytics: Read) y cargarlo en producción y staging · F · 0.5h · deps: D6-P-03
+  - `wrangler secret put CF_AE_TOKEN` y `wrangler secret put CF_AE_TOKEN --env staging` en apps/registry. Comprobar: en la siguiente hora en punto desaparece `installs_rollup_skipped` de los logs; el cron de las 03:15 recupera los últimos 30 días (ADR-027).
+- [ ] `V011-07` **TODO** Cloudflare Web Analytics sin cookies: alta del sitio, beacon en Base.astro y CSP ampliada · W · 1h · deps: V011-06
+- [ ] `V011-08` **TODO** Eventos de producto en el navegador: POST /e same-origin con sendBeacon a Analytics Engine (copy_install, tab_view, mcp_setup_copy, publish_cta) · W · 3h · deps: V011-07
+  - Sin cookies, sin IP ni identificadores; lista cerrada de eventos validada con zod; rate limit; textos y ruta truncados como en lib/analytics.ts.
+- [ ] `V011-09` **TODO** Eventos de servidor que faltan: búsquedas sin resultados, publish_ok, login y sponsored_impression/click · A · 2h · deps: V011-06
+- [ ] `V011-10` **TODO** Panel /admin/analytics (solo staff) sobre la SQL API de AE: visitas, top búsquedas, demanda no cubierta y embudo visita → copia → instalación · W · 6h · deps: V011-08, V011-09
+- [ ] `V011-11` **TODO** Decidir ADR-027 capa 2 (mapas de calor con consentimiento) y revisar el texto legal del banner · F · 1h · deps: V011-10
+- [ ] `V011-12` **TODO** PostHog Cloud EU con opt-in: banner con rechazar igual de visible, proxy /ph/*, mapas de calor y grabaciones enmascaradas, políticas actualizadas · W · 8h · deps: V011-11
+  - DoD: sin consentimiento no se carga ningún script ni se escribe nada en el navegador (test e2e); cambiar de opinión desde el pie de página; política de cookies, privacidad y registro de actividades actualizados.
 
 ## v0.2 · +2 semanas
 

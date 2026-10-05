@@ -324,6 +324,40 @@ pertenece a otro usuario desde enero de 2025.
 `npx @genpm-net/cli …` y `npx -y @genpm-net/mcp`; `genpm upgrade` propone `@genpm-net/cli@latest`. Sustituye a los nombres
 de paquete npm de ADR-025 y anteriores. Los paquetes internos del monorepo (`@genpm/core`, `@genpm/manifest`…) no se
 publican y conservan su nombre. La vía principal sigue siendo el binario nativo.
+### ADR-027 · Analítica de producto en dos capas: sin consentimiento por defecto, mapas de calor solo con opt-in — 🟡 Propuesta (2026-10-05, pendiente del fundador)
+
+**Contexto:** tras el lanzamiento la home marcaba 0 instalaciones aunque había visitas. Causas: (1) faltaba el secreto
+`CF_AE_TOKEN`, así que el cron horario no podía leer Analytics Engine y no movía nada a D1 sin dar ninguna señal
+(corregido: ahora avisa en los logs con `installs_rollup_skipped` y el cron diario reprocesa 30 días, así que nada se
+pierde mientras AE conserve los eventos, 90 días); (2) los 304 de `/v1/resolve` perdían la cabecera `genpm-version` y no
+se contaban (corregido); (3) la cifra de la home son **instalaciones** (llamadas a `resolve` desde CLI/MCP), no visitas:
+las visitas de la web solo se escriben en el dataset `genpm_web_events` (`search`, `pkg_view`) y no hay ningún panel
+que las enseñe. web-ui-spec §8 prevé Cloudflare Web Analytics, pero la CSP lo bloquearía y nunca se activó.
+
+**Restricción legal (ADR-024):** sin banner mientras todo sea técnico o sin identificadores. Mapas de calor y grabación
+de sesiones necesitan almacenamiento en el navegador o identificar la sesión ⇒ **consentimiento previo** (LSSI art.
+22.2, EDPB 2/2023), con "Rechazar" tan visible como "Aceptar".
+
+**Propuesta:**
+
+| Capa | Herramienta (gratis) | Qué mide | Consentimiento |
+|---|---|---|---|
+| 0 · Ya disponible | Dashboard de Cloudflare: zona genpm.net → Analytics → Traffic; Workers → genpm-web → Metrics/Logs | Peticiones, visitas, países, errores | No (lado servidor) |
+| 1 · Siempre activa | **Cloudflare Web Analytics** (beacon sin cookies) | Páginas vistas, referrers, países, dispositivos, Core Web Vitals | No (sin cookies ni ID) |
+| 1 · Siempre activa | **Eventos propios en Analytics Engine** + `POST /e` same-origin con `navigator.sendBeacon` | Embudo de producto: `search` (y búsquedas sin resultados), `pkg_view`, `copy_install`, `tab_view`, `mcp_setup_copy`, `publish_cta`, `publish_ok`, `login`, `sponsored_*` | No (sin cookies, sin IP, sin ID) |
+| 1 · Siempre activa | **Panel `/admin/analytics`** (solo staff) sobre la SQL API de AE | Tendencias, top búsquedas, demanda no cubierta, embudo visita → copia → instalación | — |
+| 2 · Solo con opt-in | **PostHog Cloud EU** (open source MIT, 1 M eventos y 5 000 grabaciones/mes gratis) vía proxy propio `genpm.net/ph/*` | Mapas de calor (clics, scroll), grabación de sesiones con textos enmascarados, embudos, retención | **Sí**: banner + política de cookies actualizada |
+
+Alternativas descartadas: Microsoft Clarity (gratis e ilimitado, pero no es open source, envía datos a EE. UU. y también
+exige banner); Plausible/Umami autoalojados (open source, pero sin mapas de calor y duplican lo que da Cloudflare);
+OpenReplay autoalojado (demasiada infraestructura para un fundador en solitario). Si PostHog deja de ser gratis, el
+sustituto open source autoalojable es el propio PostHog (Docker) u OpenReplay.
+
+**Consecuencias:** la capa 1 no cambia ADR-024 (sin banner); solo amplía la CSP con `static.cloudflareinsights.com`
+(script) y `cloudflareinsights.com` (connect). La capa 2 sí modifica ADR-024 (pasa a haber banner) y exige actualizar
+privacidad, cookies y el registro de actividades de tratamiento; PostHog queda como encargado del tratamiento (DPA). La
+telemetría del CLI (INV-6) no se toca: el CLI nunca envía nada a PostHog. Tareas: `V011-06` … `V011-12`.
+
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

@@ -75,6 +75,14 @@ describe('GET /v1/search (api-spec §4.1)', () => {
     const again = await get('/v1/search?q=auth', { headers: { 'if-none-match': etag! } });
     expect(again.status).toBe(304);
   });
+  it('keeps genpm-version on resolve 304s so cached installs are still counted', async () => {
+    const first = await get('/v1/resolve/@core/auth?fmt=c');
+    const again = await get('/v1/resolve/@core/auth?fmt=c', {
+      headers: { 'if-none-match': first.headers.get('etag')! },
+    });
+    expect(again.status).toBe(304);
+    expect(again.headers.get('genpm-version')).toBe(first.headers.get('genpm-version'));
+  });
 });
 
 describe('GET /v1/resolve (api-spec §4.2)', () => {

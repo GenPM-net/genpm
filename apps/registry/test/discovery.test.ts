@@ -112,6 +112,13 @@ describe('cron triggers', () => {
       status: 'ended',
     });
   });
+  it('without CF_AE_TOKEN skips the rollup and keeps the counters', async () => {
+    const before = await env.DB.prepare("SELECT installs_30d FROM packages WHERE id = 'pkg_fixture01'").first();
+    expect(await rollupInstalls({ ...env, CF_AE_TOKEN: undefined }, fetch)).toBe(0);
+    expect(await env.DB.prepare("SELECT installs_30d FROM packages WHERE id = 'pkg_fixture01'").first()).toEqual(
+      before,
+    );
+  });
   it('audits tags: detects moved tags and recreated repos', async () => {
     const shaDb = await env.DB.prepare("SELECT commit_sha FROM package_versions WHERE id = 'ver_fixture0102'").first<{
       commit_sha: string;

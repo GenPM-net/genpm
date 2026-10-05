@@ -663,8 +663,8 @@ El catálogo vive en `@genpm/manifest/errors` y lo reutilizan CLI y MCP (mismo `
 
 | Cron | Tarea |
 |---|---|
-| `0 * * * *` | Rollup Analytics Engine → `install_stats_daily`; actualizar `installs_30d`, `installs_total`. |
-| `15 3 * * *` | Recalcular `popularity_score`; activar/desactivar `sponsorships` por fecha y sincronizar `packages.is_sponsored`; auditoría de tags (tag→SHA ≠ `commit_sha` ⇒ `audit_log` + alerta); marcar repos inaccesibles. |
+| `0 * * * *` | Rollup Analytics Engine → `install_stats_daily` (últimos 2 días); actualizar `installs_30d`, `installs_total`. Sin `CF_AE_TOKEN` no toca D1 y registra `installs_rollup_skipped` en los logs. |
+| `15 3 * * *` | Rollup de los últimos 30 días (recupera huecos; ADR-027); recalcular `popularity_score`; activar/desactivar `sponsorships` por fecha y sincronizar `packages.is_sponsored`; auditoría de tags (tag→SHA ≠ `commit_sha` ⇒ `audit_log` + alerta); marcar repos inaccesibles. |
 | `0 4 * * SUN` | Re-sync de membresías de GitHub con `synced_at` > 7 días (vía GitHub App). |
 
 ## 9. Bindings (`wrangler.jsonc`)

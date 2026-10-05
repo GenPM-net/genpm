@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-05. No editar a mano. -->
 
-**71 %** completado · 184/259 tareas · 517h estimadas pendientes
+**69 %** completado · 184/266 tareas · 538.5h estimadas pendientes
 
-TODO 47 · DOING 4 · DONE 184 · BLOCKED 24 · CUT 0
+TODO 54 · DOING 4 · DONE 184 · BLOCKED 24 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -87,7 +87,7 @@ TODO 47 · DOING 4 · DONE 184 · BLOCKED 24 · CUT 0
 | [Día 7 · Lanzamiento](07-dia-7-lanzamiento.md) | `▓▓░░░░░░░░░░` 18 % | 2/11 | 16.5h |
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 16/17 | 2h |
-| [Post-MVP](10-post-mvp.md) | `▓▓░░░░░░░░░░` 16 % | 5/32 | 464h |
+| [Post-MVP](10-post-mvp.md) | `▓▓░░░░░░░░░░` 13 % | 5/39 | 485.5h |
 
 **En curso**
 
@@ -131,9 +131,9 @@ TODO 47 · DOING 4 · DONE 184 · BLOCKED 24 · CUT 0
 - `D7-01` Vídeo demo de 90–120 s con el guion del objetivo (PLAN §1) · T · 3h ([07-dia-7-lanzamiento.md](07-dia-7-lanzamiento.md))
 - `D7-04` Hilo en X de 6 posts (esqueleto de branding §9) · F · 1h ([07-dia-7-lanzamiento.md](07-dia-7-lanzamiento.md))
 - `BR-16` Test de 5 segundos de la home con 5 desarrolladores: ¿entienden qué hace GenPM? · F · 2h ([09-marca-diseno.md](09-marca-diseno.md))
+- `V011-06` Crear el token `CF_AE_TOKEN` (Account Analytics: Read) y cargarlo en producción y staging · F · 0.5h ([10-post-mvp.md](10-post-mvp.md))
 - `V02-01` genpm diff y update con merge 3-way · B · 24h ([10-post-mvp.md](10-post-mvp.md))
 - `V02-03` Dependents ("Used by") en API y página de paquete · A · 6h ([10-post-mvp.md](10-post-mvp.md))
 - `V02-04` Puntuación de calidad de paquetes · A · 8h ([10-post-mvp.md](10-post-mvp.md))
-- `V02-07` Web P1: dashboard del autor, perfil, sponsors y enterprise (landing + waitlist con POST /v1/leads) · W · 16h ([10-post-mvp.md](10-post-mvp.md))
 
 <!-- board:end -->

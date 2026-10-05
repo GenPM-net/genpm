@@ -1,6 +1,6 @@
 // Cron Triggers (api-spec §8):
-//   0 * * * *   rollup Analytics Engine → install_stats_daily; installs_30d e installs_total.
-//   15 3 * * *  popularity_score, patrocinios por fecha, auditoría tag → SHA y repos inaccesibles (security §3.3) y
+//   0 * * * *   rollup Analytics Engine → install_stats_daily (últimos 2 días); installs_30d e installs_total.
+//   15 3 * * *  rollup de 30 días (autocorrige huecos: AE guarda 90 días y el upsert es idempotente), popularity_score, patrocinios por fecha, auditoría tag → SHA y repos inaccesibles (security §3.3) y
 //               borrado de datos personales caducados (plazos de la política de privacidad, art. 5.1.e RGPD).
 //   0 4 * * SUN   re-sync de membresías de GitHub con synced_at > 7 días.
 //   0 * * * *   además: re-firma por lotes las versiones cuya firma no es de la clave activa (rotación, runbook §2).
@@ -14,11 +14,18 @@ const DAY = 86_400_000;
 
 type Row = { name: string; client: string; day: string; n: number | string };
 
-/** Consulta la SQL API de Analytics Engine (solo producción/staging; sin credenciales no hace nada). */
-async function aeRows(env: Env, fetchImpl: typeof fetch): Promise<Row[]> {
-  if (!env.CF_ACCOUNT_ID || !env.CF_AE_TOKEN) return [];
+/**
+ * Consulta la SQL API de Analytics Engine (solo producción/staging). Sin credenciales no puede leer nada: lo avisa en
+ * los logs del Worker, porque si no los contadores se quedan en 0 sin ninguna señal (pasó en el lanzamiento).
+ */
+async function aeRows(env: Env, fetchImpl: typeof fetch, days: number): Promise<Row[] | null> {
+  if (!env.CF_ACCOUNT_ID || !env.CF_AE_TOKEN) {
+    if (env.ENVIRONMENT === 'production' || env.ENVIRONMENT === 'staging')
+      console.warn(JSON.stringify({ level: 'alert', event: 'installs_rollup_skipped', reason: 'missing CF_AE_TOKEN' }));
+    return null;
+  }
   const dataset = env.ENVIRONMENT === 'staging' ? 'genpm_installs_staging' : 'genpm_installs';
-  const sql = `SELECT blob1 AS name, blob3 AS client, formatDateTime(timestamp, '%Y-%m-%d') AS day, SUM(_sample_interval) AS n FROM ${dataset} WHERE timestamp > NOW() - INTERVAL '2' DAY GROUP BY name, client, day FORMAT JSON`;
+  const sql = `SELECT blob1 AS name, blob3 AS client, formatDateTime(timestamp, '%Y-%m-%d') AS day, SUM(_sample_interval) AS n FROM ${dataset} WHERE timestamp > NOW() - INTERVAL '${Math.trunc(days)}' DAY GROUP BY name, client, day FORMAT JSON`;
   const res = await fetchImpl(
     `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/analytics_engine/sql`,
     {
@@ -31,8 +38,15 @@ async function aeRows(env: Env, fetchImpl: typeof fetch): Promise<Row[]> {
   return ((await res.json()) as { data: Row[] }).data;
 }
 
-export async function rollupInstalls(env: Env, fetchImpl: typeof fetch = fetch, rows?: Row[]): Promise<number> {
-  const data = rows ?? (await aeRows(env, fetchImpl));
+export async function rollupInstalls(
+  env: Env,
+  fetchImpl: typeof fetch = fetch,
+  rows?: Row[],
+  days = 2,
+): Promise<number> {
+  const data = rows ?? (await aeRows(env, fetchImpl, days));
+  // Sin lectura de AE no se toca D1: recalcular installs_30d con datos incompletos solo borraría cifras buenas.
+  if (!data) return 0;
   const db = env.DB;
   const agg = new Map<string, { name: string; day: string; installs: number; mcp: number }>();
   for (const r of data) {
@@ -229,6 +243,7 @@ export async function runCron(cron: string, env: Env): Promise<void> {
     await rollupInstalls(env);
     await resignStale(env);
   } else if (cron === '15 3 * * *') {
+    await rollupInstalls(env, fetch, undefined, 30);
     await recomputePopularity(env);
     await syncSponsorships(env);
     await auditTags(env);

@@ -31,6 +31,12 @@ function edgeCache(): Cache | null {
   return typeof caches !== 'undefined' ? (caches as unknown as { default: Cache }).default : null;
 }
 
+/** Cabeceras que deben sobrevivir a un 304: `genpm-version` es la que usa la telemetría de resolve para contar. */
+function keep(res: Response): Record<string, string> {
+  const v = res.headers.get('genpm-version');
+  return v ? { 'genpm-version': v } : {};
+}
+
 /** Middleware de caché para GET públicos. `ttl` decide la cabecera según la respuesta. */
 export function cached(opts: {
   control: (res: Response) => string;
@@ -47,7 +53,7 @@ export function cached(opts: {
     if (hit) {
       const etag = hit.headers.get('ETag');
       if (etag && c.req.header('if-none-match') === etag)
-        return c.body(null, 304, { ETag: etag, 'Cache-Control': hit.headers.get('Cache-Control') ?? '' });
+        return c.body(null, 304, { ETag: etag, 'Cache-Control': hit.headers.get('Cache-Control') ?? '', ...keep(hit) });
       const res = new Response(hit.body, hit);
       res.headers.set('genpm-cache', 'HIT');
       c.res = res;
@@ -67,7 +73,7 @@ export function cached(opts: {
       c.executionCtx.waitUntil(cache.put(key, new Response(body, { status: 200, headers })));
     }
     if (c.req.header('if-none-match') === etag) {
-      c.res = new Response(null, { status: 304, headers: { ETag: etag, 'Cache-Control': control } });
+      c.res = new Response(null, { status: 304, headers: { ETag: etag, 'Cache-Control': control, ...keep(c.res) } });
     } else {
       const res = new Response(body, { status: 200, headers });
       res.headers.set('genpm-cache', 'MISS');
