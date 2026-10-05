@@ -28,7 +28,7 @@ se hace cada vídeo para que todos salgan iguales, los haga quien los haga (pers
 | Duración | 20–45 s (objetivo ~30 s) |
 | Vídeo | MP4 H.264, `yuv420p`, 30 fps, CRF 18, `-movflags +faststart` |
 | Audio | AAC 192 kbps, 48 kHz estéreo, −16 LUFS integrados, pico ≤ −1.5 dBTP |
-| Nombre | `genpm-video-<n>-<slug>.mp4` (+ `-con-voz`, `-v<k>` por versión) |
+| Nombre | `genpm-<dev\|vibe>-<es\|en>.mp4` por vídeo (+ `-v<k>` por revisión); ver §5 bis |
 
 **Zonas seguras:** nada importante en los 150 px de arriba ni en los ~400 px de abajo (los tapa la interfaz de la red
 social). Logo arriba a 150 px, terminal entre 270 y 1280 px, subtítulo desde 1310 px.
@@ -84,6 +84,31 @@ un fundido de 0.22 s y un desplazamiento de 14 px. Sin cortes secos.
   palabra por palabra: lo complementa.
 - Comprobar siempre los fonemas generados antes de renderizar; una herramienta automática no escucha el audio, así que
   la persona que publica lo revisa antes de subirlo.
+
+## 5 bis. Audiencias e idiomas
+
+Cada vídeo sale en **cuatro versiones**: dos audiencias × español e inglés (`genpm-<dev|vibe>-<es|en>.mp4`).
+
+| | Programadores (`dev`) | Vibecoders (`vibe`) |
+|---|---|---|
+| Quién | Saben qué es npm, un lockfile o un SHA | Usan IA para crear apps, nunca programaron |
+| Imagen | Terminal real (§1, §3, §4) | Dibujo a mano estilo cuaderno: sin terminal, sin código, sin jerga |
+| Metáforas | Ninguna: el comando y su salida | Robot = la IA · bloque de construcción = paquete · carpeta = tu proyecto · manual = `AGENTS.md` · sello "revisado" = commit fijado |
+| Texto | Titular + aclaración técnica en mono | Una sola frase corta (≤ 8 palabras) con una palabra clave subrayada en verde |
+| Voz | `em_alex` (es-419) / `am_michael` (en-us), velocidad 1.05 | Las mismas voces a velocidad 1.0, frases más cortas |
+
+Reglas del estilo `vibe`:
+- Fondo blanco con cuadrícula de cuaderno (60 px, `#EEF0F3`); trazo de tinta de 6 px dibujado con rough.js; rellenos
+  con rayado de cera en los colores de las tres C, ámbar y rojo. El dibujo "hierve" a 4 fps (semilla de rough.js
+  cambiando cada 0.25 s), como animación a mano.
+- Tipografía Outfit Bold (titular 84 px) y NothingYouCouldDo solo para notas manuscritas cortas ("¡Listo!", "tu proyecto").
+- Cada escena explica **una sola idea** con un dibujo; todo lo que se dice tiene que ser cierto del producto
+  (p. ej. las piezas "login, pagos, emails" son `@core/auth`, `@core/billing` y `@core/email`).
+- Sin palabras técnicas en pantalla ni en la voz (nada de "commit", "dependencia", "MCP", "lockfile").
+- Cierre: wordmark de tinta (`wordmark.svg`), "Piezas listas para tu IA" / "Ready-made pieces for your AI" y `genpm.net`.
+
+Inglés: fonemizar con `lang="en-us"`; GenPM mantiene `dʒˈɛn pˈiː ˈɛm` y `node_modules` → `nˈoʊd mˈɑːdʒuːlz`.
+Los textos en pantalla se traducen, no se resumen; la salida del CLI queda igual en ambos idiomas.
 
 ## 6. Entorno de grabación
 
