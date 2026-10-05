@@ -770,6 +770,9 @@
     "redirect": "URI de redirección que debes registrar en tu proveedor de identidad:",
     "save": "Guardar",
     "linked": "Tu cuenta ya está vinculada al proveedor de identidad de {org}.",
-    "error": "El inicio de sesión único ha fallado. Vuelve a intentarlo o pregunta a tu administrador."
+    "error": "El inicio de sesión único ha fallado. Vuelve a intentarlo o pregunta a tu administrador.",
+    "scimTitle": "Aprovisionamiento (SCIM 2.0)",
+    "scimHelp": "Deja que tu proveedor de identidad dé de alta y de baja a los miembros automáticamente. Dar de baja a alguien allí corta al momento su acceso a los registros privados de la organización. El token solo se muestra una vez; generar otro revoca el anterior.",
+    "scimGenerate": "Generar token SCIM"
   }
 }

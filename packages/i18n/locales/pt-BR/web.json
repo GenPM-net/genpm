@@ -770,6 +770,9 @@
     "redirect": "URI de redirecionamento para cadastrar no seu provedor de identidade:",
     "save": "Salvar",
     "linked": "Sua conta agora está vinculada ao provedor de identidade de {org}.",
-    "error": "O login único falhou. Tente de novo ou fale com o administrador."
+    "error": "O login único falhou. Tente de novo ou fale com o administrador.",
+    "scimTitle": "Provisionamento (SCIM 2.0)",
+    "scimHelp": "Deixe o seu provedor de identidade adicionar e remover membros automaticamente. Remover alguém lá corta na hora o acesso aos registries privados da organização. O token só aparece uma vez; gerar outro revoga o anterior.",
+    "scimGenerate": "Gerar token SCIM"
   }
 }

@@ -151,3 +151,60 @@ describe('SSO (OIDC)', () => {
     expect(wrongNonce.status).toBe(401);
   });
 });
+
+describe('SCIM 2.0 (ENT-02)', () => {
+  it('provisions, links on first SSO login and deprovisions with immediate effect', async () => {
+    const t = await call('/v1/orgs/ssocorp/sso/scim-token', req(owner, {}));
+    expect(t.status).toBe(201);
+    const { token: scimToken, baseUrl } = (await t.json()) as { token: string; baseUrl: string };
+    expect(baseUrl).toBe('https://api.genpm.net/scim/v2/ssocorp');
+    const scimReq = (body?: unknown, method = body === undefined ? 'GET' : 'POST') => ({
+      method,
+      headers: { authorization: `Bearer ${scimToken}`, 'content-type': 'application/scim+json' },
+      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    });
+    expect((await call('/scim/v2/ssocorp/Users', { headers: { authorization: `Bearer ${owner}` } })).status).toBe(401);
+    const created = await call(
+      '/scim/v2/ssocorp/Users',
+      scimReq({ schemas: ['urn:ietf:params:scim:schemas:core:2.0:User'], userName: 'Ana@corp.example', active: true }),
+    );
+    expect(created.status).toBe(201);
+    const ana = (await created.json()) as { id: string; userName: string; active: boolean };
+    expect(ana).toMatchObject({ userName: 'ana@corp.example', active: true });
+    expect((await call('/scim/v2/ssocorp/Users', scimReq({ userName: 'ana@corp.example' }))).status).toBe(409);
+    const found = (await (
+      await call('/scim/v2/ssocorp/Users?filter=userName%20eq%20%22ana@corp.example%22', scimReq())
+    ).json()) as {
+      totalResults: number;
+    };
+    expect(found.totalResults).toBe(1);
+
+    // Ana entra por SSO con su sub del IdP: se vincula a la identidad que creó SCIM.
+    const anaAcc = await account({ login: 'ana' });
+    expect((await login(anaAcc.token, 'okta-ana', 'ana@corp.example')).status).toBe(200);
+    expect((await call('/r/ssocorp-int/v1/search?q=x', req(anaAcc.token))).status).toBe(200);
+
+    // Baja desde el IdP: PATCH active=false corta el acceso y quita la membresía del SSO.
+    const patch = await call(
+      `/scim/v2/ssocorp/Users/${ana.id}`,
+      scimReq(
+        {
+          schemas: ['urn:ietf:params:scim:api:messages:2.0:PatchOp'],
+          Operations: [{ op: 'replace', path: 'active', value: false }],
+        },
+        'PATCH',
+      ),
+    );
+    expect(((await patch.json()) as { active: boolean }).active).toBe(false);
+    expect((await call('/r/ssocorp-int/v1/search?q=x', req(anaAcc.token))).status).toBe(404);
+    const m = await env.DB.prepare(
+      "SELECT count(*) AS n FROM memberships WHERE org_id = 'acc_org_ssocorp' AND user_id = ?1",
+    )
+      .bind(anaAcc.id)
+      .first<{ n: number }>();
+    expect(m!.n).toBe(0);
+    expect((await login(anaAcc.token, 'okta-ana', 'ana@corp.example')).status).toBe(403);
+    expect((await call(`/scim/v2/ssocorp/Users/${ana.id}`, scimReq(undefined, 'DELETE'))).status).toBe(204);
+    expect((await call('/scim/v2/ssocorp/Users/nope', scimReq())).status).toBe(404);
+  });
+});

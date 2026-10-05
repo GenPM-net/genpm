@@ -91,6 +91,7 @@
 ## Enterprise · +6 meses
 
 - [ ] `ENT-01` **TODO** Tenancy dedicada: D1 por cliente vía Workers for Platforms · A · 60h · deps: V10-01
-- [ ] `ENT-02` **TODO** SCIM · A · 24h · deps: V10-02
+- [x] `ENT-02` **DONE** SCIM · A · 24h · deps: V10-02
+  - ✅ 2026-10-05: `/scim/v2/:org/Users` (alta, filtro, PUT/PATCH `active`, baja) con token por org; la identidad SCIM se vincula en el primer login SSO por email; la baja corta el acceso y quita la membresía; migración 0011; token desde /settings/sso.
 - [ ] `ENT-03` **TODO** Políticas: paquetes permitidos y escaneo obligatorio · A · 24h · deps: V10-01
 - [ ] `ENT-04` **TODO** SLA y soporte dedicado · F · 8h · deps: ENT-01

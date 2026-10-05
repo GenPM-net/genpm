@@ -1006,6 +1006,9 @@ export interface MessageParams {
   "web.sso.save": undefined;
   "web.sso.linked": { org: string | number };
   "web.sso.error": undefined;
+  "web.sso.scimTitle": undefined;
+  "web.sso.scimHelp": undefined;
+  "web.sso.scimGenerate": undefined;
 }
 
 export type MessageKey = keyof MessageParams;

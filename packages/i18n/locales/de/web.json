@@ -770,6 +770,9 @@
     "redirect": "Redirect-URI, die du beim Identitätsanbieter einträgst:",
     "save": "Speichern",
     "linked": "Dein Konto ist jetzt mit dem Identitätsanbieter von {org} verknüpft.",
-    "error": "Single Sign-on ist fehlgeschlagen. Versuche es erneut oder frag deine Administration."
+    "error": "Single Sign-on ist fehlgeschlagen. Versuche es erneut oder frag deine Administration.",
+    "scimTitle": "Provisionierung (SCIM 2.0)",
+    "scimHelp": "Lass deinen Identitätsanbieter Mitglieder automatisch anlegen und entfernen. Wer dort entfernt wird, verliert sofort den Zugriff auf die privaten Registries der Organisation. Das Token wird nur einmal angezeigt; ein neues widerruft das alte.",
+    "scimGenerate": "SCIM-Token erzeugen"
   }
 }

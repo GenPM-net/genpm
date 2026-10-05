@@ -16,6 +16,7 @@ import { newId } from '../ids.js';
 import { requireAuth } from '../middleware/auth.js';
 import { verifyIdToken } from '../services/oidc.js';
 import { open, seal } from '../services/secretbox.js';
+import { hashToken, newToken } from '../services/tokens.js';
 
 export type SsoConfig = {
   issuer: string;
@@ -165,6 +166,20 @@ export const sso = new Hono<AppEnv>()
     ]);
     return c.json({ ok: true });
   })
+  // SCIM (ENT-02): token para el IdP, mostrado una vez; solo se guarda su hash.
+  .post('/:org/sso/scim-token', requireAuth('publish'), async (c) => {
+    const org = await orgAdmin(c, true);
+    const conn = await connectionOf(c.env.DB, org.id);
+    if (!conn) throw httpError('E_NOT_FOUND', { name: 'sso' });
+    const token = newToken();
+    await c.env.DB.batch([
+      c.env.DB.prepare(
+        "UPDATE sso_connections SET config = json_set(config, '$.scimTokenHash', ?1) WHERE id = ?2",
+      ).bind(await hashToken(c.env.TOKEN_PEPPER!, token), conn.id),
+      audit(c, 'org.scim_token', org.id, {}),
+    ]);
+    return c.json({ token, baseUrl: `${new URL(c.req.url).origin}/scim/v2/${org.handle}` }, 201);
+  })
   .delete('/:org/sso/identities/:handle', requireAuth('publish'), async (c) => {
     const org = await orgAdmin(c, true);
     const conn = await connectionOf(c.env.DB, org.id);
@@ -261,6 +276,15 @@ export const ssoAuth = new Hono<AppEnv>()
       (!email || claims.email_verified === false || !conn.config.domains.some((d) => email.endsWith(`@${d}`)))
     )
       throw httpError('E_FORBIDDEN_SCOPE', { scope: email ?? 'email' });
+    // Identidad dada de alta por SCIM (ENT-02) y aún sin vincular: se reconoce por el email y pasa a usar el `sub`.
+    if (email)
+      await c.env.DB.prepare(
+        `UPDATE sso_identities SET subject = ?3 WHERE connection_id = ?1 AND email = ?2 AND scim_id IS NOT NULL
+           AND account_id IS NULL AND subject != ?3
+           AND NOT EXISTS (SELECT 1 FROM sso_identities x WHERE x.connection_id = ?1 AND x.subject = ?3)`,
+      )
+        .bind(conn.id, email, claims.sub)
+        .run();
     const owner = await c.env.DB.prepare(
       'SELECT account_id, active FROM sso_identities WHERE connection_id = ?1 AND subject = ?2',
     )

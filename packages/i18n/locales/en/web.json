@@ -770,6 +770,9 @@
     "redirect": "Redirect URI to register in your identity provider:",
     "save": "Save",
     "linked": "Your account is now linked to {org}'s identity provider.",
-    "error": "Single sign-on failed. Try again or ask your administrator."
+    "error": "Single sign-on failed. Try again or ask your administrator.",
+    "scimTitle": "Provisioning (SCIM 2.0)",
+    "scimHelp": "Let your identity provider add and remove members automatically. Removing someone there cuts their access to the organization's private registries at once. The token is shown only once; generating a new one revokes the previous.",
+    "scimGenerate": "Generate SCIM token"
   }
 }

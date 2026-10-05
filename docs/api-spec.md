@@ -83,6 +83,9 @@ Exceso ⇒ `429` + `Retry-After` + problem `E_RATE_LIMITED`.
 | POST | `/v1/registries/:slug/domain/verify` | token (admin) | ✅ | Comprueba el TXT (DoH), fija `custom_domain` y da de alta el custom hostname (Cloudflare for SaaS); 409 si aún no está |
 | GET/PUT/DELETE | `/v1/orgs/:org/sso` | token (miembro / owner-admin) | ✅ | SSO OIDC de la org (V10-02, ADR-030): `{ issuer, clientId, clientSecret?, domains[], enforce }`; nunca devuelve el secreto |
 | DELETE | `/v1/orgs/:org/sso/identities/:handle` | token (owner/admin) | ✅ | Desvincula (`active = 0`): con `enforce`, corta el acceso |
+| POST | `/v1/orgs/:org/sso/scim-token` | token (owner/admin) | ✅ | ENT-02: token SCIM (se muestra una vez; guarda solo el hash) y `baseUrl` |
+| GET/POST | `/scim/v2/:org/Users` | token SCIM | ✅ | SCIM 2.0 (RFC 7644): listar (`filter=userName eq "…"`, paginación) y crear |
+| GET/PUT/PATCH/DELETE | `/scim/v2/:org/Users/:id` | token SCIM | ✅ | `active=false` o DELETE desactivan la identidad y quitan la membresía `sso`/`scim`; también `/ServiceProviderConfig` |
 | POST | `/v1/auth/sso/:org/start` | token | ✅ | `{ redirectUri }` (solo `WEB_ORIGIN/auth/sso/callback`) ⇒ `{ url }` del IdP con PKCE + nonce |
 | POST | `/v1/auth/sso/callback` | token (la misma cuenta) | ✅ | `{ code, state }` ⇒ vincula la identidad y da de alta en la org |
 | * | `/r/:slug/v1/…` y `https://<dominio propio>/v1/…` | según la ruta | ✅ | Igual que `/v1/…` con `genpm-registry: <slug>` |

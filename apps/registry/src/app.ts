@@ -22,6 +22,7 @@ import { publish } from './routes/publish.js';
 import { access, registries, teams } from './routes/rbac.js';
 import { recipes } from './routes/recipes.js';
 import { resolve } from './routes/resolve.js';
+import { scim } from './routes/scim.js';
 import { search } from './routes/search.js';
 import { sso, ssoAuth } from './routes/sso.js';
 import { oidc, trusted } from './routes/trusted.js';
@@ -83,6 +84,9 @@ export function createApp() {
   app.use('/mcp', requestId, securityHeaders, bodyLimit);
   app.route('/mcp', mcp);
   app.use('*', requestId, securityHeaders, locale, cors, bodyLimit);
+  // SCIM 2.0 (ENT-02): fuera de /v1 (ruta estándar que configura el IdP), con su propio token y rate limit.
+  app.use('/scim/*', rateLimit('auth'));
+  app.route('/scim/v2', scim);
   app.route('/v1/health', health);
   app.route('/v1/status', status);
   app.use('/v1/*', tenant);

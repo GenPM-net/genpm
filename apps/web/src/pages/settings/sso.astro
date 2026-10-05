@@ -19,13 +19,19 @@ type Sso = {
   linked?: { email: string | null; active: boolean } | null;
 };
 let notice: { ok: boolean; text: string } | null = null;
+let scimIssued: { org: string; token: string; baseUrl: string } | null = null;
 const q = Astro.url.searchParams;
 if (q.get('linked')) notice = { ok: true, text: t.t('web.sso.linked', { org: q.get('linked') ?? '' }) };
 else if (q.get('error')) notice = { ok: false, text: t.t('web.sso.error') };
 if (Astro.request.method === 'POST') {
   const f = await Astro.request.formData();
   const org = String(f.get('org') ?? '');
-  if (/^[A-Za-z0-9-]{1,39}$/.test(org)) {
+  if (f.get('action') === 'scim' && /^[A-Za-z0-9-]{1,39}$/.test(org)) {
+    const res = await registryFetch(`/v1/orgs/${org}/sso/scim-token`, { method: 'POST', token, body: {} });
+    if (res.status === 401) return sessionExpired(Astro);
+    if (res.ok) scimIssued = { org, ...((await res.json()) as { token: string; baseUrl: string }) };
+    else notice = { ok: false, text: t.t('web.sso.error') };
+  } else if (/^[A-Za-z0-9-]{1,39}$/.test(org)) {
     const secret = String(f.get('clientSecret') ?? '').trim();
     const res = await registryFetch(`/v1/orgs/${org}/sso`, {
       method: 'PUT',
@@ -81,6 +87,17 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
             <p class="hint">{t.t('web.sso.redirect')} <code>{redirectUri}</code></p>
             <button class="btn primary" type="submit">{t.t('web.sso.save')}</button>
           </form>
+        )}
+        {o.admin && o.enabled && (
+          <div style="margin-top:20px">
+            <h3>{t.t('web.sso.scimTitle')}</h3>
+            <p class="hint">{t.t('web.sso.scimHelp')}</p>
+            {scimIssued?.org === o.org ? (
+              <div class="term"><div class="bar"><span>{scimIssued.baseUrl}</span><button class="cp" type="button" data-copy="scim-token">{t.t('web.common.copy')}</button></div><pre id="scim-token">{scimIssued.token}</pre></div>
+            ) : (
+              <form method="post"><input type="hidden" name="org" value={o.org} /><input type="hidden" name="action" value="scim" /><button class="btn sm" type="submit">{t.t('web.sso.scimGenerate')}</button></form>
+            )}
+          </div>
         )}
       </section>
     ))}

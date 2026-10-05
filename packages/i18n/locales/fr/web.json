@@ -770,6 +770,9 @@
     "redirect": "URI de redirection à enregistrer dans votre fournisseur d’identité :",
     "save": "Enregistrer",
     "linked": "Votre compte est désormais lié au fournisseur d’identité de {org}.",
-    "error": "L’authentification unique a échoué. Réessayez ou contactez votre administrateur."
+    "error": "L’authentification unique a échoué. Réessayez ou contactez votre administrateur.",
+    "scimTitle": "Provisionnement (SCIM 2.0)",
+    "scimHelp": "Laissez votre fournisseur d’identité ajouter et retirer les membres automatiquement. Retirer quelqu’un là-bas coupe immédiatement son accès aux registres privés de l’organisation. Le jeton n’est affiché qu’une fois ; en générer un nouveau révoque le précédent.",
+    "scimGenerate": "Générer un jeton SCIM"
   }
 }
