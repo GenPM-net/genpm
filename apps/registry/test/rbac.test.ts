@@ -182,3 +182,29 @@ describe('custom domains (V10-03)', () => {
     ).toBe(404);
   });
 });
+
+describe('exportable audit (V10-04)', () => {
+  it('exports the registry audit trail as JSON, CSV and JSONL, admins only', async () => {
+    const j = (await (await call('/v1/registries/corp-int/audit', req(owner))).json()) as {
+      events: Array<{ action: string; actor: string }>;
+      next: string | null;
+    };
+    expect(j.events.map((e) => e.action)).toEqual(expect.arrayContaining(['registry.create', 'package.publish']));
+    expect(j.events.find((e) => e.action === 'registry.create')!.actor).toBe('corpowner');
+    const csv = await call('/v1/registries/corp-int/audit?format=csv&action=registry.', req(owner));
+    expect(csv.headers.get('content-type')).toContain('text/csv');
+    expect(csv.headers.get('content-disposition')).toContain('genpm-audit-corp-int-');
+    const text = await csv.text();
+    expect(text.split('\r\n')[0]).toBe('id,at,actor,action,target,metadata');
+    expect(text).not.toContain('package.publish');
+    const jsonl = await (await call('/v1/registries/corp-int/audit?format=jsonl', req(owner))).text();
+    expect(
+      jsonl
+        .trim()
+        .split('\n')
+        .every((l) => JSON.parse(l).id.startsWith('aud_')),
+    ).toBe(true);
+    expect((await call('/v1/registries/corp-int/audit', req(bob))).status).toBe(403);
+    expect((await call('/v1/registries/corp-int/audit?from=yesterday', req(owner))).status).toBe(400);
+  });
+});

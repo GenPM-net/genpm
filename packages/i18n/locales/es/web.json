@@ -749,6 +749,7 @@
     "slug": "Nombre",
     "owner": "Dueño",
     "saved": "Guardado.",
-    "cli": "Equipos y permisos por paquete: genpm team y genpm access en el CLI."
+    "cli": "Equipos y permisos por paquete: genpm team y genpm access en el CLI.",
+    "audit": "Descargar auditoría (CSV)"
   }
 }

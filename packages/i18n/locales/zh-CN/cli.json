@@ -44,7 +44,8 @@
     "accessGrant": "为 user:<用户名> 或 team:<org>/<team> 授予 read、write 或 admin",
     "accessRevoke": "撤销权限",
     "registryDomain": "为注册表设置自定义域名（或用 --remove 移除）",
-    "registryVerify": "检查 TXT 记录并启用自定义域名"
+    "registryVerify": "检查 TXT 记录并启用自定义域名",
+    "registryAudit": "以 JSON Lines 导出注册表的审计日志"
   },
   "arg": {
     "cwd": "工作目录",
@@ -101,7 +102,9 @@
       "role": "角色：admin、publisher 或 reader",
       "teamRole": "团队角色：maintainer 或 member",
       "domain": "域名，例如 packages.acme.com",
-      "removeDomain": "移除自定义域名"
+      "removeDomain": "移除自定义域名",
+      "since": "仅此日期之后的条目（ISO 8601）",
+      "action": "仅以此前缀开头的操作，例如 package."
     }
   },
   "label": {

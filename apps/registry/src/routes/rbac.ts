@@ -196,6 +196,84 @@ export const registries = new Hono<AppEnv>()
     ]);
     return c.json({ ok: true, handle: who.handle, kind: who.kind, role: body.data.role });
   })
+  // Auditoría exportable (V10-04): solo admins. JSON paginado (`next`) o el rango completo en CSV/JSONL (máx. 50 000).
+  .get('/:slug/audit', async (c) => {
+    const r = await registryFor(c, 'admin');
+    const q = z
+      .object({
+        from: z.string().optional(),
+        to: z.string().optional(),
+        action: z
+          .string()
+          .regex(/^[a-z._]{1,40}$/)
+          .optional(),
+        format: z.enum(['json', 'csv', 'jsonl']).default('json'),
+        after: z
+          .string()
+          .regex(/^aud_[0-9A-Za-z]+$/)
+          .optional(),
+      })
+      .safeParse(c.req.query());
+    if (!q.success) throw httpError('E_BAD_REQUEST', { detail: q.error.issues[0]?.path.join('.') ?? 'query' });
+    const from = q.data.from ? Date.parse(q.data.from) : 0;
+    const to = q.data.to ? Date.parse(q.data.to) : Date.now() + 1;
+    if (Number.isNaN(from) || Number.isNaN(to)) throw httpError('E_BAD_REQUEST', { detail: 'from/to' });
+    type Ev = {
+      id: string;
+      action: string;
+      target_type: string;
+      target_id: string;
+      metadata: string | null;
+      created_at: number;
+      actor: string | null;
+    };
+    const page = (after: string) =>
+      c.env.DB.prepare(
+        `SELECT a.id, a.action, a.target_type, a.target_id, a.metadata, a.created_at, ac.handle AS actor
+         FROM audit_log a LEFT JOIN accounts ac ON ac.id = a.actor_id
+         WHERE a.registry_id = ?1 AND a.created_at >= ?2 AND a.created_at < ?3 AND (?4 = '' OR a.action LIKE ?4 || '%') AND a.id > ?5
+         ORDER BY a.id LIMIT 1000`,
+      )
+        .bind(r.id, from, to, q.data.action ?? '', after)
+        .all<Ev>()
+        .then((x) => x.results);
+    const shape = (e: Ev) => ({
+      id: e.id,
+      at: new Date(e.created_at).toISOString(),
+      actor: e.actor,
+      action: e.action,
+      target: `${e.target_type}:${e.target_id}`,
+      metadata: e.metadata ? (JSON.parse(e.metadata) as unknown) : null,
+    });
+    if (q.data.format === 'json') {
+      const rows = await page(q.data.after ?? '');
+      return c.json({ events: rows.map(shape), next: rows.length === 1000 ? rows.at(-1)!.id : null });
+    }
+    const all: Ev[] = [];
+    for (let after = q.data.after ?? ''; all.length < 50_000; ) {
+      const rows = await page(after);
+      all.push(...rows);
+      if (rows.length < 1000) break;
+      after = rows.at(-1)!.id;
+    }
+    const file = `genpm-audit-${r.slug}-${new Date().toISOString().slice(0, 10)}.${q.data.format}`;
+    const headers = { 'Content-Disposition': `attachment; filename="${file}"`, 'Cache-Control': 'private, no-store' };
+    if (q.data.format === 'jsonl')
+      return c.body(all.map((e) => JSON.stringify(shape(e))).join('\n') + (all.length ? '\n' : ''), 200, {
+        ...headers,
+        'Content-Type': 'application/x-ndjson; charset=utf-8',
+      });
+    const cell = (v: unknown) => {
+      const t = v === null || v === undefined ? '' : typeof v === 'string' ? v : JSON.stringify(v);
+      // Sin fórmulas al abrirlo en una hoja de cálculo (CSV injection).
+      const safe = /^[=+\-@\t\r]/.test(t) ? `'${t}` : t;
+      return `"${safe.replace(/"/g, '""')}"`;
+    };
+    const lines = ['id,at,actor,action,target,metadata'];
+    for (const e of all.map(shape))
+      lines.push([e.id, e.at, e.actor, e.action, e.target, e.metadata].map(cell).join(','));
+    return c.body(`${lines.join('\r\n')}\r\n`, 200, { ...headers, 'Content-Type': 'text/csv; charset=utf-8' });
+  })
   // Dominio propio (V10-03): PUT pide el dominio y devuelve el TXT a publicar; POST …/verify lo comprueba y lo activa.
   .put('/:slug/domain', requireAuth('publish'), async (c) => {
     const r = await registryFor(c, 'admin');

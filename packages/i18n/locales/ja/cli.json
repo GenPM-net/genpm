@@ -44,7 +44,8 @@
     "accessGrant": "user:<ハンドル> または team:<org>/<team> に read、write、admin を付与します",
     "accessRevoke": "権限を取り消します",
     "registryDomain": "レジストリの独自ドメインを設定します（--remove で削除）",
-    "registryVerify": "TXT レコードを確認して独自ドメインを有効にします"
+    "registryVerify": "TXT レコードを確認して独自ドメインを有効にします",
+    "registryAudit": "レジストリの監査ログを JSON Lines で出力します"
   },
   "arg": {
     "cwd": "作業ディレクトリ",
@@ -101,7 +102,9 @@
       "role": "ロール: admin、publisher、reader",
       "teamRole": "チームのロール: maintainer または member",
       "domain": "ドメイン（例: packages.acme.com）",
-      "removeDomain": "独自ドメインを削除します"
+      "removeDomain": "独自ドメインを削除します",
+      "since": "この日時以降のエントリのみ（ISO 8601）",
+      "action": "このプレフィックスで始まるアクションのみ（例: package.）"
     }
   },
   "label": {

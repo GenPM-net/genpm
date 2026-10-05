@@ -749,6 +749,7 @@
     "slug": "이름",
     "owner": "소유자",
     "saved": "저장했습니다.",
-    "cli": "팀과 패키지별 권한: CLI의 genpm team과 genpm access."
+    "cli": "팀과 패키지별 권한: CLI의 genpm team과 genpm access.",
+    "audit": "감사 로그 다운로드(CSV)"
   }
 }

@@ -749,6 +749,7 @@
     "slug": "名前",
     "owner": "所有者",
     "saved": "保存しました。",
-    "cli": "チームとパッケージごとの権限: CLI の genpm team と genpm access。"
+    "cli": "チームとパッケージごとの権限: CLI の genpm team と genpm access。",
+    "audit": "監査ログをダウンロード（CSV）"
   }
 }

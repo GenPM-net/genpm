@@ -749,6 +749,7 @@
     "slug": "名称",
     "owner": "所有者",
     "saved": "已保存。",
-    "cli": "团队和按软件包的权限：使用 CLI 中的 genpm team 和 genpm access。"
+    "cli": "团队和按软件包的权限：使用 CLI 中的 genpm team 和 genpm access。",
+    "audit": "下载审计日志（CSV）"
   }
 }

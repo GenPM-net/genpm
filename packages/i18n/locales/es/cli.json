@@ -44,7 +44,8 @@
     "accessGrant": "Da read, write o admin a user:<usuario> o team:<org>/<equipo>",
     "accessRevoke": "Retira un permiso",
     "registryDomain": "Configura un dominio propio para un registro (o quítalo con --remove)",
-    "registryVerify": "Comprueba el registro TXT y activa el dominio propio"
+    "registryVerify": "Comprueba el registro TXT y activa el dominio propio",
+    "registryAudit": "Exporta la auditoría de un registro en JSON Lines"
   },
   "arg": {
     "cwd": "Directorio de trabajo",
@@ -101,7 +102,9 @@
       "role": "Rol: admin, publisher o reader",
       "teamRole": "Rol en el equipo: maintainer o member",
       "domain": "Dominio, p. ej. packages.acme.com",
-      "removeDomain": "Quita el dominio propio"
+      "removeDomain": "Quita el dominio propio",
+      "since": "Solo entradas desde esta fecha (ISO 8601)",
+      "action": "Solo acciones que empiezan por este prefijo, p. ej. package."
     }
   },
   "label": {

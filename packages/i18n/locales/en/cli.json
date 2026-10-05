@@ -44,7 +44,8 @@
     "accessGrant": "Grant read, write or admin to user:<handle> or team:<org>/<team>",
     "accessRevoke": "Revoke a grant",
     "registryDomain": "Set a custom domain for a registry (or remove it with --remove)",
-    "registryVerify": "Check the TXT record and activate the custom domain"
+    "registryVerify": "Check the TXT record and activate the custom domain",
+    "registryAudit": "Export the audit trail of a registry as JSON Lines"
   },
   "arg": {
     "cwd": "Working directory",
@@ -101,7 +102,9 @@
       "role": "Role: admin, publisher or reader",
       "teamRole": "Team role: maintainer or member",
       "domain": "Domain, e.g. packages.acme.com",
-      "removeDomain": "Remove the custom domain"
+      "removeDomain": "Remove the custom domain",
+      "since": "Only entries since this date (ISO 8601)",
+      "action": "Only actions starting with this prefix, e.g. package."
     }
   },
   "label": {

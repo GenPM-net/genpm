@@ -81,7 +81,8 @@
 - [ ] `V10-02` **TODO** SSO · A · 24h · deps: V10-01
 - [x] `V10-03` **DONE** Dominio propio por registro · A · 12h · deps: V10-01
   - ✅ 2026-10-05: `PUT/DELETE /v1/registries/:slug/domain` + `POST …/verify` (TXT por DoH), enrutado por host en el Worker, alta en Cloudflare for SaaS si hay `CF_SAAS_*`; CLI `genpm registry domain|verify`. Pendiente fundador: runbook §3.2 (Custom Hostnames, ruta y secretos).
-- [ ] `V10-04` **TODO** Auditoría exportable · A · 12h · deps: V10-01
+- [x] `V10-04` **DONE** Auditoría exportable · A · 12h · deps: V10-01
+  - ✅ 2026-10-05: `GET /v1/registries/:slug/audit` (JSON/CSV/JSONL), `genpm registry audit`, descarga CSV en /settings/registries.
 - [ ] `V10-05` **TODO** Facturación con Stripe · A · 24h · deps: V10-01
 - [ ] `V10-06` **TODO** Patrocinios self-serve · W · 24h · deps: V10-05
 - [ ] `V10-07` **TODO** Pentest y bug bounty con recompensas · F · 8h · deps: V10-01

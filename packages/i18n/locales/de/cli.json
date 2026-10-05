@@ -44,7 +44,8 @@
     "accessGrant": "Gewährt read, write oder admin an user:<name> oder team:<org>/<team>",
     "accessRevoke": "Entzieht eine Berechtigung",
     "registryDomain": "Legt eine eigene Domain für ein Registry fest (oder entfernt sie mit --remove)",
-    "registryVerify": "Prüft den TXT-Eintrag und aktiviert die eigene Domain"
+    "registryVerify": "Prüft den TXT-Eintrag und aktiviert die eigene Domain",
+    "registryAudit": "Exportiert das Audit-Log eines Registrys als JSON Lines"
   },
   "arg": {
     "cwd": "Arbeitsverzeichnis",
@@ -101,7 +102,9 @@
       "role": "Rolle: admin, publisher oder reader",
       "teamRole": "Teamrolle: maintainer oder member",
       "domain": "Domain, z. B. packages.acme.com",
-      "removeDomain": "Entfernt die eigene Domain"
+      "removeDomain": "Entfernt die eigene Domain",
+      "since": "Nur Einträge seit diesem Datum (ISO 8601)",
+      "action": "Nur Aktionen mit diesem Präfix, z. B. package."
     }
   },
   "label": {

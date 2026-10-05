@@ -749,6 +749,7 @@
     "slug": "Name",
     "owner": "Besitzer",
     "saved": "Gespeichert.",
-    "cli": "Teams und Berechtigungen pro Paket: genpm team und genpm access im CLI."
+    "cli": "Teams und Berechtigungen pro Paket: genpm team und genpm access im CLI.",
+    "audit": "Audit-Log herunterladen (CSV)"
   }
 }

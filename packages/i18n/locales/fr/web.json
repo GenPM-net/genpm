@@ -749,6 +749,7 @@
     "slug": "Nom",
     "owner": "Propriétaire",
     "saved": "Enregistré.",
-    "cli": "Équipes et droits par paquet : genpm team et genpm access dans le CLI."
+    "cli": "Équipes et droits par paquet : genpm team et genpm access dans le CLI.",
+    "audit": "Télécharger le journal d’audit (CSV)"
   }
 }

@@ -749,6 +749,7 @@
     "slug": "Name",
     "owner": "Owner",
     "saved": "Saved.",
-    "cli": "Teams and per-package grants: genpm team and genpm access in the CLI."
+    "cli": "Teams and per-package grants: genpm team and genpm access in the CLI.",
+    "audit": "Download audit log (CSV)"
   }
 }

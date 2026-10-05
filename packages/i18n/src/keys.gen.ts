@@ -46,6 +46,7 @@ export interface MessageParams {
   "cli.desc.accessRevoke": undefined;
   "cli.desc.registryDomain": undefined;
   "cli.desc.registryVerify": undefined;
+  "cli.desc.registryAudit": undefined;
   "cli.arg.cwd": undefined;
   "cli.arg.registry": undefined;
   "cli.arg.json": undefined;
@@ -100,6 +101,8 @@ export interface MessageParams {
   "cli.arg.rbac.teamRole": undefined;
   "cli.arg.rbac.domain": undefined;
   "cli.arg.rbac.removeDomain": undefined;
+  "cli.arg.rbac.since": undefined;
+  "cli.arg.rbac.action": undefined;
   "cli.label.resolved": undefined;
   "cli.label.dependency": undefined;
   "cli.label.skip": undefined;
@@ -984,6 +987,7 @@ export interface MessageParams {
   "web.registries.owner": undefined;
   "web.registries.saved": undefined;
   "web.registries.cli": undefined;
+  "web.registries.audit": undefined;
 }
 
 export type MessageKey = keyof MessageParams;

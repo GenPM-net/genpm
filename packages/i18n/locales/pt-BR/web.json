@@ -749,6 +749,7 @@
     "slug": "Nome",
     "owner": "Dono",
     "saved": "Salvo.",
-    "cli": "Times e permissões por pacote: genpm team e genpm access no CLI."
+    "cli": "Times e permissões por pacote: genpm team e genpm access no CLI.",
+    "audit": "Baixar auditoria (CSV)"
   }
 }

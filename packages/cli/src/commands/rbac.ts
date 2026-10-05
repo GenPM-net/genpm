@@ -5,6 +5,7 @@ import {
   accessGrant,
   accessList,
   accessVisibility,
+  registryAudit,
   registryCreate,
   registryDomain,
   registryList,
@@ -132,6 +133,26 @@ export const registryCmd = (ctx: Ctx) =>
                   slug: args.slug,
                 }),
               );
+          })(),
+      }),
+      audit: defineCommand({
+        meta: { name: 'audit', description: ctx.t.t('cli.desc.registryAudit') },
+        args: {
+          slug: pos(ctx, 'slug'),
+          since: { type: 'string', description: ctx.t.t('cli.arg.rbac.since') },
+          action: { type: 'string', description: ctx.t.t('cli.arg.rbac.action') },
+          ...globalArgs(ctx),
+        },
+        run: ({ args }) =>
+          run(ctx, async () => {
+            const events = await registryAudit({
+              ...(await coreOptions(ctx)),
+              slug: args.slug,
+              from: args.since,
+              action: args.action,
+            });
+            // Siempre JSON Lines (una entrada por línea): se redirige a un archivo o se procesa con jq.
+            for (const e of events) process.stdout.write(`${JSON.stringify(e)}\n`);
           })(),
       }),
       verify: defineCommand({

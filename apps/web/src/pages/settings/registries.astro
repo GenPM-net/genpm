@@ -72,6 +72,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
         <div class="term"><div class="bar"><span>.genpmrc</span></div><pre>{JSON.stringify({ scopes: { [r.owner ?? r.slug]: r.url } }, null, 2)}</pre></div>
         {r.members && (
           <>
+            <p><a class="btn sm" href={`/settings/registries/${r.slug}/audit.csv`} download>{t.t('web.registries.audit')}</a></p>
             <div class="scroll"><table class="tbl"><thead><tr><th>{t.t('web.registries.member')}</th><th>{t.t('web.registries.memberRole')}</th><th><span class="sr">{t.t('web.dashboard.actions')}</span></th></tr></thead><tbody>
               {r.members.map((m) => <tr><td class="mono">{m.handle}</td><td>{m.role}</td><td><form method="post"><input type="hidden" name="action" value="remove" /><input type="hidden" name="slug" value={r.slug} /><input type="hidden" name="handle" value={m.handle} /><button class="btn sm ghost" type="submit">{t.t('web.trusted.remove')}</button></form></td></tr>)}
             </tbody></table></div>

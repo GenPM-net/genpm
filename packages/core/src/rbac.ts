@@ -154,3 +154,37 @@ export async function registryDomain(opts: CommonOptions & { slug: string; domai
 export async function registryVerifyDomain(opts: CommonOptions & { slug: string }) {
   return (await client(opts)).api<DomainStatus>('POST', `/v1/registries/${slug(opts.slug)}/domain/verify`, {});
 }
+
+// ───────────── Auditoría (V10-04) ─────────────
+
+export type AuditEvent = {
+  id: string;
+  at: string;
+  actor: string | null;
+  action: string;
+  target: string;
+  metadata: unknown;
+};
+
+/** Todas las entradas de auditoría del registro en el rango (paginando), hasta `max`. */
+export async function registryAudit(
+  opts: CommonOptions & { slug: string; from?: string; to?: string; action?: string; max?: number },
+): Promise<AuditEvent[]> {
+  const c = await client(opts);
+  const out: AuditEvent[] = [];
+  let after: string | null = '';
+  while (after !== null && out.length < (opts.max ?? 50_000)) {
+    const p = new URLSearchParams();
+    if (opts.from) p.set('from', opts.from);
+    if (opts.to) p.set('to', opts.to);
+    if (opts.action) p.set('action', opts.action);
+    if (after) p.set('after', after);
+    const page: { events: AuditEvent[]; next: string | null } = await c.api(
+      'GET',
+      `/v1/registries/${slug(opts.slug)}/audit?${p}`,
+    );
+    out.push(...page.events);
+    after = page.next;
+  }
+  return out;
+}
