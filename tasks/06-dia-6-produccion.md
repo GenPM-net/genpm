@@ -9,6 +9,7 @@
   - Hecho el 2026-10-05 con el MCP publicado (`@genpm-net/mcp`) y un agente Claude por stdio (el CLI `claude` del Mac tenía la sesión caducada): app Hono con login GitHub + Stripe, `tsc` sin errores, login redirige y rutas protegidas dan 401. Fricciones: (1) sin `CLAUDE.md` en proyectos nuevos con solo `.mcp.json` → arreglado (clientInfo + señal `.mcp.json`); (2) `list` decía "modificado" por archivos borrados → "con cambios"; (3) `add` mostraba 0.0s → tiempo total.
 - [ ] `D6-02` **TODO** Crear una app Next.js desde cero solo con el MCP en Cursor; registrar cada fricción como issue · T · 2h · deps: D4-G-01, D5-G-02
 - [ ] `D6-03` **TODO** Triage de las fricciones y arreglo de todos los P0/P1 · T · 4h · deps: D6-01, D6-02
+  - 2026-10-05: las 4 fricciones de D6-01 (P1) y los 3 hallazgos de la revisión de semillas arreglados y publicados (CLI 0.1.4, auth 1.1.0, billing/ai/email 1.0.1). Falta sumar las de D6-02 (Cursor).
 
 ## Puertas de seguridad (no se recortan)
 
@@ -39,8 +40,10 @@
 
 - [x] `D6-P-01` **DONE** Migraciones de D1 en producción · A · 0.5h · deps: D1-A-05
 - [x] `D6-P-02` **DONE** Dominios api.genpm.net y genpm.net apuntando a los Workers de producción · A · 1h · deps: D0-01, D5-W-23
-- [ ] `D6-P-03` **TODO** Secretos de producción y rate limits configurados · A · 1h · deps: D6-P-01
+- [x] `D6-P-03` **DONE** Secretos de producción y rate limits configurados · A · 1h · deps: D6-P-01
+  - Verificado el 2026-10-05: secretos de producción y staging cargados y rate limits (300/1 200/10/10 por 60 s) activos. Falta solo `CF_AE_TOKEN` (contadores de instalaciones), que crea el fundador.
 - [ ] `D6-P-04` **TODO** Alertas: errores 5xx > 1 % y latencia p95 · A · 1h · deps: D6-P-02
+  - Pasos exactos en runbook §3.1; el token de wrangler no puede crear notificaciones: las da de alta el fundador en el dashboard.
 - [x] `D6-P-05` **DONE** Publicar las 5 semillas en prod con el CLI, marcar @core/* como featured y el scope como verificado · A · 1h · deps: D6-P-03, D6-S-05
   - ✅ 2026-10-04: repos GenPM-net/{db,auth,billing,email,ai} públicos (1 commit cada uno, sin secretos), las 5 publicadas en v1.0.0 desde la web, destacadas en la home (auth, db, billing, ai, email) y verificadas (scope de acc_system). Yohangel es staff (membresía manual en acc_system).
 - [ ] `D6-P-06` **TODO** npm publish de genpm@0.1.0 y @genpm/mcp@0.1.0 con provenance · B · 1h · deps: D5-B-05, D6-03

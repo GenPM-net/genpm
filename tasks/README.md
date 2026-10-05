@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-05. No editar a mano. -->
 
-**71 %** completado · 183/259 tareas · 518h estimadas pendientes
+**71 %** completado · 184/259 tareas · 517h estimadas pendientes
 
-TODO 48 · DOING 4 · DONE 182 · BLOCKED 24 · CUT 1
+TODO 47 · DOING 4 · DONE 183 · BLOCKED 24 · CUT 1
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -83,7 +83,7 @@ TODO 48 · DOING 4 · DONE 182 · BLOCKED 24 · CUT 1
 | [Día 3 · CLI y contexto](03-dia-3-cli-contexto.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 95 % | 21/22 | 1h |
 | [Día 4 · Servidor MCP](04-dia-4-mcp.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 88 % | 15/17 | 2h |
 | [Día 5 · Web MVP y pulido del cliente](05-dia-5-web.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 93 % | 28/30 | 1.5h |
-| [Día 6 · Integración, seguridad y producción](06-dia-6-produccion.md) | `▓▓▓▓▓▓▓░░░░░` 60 % | 18/30 | 16h |
+| [Día 6 · Integración, seguridad y producción](06-dia-6-produccion.md) | `▓▓▓▓▓▓▓▓░░░░` 63 % | 19/30 | 15h |
 | [Día 7 · Lanzamiento](07-dia-7-lanzamiento.md) | `▓▓░░░░░░░░░░` 18 % | 2/11 | 16.5h |
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 16/17 | 2h |
@@ -125,7 +125,6 @@ TODO 48 · DOING 4 · DONE 182 · BLOCKED 24 · CUT 1
 
 **Siguientes disponibles** (TODO con todas sus dependencias cerradas)
 
-- `D6-P-03` Secretos de producción y rate limits configurados · A · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 - `D6-P-04` Alertas: errores 5xx > 1 % y latencia p95 · A · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 - `D6-P-07` Apertura del código (ADR-016): semillas públicas, paquetes cliente públicos con licencia, registry y web según decisión del fundador · F · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 - `D6-P-08` Datos del titular (nombre, NIF, domicilio, ciudad) en apps/web/src/content/legal/owner.json y revisión legal (ADR-024) · F · 0.5h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
@@ -135,5 +134,6 @@ TODO 48 · DOING 4 · DONE 182 · BLOCKED 24 · CUT 1
 - `V02-01` genpm diff y update con merge 3-way · B · 24h ([10-post-mvp.md](10-post-mvp.md))
 - `V02-03` Dependents ("Used by") en API y página de paquete · A · 6h ([10-post-mvp.md](10-post-mvp.md))
 - `V02-04` Puntuación de calidad de paquetes · A · 8h ([10-post-mvp.md](10-post-mvp.md))
+- `V02-07` Web P1: dashboard del autor, perfil, sponsors y enterprise (landing + waitlist con POST /v1/leads) · W · 16h ([10-post-mvp.md](10-post-mvp.md))
 
 <!-- board:end -->

@@ -164,6 +164,19 @@ Comunicación: advisory "rotación de clave de firma" con la fecha, las claves a
 
 Post-mortem público y sin culpables para toda incidencia alta o crítica.
 
+## 3.1 Alertas (D6-P-04)
+
+Se configuran en el dashboard de Cloudflare (Notifications → Add); el token de wrangler no tiene permiso para crearlas.
+
+| Alerta | Tipo en Cloudflare | Umbral | Destino |
+|---|---|---|---|
+| Errores del registry | Workers → *Workers Observability alert* sobre `genpm-registry`, métrica `status >= 500` | > 1 % de las peticiones en 5 min | hello@genpm.net |
+| Latencia del registry | *Workers Observability alert*, métrica `wall time` p95 | > 1 500 ms en 10 min | hello@genpm.net |
+| Errores de la web | Igual sobre `genpm-web` | > 1 % en 5 min | hello@genpm.net |
+| Caída | *Health Checks* (o un monitor externo gratuito) contra `https://api.genpm.net/v1/health` y `https://genpm.net/` | 2 fallos seguidos cada 1 min | hello@genpm.net |
+
+Comprobación rápida a mano: `npx wrangler tail genpm-registry --status error` muestra los 5xx en vivo.
+
 ## 4. Entornos
 
 | Entorno | Web | API | D1 | Clave de firma |
