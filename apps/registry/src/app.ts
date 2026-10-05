@@ -15,6 +15,7 @@ import { advisories, badge, featured, scopes, stats } from './routes/discovery.j
 import { health } from './routes/health.js';
 import { keys } from './routes/keys.js';
 import { compare, deprecate, mePrefs, status } from './routes/manage.js';
+import { mcpRoutes } from './routes/mcp.js';
 import { myRepos } from './routes/my-repos.js';
 import { packages } from './routes/packages.js';
 import { publish } from './routes/publish.js';
@@ -34,6 +35,26 @@ export function createApp() {
     }
     await next();
   });
+  // MCP remoto de solo lectura (V03-04): raíz de mcp.genpm.net y /mcp del API. Sus tools son subpeticiones a la propia
+  // API pública con la IP del cliente (mismo rate limit y caché) y el tenant que pidió.
+  const mcp = mcpRoutes((c, path) => {
+    const headers = new Headers({ accept: 'application/json' });
+    for (const h of ['cf-connecting-ip', 'genpm-registry', 'accept-language']) {
+      const v = c.req.header(h);
+      if (v) headers.set(h, v);
+    }
+    return Promise.resolve(app.request(new URL(path, c.req.url).toString(), { headers }, c.env, c.executionCtx));
+  });
+  app.use('*', async (c, next) => {
+    const url = new URL(c.req.url);
+    if (url.hostname.startsWith('mcp.') && url.pathname === '/') {
+      url.pathname = '/mcp';
+      return app.fetch(new Request(url, c.req.raw), c.env, c.executionCtx);
+    }
+    await next();
+  });
+  app.use('/mcp', requestId, securityHeaders, bodyLimit);
+  app.route('/mcp', mcp);
   app.use('*', requestId, securityHeaders, locale, cors, bodyLimit);
   app.route('/v1/health', health);
   app.route('/v1/status', status);

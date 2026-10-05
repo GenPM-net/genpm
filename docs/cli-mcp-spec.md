@@ -334,7 +334,7 @@ Device flow de GitHub (ver [architecture §6.5](architecture.md#65-login-device-
 |---|---|
 | Arranque | `genpm mcp serve` (binario nativo, opción por defecto) o `npx -y @genpm-net/mcp` (paquete npm, bin `genpm-mcp`); ambos llaman a `serveStdio()` de `@genpm-net/mcp/serve` |
 | Server info | `{ name: "genpm", version: <semver> }` |
-| Transporte | stdio (MVP). Streamable HTTP solo-lectura (search/info) en `mcp.genpm.net` ⏳ v0.3 |
+| Transporte | stdio (MVP). Streamable HTTP solo-lectura (search/info) en `mcp.genpm.net` ✅ V03-04: Worker del registry (`routes/mcp.ts`), sin estado ni SSE (cada POST responde JSON; GET ⇒ 405), tools como subpeticiones a la API pública con la IP del cliente (mismo rate limit), `client=none` (consultar no es instalar), sin `sg` y con el comando `genpm add` para instalar en local |
 | SDK | `@modelcontextprotocol/sdk` (`McpServer`, `registerTool`, `outputSchema` + `structuredContent`) |
 | Capabilities | `tools`, `resources`, `prompts`, `logging` |
 | Raíz del proyecto | `roots/list` del cliente (primer root `file://`) → `GENPM_CWD` → `process.cwd()`. Se recalcula en `notifications/roots/list_changed`. |

@@ -108,6 +108,14 @@ Projekt: `.gemini/settings.json` · Benutzer: `~/.gemini/settings.json`. Nur `mc
 genpm mcp setup --client gemini --scope project
 ```
 
+## Remote-Server (nur lesend)
+
+Clients, die Remote-MCP-Server über Streamable HTTP unterstützen, können sich ohne Installation mit `https://mcp.genpm.net` verbinden. Er bietet nur `genpm_search` und `genpm_info` (keine Dateien, keine Zugangsdaten): Zum Installieren gibt dir der Agent den Befehl `genpm add`, oder du wechselst zum lokalen Server oben.
+
+```json
+{ "mcpServers": { "genpm": { "url": "https://mcp.genpm.net" } } }
+```
+
 ## Werkzeuge
 
 | Werkzeug | Funktion |

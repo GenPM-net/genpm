@@ -39,7 +39,10 @@
     { "name": "RL_EXCHANGE", "namespace_id": "1004", "simple": { "limit": 10, "period": 60 } }
   ],
   "triggers": { "crons": ["0 * * * *", "15 3 * * *", "0 4 * * SUN"] },
-  "routes": [{ "pattern": "api.genpm.net", "custom_domain": true }],
+  "routes": [
+    { "pattern": "api.genpm.net", "custom_domain": true },
+    { "pattern": "mcp.genpm.net", "custom_domain": true }
+  ],
   "env": {
     "staging": {
       "name": "genpm-registry-staging",
@@ -72,7 +75,10 @@
         { "name": "RL_EXCHANGE", "namespace_id": "2004", "simple": { "limit": 10, "period": 60 } }
       ],
       "triggers": { "crons": ["0 * * * *", "15 3 * * *", "0 4 * * SUN"] },
-      "routes": [{ "pattern": "api.staging.genpm.net", "custom_domain": true }]
+      "routes": [
+        { "pattern": "api.staging.genpm.net", "custom_domain": true },
+        { "pattern": "mcp.staging.genpm.net", "custom_domain": true }
+      ]
     }
   }
 }

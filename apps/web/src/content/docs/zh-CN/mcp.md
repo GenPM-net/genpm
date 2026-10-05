@@ -108,6 +108,14 @@ genpm mcp setup --client codex
 genpm mcp setup --client gemini --scope project
 ```
 
+## 远程服务器（只读）
+
+支持通过 Streamable HTTP 连接远程 MCP 服务器的客户端，无需安装任何东西即可连接 `https://mcp.genpm.net`。它只提供 `genpm_search` 和 `genpm_info`（不接触文件和凭据）：要安装时，代理会给出 `genpm add` 命令，或者改用上面的本地服务器。
+
+```json
+{ "mcpServers": { "genpm": { "url": "https://mcp.genpm.net" } } }
+```
+
 ## 工具
 
 | 工具 | 作用 |

@@ -108,6 +108,14 @@ genpm mcp setup --client codex
 genpm mcp setup --client gemini --scope project
 ```
 
+## リモートサーバー（読み取り専用）
+
+Streamable HTTP のリモート MCP サーバーに対応したクライアントは、何もインストールせずに `https://mcp.genpm.net` に接続できます。提供するのは `genpm_search` と `genpm_info` だけです（ファイルや認証情報には触れません）。インストールするときは、エージェントが `genpm add` コマンドを示すか、上のローカルサーバーに切り替えます。
+
+```json
+{ "mcpServers": { "genpm": { "url": "https://mcp.genpm.net" } } }
+```
+
 ## ツール
 
 | ツール | 内容 |

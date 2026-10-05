@@ -108,6 +108,14 @@ genpm mcp setup --client codex
 genpm mcp setup --client gemini --scope project
 ```
 
+## 원격 서버(읽기 전용)
+
+Streamable HTTP 원격 MCP 서버를 지원하는 클라이언트는 아무것도 설치하지 않고 `https://mcp.genpm.net`에 연결할 수 있습니다. `genpm_search`와 `genpm_info`만 제공하며(파일이나 자격 증명은 다루지 않음), 설치할 때는 에이전트가 `genpm add` 명령을 알려 주거나 위의 로컬 서버로 전환합니다.
+
+```json
+{ "mcpServers": { "genpm": { "url": "https://mcp.genpm.net" } } }
+```
+
 ## 도구
 
 | 도구 | 하는 일 |
