@@ -28,6 +28,7 @@
   - ✅ 2026-10-05: probado en Chromium con `wrangler dev`: sin decisión o con «Rechazar» no se descarga PostHog ni se escribe nada `ph_*`; con «Aceptar» se carga por `/ph`; el banner se reabre desde el pie. Cookies, privacidad (8 idiomas) y registro de actividades actualizados.
 - [ ] `V011-13` **TODO** Activar PostHog en producción: proyecto en región EU, DPA aceptado, retención 30 días/12 meses, POSTHOG_KEY en wrangler.jsonc y despliegue de la web · F · 0.5h · deps: V011-12
   - Hasta entonces no hay banner ni PostHog; la capa de servidor y el panel funcionan ya.
+  - 2026-10-05: proyecto 295000 en EU Cloud creado y clave en wrangler.jsonc (solo producción; staging sin PostHog para no mezclar datos). Falta: DPA, dominios autorizados, replay y heatmaps activados, y desplegar la web.
 
 ## v0.2 · +2 semanas
 

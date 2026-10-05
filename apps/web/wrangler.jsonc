@@ -12,7 +12,7 @@
     "SITE_ORIGIN": "https://genpm.net",
     "REGISTRY_URL": "https://api.genpm.net",
     // Clave pública del proyecto de PostHog Cloud EU (phc_…). Vacía = sin banner ni PostHog (ADR-027).
-    "POSTHOG_KEY": ""
+    "POSTHOG_KEY": "phc_r9J3hrCtMN24YFA343vFBRe7aAuAzHKaQS9ne4efQjsF"
   },
   "services": [{ "binding": "REGISTRY", "service": "genpm-registry" }],
   "analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "genpm_web_events" }],
