@@ -140,9 +140,9 @@ distribución por producto, JSON-LD `AggregateRating`, y reseñas **importadas**
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/reviews` | `@core/comments ^1`, `@core/orders ^1`, `@core/catalog ^1`, `@core/jobs ^1` | — | — | — |
+| `src/lib/reviews` | `@core/comments ^1`, `@core/catalog ^1`, `@core/orders ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/db ^1` | `zod` | `REVIEW_REQUEST_DELAY_DAYS` (opc.) | — |
 
-**Tablas.** `review_stats` (productId, count, avg, histogram) — materializada; las reseñas viven en `comments`.
+**Tablas.** `review_meta` (verificada, pedido, origen, fotos) y `review_stats` (count, avg, histogram) — las reseñas viven en `comments`.
 **API.** `<ProductReviews productId>`, `requestReview(order)`, `productRating(productId)`, `importReviews(productId, rows, {source})`.
 **Reglas IA (legal UE).** Indicar si y cómo se verifica que las reseñas proceden de compradores (Ómnibus); nunca
 generar reseñas falsas ni ocultar las negativas por defecto; las importadas muestran su origen.
