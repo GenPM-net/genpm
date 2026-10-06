@@ -3,7 +3,7 @@
 ## Purpose
 Money as `{ amount, currency }` with `amount` an integer of minor units (cents) and an ISO 4217 code, so commerce
 modules never use floats. Parsing from decimal strings, safe arithmetic that refuses mixed currencies, rounding,
-percentages, lossless allocation (splitting a discount across lines), charm prices (`.99`), formatting with `Intl`
+percentages, lossless allocation (splitting a discount across lines), charm prices (`.99`, never below the input; `…9` in zero-decimal currencies), formatting with `Intl`
 and conversion with a rates table. Pure functions: no tables, no network.
 
 ## Map

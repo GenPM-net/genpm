@@ -96,10 +96,17 @@ export function allocate(m: Money, ratios: number[]): Money[] {
   return parts.map((p) => money(sign * p, m.currency));
 }
 
-/** Precio "psicológico": redondea hacia arriba a la unidad y aplica la terminación (`.99`, `.95`, `.00`). */
+/**
+ * Precio "psicológico": el menor importe con la terminación pedida (`.99`, `.95`, `.00`) que no baja del original.
+ * En monedas sin decimales (JPY) la terminación es en la decena: `…9` (o `…0` con `.00`), también hacia arriba.
+ */
 export function charmPrice(m: Money, ending: '.99' | '.95' | '.90' | '.00' = '.99'): Money {
   const d = currencyDecimals(m.currency);
-  if (d === 0) return money(Math.ceil(m.amount / 10) * 10 - (ending === '.00' ? 0 : 1), m.currency);
+  if (d === 0) {
+    const end = ending === '.00' ? 0 : 9;
+    const candidate = Math.floor(m.amount / 10) * 10 + end;
+    return money(candidate >= m.amount ? candidate : candidate + 10, m.currency);
+  }
   const unit = 10 ** d;
   const end = Math.round(Number(ending) * unit);
   const whole = Math.floor(m.amount / unit);

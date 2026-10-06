@@ -446,6 +446,7 @@
     ]
   },
   "money": {
+    "v": "1.0.1",
     "s": {
       "en": "Money in integer minor units: ISO currencies, safe parsing, rounding, lossless allocation, charm prices, formatting",
       "es": "Dinero en enteros (céntimos): monedas ISO, parseo seguro, redondeo, reparto sin pérdidas, precios .99 y formato",
@@ -541,6 +542,7 @@
     ]
   },
   "cart": {
+    "v": "1.1.0",
     "s": {
       "en": "Shopping cart: signed guest cookie, merge on login, server-side prices and a pluggable totals pipeline",
       "es": "Carrito: cookie firmada de invitado, fusión al iniciar sesión, precios en servidor y cálculo de totales enchufable",
@@ -573,6 +575,7 @@
     ]
   },
   "orders": {
+    "v": "1.1.0",
     "s": {
       "en": "Orders: frozen lines, stock reservation, payment and shipping states, partial shipments, refunds, emails and events",
       "es": "Pedidos: líneas congeladas, reserva de stock, estados de pago y envío, envíos parciales, reembolsos, emails y eventos",
@@ -637,6 +640,7 @@
     }
   },
   "checkout": {
+    "v": "1.0.1",
     "s": {
       "en": "Stripe Checkout for one-off purchases: server-priced sessions, orders created only from the webhook, auto-refund if sold out",
       "es": "Stripe Checkout para compras: sesiones con precios del servidor, pedido solo desde el webhook y reembolso automático si se agota",
@@ -655,7 +659,7 @@
       "orders"
     ],
     "g": {
-      "@core/cart": "^1.0.0",
+      "@core/cart": "^1.1.0",
       "@core/orders": "^1.0.0",
       "@core/shipping": "^1.0.0",
       "@core/stripe": "^1.0.0",
@@ -688,6 +692,7 @@
     ]
   },
   "discounts": {
+    "v": "1.0.1",
     "s": {
       "en": "Discount codes and automatic discounts: percent, fixed, free shipping, product/category scope, usage and first-order limits",
       "es": "Cupones y descuentos automáticos: porcentaje, importe, envío gratis, por producto o categoría, límites de uso y primer pedido",
@@ -707,9 +712,9 @@
     ],
     "g": {
       "@core/db": "^1.0.0",
-      "@core/cart": "^1.0.0",
+      "@core/cart": "^1.1.0",
       "@core/catalog": "^1.0.0",
-      "@core/orders": "^1.0.0",
+      "@core/orders": "^1.1.0",
       "@core/money": "^1.0.0"
     },
     "p": {
@@ -717,6 +722,7 @@
     }
   },
   "reviews": {
+    "v": "1.0.1",
     "s": {
       "en": "Product reviews on @core/comments: verified purchases, photos, labeled imported reviews, ratings and review requests",
       "es": "Reseñas de producto sobre @core/comments: compra verificada, fotos, importadas etiquetadas, valoraciones y solicitud por email",
@@ -740,7 +746,8 @@
       "@core/orders": "^1.0.0",
       "@core/email": "^1.0.1",
       "@core/jobs": "^1.0.0",
-      "@core/db": "^1.0.0"
+      "@core/db": "^1.0.0",
+      "@core/auth": "^1.1.0"
     },
     "p": {
       "zod": "^4.0.0"
@@ -778,6 +785,7 @@
     }
   },
   "suppliers": {
+    "v": "1.1.0",
     "s": {
       "en": "Dropshipping suppliers: import products priced by rules, sync cost and stock, forward paid orders, tracking and exceptions",
       "es": "Proveedores de dropshipping: importar productos con precio por reglas, sincronizar coste y stock, reenviar pedidos y seguimiento",
@@ -1184,6 +1192,7 @@
     ]
   },
   "invoices": {
+    "v": "1.0.1",
     "s": {
       "en": "Spanish invoices from paid orders: legal numbering, simplified/full, credit notes and VeriFactu-style hash chain",
       "es": "Facturas españolas desde pedidos: numeración legal, simplificada/completa, rectificativas y cadena de huellas VeriFactu",

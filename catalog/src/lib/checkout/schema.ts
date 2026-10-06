@@ -17,7 +17,7 @@ export const checkoutSessions = pgTable('checkout_sessions', {
   currency: text('currency').notNull(),
   total: integer('total').notNull(),
   snapshot: jsonb('snapshot').$type<CartTotals>().notNull(),
-  status: text('status', { enum: ['open', 'completed', 'expired', 'refunded_out_of_stock', 'amount_mismatch'] }).notNull().default('open'),
+  status: text('status', { enum: ['open', 'completed', 'expired', 'refunded_out_of_stock', 'refunded_order_failed', 'amount_mismatch'] }).notNull().default('open'),
   orderId: text('order_id'),
   ...timestamps,
 });

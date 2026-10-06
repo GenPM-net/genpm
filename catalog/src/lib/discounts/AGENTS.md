@@ -4,10 +4,14 @@
 Discount codes and automatic discounts for @core/cart: percent, fixed amount or free shipping; optional scope by
 product or category slugs, minimum order, start/end dates, total and per-customer usage limits, first-order-only and
 combinability (non-combinable ones compete: the biggest wins). Registers the `discounts` (100) and `free-shipping`
-(250) totals steps and records redemptions when an order is paid (@core/orders). Tables: `discounts`, `discount_redemptions`.
+(250) totals steps and records redemptions inside the transaction that creates/pays the order (`onOrderPaidTx` of
+@core/orders), with the discount row locked. Limits count recorded redemptions plus open payments carrying the code
+(`pendingCodeUses` of @core/cart, fed by @core/checkout). If a limit was exceeded anyway (the customer already paid),
+the order is kept, the redemption recorded and a `discount_over_limit` event is added to the order timeline for review.
+Tables: `discounts`, `discount_redemptions`.
 
 ## Map
-- `index.ts` — public API: `upsertDiscount`, `DiscountInput`, `discountsStep`, `freeShippingStep`, `discountsAdminResource`.
+- `index.ts` — public API: `upsertDiscount`, `DiscountInput`, `discountsStep`, `freeShippingStep`, `recordRedemptions`, `discountsAdminResource`.
 - `discounts.ts` — validation, application and the redemption handler (registered on import). `admin.ts` — admin resource.
 
 ## Integration
@@ -20,6 +24,8 @@ combinability (non-combinable ones compete: the biggest wins). Registers the `di
 ## Conventions
 - Codes are stored uppercase (`A–Z 0–9 _ -`); values: percent 1–100, fixed in minor units.
 - Deleting a discount deactivates it (redemption history stays).
+- Free-shipping adjustments carry their `code` (amount 0), so they count towards usage limits.
+- Check the order timeline (`discount_over_limit`) when a usage-limited campaign ends.
 - Prefer automatic discounts for store-wide sales; codes for campaigns.
 
 ## Don't
