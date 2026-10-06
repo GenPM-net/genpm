@@ -89,6 +89,8 @@ export type AdminResource<T extends { id: string } = { id: string } & Record<str
   update?(id: string, input: unknown, ctx: AdminContext): Promise<T>;
   delete?(id: string, ctx: AdminContext): Promise<void>;
   actions?: AdminAction<T>[];
+  /** Enlaces del registro en la vista de edición ("Ver", "Vista previa"…). Rutas relativas o https. */
+  links?(row: T, ctx: AdminContext): Promise<Array<{ label: string; href: string }>> | Array<{ label: string; href: string }>;
 };
 
 export const defineAdminResource = <T extends { id: string }>(resource: AdminResource<T>): AdminResource<T> =>

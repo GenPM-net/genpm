@@ -18,7 +18,7 @@ export type SchemaResource = {
   actions: SchemaAction[];
 };
 export type AdminSchema = { title: string; user: { id: string; email: string | null; name: string | null }; resources: SchemaResource[] };
-type Row = { id: string; _title?: string; _actions?: string[] } & Record<string, unknown>;
+type Row = { id: string; _title?: string; _actions?: string[]; _links?: Array<{ label: string; href: string }> } & Record<string, unknown>;
 
 /** Props que recibe un renderizador de campo propio. */
 export type FieldRendererProps = {
@@ -647,7 +647,12 @@ function EditView(p: { c: Ctx; resource: SchemaResource; id?: string }): ReactNo
     'section',
     { 'aria-labelledby': 'admin-h1' },
     link(c, { view: 'list', resource: resource.name }, `← ${c.labels.back}`),
-    h('header', { className: 'admin-header' }, h('h1', { id: 'admin-h1' }, title)),
+    h(
+      'header',
+      { className: 'admin-header' },
+      h('h1', { id: 'admin-h1' }, title),
+      row?._links?.length ? h('div', { className: 'admin-actions' }, row._links.map((l) => h('a', { key: l.href, href: l.href, target: '_blank', rel: 'noopener noreferrer', className: 'ui-button ui-button--sm' }, l.label))) : null,
+    ),
     row &&
       resource.actions.some((a) => available.has(a.name)) &&
       h(

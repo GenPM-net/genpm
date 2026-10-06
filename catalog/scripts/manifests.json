@@ -959,5 +959,41 @@
       "react": "^19.0.0",
       "zod": "^4.0.0"
     }
+  },
+  "kit-cms": {
+    "d": "src/app/(cms)",
+    "s": {
+      "en": "Self-managed website kit for Next.js: /admin to edit pages with blocks, media, menus, settings, forms and users",
+      "es": "Kit de sitio autoadministrable para Next.js: /admin para editar páginas con bloques, medios, menús, ajustes y usuarios",
+      "pt-BR": "Kit de site autogerenciável para Next.js: /admin para editar páginas com blocos, mídia, menus, ajustes e usuários",
+      "fr": "Kit de site autogéré pour Next.js : /admin pour éditer pages à blocs, médias, menus, réglages, formulaires, comptes",
+      "de": "Kit für selbst verwaltete Next.js-Websites: /admin für Seiten mit Blöcken, Medien, Menüs, Einstellungen und Nutzer",
+      "ja": "Next.js 向け自己管理サイトキット：/admin でブロックページ、メディア、メニュー、設定、フォーム、ユーザーを編集",
+      "zh-CN": "Next.js 自助管理网站套件：在 /admin 编辑区块页面、媒体、菜单、设置、表单和用户",
+      "ko": "Next.js 자체 관리 사이트 키트: /admin에서 블록 페이지, 미디어, 메뉴, 설정, 폼, 사용자 편집"
+    },
+    "k": [
+      "cms",
+      "kit",
+      "nextjs",
+      "admin",
+      "website"
+    ],
+    "g": {
+      "@core/admin": "^1.0.0",
+      "@core/content": "^1.0.0",
+      "@core/media": "^1.0.0",
+      "@core/rich-text": "^1.0.0",
+      "@core/blocks": "^1.0.0",
+      "@core/site": "^1.0.0",
+      "@core/seo": "^1.0.0",
+      "@core/forms": "^1.0.0",
+      "@core/search": "^1.0.0"
+    },
+    "p": {
+      "next": ">=15.5.0",
+      "react": "^19.0.0",
+      "zod": "^4.0.0"
+    }
   }
 }

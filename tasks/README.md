@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
 
-TODO 44 · DOING 5 · DONE 214 · BLOCKED 55 · CUT 0
+TODO 43 · DOING 5 · DONE 214 · BLOCKED 56 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -139,6 +139,7 @@ TODO 44 · DOING 5 · DONE 214 · BLOCKED 55 · CUT 0
 - `CAT-CMS-11` Implementar y publicar @core/search (tsvector + pg_trgm, SearchSource) · C · 10h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-12` Implementar y publicar @core/forms (definiciones, envíos, emails, webhook firmado) · C · 10h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-13` Implementar y publicar @core/blocks (15 bloques, campo blocks en admin) · C · 20h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-14` Implementar y publicar @core/kit-cms (rutas /admin, páginas, vista previa, cron, registro en src/genpm) · C · 20h ([11-catalogo.md](11-catalogo.md))
 - `CAT-BLG-01` Implementar y publicar @core/blog (colecciones, feeds RSS/Atom/JSON, relacionados) · C · 12h ([11-catalogo.md](11-catalogo.md))
 - `CAT-BLG-02` Implementar y publicar @core/comments (moderación, valoración opcional, borrado RGPD) · C · 12h ([11-catalogo.md](11-catalogo.md))
 - `CAT-BLG-03` Implementar y publicar @core/newsletter (doble opt-in, baja RFC 8058, campañas por lotes) · C · 16h ([11-catalogo.md](11-catalogo.md))

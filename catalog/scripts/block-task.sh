@@ -9,7 +9,8 @@ import sys, datetime
 tid, name = sys.argv[1], sys.argv[2]
 p = 'tasks/11-catalogo.md'
 lines = open(p).read().split('\n')
-note = f"  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/{name}` ({datetime.date.today()}). Falta crear el repo `genpm-net/{name}` (fundador), publicar, pruebas de agente y revisión ADR-023."
+path = f"src/app/({name[4:]})" if name.startswith('kit-') else f"src/lib/{name}"
+note = f"  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/{path}` ({datetime.date.today()}). Falta crear el repo `genpm-net/{name}` (fundador), publicar, pruebas de agente y revisión ADR-023."
 for i, l in enumerate(lines):
     if f'`{tid}`' in l:
         if not lines[i + 1].startswith('  - Bloqueo'):

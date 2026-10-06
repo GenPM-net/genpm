@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "vitest run",
-    "typecheck": "tsc --noEmit",
-    "check": "tsc --noEmit && vitest run && tsx scripts/check-migrations.ts",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json",
+    "check": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json && vitest run && tsx scripts/check-migrations.ts",
     "check:migrations": "tsx scripts/check-migrations.ts"
   },
   "dependencies": {

@@ -6,7 +6,8 @@ import { testDb } from '../db/__fixtures__/pglite.js';
 import { media } from '../media/index.js';
 import * as mediaSchema from '../media/schema.js';
 import { backendStorage, memoryBackend, setStorage } from '../storage/index.js';
-import { type BlockInstance, collectMediaIds, coreBlocks, createBlockRegistry, defineBlock, hero, parseVideoUrl, RenderBlocks } from './index.js';
+import { toPlainText } from '../rich-text/index.js';
+import { type BlockInstance, blocksToText, collectMediaIds, coreBlocks, createBlockRegistry, defineBlock, hero, parseVideoUrl, RenderBlocks } from './index.js';
 import { allBlocks, allMedia } from './__fixtures__/page.js';
 import { loadBlockMedia } from './media.js';
 
@@ -46,6 +47,15 @@ describe('registry and schema', () => {
     expect(parseVideoUrl('https://youtube.com/shorts/dQw4w9WgXcQ')).toEqual({ provider: 'youtube', id: 'dQw4w9WgXcQ' });
     expect(parseVideoUrl('https://vimeo.com/123456789')).toEqual({ provider: 'vimeo', id: '123456789' });
     expect(parseVideoUrl('https://youtube.com.evil.test/watch?v=dQw4w9WgXcQ')).toBeNull();
+  });
+});
+
+describe('blocksToText', () => {
+  it('extracts visible text from fields, lists and rich text', () => {
+    const text = blocksToText(allBlocks, registry, (d) => toPlainText(d as never));
+    for (const t of ['Build faster', 'Very', 'Is it safe?', 'Hello rich text', 'Open source']) expect(text).toContain(t);
+    expect(text).not.toContain('https://');
+    expect(blocksToText([{ ...allBlocks[0]!, hidden: true }], registry, () => '')).toBe('');
   });
 });
 

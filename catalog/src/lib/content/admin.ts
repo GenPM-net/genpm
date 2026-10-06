@@ -17,6 +17,7 @@ import {
   unpublish,
   unschedule,
 } from './entries.js';
+import { createPreviewToken } from './preview.js';
 import { ContentError, defaultLocale, getCollection, SINGLETON_SLUG } from './registry.js';
 import { type ContentRow, contentEntries } from './schema.js';
 
@@ -56,7 +57,14 @@ async function assertCan(ctx: AdminContext, collection: string, action: string, 
   if (!general && !own) throw new ContentError('forbidden', `forbidden: ${collection}:${action}`);
 }
 
-export function contentAdminResource(collection: string): AdminResource<ContentAdminRow> {
+/**
+ * Recurso del panel para una colección. Con `path`, cada entrada enlaza a su página pública y a una vista previa
+ * firmada del borrador (requiere `CONTENT_PREVIEW_SECRET` y la ruta `/api/preview`).
+ */
+export function contentAdminResource(
+  collection: string,
+  opts: { path?: (entry: { slug: string; locale: string; data: Record<string, unknown> }) => string; previewRoute?: string } = {},
+): AdminResource<ContentAdminRow> {
   const c = getCollection(collection);
   const load = async (id: string) => {
     const row = await getEntryById(id);
@@ -127,6 +135,16 @@ export function contentAdminResource(collection: string): AdminResource<ContentA
       await assertCan(ctx, collection, 'delete', await load(id));
       await deleteEntry(id);
     },
+    ...(opts.path && {
+      async links(r: ContentAdminRow) {
+        const path = opts.path!({ slug: r.slug, locale: r.locale, data: r.data });
+        const out: Array<{ label: string; href: string }> = [];
+        if (r.status === 'published') out.push({ label: 'View', href: path });
+        if (process.env.CONTENT_PREVIEW_SECRET)
+          out.push({ label: 'Preview', href: `${opts.previewRoute ?? '/api/preview'}?token=${encodeURIComponent(await createPreviewToken(r.id, path, { ttlSeconds: 600 }))}` });
+        return out;
+      },
+    }),
     actions: [
       action('publish', 'Publish', 'publish', (id) => publish(id)),
       action('schedule', 'Schedule', 'publish', (id, input) => schedulePublish(id, z.object({ at: z.coerce.date() }).parse(input).at), {

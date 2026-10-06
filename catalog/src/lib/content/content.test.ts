@@ -256,4 +256,18 @@ describe('admin resource', () => {
     await r.delete!(theirs.id, editor);
     expect(await r.get(theirs.id, editor)).toBeNull();
   });
+
+  it('links each entry to its public page and a short-lived signed preview', async () => {
+    defineCollection('posts', { schema: Page });
+    const r = contentAdminResource('posts', { path: (e) => `/blog/${e.slug}` });
+    const editor = ctxFor('usr_ed', ['posts:read', 'posts:create', 'posts:publish']);
+    const row = await r.create!({ slug: 'hello', data: { title: 'Hello' } }, editor);
+    const draftLinks = await r.links!(row, editor);
+    expect(draftLinks.map((l) => l.label)).toEqual(['Preview']);
+    const token = new URL(draftLinks[0]!.href, 'https://x.test').searchParams.get('token');
+    expect(await verifyPreviewToken(token)).toMatchObject({ entryId: row.id, path: '/blog/hello' });
+    const published = await r.actions!.find((a) => a.name === 'publish')!.run(row.id, {}, editor);
+    expect((await r.links!(published, editor)).map((l) => l.href)[0]).toBe('/blog/hello');
+    expect(contentAdminResource('posts').links).toBeUndefined();
+  });
 });

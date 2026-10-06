@@ -135,7 +135,8 @@ export async function handleAdminApi(req: Request, admin: AdminConfig, opts: Adm
       const row = await resource.get(id, ctx);
       if (!row) return json({ error: 'not_found' }, 404);
       const actions = (resource.actions ?? []).filter((a) => !a.available || a.available(row)).map((a) => a.name);
-      return json({ ...row, _title: resource.title(row), _actions: actions });
+      const links = resource.links ? (await resource.links(row, ctx)).filter((l) => /^\/(?![/\\])/.test(l.href) || l.href.startsWith('https://')) : [];
+      return json({ ...row, _title: resource.title(row), _actions: actions, _links: links });
     }
     const body = req.method === 'DELETE' ? undefined : await req.json().catch(() => undefined);
     if (req.method === 'POST' && !id) {

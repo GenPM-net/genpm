@@ -116,3 +116,22 @@ export function collectMediaIds(blocks: BlockInstance[], registry: BlockRegistry
   }
   return [...out];
 }
+
+/** Texto plano visible de los bloques (búsqueda, extractos, llms.txt): campos de texto, listas y texto enriquecido. */
+export function blocksToText(blocks: BlockInstance[] | null | undefined, registry: BlockRegistry, richTextToPlain: (doc: unknown) => string): string {
+  const out: string[] = [];
+  const walk = (fields: AdminField[], data: unknown) => {
+    if (!data || typeof data !== 'object') return;
+    for (const f of fields) {
+      const v = (data as Record<string, unknown>)[f.name];
+      if ((f.type === 'text' || f.type === 'textarea') && typeof v === 'string' && v.trim()) out.push(v.trim());
+      else if (f.type === 'richText' && v) out.push(richTextToPlain(v));
+      else if (f.type === 'list' && Array.isArray(v)) for (const item of v) walk(f.fields ?? [], item);
+    }
+  };
+  for (const b of blocks ?? []) {
+    const def = registry.get(b.type);
+    if (def && !b.hidden) walk(def.fields, b.data);
+  }
+  return out.filter(Boolean).join('\n');
+}

@@ -1,0 +1,12 @@
+{
+  "//": "Rutas de los kits (src/app) y archivos de registro del proyecto de ejemplo (src/genpm): como en una app Next.",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": ["src/app", "src/genpm"],
+  "exclude": []
+}

@@ -6,6 +6,7 @@ export {
   type BlockInstance,
   BlockInstanceSchema,
   type BlockRegistry,
+  blocksToText,
   collectMediaIds,
   createBlockRegistry,
   defineBlock,

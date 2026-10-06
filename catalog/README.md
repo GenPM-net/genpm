@@ -8,6 +8,10 @@ relativos entre módulos (`../db/index.js`) se prueban como quedarán tras `genp
 - `src/lib/billing`: **@core/billing 2.0** preparado aquí sobre `@core/stripe` (pendiente de llevar al repo `genpm-net/billing` y publicar).
 - El resto: paquetes nuevos. Al publicar, cada carpeta se separa en su repo `github.com/genpm-net/<nombre>` con
   `git subtree split --prefix catalog/src/lib/<nombre>` y se publica con el CLI.
+- Kits: `src/app/(<kit>)` (rutas Next, `d` propio, p. ej. `src/app/(cms)` → `@core/kit-cms`); se comprueban con
+  `tsconfig.app.json` (resolución tipo bundler y alias `@/`, como en una app Next).
+- `src/genpm`: archivos de registro del **proyecto de ejemplo** (los que cada kit copia desde sus `_templates/genpm`
+  y a los que los kits siguientes añaden líneas). No se publica.
 
 ```bash
 pnpm install
@@ -49,3 +53,4 @@ node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde s
 | `ui` | CAT-00-04 | Implementado y validado (axe + contraste AA) · pendiente de publicar |
 | `admin` | CAT-CMS-05 | Implementado y validado (API + app cliente, axe) · pendiente de publicar |
 | `blocks` | CAT-CMS-13 | Implementado y validado (15 bloques, editor, axe) · pendiente de publicar |
+| `kit-cms` (src/app/(cms)) | CAT-CMS-14 | Implementado y validado (rutas, registro, tests con Next simulado) · pendiente de publicar y de la prueba de agente CAT-CMS-15 |

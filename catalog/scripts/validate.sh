@@ -6,7 +6,10 @@ set -e
 root="$(cd "$(dirname "$0")/.." && pwd)"
 for m in "$@"; do
   tmp="$(mktemp -d)"
-  cp -r "$root/src/lib/$m/." "$tmp/"
+  src="$root/src/lib/$m"
+  # Kits: src/app/(<nombre sin kit->)
+  case "$m" in kit-*) src="$root/src/app/(${m#kit-})" ;; esac
+  cp -r "$src/." "$tmp/"
   (cd "$tmp" && git init -q && git add -A && git -c user.email=dev@genpm.net -c user.name=dev commit -qm init)
   node "$root/../packages/cli/dist/bin.mjs" validate "$tmp" || { rm -rf "$tmp"; exit 1; }
   rm -rf "$tmp"
