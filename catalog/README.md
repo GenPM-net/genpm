@@ -11,7 +11,7 @@ relativos entre módulos (`../db/index.js`) se prueban como quedarán tras `genp
 
 ```bash
 pnpm install
-pnpm check                          # tsc + vitest (PGlite, sin servicios externos)
+pnpm check                          # tsc + vitest (PGlite) + migración conjunta de todos los módulos
 node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde scripts/manifests.json
 ./scripts/validate.sh <modulo>…     # genpm validate con el CLI del monorepo
 ```
