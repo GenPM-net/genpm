@@ -96,4 +96,25 @@ describe('text helpers', () => {
     ]);
     expect(docFromText('Uno\n\nDos').content).toHaveLength(2);
   });
+
+  it('headings() numbers nested headings in the same order as the renderers, so TOC anchors match', () => {
+    const h = (level: 2 | 3, text: string) => ({ type: 'heading' as const, attrs: { level }, content: [{ type: 'text' as const, text }] });
+    const nested: Doc = {
+      type: 'doc',
+      content: [
+        { type: 'blockquote', content: [h(2, 'Intro')] },
+        { type: 'bulletList', content: [{ type: 'listItem', content: [h(3, 'Intro')] }] },
+        h(2, 'Intro'),
+        h(2, 'Final'),
+      ],
+    };
+    const toc = headings(nested);
+    expect(toc.map((x) => x.id)).toEqual(['intro', 'intro-1', 'intro-2', 'final']);
+    const html = toHtml(nested);
+    const reactHtml = renderToStaticMarkup(createElement(RichText, { doc: nested }));
+    for (const out of [html, reactHtml]) {
+      const ids = [...out.matchAll(/<h[1-6] id="([^"]+)"/g)].map((m) => m[1]);
+      expect(ids).toEqual(toc.map((x) => x.id));
+    }
+  });
 });

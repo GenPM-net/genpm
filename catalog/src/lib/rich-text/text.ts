@@ -45,18 +45,26 @@ export const slugifyHeading = (s: string) =>
     .replace(/^-+|-+$/g, '')
     .slice(0, 80) || 'section';
 
-/** Encabezados con ids únicos (los mismos que usan los renderizadores) para una tabla de contenidos. */
+/**
+ * Encabezados con ids únicos (los mismos que usan los renderizadores) para una tabla de contenidos. Recorre el árbol
+ * entero en el mismo orden que `toHtml` y `RichText` (también los anidados en citas o listas), para que la numeración
+ * de ids coincida.
+ */
 export function headings(doc: Doc, maxLevel = 3): Array<{ level: number; text: string; id: string }> {
   const used = new Map<string, number>();
   const out: Array<{ level: number; text: string; id: string }> = [];
-  for (const n of doc.content) {
-    if (n.type !== 'heading') continue;
-    const text = toPlainText({ type: 'doc', content: [n] });
-    const base = slugifyHeading(text);
-    const k = used.get(base) ?? 0;
-    used.set(base, k + 1);
-    if (n.attrs.level <= maxLevel) out.push({ level: n.attrs.level, text, id: k ? `${base}-${k}` : base });
-  }
+  const visit = (nodes: Node[] | undefined): void => {
+    for (const n of nodes ?? []) {
+      if (n.type === 'heading') {
+        const text = toPlainText({ type: 'doc', content: [n] });
+        const base = slugifyHeading(text);
+        const k = used.get(base) ?? 0;
+        used.set(base, k + 1);
+        if (n.attrs.level <= maxLevel) out.push({ level: n.attrs.level, text, id: k ? `${base}-${k}` : base });
+      } else if ('content' in n) visit(n.content);
+    }
+  };
+  visit(doc.content);
   return out;
 }
 

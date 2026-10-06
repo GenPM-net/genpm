@@ -4,14 +4,17 @@ import { Layout, muted, text } from './layout.ts';
 
 export type ReceiptProps = {
   number: string;
-  /** Importes en unidades menores (céntimos) para no perder precisión. */
+  /** Importes en unidades menores de la divisa (céntimos; yenes sin decimales; fils con 3) para no perder precisión. */
   items: Array<{ description: string; amount: number }>;
   currency: string;
   date: Date;
 };
 
-const money = (minor: number, currency: string) =>
-  new Intl.NumberFormat('en', { style: 'currency', currency }).format(minor / 100);
+// Los decimales los marca la divisa (ISO 4217): JPY 0, EUR 2, KWD 3. Dividir siempre entre 100 mostraba ¥5 por ¥500.
+const money = (minor: number, currency: string) => {
+  const fmt = new Intl.NumberFormat('en', { style: 'currency', currency });
+  return fmt.format(minor / 10 ** (fmt.resolvedOptions().maximumFractionDigits ?? 2));
+};
 
 export const receipt = {
   subject: (p: ReceiptProps) => `Receipt ${p.number}`,
