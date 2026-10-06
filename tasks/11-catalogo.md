@@ -31,7 +31,8 @@
 - [ ] `CAT-CMS-08` **TODO** Implementar y publicar @core/rich-text (Tiptap, JSON, render anti-XSS) · C · 14h · deps: CAT-CMS-07
 - [ ] `CAT-CMS-09` **TODO** Implementar y publicar @core/site (ajustes, menús, redirecciones sin open redirect) · C · 8h · deps: CAT-CMS-06
 - [ ] `CAT-CMS-10` **TODO** Implementar y publicar @core/seo (metadatos, sitemap, robots, llms.txt, JSON-LD, OG) · C · 12h · deps: CAT-CMS-09
-- [ ] `CAT-CMS-11` **TODO** Implementar y publicar @core/search (tsvector + pg_trgm, SearchSource) · C · 10h · deps: CAT-00-03, CAT-CMS-03
+- [ ] `CAT-CMS-11` **BLOCKED** Implementar y publicar @core/search (tsvector + pg_trgm, SearchSource) · C · 10h · deps: CAT-00-03, CAT-CMS-03
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/search` (2026-10-06). Falta crear el repo `genpm-net/search` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-CMS-12` **TODO** Implementar y publicar @core/forms (definiciones, envíos, emails, webhook firmado) · C · 10h · deps: CAT-CMS-04, CAT-CMS-06
 - [ ] `CAT-CMS-13` **TODO** Implementar y publicar @core/blocks (15 bloques, campo blocks en admin) · C · 20h · deps: CAT-CMS-08, CAT-00-04
 - [ ] `CAT-CMS-14` **TODO** Implementar y publicar @core/kit-cms (rutas /admin, páginas, vista previa, cron, registro en src/genpm) · C · 20h · deps: CAT-CMS-05, CAT-CMS-10, CAT-CMS-11, CAT-CMS-12, CAT-CMS-13

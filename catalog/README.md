@@ -23,3 +23,4 @@ node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde s
 | `storage` | CAT-CMS-02 | Implementado y validado · pendiente de publicar (falta prueba contra MinIO en CI) |
 | `antispam` | CAT-CMS-04 | Implementado y validado · pendiente de publicar |
 | `content` | CAT-CMS-06 | Implementado y validado · pendiente de publicar |
+| `search` | CAT-CMS-11 | Implementado y validado · pendiente de publicar |
