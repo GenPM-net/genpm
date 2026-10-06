@@ -15,7 +15,7 @@
 ## F1 · CMS (kit-cms)
 
 - [ ] `CAT-CMS-01` **DOING** Implementar y publicar @core/rbac · C · 8h · deps: CAT-00-03
-- [ ] `CAT-CMS-02` **TODO** Implementar y publicar @core/storage (S3/R2/MinIO y local) · C · 8h · deps: CAT-00-02
+- [ ] `CAT-CMS-02` **DOING** Implementar y publicar @core/storage (S3/R2/MinIO y local) · C · 8h · deps: CAT-00-02
 - [ ] `CAT-CMS-03` **DOING** Implementar y publicar @core/jobs (cola Postgres, cron y runDue serverless) · C · 10h · deps: CAT-00-02
 - [ ] `CAT-CMS-04` **TODO** Implementar y publicar @core/antispam (Turnstile, honeypot, rate limit) · C · 6h · deps: CAT-00-02
 - [ ] `CAT-CMS-05` **TODO** Implementar y publicar @core/admin (shell, CRUD genérico de AdminResource, auditoría) · C · 32h · deps: CAT-00-04, CAT-CMS-01

@@ -62,6 +62,8 @@ Backblaze B2) y disco local en desarrollo. URLs de subida firmadas para subir di
 |---|---|---|---|---|
 | `src/lib/storage` | — | `aws4fetch` (firma SigV4, funciona en Node y Workers) | `STORAGE_DRIVER`, `STORAGE_BUCKET`, `STORAGE_ENDPOINT`, `STORAGE_ACCESS_KEY_ID`, `STORAGE_SECRET_ACCESS_KEY`, `STORAGE_PUBLIC_URL` | — |
 
+Opcionales: `STORAGE_REGION` (default `auto`); con los drivers `local`/`memory`, `STORAGE_SECRET` (firma de subidas locales) y `STORAGE_LOCAL_DIR`.
+
 **API.** `put(key, body, {contentType})`, `get`, `delete`, `presignUpload(key, {maxBytes, contentType, expiresIn})`, `publicUrl(key)`.
 **Seguridad.** Claves generadas por el servidor (nunca el nombre del archivo del usuario como ruta); `maxBytes` y
 `contentType` firmados en la URL; bucket privado por defecto con lectura pública solo por prefijo `public/`.
