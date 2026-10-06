@@ -54,6 +54,20 @@ export type AdminListQuery = {
 
 export type AdminListResult<T> = { rows: T[]; total: number };
 
+/** Acción extra sobre un registro (publicar, programar, reembolsar…). El panel la muestra si `can(permission)`. */
+export type AdminAction<T> = {
+  name: string;
+  label: string;
+  permission: string;
+  /** Pide confirmación antes de ejecutarla. */
+  confirm?: boolean;
+  /** Entrada adicional (p. ej. fecha de programación). */
+  input?: ZodType;
+  /** Si se ofrece para este registro. */
+  available?(row: T): boolean;
+  run(id: string, input: unknown, ctx: AdminContext): Promise<T>;
+};
+
 export type AdminResource<T extends { id: string } = { id: string } & Record<string, unknown>> = {
   /** Identificador en URLs y permisos: `posts` → `/admin/posts`, `posts:read`. */
   name: string;
@@ -71,6 +85,7 @@ export type AdminResource<T extends { id: string } = { id: string } & Record<str
   create?(input: unknown, ctx: AdminContext): Promise<T>;
   update?(id: string, input: unknown, ctx: AdminContext): Promise<T>;
   delete?(id: string, ctx: AdminContext): Promise<void>;
+  actions?: AdminAction<T>[];
 };
 
 export const defineAdminResource = <T extends { id: string }>(resource: AdminResource<T>): AdminResource<T> =>

@@ -14,12 +14,13 @@ publicación programada, idiomas y vista previa.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/content` | `@core/db ^1`, `@core/jobs ^1`, `@core/contracts ^1` | — | `CONTENT_PREVIEW_SECRET` | — |
+| `src/lib/content` | `@core/db ^1`, `@core/jobs ^1`, `@core/contracts ^1` | `zod` | `CONTENT_PREVIEW_SECRET`, `CONTENT_DEFAULT_LOCALE` (opc.) | — |
 
-**Tablas.** `content_entries` (id, collection, slug, locale, status `draft|scheduled|published|archived`, data jsonb,
-authorId, publishedAt, scheduledAt, translationOf), `content_revisions` (entryId, data, authorId, at, message).
+**Tablas.** `content_entries` (id, collection, slug, locale, groupId de traducciones, status `draft|scheduled|published|archived`,
+`data` = lo publicado, `draft` = cambios sin publicar, authorId, publishedAt, scheduledAt), `content_revisions` (una por publicación).
+Editar una entrada publicada no cambia la web hasta volver a publicar.
 **API.**
-- `defineCollection(name, {fields, slug, localized, versions, publicRead})`, `defineSingleton(name, {fields})`.
+- `defineCollection(name, {schema, fields, localized, titleField})`, `defineSingleton(name, {...})`. Las lecturas públicas solo devuelven lo publicado; no hay API HTTP pública de contenido (cada kit decide qué rutas exponer).
 - Lectura tipada: `getEntry('pages', 'about', {locale})`, `listEntries('pages', {where, orderBy, limit})`, `getSingleton('home')`.
 - Escritura: `saveDraft`, `publish`, `schedule(at)` (vía `jobs`), `unpublish`, `restoreRevision`.
 - Vista previa: `createPreviewToken(entryId)` + adaptador Next `draftMode`.

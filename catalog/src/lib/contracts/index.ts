@@ -1,5 +1,6 @@
 // @core/contracts — API pública. Solo tipos y esquemas zod: nada de lógica ni tablas.
 export {
+  type AdminAction,
   type AdminContext,
   type AdminField,
   type AdminFieldType,

@@ -8,18 +8,25 @@
 ## F0 · Decisiones
 
 - [x] `CAT-00-01` **DONE** Decidir ADR-033 y las preguntas C1–C6 del catálogo (admin propio vs. CMS existente, scope de los kits, Next primero, licencias, proveedores, impuestos) · F · 2h · deps: —
-- [x] `CAT-00-02` **DONE** Workspace de desarrollo del catálogo (como ../genpm-seeds) con app Next de ejemplo, PGlite, Playwright y Changesets por tren · C · 4h · deps: CAT-00-01
-- [ ] `CAT-00-03` **DOING** Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h · deps: CAT-00-02
+- [ ] `CAT-00-02` **DOING** Workspace de desarrollo del catálogo (como ../genpm-seeds) con app Next de ejemplo, PGlite, Playwright y Changesets por tren · C · 4h · deps: CAT-00-01
+  - Hecho (2026-10-06): `catalog/` con estructura de proyecto consumidor, PGlite, `scripts/meta.mjs`, `scripts/validate.sh` y job `catalog` en CI. Falta: app Next de ejemplo, Playwright y Changesets (con los primeros paquetes de UI).
+- [ ] `CAT-00-03` **BLOCKED** Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h · deps: CAT-00-02
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/contracts` (2026-10-06). Falta crear el repo `genpm-net/contracts` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-00-04` **TODO** Implementar y publicar @core/ui con tokens claro/oscuro y axe sin violaciones · C · 12h · deps: CAT-00-02
 
 ## F1 · CMS (kit-cms)
 
-- [ ] `CAT-CMS-01` **DOING** Implementar y publicar @core/rbac · C · 8h · deps: CAT-00-03
-- [ ] `CAT-CMS-02` **DOING** Implementar y publicar @core/storage (S3/R2/MinIO y local) · C · 8h · deps: CAT-00-02
-- [ ] `CAT-CMS-03` **DOING** Implementar y publicar @core/jobs (cola Postgres, cron y runDue serverless) · C · 10h · deps: CAT-00-02
-- [ ] `CAT-CMS-04` **DOING** Implementar y publicar @core/antispam (Turnstile, honeypot, rate limit) · C · 6h · deps: CAT-00-02
+- [ ] `CAT-CMS-01` **BLOCKED** Implementar y publicar @core/rbac · C · 8h · deps: CAT-00-03
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/rbac` (2026-10-06). Falta crear el repo `genpm-net/rbac` (fundador), publicar, pruebas de agente y revisión ADR-023.
+- [ ] `CAT-CMS-02` **BLOCKED** Implementar y publicar @core/storage (S3/R2/MinIO y local) · C · 8h · deps: CAT-00-02
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/storage` (2026-10-06). Falta crear el repo `genpm-net/storage` (fundador), publicar, pruebas de agente y revisión ADR-023.
+- [ ] `CAT-CMS-03` **BLOCKED** Implementar y publicar @core/jobs (cola Postgres, cron y runDue serverless) · C · 10h · deps: CAT-00-02
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/jobs` (2026-10-06). Falta crear el repo `genpm-net/jobs` (fundador), publicar, pruebas de agente y revisión ADR-023.
+- [ ] `CAT-CMS-04` **BLOCKED** Implementar y publicar @core/antispam (Turnstile, honeypot, rate limit) · C · 6h · deps: CAT-00-02
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/antispam` (2026-10-06). Falta crear el repo `genpm-net/antispam` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-CMS-05` **TODO** Implementar y publicar @core/admin (shell, CRUD genérico de AdminResource, auditoría) · C · 32h · deps: CAT-00-04, CAT-CMS-01
-- [ ] `CAT-CMS-06` **TODO** Implementar y publicar @core/content (colecciones, singletons, revisiones, programación, vista previa, retrofit) · C · 28h · deps: CAT-00-03, CAT-CMS-03
+- [ ] `CAT-CMS-06` **BLOCKED** Implementar y publicar @core/content (colecciones, singletons, revisiones, programación, vista previa, retrofit) · C · 28h · deps: CAT-00-03, CAT-CMS-03
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/content` (2026-10-06). Falta crear el repo `genpm-net/content` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-CMS-07` **TODO** Implementar y publicar @core/media (subida firmada, variantes, saneado de SVG y EXIF) · C · 14h · deps: CAT-CMS-02, CAT-00-03
 - [ ] `CAT-CMS-08` **TODO** Implementar y publicar @core/rich-text (Tiptap, JSON, render anti-XSS) · C · 14h · deps: CAT-CMS-07
 - [ ] `CAT-CMS-09` **TODO** Implementar y publicar @core/site (ajustes, menús, redirecciones sin open redirect) · C · 8h · deps: CAT-CMS-06

@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-06. No editar a mano. -->
 
-**68 %** completado · 215/318 tareas · 717.5h estimadas pendientes
+**67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
 
-TODO 70 · DOING 9 · DONE 215 · BLOCKED 24 · CUT 0
+TODO 69 · DOING 5 · DONE 214 · BLOCKED 30 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -88,7 +88,7 @@ TODO 70 · DOING 9 · DONE 215 · BLOCKED 24 · CUT 0
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 17/18 | 2h |
 | [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓▓▓▓▓▓░░` 83 % | 33/40 | 46.5h |
-| [Catálogo de paquetes y kits](11-catalogo.md) | `░░░░░░░░░░░░` 4 % | 2/50 | 618h |
+| [Catálogo de paquetes y kits](11-catalogo.md) | `░░░░░░░░░░░░` 2 % | 1/50 | 622h |
 
 **En curso**
 
@@ -96,11 +96,7 @@ TODO 70 · DOING 9 · DONE 215 · BLOCKED 24 · CUT 0
 - `D0-05` Crear la org de GitHub GenPM-net con 2FA obligatorio · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-10` Cuenta Cloudflare Workers Paid con llaves FIDO2 · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `V011-02` Binario nativo de genpm para macOS, Linux y Windows con instaladores de una línea y genpm upgrade (ADR-025) · B · 8h ([10-post-mvp.md](10-post-mvp.md))
-- `CAT-00-03` Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h ([11-catalogo.md](11-catalogo.md))
-- `CAT-CMS-01` Implementar y publicar @core/rbac · C · 8h ([11-catalogo.md](11-catalogo.md))
-- `CAT-CMS-02` Implementar y publicar @core/storage (S3/R2/MinIO y local) · C · 8h ([11-catalogo.md](11-catalogo.md))
-- `CAT-CMS-03` Implementar y publicar @core/jobs (cola Postgres, cron y runDue serverless) · C · 10h ([11-catalogo.md](11-catalogo.md))
-- `CAT-CMS-04` Implementar y publicar @core/antispam (Turnstile, honeypot, rate limit) · C · 6h ([11-catalogo.md](11-catalogo.md))
+- `CAT-00-02` Workspace de desarrollo del catálogo (como ../genpm-seeds) con app Next de ejemplo, PGlite, Playwright y Changesets por tren · C · 4h ([11-catalogo.md](11-catalogo.md))
 
 **Bloqueadas**
 
@@ -128,6 +124,12 @@ TODO 70 · DOING 9 · DONE 215 · BLOCKED 24 · CUT 0
 - `S-EM-08` Escaneo passed y revisión de seguridad (ADR-023) · T · 0.5h ([08-semillas.md](08-semillas.md))
 - `S-AI-07` Prueba de agente en Cursor · C · 0.5h ([08-semillas.md](08-semillas.md))
 - `S-AI-08` Escaneo passed y revisión de seguridad (ADR-023) · T · 0.5h ([08-semillas.md](08-semillas.md))
+- `CAT-00-03` Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-01` Implementar y publicar @core/rbac · C · 8h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-02` Implementar y publicar @core/storage (S3/R2/MinIO y local) · C · 8h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-03` Implementar y publicar @core/jobs (cola Postgres, cron y runDue serverless) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-04` Implementar y publicar @core/antispam (Turnstile, honeypot, rate limit) · C · 6h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-06` Implementar y publicar @core/content (colecciones, singletons, revisiones, programación, vista previa, retrofit) · C · 28h ([11-catalogo.md](11-catalogo.md))
 
 **Siguientes disponibles** (TODO con todas sus dependencias cerradas)
 

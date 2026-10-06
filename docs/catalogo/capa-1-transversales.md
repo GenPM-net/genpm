@@ -22,7 +22,7 @@ contrato" sin depender del paquete concreto. Es la pieza que evita los imports c
 | `ContentSource` | `get(collection, slugOrId, {locale, draft})`, `list(collection, query)` | `content`, adaptador Payload | `blog`, `blocks`, `site`, kits |
 | `SitemapSource` | `async *urls(): {loc, lastmod, alternates}` | `content`, `blog`, `catalog` | `seo` |
 | `SearchSource` | `async *documents(): {id, type, url, title, body, locale}` + `onChange` | `content`, `blog`, `catalog` | `search` |
-| `AdminResource` | `{name, label, icon, schema (zod), fields (meta UI), list, get, create, update, delete, permissions}` | `content`, `media`, `catalog`, `orders`, `forms`, … | `admin` |
+| `AdminResource` | `{name, label, icon, group, input (zod), fields (meta UI), title, list, get, create, update, delete, actions}` (acciones: publicar, programar, reembolsar…) | `content`, `media`, `catalog`, `orders`, `forms`, … | `admin` |
 | `PaymentProvider` | `refund(paymentId, amount)`, `getPayment(id)` | `checkout` (Stripe) | `orders` |
 | `CommerceEvent` | Unión `view_item \| add_to_cart \| begin_checkout \| purchase` con `eventId` | `cart`, `checkout`, kits | `pixels`, `experiments` |
 | `Money` | `{amount: number /* entero, unidades menores */, currency: string}` | `money` | comercio |
