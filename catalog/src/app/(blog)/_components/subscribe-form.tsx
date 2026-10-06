@@ -1,5 +1,5 @@
 // Alta en la newsletter con doble opt-in (@core/newsletter). Sin JavaScript: 303 de vuelta con `?newsletter=`.
-import { AntispamFields } from './antispam-fields';
+import { AntispamFields } from '@/lib/antispam/react';
 
 const MESSAGES: Record<string, { tone: 'success' | 'error'; text: string }> = {
   pending: { tone: 'success', text: 'Almost done: check your inbox and confirm your subscription.' },

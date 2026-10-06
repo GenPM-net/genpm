@@ -38,7 +38,7 @@ export default async function PostPage({ params, searchParams }: Props) {
   const post = await load((await params).slug);
   if (!post) notFound();
   const sp = await searchParams;
-  const [cover, related, settings] = await Promise.all([mediaImage(post.cover, { alt: post.coverAlt ?? '', priority: true }), relatedPosts(post), getSiteSettings()]);
+  const [cover, related, settings] = await Promise.all([mediaImage(post.cover, { alt: post.coverAlt ?? '' }), relatedPosts(post), getSiteSettings()]);
   const authors = post.authorProfiles.map((a) => a.name).join(', ');
   const ld =
     post.publishedAt &&

@@ -8,6 +8,7 @@ keys (no plain IPs or emails). Not a WAF or DDoS protection. Table: `rate_limits
 ## Map
 - `index.ts` — public API: `verifyHuman`, `rateLimit`, `formTimingToken`, `honeypotProps`, `verifyCaptcha`, `clientIp`, `pruneRateLimits`.
 - `verify.ts` — the full check. `checks.ts` — individual checks. `rate-limit.ts` — limiter. `schema.ts` — table.
+- `react.ts` — `<AntispamFields />` (async server component) with the honeypot and the signed timing field for HTML forms.
 
 ## Integration
 1. Env: `ANTISPAM_SECRET` (≥ 32 random chars). Optional captcha: `TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`

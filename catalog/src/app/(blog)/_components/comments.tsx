@@ -1,7 +1,7 @@
 // Comentarios aprobados y formulario (funciona sin JavaScript: POST y 303 de vuelta con `?comment=`).
 import { listComments } from '@/lib/comments';
 import { formatDate } from '../_lib/paths';
-import { AntispamFields } from './antispam-fields';
+import { AntispamFields } from '@/lib/antispam/react';
 
 const MESSAGES: Record<string, { tone: 'success' | 'error'; text: string }> = {
   approved: { tone: 'success', text: 'Thanks! Your comment is published.' },

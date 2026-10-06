@@ -14,25 +14,13 @@ vi.mock('next/headers', () => ({
 }));
 
 import { admin, blocks } from '@/genpm';
-import * as adminSchema from '@/lib/admin/schema';
 import { formTimingToken } from '@/lib/antispam';
-import * as antispamSchema from '@/lib/antispam/schema';
-import * as authSchema from '@/lib/auth/schema';
 import { RenderBlocks } from '@/lib/blocks';
-import * as consentSchema from '@/lib/consent/schema';
 import { createEntry, publish, seedEntry } from '@/lib/content';
-import * as contentSchema from '@/lib/content/schema';
-import { testDb } from '@/lib/db/__fixtures__/pglite';
+import { projectDb } from '@/genpm/__fixtures__/db';
 import { formSubmissions } from '@/lib/forms';
-import * as formsSchema from '@/lib/forms/schema';
 import { runDue } from '@/lib/jobs';
-import * as jobsSchema from '@/lib/jobs/schema';
-import * as mediaSchema from '@/lib/media/schema';
 import { pixelAttributions } from '@/lib/pixels';
-import * as pixelsSchema from '@/lib/pixels/schema';
-import * as rbacSchema from '@/lib/rbac/schema';
-import * as searchSchema from '@/lib/search/schema';
-import * as siteSchema from '@/lib/site/schema';
 import { leadsByLandingWidget } from './_lib/widgets';
 import { POST as consentPost } from './api/consent/route';
 import { POST as leadPost } from './lp/[slug]/lead/[formKey]/route';
@@ -44,7 +32,7 @@ const html = async (node: Promise<unknown> | unknown) => {
   await stream.allReady;
   return new Response(stream).text();
 };
-let db: Awaited<ReturnType<typeof testDb>>;
+let db: Awaited<ReturnType<typeof projectDb>>;
 const realFetch = globalThis.fetch;
 const props = (slug: string, sp: Record<string, string> = {}) => ({ params: Promise.resolve({ slug }), searchParams: Promise.resolve(sp) });
 
@@ -72,7 +60,7 @@ beforeAll(() => {
 
 beforeEach(async () => {
   state.cookie = '';
-  db = await testDb(authSchema, rbacSchema, contentSchema, mediaSchema, formsSchema, antispamSchema, jobsSchema, searchSchema, siteSchema, adminSchema, consentSchema, pixelsSchema);
+  db = await projectDb();
   await seedEntry({ collection: 'site_settings', data: { name: 'Acme' } });
   const l = await createEntry({
     collection: 'landings',

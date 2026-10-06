@@ -9,26 +9,14 @@ vi.mock('next/headers', () => ({
 }));
 
 import { admin, blocks } from '@/genpm';
-import * as adminSchema from '@/lib/admin/schema';
-import * as antispamSchema from '@/lib/antispam/schema';
 import { formTimingToken } from '@/lib/antispam';
-import * as authSchema from '@/lib/auth/schema';
 import { RenderBlocks } from '@/lib/blocks';
-import * as commentsSchema from '@/lib/comments/schema';
 import { comments } from '@/lib/comments';
 import { createEntry, publish, schedulePublish, seedEntry } from '@/lib/content';
-import * as contentSchema from '@/lib/content/schema';
-import { testDb } from '@/lib/db/__fixtures__/pglite';
-import * as formsSchema from '@/lib/forms/schema';
-import * as jobsSchema from '@/lib/jobs/schema';
-import * as mediaSchema from '@/lib/media/schema';
+import { projectDb } from '@/genpm/__fixtures__/db';
 import { campaigns } from '@/lib/newsletter';
-import * as newsletterSchema from '@/lib/newsletter/schema';
-import * as rbacSchema from '@/lib/rbac/schema';
 import { docFromText } from '@/lib/rich-text';
-import * as searchSchema from '@/lib/search/schema';
 import { sitemapChunkXml } from '@/lib/seo';
-import * as siteSchema from '@/lib/site/schema';
 import { POST as postCommentRoute } from './api/comments/[type]/[id]/route';
 import CategoryPage from './blog/category/[slug]/page';
 import { GET as rss } from './blog/feed.xml/route';
@@ -54,7 +42,7 @@ async function digest(p: Promise<unknown>): Promise<string> {
 }
 const sp = (o: Record<string, string> = {}) => Promise.resolve(o);
 const params = <T,>(p: T) => Promise.resolve(p);
-let db: Awaited<ReturnType<typeof testDb>>;
+let db: Awaited<ReturnType<typeof projectDb>>;
 let helloId: string;
 
 async function post(slug: string, data: Record<string, unknown>, opts: { publishAt?: Date | 'never' } = {}) {
@@ -70,7 +58,7 @@ beforeAll(() => {
 
 beforeEach(async () => {
   state.draft = false;
-  db = await testDb(authSchema, rbacSchema, contentSchema, mediaSchema, formsSchema, antispamSchema, jobsSchema, searchSchema, siteSchema, adminSchema, commentsSchema, newsletterSchema);
+  db = await projectDb();
   await seedEntry({ collection: 'site_settings', data: { name: 'Acme', tagline: 'Mugs' } });
   for (const [c, slug, name] of [['authors', 'ana', 'Ana'], ['categories', 'news', 'News'], ['tags', 'mugs', 'Mugs'], ['tags', 'tea', 'Tea']] as const)
     await publish((await createEntry({ collection: c, slug, data: { name } })).id);

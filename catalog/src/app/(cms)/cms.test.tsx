@@ -10,22 +10,12 @@ vi.mock('next/headers', () => ({
 }));
 
 import { admin, pages } from '@/genpm';
-import * as adminSchema from '@/lib/admin/schema';
-import * as antispamSchema from '@/lib/antispam/schema';
 import { createSession, generateSessionToken, SESSION_COOKIE, upsertOAuthUser } from '@/lib/auth';
-import * as authSchema from '@/lib/auth/schema';
 import { createEntry, publish, seedEntry } from '@/lib/content';
-import * as contentSchema from '@/lib/content/schema';
-import { testDb } from '@/lib/db/__fixtures__/pglite';
-import * as formsSchema from '@/lib/forms/schema';
-import * as jobsSchema from '@/lib/jobs/schema';
-import * as mediaSchema from '@/lib/media/schema';
+import { projectDb } from '@/genpm/__fixtures__/db';
 import { bootstrapOwner } from '@/lib/rbac';
-import * as rbacSchema from '@/lib/rbac/schema';
 import { reindex } from '@/lib/search';
-import * as searchSchema from '@/lib/search/schema';
 import { invalidateRedirectCache, upsertRedirect } from '@/lib/site';
-import * as siteSchema from '@/lib/site/schema';
 import CatchAll, { generateMetadata } from './[...slug]/page';
 import AdminPage from './admin/[[...path]]/page';
 import { createOwner } from './_scripts/create-owner';
@@ -61,7 +51,7 @@ beforeEach(async () => {
   state.draft = false;
   state.cookie = '';
   invalidateRedirectCache();
-  await testDb(authSchema, rbacSchema, contentSchema, mediaSchema, formsSchema, antispamSchema, jobsSchema, searchSchema, siteSchema, adminSchema);
+  await projectDb();
   await seedEntry({ collection: 'site_settings', data: { name: 'Acme', tagline: 'Mugs for everyone' } });
   const about = await createEntry({
     collection: 'pages',

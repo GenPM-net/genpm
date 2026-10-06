@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { ReactElement } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { renderToReadableStream } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { formTimingToken } from '../antispam/index.js';
@@ -201,7 +201,13 @@ describe('adapters', () => {
 });
 
 describe('<Form> and HTML posts without JavaScript', () => {
-  const html = async (props: Parameters<typeof Form>[0]) => renderToStaticMarkup((await Form(props)) as ReactElement);
+  const html = async (props: Parameters<typeof Form>[0]) => {
+    const el = (await Form(props)) as ReactElement | null;
+    if (!el) return '';
+    const stream = await renderToReadableStream(el);
+    await stream.allReady;
+    return new Response(stream).text();
+  };
 
   it('renders fields from the zod schema with honeypot, timing token and consent', async () => {
     const out = await html({ formKey: 'contact' });

@@ -2,7 +2,7 @@
 // honeypot, token de tiempo y casilla de consentimiento. Componente de servidor (async): carga la definición.
 import { createElement as h, type ReactNode } from 'react';
 import type { z } from 'zod';
-import { formTimingToken, honeypotProps, TIMING_FIELD } from '../antispam/index.js';
+import { AntispamFields } from '../antispam/react.js';
 import { type BuilderField, type FormDefinition, getForm } from './definitions.js';
 import { CONSENT_FIELD } from './submit.js';
 
@@ -94,8 +94,7 @@ export async function Form(p: FormProps): Promise<ReactNode> {
         h('label', { htmlFor: `${id}-consent` }, form.consent.text),
       ),
     // Trampa para bots: fuera de pantalla, no `type=hidden`.
-    h('input', { ...honeypotProps }),
-    h('input', { type: 'hidden', name: TIMING_FIELD, value: await formTimingToken() }),
+    h(AntispamFields),
     h('button', { type: 'submit', className: 'ui-button ui-button--primary' }, L.submit),
   );
 }

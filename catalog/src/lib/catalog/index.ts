@@ -1,5 +1,5 @@
 // @core/catalog — API pública. Importa desde aquí.
-export { catalogAdminResources, categoriesAdminResource, productsAdminResource } from './admin.js';
+export { catalogAdminResources, categoriesAdminResource, type ProductAdminRow, productsAdminResource, toAdminRow } from './admin.js';
 export {
   type Availability,
   availability,

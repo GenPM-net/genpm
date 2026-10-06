@@ -89,7 +89,8 @@
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/discounts` (2026-10-06). Falta crear el repo `genpm-net/discounts` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-STO-09` **BLOCKED** Implementar y publicar @core/reviews (compra verificada, importadas etiquetadas, AggregateRating) · C · 10h · deps: CAT-BLG-02, CAT-STO-05, CAT-STO-03
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/reviews` (2026-10-06). Falta crear el repo `genpm-net/reviews` (fundador), publicar, pruebas de agente y revisión ADR-023.
-- [ ] `CAT-STO-10` **TODO** Implementar y publicar @core/kit-store (tienda, área de cliente, emails, plantillas legales) · C · 32h · deps: CAT-CMS-14, CAT-STO-07, CAT-STO-08, CAT-STO-09
+- [ ] `CAT-STO-10` **BLOCKED** Implementar y publicar @core/kit-store (tienda, área de cliente, emails, plantillas legales) · C · 32h · deps: CAT-CMS-14, CAT-STO-07, CAT-STO-08, CAT-STO-09
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/app/(store)` (2026-10-06). Falta crear el repo `genpm-net/kit-store` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-STO-11` **TODO** Aceptación kit-store: compra e2e con stripe listen en CI, manipulación de precio rechazada y Lighthouse ≥ 90 · T · 4h · deps: CAT-STO-10
 
 ## F5 · Dropshipping (kit-dropshipping)

@@ -24,6 +24,9 @@
   "g": {
     "@core/db": "^1.0.0"
   },
+  "p": {
+    "react": "^19.0.0"
+  },
   "e": [
     "ANTISPAM_SECRET",
     "TURNSTILE_SITE_KEY",

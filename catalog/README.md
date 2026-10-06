@@ -56,3 +56,4 @@ node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde s
 | `kit-cms` (src/app/(cms)) | CAT-CMS-14 | Implementado y validado (rutas, registro, tests con Next simulado) · pendiente de publicar y de la prueba de agente CAT-CMS-15 |
 | `kit-blog` (src/app/(blog)) | CAT-BLG-04 | Implementado y validado · pendiente de publicar y de la prueba de agente CAT-BLG-05 |
 | `kit-landing` (src/app/(landing)) | CAT-LND-03 | Implementado y validado · pendiente de publicar y de la aceptación CAT-LND-04 (Playwright, Lighthouse) |
+| `kit-store` (src/app/(store)) | CAT-STO-10 | Implementado y validado · pendiente de publicar y de la aceptación e2e CAT-STO-11 |

@@ -1,6 +1,7 @@
 // Qué se indexa en la búsqueda del sitio.
 import { blogSearchSource } from '@/lib/blog';
 import { blocksToText } from '@/lib/blocks';
+import { productSearchSource } from '@/lib/catalog';
 import { contentSearchSource } from '@/lib/content';
 import type { BlockInstance } from '@/lib/blocks';
 import { toPlainText } from '@/lib/rich-text';
@@ -15,3 +16,4 @@ registerSearchSource(
   }),
 );
 registerSearchSource(blogSearchSource()); // kit-blog
+registerSearchSource(productSearchSource()); // kit-store

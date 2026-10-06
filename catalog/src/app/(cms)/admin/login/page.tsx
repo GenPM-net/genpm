@@ -11,8 +11,15 @@ export const metadata: Metadata = { title: 'Sign in', robots: { index: false, fo
 
 const NAMES: Record<string, string> = { github: 'GitHub', google: 'Google' };
 
-export default async function Login() {
-  if (await currentUser()) redirect('/admin');
+/** Solo rutas del propio sitio (anti open redirect). */
+const safeReturn = (v: string | string[] | undefined) => {
+  const s = Array.isArray(v) ? v[0] : v;
+  return s && /^\/(?![/\\])[\w\-/.?=&%]*$/.test(s) ? s : '/admin';
+};
+
+export default async function Login({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const returnTo = safeReturn((await searchParams).returnTo);
+  if (await currentUser()) redirect(returnTo);
   const providers = enabledProviders();
   return (
     <main className="ui-root admin-login">
@@ -21,7 +28,7 @@ export default async function Login() {
         <ul>
           {providers.map((p) => (
             <li key={p}>
-              <a className="ui-button ui-button--primary" href={`/auth/login/${p}?returnTo=${encodeURIComponent('/admin')}`}>
+              <a className="ui-button ui-button--primary" href={`/auth/login/${p}?returnTo=${encodeURIComponent(returnTo)}`}>
                 Continue with {NAMES[p] ?? p}
               </a>
             </li>

@@ -56,7 +56,19 @@ por válidas: deja aviso en el dashboard hasta que el usuario las marque como re
 4. Configurar zonas de envío y moneda de la tienda.
 5. Verificar en modo test: compra con tarjeta de prueba, webhook recibido, pedido creado, email enviado, stock descontado.
 
-## 5. Aceptación específica
+## 5. Implementación 1.0 (notas)
+
+- Código en `catalog/src/app/(store)`; líneas `// kit-store` en `catalog/src/genpm` (incluido `commerce.ts`).
+- Formularios de tienda como Server Actions (sin JavaScript); el cliente nunca envía importes.
+- Precio "antes" oculto por defecto (Ómnibus); con `@core/pricing` se muestra vía `honestCompareAt`.
+- Páginas legales como borradores con estructura y aviso, nunca publicadas solas; widget de aviso en el panel.
+- Cambios en paquetes: `@core/catalog` renombra su recurso de categorías a `product-categories` (choque con el blog)
+  y sus filas de panel tienen la forma de la entrada (`toAdminRow`); `@core/media` añade `imageFor`;
+  `@core/antispam` añade `<AntispamFields />`.
+- Pendiente 1.1: Payment Element embebido, `/account/addresses`, emails de carrito abandonado (con consentimiento) y
+  filtros por precio/atributos en `/shop`.
+
+## 6. Aceptación específica
 
 - Compra completa en modo test con `stripe listen` en CI (e2e Playwright).
 - Manipular precio, cantidad o descuento desde el cliente no altera el importe cobrado.

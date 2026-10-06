@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
 
-TODO 41 · DOING 5 · DONE 214 · BLOCKED 58 · CUT 0
+TODO 40 · DOING 5 · DONE 214 · BLOCKED 59 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -156,6 +156,7 @@ TODO 41 · DOING 5 · DONE 214 · BLOCKED 58 · CUT 0
 - `CAT-STO-07` Implementar y publicar @core/checkout (Stripe Checkout, pedido solo en webhook, idempotente) · C · 16h ([11-catalogo.md](11-catalogo.md))
 - `CAT-STO-08` Implementar y publicar @core/discounts (cupones, límites, regla Ómnibus de 30 días) · C · 12h ([11-catalogo.md](11-catalogo.md))
 - `CAT-STO-09` Implementar y publicar @core/reviews (compra verificada, importadas etiquetadas, AggregateRating) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-10` Implementar y publicar @core/kit-store (tienda, área de cliente, emails, plantillas legales) · C · 32h ([11-catalogo.md](11-catalogo.md))
 - `CAT-DRP-01` Implementar y publicar @core/pricing (reglas de margen, historial de precios) · C · 10h ([11-catalogo.md](11-catalogo.md))
 - `CAT-DRP-02` Implementar y publicar @core/suppliers con el adaptador manual (CSV) · C · 20h ([11-catalogo.md](11-catalogo.md))
 

@@ -14,6 +14,7 @@ import {
   lowStockVariants,
   productSearchSource,
   productSitemapSource,
+  categoriesAdminResource,
   productsAdminResource,
   type ProductInputData,
   releaseStock,
@@ -152,6 +153,14 @@ describe('admin', () => {
     expect(created.variants).toHaveLength(2);
     expect((await productsAdminResource.list({ page: 1, pageSize: 10, search: 'MUG-B' }, editor)).total).toBe(1);
     await expect(productsAdminResource.list({ page: 1, pageSize: 10 }, ctx([]))).rejects.toMatchObject({ code: 'forbidden' });
+    // Ida y vuelta del formulario: lo que devuelve `get` vuelve a ser una entrada válida sin cambios.
+    expect(created.categories).toEqual(['kitchen']);
+    const { id: _id, createdAt: _c, updatedAt: _u, ...form } = (await productsAdminResource.get(created.id, editor))!;
+    const saved = await productsAdminResource.update!(created.id, { ...form, name: 'Mug 2' }, editor);
+    expect(saved).toMatchObject({ name: 'Mug 2', categories: ['kitchen'], variants: created.variants });
+    const cats = await categoriesAdminResource.list({ page: 1, pageSize: 10 }, editor);
+    expect(cats.rows.map((c) => [c.slug, c.parent])).toEqual(expect.arrayContaining([['home', null], ['kitchen', 'home']]));
+    expect(categoriesAdminResource.name).toBe('product-categories');
     const archived = await productsAdminResource.actions![0]!.run(created.id, {}, editor);
     expect(archived.status).toBe('archived');
     expect(await getProduct('mug')).toBeNull();

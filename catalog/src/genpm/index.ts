@@ -3,6 +3,7 @@ import './content';
 import './forms';
 import './seo';
 import './search';
+import './commerce'; // kit-store
 
 export { admin } from './admin';
 export { blocks } from './blocks';
