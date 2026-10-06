@@ -504,5 +504,36 @@
         ]
       }
     ]
+  },
+  "catalog": {
+    "s": {
+      "en": "Product catalog: variants with options, prices in cents, categories, collections, translations and safe stock reservations",
+      "es": "Catálogo de productos: variantes con opciones, precios en céntimos, categorías, colecciones, traducciones y reserva de stock segura",
+      "pt-BR": "Catálogo de produtos: variantes com opções, preços em centavos, categorias, coleções, traduções e reserva de estoque segura",
+      "fr": "Catalogue produits : variantes à options, prix en centimes, catégories, collections, traductions et réservation de stock sûre",
+      "de": "Produktkatalog: Varianten mit Optionen, Preise in Cent, Kategorien, Kollektionen, Übersetzungen und sichere Lagerreservierung",
+      "ja": "商品カタログ：オプション付きバリアント、最小単位の価格、カテゴリ、コレクション、翻訳、安全な在庫引当",
+      "zh-CN": "商品目录：带选项的变体、以分计价、分类、合集、翻译和安全的库存预留",
+      "ko": "상품 카탈로그: 옵션 변형, 최소 단위 가격, 카테고리, 컬렉션, 번역, 안전한 재고 예약"
+    },
+    "k": [
+      "ecommerce",
+      "catalog",
+      "products",
+      "inventory",
+      "variants"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/money": "^1.0.0",
+      "@core/rich-text": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "STORE_CURRENCY"
+    ]
   }
 }

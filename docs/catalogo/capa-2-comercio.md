@@ -23,7 +23,7 @@ atributos libres.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/catalog` | `@core/db ^1`, `@core/media ^1`, `@core/money ^1`, `@core/contracts ^1` | — | — | — |
+| `src/lib/catalog` | `@core/db ^1`, `@core/money ^1`, `@core/rich-text ^1`, `@core/contracts ^1` (imágenes por id de `media`) | `zod` | `STORE_CURRENCY` | — |
 
 **Tablas.** `products`, `product_variants` (sku, price, compareAtPrice, cost, currency, stock, weight, options jsonb),
 `product_options`, `product_media`, `categories`, `product_categories`, `collections`.
