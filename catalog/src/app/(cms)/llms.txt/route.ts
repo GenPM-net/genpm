@@ -4,7 +4,7 @@ import { listEntries } from '@/lib/content';
 import { llmsTxt } from '@/lib/seo';
 import { getSiteSettings } from '@/lib/site';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic'; // se genera en cada petición (con caché HTTP): el build no necesita BD ni SITE_URL
 
 export async function GET(): Promise<Response> {
   const [settings, pages] = await Promise.all([getSiteSettings(), listEntries<{ title: string; seo?: { description?: string; noindex?: boolean } }>('pages', { limit: 200, orderBy: 'slug' })]);
@@ -20,5 +20,5 @@ export async function GET(): Promise<Response> {
       },
     ],
   });
-  return new Response(body, { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  return new Response(body, { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
 }

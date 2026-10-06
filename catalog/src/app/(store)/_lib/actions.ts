@@ -11,6 +11,11 @@ import { applySetCookie, cookieHeader, currentUserId } from './store';
 
 const str = (fd: FormData, k: string, max = 200) => String(fd.get(k) ?? '').trim().slice(0, max);
 const back = (path: string, params: Record<string, string>) => `${path}?${new URLSearchParams(params)}`;
+/** Ruta local del mismo sitio (sin `//host` ni `/\\host`), sin query; si no, `fallback`. */
+const localPath = (p: string, fallback: string) => {
+  const path = p.split(/[?#]/)[0]!;
+  return /^\/(?![/\\])/.test(path) && !path.includes('\\') ? path : fallback;
+};
 
 async function cart() {
   const { cart: c, setCookie } = await getOrCreateCart(await cookieHeader(), await currentUserId());
@@ -25,7 +30,7 @@ export async function addToCart(fd: FormData): Promise<void> {
   try {
     await addLine((await cart()).id, variantId, quantity);
   } catch (e) {
-    if (e instanceof CartError) redirect(back(from.startsWith('/') ? from : '/shop', { cart_error: e.code }));
+    if (e instanceof CartError) redirect(back(localPath(from, '/shop'), { cart_error: e.code }));
     throw e;
   }
   redirect('/cart?added=1');

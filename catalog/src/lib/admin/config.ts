@@ -17,6 +17,7 @@ export type AdminConfig = {
 };
 
 /** Declara el panel (en `src/genpm/admin.ts`). Los nombres de recurso deben ser únicos. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- cada elemento tiene su propio tipo (recibe y devuelve su fila/datos): ningún tipo común es asignable en ambos sentidos
 export function defineAdmin(cfg: { title?: string; resources: Array<AdminResource<any>>; widgets?: AdminWidget[] }): AdminConfig {
   const names = new Set<string>();
   for (const r of cfg.resources) {

@@ -2,6 +2,7 @@
 //   app/sitemap.xml/route.ts                 → export { sitemapIndexRoute as GET } from '@/lib/seo/adapters/next';
 //   app/sitemaps/[name]/[file]/route.ts      → export { sitemapChunkRoute as GET } from '@/lib/seo/adapters/next';
 //   app/robots.txt/route.ts                  → export { robotsRoute as GET } from '@/lib/seo/adapters/next';
+// En los tres, añade `export const dynamic = 'force-dynamic'` (si no, `next build` los prerenderiza con BD y SITE_URL).
 // Metadatos: `export async function generateMetadata() { return buildMetadata({ title, path }) }`.
 import { robotsTxt, sitemapChunkXml, sitemapIndexXml } from '../index.ts';
 
@@ -19,5 +20,5 @@ export async function sitemapChunkRoute(_req: Request, ctx: { params: Promise<{ 
 }
 
 export function robotsRoute(): Response {
-  return new Response(robotsTxt(), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  return new Response(robotsTxt(), { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
 }

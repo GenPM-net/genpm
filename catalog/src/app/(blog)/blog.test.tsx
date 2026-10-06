@@ -151,6 +151,11 @@ describe('forms without JavaScript', () => {
     const res = await postCommentRoute(htmlPost(`https://site.test/api/comments/post/${helloId}`, await human({ body: 'Great read', name: 'Guest', email: 'g@x.test' }), '198.51.100.1'), ctx('post'));
     expect(res.headers.get('location')).toBe('https://site.test/blog/hello?comment=pending#comments');
     expect((await postCommentRoute(htmlPost('https://site.test/api/comments/product/x', await human({ body: 'x' }), '198.51.100.2'), ctx('product'))).status).toBe(404);
+    // Ni posts inexistentes ni borradores.
+    const other = (id: string) => ({ params: Promise.resolve({ type: 'post', id }) });
+    expect((await postCommentRoute(htmlPost('https://site.test/api/comments/post/nope', await human({ body: 'x', name: 'G', email: 'g@x.test' }), '198.51.100.4'), other('nope'))).status).toBe(404);
+    const draft = await post('wip', { title: 'WIP' }, { publishAt: 'never' });
+    expect((await postCommentRoute(htmlPost(`https://site.test/api/comments/post/${draft.id}`, await human({ body: 'x', name: 'G', email: 'g@x.test' }), '198.51.100.5'), other(draft.id))).status).toBe(404);
   });
 
   it('subscribes to the newsletter with double opt-in', async () => {
@@ -169,6 +174,11 @@ describe('admin', () => {
     await action.run(helloId, {}, ctx);
     const [c] = await db.select().from(campaigns);
     expect(c).toMatchObject({ subject: 'Hello world', preheader: 'First post', status: 'draft' });
+    // Con cambios sin publicar, la campaña usa la versión publicada, nunca el borrador.
+    const row = (await postsRes.get(helloId, ctx))!;
+    await postsRes.update!(helloId, { data: { ...(row.data as Record<string, unknown>), title: 'SECRET draft' } }, ctx);
+    await action.run(helloId, {}, ctx);
+    expect((await db.select().from(campaigns)).map((x) => x.subject)).toEqual(['Hello world', 'Hello world']);
     expect((await postsRes.links!((await postsRes.get(helloId, ctx))!, ctx)).map((l) => l.href)[0]).toBe('/blog/hello');
   });
 });

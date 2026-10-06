@@ -16,7 +16,8 @@ No tables. OG image generation is out of scope for 1.0.
 2. Register sources in `src/genpm/seo.ts`, imported at startup:
    `registerSitemapSource(contentSitemapSource('pages', ({ slug }) => `/${slug}`))`.
 3. Routes: Hono `app.route('/', seoRoutes())`. Next.js: `app/sitemap.xml/route.ts`, `app/sitemaps/[name]/[file]/route.ts`
-   and `app/robots.txt/route.ts` re-exporting the handlers (see `adapters/next.ts`); delete Next's own `sitemap.ts`/`robots.ts` if present.
+   and `app/robots.txt/route.ts` re-exporting the handlers (see `adapters/next.ts`), each with `export const dynamic = 'force-dynamic'`
+   (otherwise `next build` prerenders them and needs the database and `SITE_URL` at build time); delete Next's own `sitemap.ts`/`robots.ts` if present.
 4. Pages: Next.js `export async function generateMetadata() { return buildMetadata({ title, description, path, alternates }) }`;
    other frameworks put `metaTags(await buildMetadata(...))` in `<head>`.
 5. JSON-LD: `<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd.product(...)) }} />`

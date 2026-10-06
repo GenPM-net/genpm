@@ -15,26 +15,39 @@ auth and rbac (the last two arrive through @core/admin). Public routes: pages cr
 - `_lib/page.tsx` — `CmsPage`, `pageMetadata`. `_lib/home.tsx` — home page from the `home` entry. `_lib/session.ts`.
 - `_components/` — admin client app and the `media` / `richText` field editors.
 - `_templates/genpm/*.ts` — the project's registration files. `_templates/middleware.ts` — redirects middleware.
-- `_scripts/create-owner.ts` — gives the first signed-in user the `owner` role.
+  `_templates/layout.tsx` — root layout for a new site. `_templates/env.example` — every variable the kit and its packages read.
+- `_lib/maintenance.ts` — daily `cms.maintenance` job (prunes rate limits and old jobs), loaded by `api/cron`.
+- `_scripts/create-owner.ts` — gives the first signed-in user the `owner` role (and creates the default roles).
+- `_scripts/setup-schedules.ts` — schedules `cms.maintenance` and `search.reindex` and queues the first reindex.
 
 ## Integration
 1. Check Next ≥ 15.5 with App Router, `src/app` and the `@/*` → `src/*` alias. Without `src/`: install with `--dest app/(cms)` and adapt `@/` imports.
    GenPM packages import each other with `.ts` extensions: `tsconfig.json` needs `"allowImportingTsExtensions": true`
    (Next projects already have `"noEmit": true`). Works with webpack and Turbopack, no extra `next.config`.
-2. Env (see each package's AGENTS.md): `DATABASE_URL`, `AUTH_SECRET`, one OAuth provider (`GITHUB_CLIENT_ID/SECRET` or `GOOGLE_…`),
-   `STORAGE_*`, `EMAIL_FROM` + provider, `SITE_URL`, `CONTENT_PREVIEW_SECRET` (≥ 32 chars), `ANTISPAM_SECRET`, `CRON_SECRET`.
+2. Env: copy `_templates/env.example` to the project's `.env.example` (merge if it exists; make sure `.gitignore` does not
+   ignore it) and the real values to `.env.local`. Required: `DATABASE_URL`, `AUTH_SECRET`, one OAuth provider
+   (`GITHUB_CLIENT_ID/SECRET` or `GOOGLE_…`), `STORAGE_*`, `EMAIL_FROM` + `RESEND_API_KEY`, `SITE_URL`,
+   `CONTENT_PREVIEW_SECRET` (≥ 32 chars), `ANTISPAM_SECRET`, `CRON_SECRET`. With `STORAGE_DRIVER=local` also mount the
+   storage route (`src/lib/storage/AGENTS.md`, Integration 1).
 3. Mount the @core/auth routes (`app/auth/login/[provider]`, `app/auth/callback/[provider]`, `app/auth/logout`) as its AGENTS.md says.
 4. Copy `_templates/genpm/*.ts` to `src/genpm/` (skip files that exist and merge by hand). These files belong to the project:
    later kits add lines to them. Copy `_templates/middleware.ts` to `src/middleware.ts` (or merge into the existing one).
-5. Generate and apply migrations for all packages (`src/lib/db/AGENTS.md`).
-6. Schedule `GET /api/cron` every minute with `Authorization: Bearer $CRON_SECRET` (e.g. `vercel.json` crons).
+5. Migrations: GenPM does not install dev tools — run `src/lib/db/AGENTS.md` steps 3–5 (`drizzle-kit` + `tsx`, the
+   `db:generate` / `db:migrate` scripts), generate one migration for all packages and apply it where a database exists.
+6. Schedule `GET /api/cron` every minute with `Authorization: Bearer $CRON_SECRET` (e.g. `vercel.json` crons). Once the
+   database is migrated, the person runs `npx tsx "src/app/(cms)/_scripts/setup-schedules.ts"` (idempotent).
 7. The person signs in once at `/admin/login`, then runs `npx tsx "src/app/(cms)/_scripts/create-owner.ts" <their email>`.
    Never run it for them with an email they did not give you.
 8. New site: create `src/app/page.tsx` with `export { default, generateMetadata } from './(cms)/_lib/home';` and create
    the `home` page in the admin (blocks: hero, features, cta…). Existing site: follow "Retrofit" below.
-9. Root layout: import `@/lib/ui/ui.css` and `@/lib/blocks/blocks.css`; render menus with `getMenu('header')` / `getMenu('footer')`
-   and the site name with `getSiteSettings()` (@core/site).
-10. Verify: sign in at `/admin`, edit a page, open "Preview", publish, and see the change on the public URL.
+9. Root layout: new site → copy `_templates/layout.tsx` to `src/app/layout.tsx`. Existing layout → import `@/lib/ui/ui.css`
+   and `@/lib/blocks/blocks.css`, render menus with `getMenu('header')` / `getMenu('footer')` and the site name with
+   `getSiteSettings()` (@core/site), and add `export const dynamic = 'force-dynamic'` (it reads the database; without it
+   `next build` tries to prerender and fails without `DATABASE_URL`).
+10. Verify: `npx tsc --noEmit` and `npx next build` pass without a database. Then, with one: sign in at `/admin`, edit a
+    page, open "Preview", publish, and see the change on the public URL.
+11. Optional: packages ship `adapters/hono.ts` next to `adapters/next.ts`; nothing imports them in a Next project, so they
+    can stay or be deleted (`hono` is not needed).
 
 ## Retrofit (make an existing site editable)
 Follow the @core/content procedure page by page, one commit per page: inventory visible literals → a singleton per

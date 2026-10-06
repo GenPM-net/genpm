@@ -1,5 +1,6 @@
 // Cron de @core/jobs (publicación programada, emails de formularios, reindexado…). Protegido con CRON_SECRET.
 import '@/genpm';
+import '../../_lib/maintenance';
 import { cronRoute } from '@/lib/jobs/adapters/next';
 
 export const dynamic = 'force-dynamic';

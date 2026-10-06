@@ -62,6 +62,7 @@ export type BlockRegistry = {
 };
 
 /** Registro único de la app (`src/genpm/blocks.ts`): bloques base + los que añaden kits y paquetes. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- cada elemento tiene su propio tipo (recibe y devuelve su fila/datos): ningún tipo común es asignable en ambos sentidos
 export function createBlockRegistry(defs: BlockDefinition<any>[], opts: { max?: number } = {}): BlockRegistry {
   const map = new Map<string, BlockDefinition>();
   for (const d of defs) {
