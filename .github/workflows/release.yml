@@ -1,5 +1,5 @@
 # Publicación en npm con provenance (security §6, D5-B-05 / D6-P-06) y binarios nativos (ADR-025). Actions fijadas por SHA.
-# - En cada push a main: dry-run de `npm publish --provenance` de genpm y @genpm-net/mcp (comprueba bundle, files y firma OIDC)
+# - Semanal o a mano (ADR-034; antes en cada push a main): dry-run de `npm publish --provenance` de genpm y @genpm-net/mcp (comprueba bundle, files y firma OIDC)
 #   y compilación + smoke de los binarios nativos y de los instaladores en macOS, Linux y Windows.
 # - Con un tag v*: publicación real en npm y GitHub Release con los binarios, SHA256SUMS y attestation de procedencia
 #   (requiere el secreto NPM_TOKEN de la org @genpm-net de npm y repo público: npm solo genera provenance, y los instaladores solo
@@ -8,8 +8,10 @@ name: release
 
 on:
   push:
-    branches: [main]
     tags: ['v*']
+  workflow_dispatch:
+  schedule:
+    - cron: '53 4 * * 1'
 
 permissions:
   contents: read
