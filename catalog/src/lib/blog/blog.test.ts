@@ -81,6 +81,18 @@ describe('single post, related and archive', () => {
     expect((await relatedPosts(p)).map((r) => r.slug)).toEqual(['second']);
   });
 
+  it('series and month archives look past the 500 most recent posts', async () => {
+    const [ref] = await db.select().from(contentEntries).where(eq(contentEntries.slug, 'first'));
+    const { id: _id, createdAt: _c, updatedAt: _u, ...base } = ref!;
+    await db.insert(contentEntries).values(
+      Array.from({ length: 510 }, (_, i) => ({ ...base, slug: `new-${i}`, groupId: `grp_new_${i}`, data: { ...base.data, title: `New ${i}` }, publishedAt: new Date(Date.UTC(2026, 9, 1) + i * 60_000) })),
+    );
+    expect((await listPosts({ series: 'basics' })).posts.map((p) => p.slug)).toEqual(['third', 'second']);
+    expect((await listPosts({ series: 'basics' })).total).toBe(2);
+    expect((await postsInMonth(2026, 9)).map((p) => p.slug)).toEqual(['third', 'second']);
+    expect(await postsInMonth(2026, 10)).toHaveLength(500);
+  });
+
   it('archive by month', async () => {
     expect(await archive()).toEqual([
       { year: 2026, month: 9, count: 2 },

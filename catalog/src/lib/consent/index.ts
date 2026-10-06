@@ -8,6 +8,7 @@ export {
   consentHistory,
   consentModeDefaultsScript,
   consentModeValues,
+  cookieDomain,
   getConsent,
   hasConsent,
   policyVersion,

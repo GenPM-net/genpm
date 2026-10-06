@@ -20,7 +20,7 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 
 export function Button({ variant = 'default', size = 'md', loading, className, children, type, ...rest }: ButtonProps): ReactNode {
   return h(
     'button',
-    { type: type ?? 'button', className: cx('ui-button', variant !== 'default' && `ui-button--${variant}`, size === 'sm' && 'ui-button--sm', className), 'aria-busy': loading || undefined, disabled: rest.disabled || loading, ...rest },
+    { type: type ?? 'button', className: cx('ui-button', variant !== 'default' && `ui-button--${variant}`, size === 'sm' && 'ui-button--sm', className), 'aria-busy': loading || undefined, ...rest, disabled: rest.disabled || loading },
     loading && h('span', { className: 'ui-spinner', 'aria-hidden': true }),
     children,
   );

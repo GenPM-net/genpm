@@ -1,11 +1,27 @@
 // POST /api/consent {analytics, marketing, preferences, action?} → guarda y fija la cookie. GET → estado actual.
+// Solo JSON y del mismo origen (anti-CSRF): un formulario `text/plain` de otro sitio no puede "aceptar todo".
 import { z } from 'zod';
 import { ChoicesInput, getConsent, recordConsent } from '../index.ts';
 
 const Body = ChoicesInput.extend({ action: z.enum(['banner', 'preferences', 'withdraw']).default('banner') });
 
+/** Rechaza peticiones de otro sitio: `Sec-Fetch-Site: cross-site` u `Origin` con otro host (o `null`). */
+function crossSite(req: Request): boolean {
+  if (req.headers.get('sec-fetch-site') === 'cross-site') return true;
+  const origin = req.headers.get('origin');
+  if (!origin) return false;
+  try {
+    return new URL(origin).host !== new URL(req.url).host;
+  } catch {
+    return true;
+  }
+}
+
 export async function handleConsent(req: Request, opts: { cookiesByCategory?: Partial<Record<'analytics' | 'marketing' | 'preferences', string[]>> } = {}): Promise<Response> {
   if (req.method === 'GET') return Response.json(getConsent(req.headers.get('cookie')), { headers: { 'cache-control': 'private, no-store' } });
+  if (req.method !== 'POST') return Response.json({ error: 'method_not_allowed' }, { status: 405 });
+  if (crossSite(req)) return Response.json({ error: 'forbidden' }, { status: 403 });
+  if (!(req.headers.get('content-type') ?? '').toLowerCase().startsWith('application/json')) return Response.json({ error: 'unsupported_media_type' }, { status: 415 });
   const body = Body.safeParse(await req.json().catch(() => null));
   if (!body.success) return Response.json({ error: 'invalid' }, { status: 400 });
   const { action, ...choices } = body.data;

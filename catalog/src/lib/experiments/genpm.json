@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/experiments",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "A/B tests with consent: stable assignment, conversion goals and results with significance, no extra cookies",
     "es": "Tests A/B con consentimiento: asignación estable, objetivos de conversión y resultados con significación",

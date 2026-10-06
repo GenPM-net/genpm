@@ -106,6 +106,7 @@
     ]
   },
   "antispam": {
+    "v": "1.1.0",
     "s": {
       "en": "Spam protection for public forms: honeypot, signed timing, Turnstile or hCaptcha and Postgres rate limits",
       "es": "Protección antispam para formularios públicos: honeypot, tiempo firmado, Turnstile o hCaptcha y rate limit en Postgres",
@@ -129,7 +130,9 @@
     "e": [
       "ANTISPAM_SECRET",
       "TURNSTILE_SITE_KEY",
-      "TURNSTILE_SECRET_KEY"
+      "TURNSTILE_SECRET_KEY",
+      "ANTISPAM_IP_HEADER",
+      "ANTISPAM_TRUSTED_PROXIES"
     ],
     "p": {
       "react": "^19.0.0"
@@ -257,6 +260,7 @@
     ]
   },
   "forms": {
+    "v": "1.1.0",
     "s": {
       "en": "Forms and lead capture: code or admin-built forms, spam checks, GDPR consent, email alerts, signed webhooks, CSV",
       "es": "Formularios y captación de leads: en código o desde el admin, antispam, consentimiento RGPD, avisos, webhooks firmados y CSV",
@@ -351,6 +355,7 @@
     }
   },
   "blog": {
+    "v": "1.0.1",
     "s": {
       "en": "Blog domain on @core/content: posts, authors, categories, tags, series, related posts, archive and RSS/Atom/JSON feeds",
       "es": "Dominio de blog sobre @core/content: posts, autores, categorías, etiquetas, series, relacionados, archivo y feeds RSS/Atom/JSON",
@@ -369,7 +374,7 @@
       "feeds"
     ],
     "g": {
-      "@core/content": "^1.0.0",
+      "@core/content": "^1.1.0",
       "@core/rich-text": "^1.0.0",
       "@core/contracts": "^1.0.0",
       "@core/db": "^1.0.0"
@@ -415,6 +420,7 @@
     ]
   },
   "newsletter": {
+    "v": "1.1.0",
     "s": {
       "en": "Newsletter: double opt-in, one-click unsubscribe (RFC 8058), tags, rich-text campaigns sent in resumable batches",
       "es": "Newsletter: doble opt-in, baja en un clic (RFC 8058), etiquetas y campañas con texto enriquecido en lotes reanudables",
@@ -828,6 +834,7 @@
     ]
   },
   "consent": {
+    "v": "1.1.0",
     "s": {
       "en": "GDPR cookie consent: banner with equal reject/accept, categories, proof records, ConsentGate and Google Consent Mode v2",
       "es": "Consentimiento de cookies RGPD: banner con rechazar igual de visible, categorías, registro de prueba, ConsentGate y Consent Mode v2",
@@ -853,10 +860,13 @@
       "react": "^19.0.0"
     },
     "e": [
-      "CONSENT_POLICY_VERSION"
+      "CONSENT_POLICY_VERSION",
+      "SITE_URL",
+      "CONSENT_COOKIE_DOMAIN"
     ]
   },
   "pixels": {
+    "v": "1.0.1",
     "s": {
       "en": "Conversion tracking with consent: GA4, Meta Pixel + Conversions API, TikTok Pixel + Events API, deduplicated event ids",
       "es": "Medición de conversiones con consentimiento: GA4, Meta Pixel + Conversions API, TikTok Pixel + Events API, sin duplicados",
@@ -894,6 +904,7 @@
     ]
   },
   "ui": {
+    "v": "1.0.1",
     "s": {
       "en": "Accessible base UI for React on native elements: fields, buttons, table, tabs, dialog, toasts and WCAG AA light/dark tokens",
       "es": "Interfaz base accesible para React sobre elementos nativos: campos, botones, tabla, pestañas, diálogo, avisos y tokens AA",
@@ -1014,6 +1025,7 @@
     }
   },
   "kit-blog": {
+    "v": "1.0.1",
     "d": "src/app/(blog)",
     "s": {
       "en": "Blog kit for Next.js: posts with authors, categories, tags, series, feeds, moderated comments and newsletter",
@@ -1036,7 +1048,7 @@
       "@core/kit-cms": "^1.0.0",
       "@core/blog": "^1.0.0",
       "@core/comments": "^1.0.0",
-      "@core/newsletter": "^1.0.0"
+      "@core/newsletter": "^1.1.0"
     },
     "p": {
       "next": ">=15.5.0",
@@ -1050,6 +1062,7 @@
     ]
   },
   "kit-landing": {
+    "v": "1.0.1",
     "d": "src/app/(landing)",
     "s": {
       "en": "Landing page kit for Next.js: block-built pages, lead forms, cookie banner and consent-gated pixels with dedup",
@@ -1070,7 +1083,7 @@
     ],
     "g": {
       "@core/kit-cms": "^1.0.0",
-      "@core/consent": "^1.0.0",
+      "@core/consent": "^1.1.0",
       "@core/pixels": "^1.0.0",
       "@core/experiments": "^1.0.0"
     },
@@ -1166,6 +1179,7 @@
     ]
   },
   "experiments": {
+    "v": "1.0.1",
     "s": {
       "en": "A/B tests with consent: stable assignment, conversion goals and results with significance, no extra cookies",
       "es": "Tests A/B con consentimiento: asignación estable, objetivos de conversión y resultados con significación",

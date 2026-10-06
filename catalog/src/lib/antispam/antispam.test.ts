@@ -87,10 +87,17 @@ describe('captcha', () => {
 });
 
 describe('clientIp', () => {
-  it('prefers platform headers and takes the first forwarded hop', () => {
-    expect(clientIp(new Headers({ 'cf-connecting-ip': '1.1.1.1', 'x-forwarded-for': '2.2.2.2' }))).toBe('1.1.1.1');
-    expect(clientIp(new Headers({ 'x-forwarded-for': '3.3.3.3, 10.0.0.1' }))).toBe('3.3.3.3');
-    expect(clientIp(new Headers())).toBeNull();
+  it('never trusts client-settable headers unless configured; x-forwarded-for counts from the right', () => {
+    const h = new Headers({ 'cf-connecting-ip': '1.1.1.1', 'x-real-ip': '4.4.4.4', 'x-forwarded-for': '9.9.9.9, 2.2.2.2' });
+    expect(clientIp(h, {})).toBe('2.2.2.2'); // el cliente no elige su IP con cf-connecting-ip ni con el primer salto
+    expect(clientIp(h, { ANTISPAM_TRUSTED_PROXIES: '2' })).toBe('9.9.9.9');
+    expect(clientIp(h, { ANTISPAM_TRUSTED_PROXIES: '5' })).toBe('9.9.9.9');
+    expect(clientIp(h, { ANTISPAM_IP_HEADER: 'CF-Connecting-IP' })).toBe('1.1.1.1');
+    expect(clientIp(h, { ANTISPAM_IP_HEADER: 'x-real-ip' })).toBe('4.4.4.4');
+    expect(clientIp(new Headers({ 'x-forwarded-for': '2.2.2.2' }), { ANTISPAM_IP_HEADER: 'cf-connecting-ip' })).toBeNull();
+    expect(clientIp(new Headers({ 'x-forwarded-for': '2001:db8::1' }), {})).toBe('2001:db8::1');
+    expect(clientIp(new Headers({ 'x-forwarded-for': '<script>' }), {})).toBeNull();
+    expect(clientIp(new Headers(), {})).toBeNull();
   });
 });
 

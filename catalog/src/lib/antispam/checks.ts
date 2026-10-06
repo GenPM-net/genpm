@@ -88,12 +88,26 @@ export async function verifyCaptcha(
 }
 
 /**
- * IP del cliente según las cabeceras de la plataforma. Solo es fiable detrás de un proxy que las fije
- * (Cloudflare, Vercel, un balanceador): úsala para limitar frecuencia, nunca para autorizar.
+ * IP del cliente para limitar frecuencia (nunca para autorizar). Solo se fía de la cabecera que fija TU proxy:
+ * - `ANTISPAM_IP_HEADER` (p. ej. `cf-connecting-ip` detrás de Cloudflare, `x-real-ip`, `x-vercel-forwarded-for`,
+ *   `fly-client-ip`): se usa esa cabecera tal cual. Ninguna se acepta si no se configura (las manda cualquiera).
+ * - Por defecto, `x-forwarded-for` contando desde la DERECHA: cada proxy de confianza añade un salto al final, así que
+ *   la IP real es la `ANTISPAM_TRUSTED_PROXIES`-ésima por la derecha (por defecto 1: la que vio tu último proxy).
+ *   Lo que haya más a la izquierda lo escribe el cliente y no cuenta.
  */
-export function clientIp(headers: Headers): string | null {
-  const direct = headers.get('cf-connecting-ip') ?? headers.get('x-real-ip');
-  if (direct) return direct.trim();
-  const fwd = headers.get('x-forwarded-for');
-  return fwd ? (fwd.split(',')[0]?.trim() ?? null) : null;
+export function clientIp(headers: Headers, env: Record<string, string | undefined> = process.env): string | null {
+  const clean = (v: string | undefined) => {
+    const ip = v?.trim();
+    return ip && ip.length <= 64 && /^[0-9A-Fa-f:.]+$/.test(ip) ? ip : null;
+  };
+  const name = env.ANTISPAM_IP_HEADER?.trim().toLowerCase();
+  if (name && name !== 'x-forwarded-for') {
+    if (!/^[a-z0-9-]{1,64}$/.test(name)) return null;
+    // Cabeceras de una sola IP; si llega una lista, la primera (la plataforma la sobrescribe entera).
+    return clean(headers.get(name)?.split(',')[0]);
+  }
+  const hops = (headers.get('x-forwarded-for') ?? '').split(',').map((h) => h.trim()).filter(Boolean);
+  if (!hops.length) return null;
+  const trusted = Math.max(1, Number.parseInt(env.ANTISPAM_TRUSTED_PROXIES ?? '1', 10) || 1);
+  return clean(hops[Math.max(0, hops.length - trusted)]);
 }

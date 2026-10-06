@@ -87,6 +87,11 @@ describe('behaviour', () => {
     const b = container.querySelector('button')!;
     expect([b.getAttribute('aria-busy'), b.hasAttribute('disabled'), b.getAttribute('type')]).toEqual(['true', true, 'button']);
   });
+
+  it('a loading button stays disabled even if the caller passes disabled: undefined/false', async () => {
+    await render(h('div', null, h(Button, { loading: true, disabled: undefined }, 'A'), h(Button, { loading: true, disabled: false }, 'B')));
+    expect([...container.querySelectorAll('button')].map((b) => b.hasAttribute('disabled'))).toEqual([true, true]);
+  });
 });
 
 describe('design tokens', () => {

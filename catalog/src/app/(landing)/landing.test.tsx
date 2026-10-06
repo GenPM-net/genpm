@@ -50,7 +50,7 @@ async function lead(fields: Record<string, string>, opts: { cookie?: string; ip:
 }
 
 async function consentCookie(marketing: boolean): Promise<string> {
-  const res = await consentPost(new Request('https://site.test/api/consent', { method: 'POST', body: JSON.stringify({ analytics: false, marketing, preferences: false }) }));
+  const res = await consentPost(new Request('https://site.test/api/consent', { method: 'POST', headers: { 'content-type': 'application/json', origin: 'https://site.test' }, body: JSON.stringify({ analytics: false, marketing, preferences: false }) }));
   return res.headers.getSetCookie().map((c) => c.split(';')[0]).join('; ');
 }
 

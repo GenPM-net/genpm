@@ -20,7 +20,7 @@ export {
   unschedule,
 } from './entries.ts';
 export { createPreviewToken, type PreviewClaims, safePath, verifyPreviewToken } from './preview.ts';
-export { contentSource, countEntries, getEntry, getSingleton, listEntries, reader } from './read.ts';
+export { contentSource, countEntries, type EntryListQuery, getEntry, getSingleton, listEntries, reader } from './read.ts';
 export {
   assertSlug,
   type Collection,

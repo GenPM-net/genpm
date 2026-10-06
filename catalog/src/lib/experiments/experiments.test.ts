@@ -5,6 +5,7 @@ import type { AdminContext } from '../contracts/index.ts';
 import { testDb } from '../db/__fixtures__/pglite.ts';
 import type { Db } from '../db/index.ts';
 import * as jobsSchema from '../jobs/schema.ts';
+import { bucketOf } from './experiments.ts';
 import * as schema from './schema.ts';
 import {
   compare,
@@ -61,6 +62,13 @@ describe('statistics (reference values)', () => {
       { key: 'b', weight: 20 },
     ];
     expect([0, 7999, 8000, 9999].map((b) => pickVariant(v, b))).toEqual(['a', 'a', 'b', 'b']);
+  });
+
+  it('buckets use 32 bits of the hash (no modulo bias towards low buckets)', () => {
+    // Con 16 bits, 65 536 % 10 000 dejaba las cubetas 0–5535 con un 17 % más de probabilidad.
+    expect(bucketOf(new Uint8Array([0, 1, 0, 0, 9]))).toBe(65_536 % 10_000);
+    expect(bucketOf(new Uint8Array([0xff, 0xff, 0xff, 0xff]))).toBe(0xffffffff % 10_000);
+    expect(bucketOf(new Uint8Array([9, 9, 0, 1, 0, 0, 0, 0]).subarray(2))).toBe(65_536 % 10_000);
   });
 });
 

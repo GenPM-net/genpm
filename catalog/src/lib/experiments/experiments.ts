@@ -69,6 +69,9 @@ async function hmac(data: string): Promise<Uint8Array> {
 const hex = (b: Uint8Array) => [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
 
 /** Variante por peso a partir de un número 0–9999 (determinista). */
+/** Cubeta 0–9999 a partir de los 32 primeros bits del HMAC (con 16 bits, `% 10 000` sesgaba las cubetas bajas). */
+export const bucketOf = (h: Uint8Array): number => new DataView(h.buffer, h.byteOffset, h.byteLength).getUint32(0) % 10_000;
+
 export function pickVariant(variants: ExperimentVariant[], bucket: number): string {
   const total = variants.reduce((s, v) => s + v.weight, 0);
   let acc = 0;
@@ -98,7 +101,7 @@ export async function getVariant(key: string, cookieHeader: string | null | unde
   const visitor = await visitorOf(cookieHeader);
   if (!visitor) return { variant: control, control: true, tracked: false };
   const h = await hmac(`bucket:${key}:${visitor}`);
-  const variant = pickVariant(e.variants, ((h[0]! << 8) | h[1]!) % 10_000);
+  const variant = pickVariant(e.variants, bucketOf(h));
   await db.insert(experimentParticipants).values({ experimentId: e.id, visitor, variant }).onConflictDoNothing();
   // Si ya participaba (p. ej. tras cambiar pesos en borrador), manda lo registrado.
   const [p] = await db.select({ variant: experimentParticipants.variant }).from(experimentParticipants).where(and(eq(experimentParticipants.experimentId, e.id), eq(experimentParticipants.visitor, visitor)));

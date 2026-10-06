@@ -27,6 +27,7 @@ import {
   formSubmissions,
   onSubmission,
   pruneSubmissions,
+  schemaFromFields,
   sourceInfo,
   submissionsAdminResource,
   submitForm,
@@ -123,6 +124,27 @@ describe('submitForm', () => {
     expect(JSON.parse(body)).toMatchObject({ form: 'lead', data: { email: 'l@x.test' } });
     expect(() => defineForm({ key: 'bad', label: 'B', schema: z.object({}), webhook: 'http://crm.test' })).toThrow(/https/);
   });
+
+  it('a retry does not repeat the steps that already succeeded (no duplicate emails or webhooks)', async () => {
+    defineForm({ key: 'quote', label: 'Quote', schema: z.object({ email: z.email() }), notify: ['team@site.test'], emailField: 'email', autoReply: { subject: 'Hi', text: 'Thanks' }, webhook: 'https://crm.test/hook' });
+    let hooks = 0;
+    globalThis.fetch = (async () => (hooks++, new Response(null, { status: 200 }))) as unknown as typeof fetch;
+    let handlerFails = 2;
+    const seen: string[] = [];
+    onSubmission('quote', (s) => {
+      if (handlerFails-- > 0) throw new Error('crm down');
+      seen.push(String(s.data.email));
+    });
+    await submitForm('quote', await human({ email: 'q@x.test' }), { headers: headers() });
+    expect((await runDue()).retried).toBe(1);
+    expect((await runDue({ now: new Date(Date.now() + 60_000) })).retried).toBe(1);
+    expect((await runDue({ now: new Date(Date.now() + 3_600_000) })).done).toBe(1);
+    expect(sent.map((m) => m.subject)).toEqual(['New Quote submission', 'Hi']);
+    expect(hooks).toBe(1);
+    expect(seen).toEqual(['q@x.test']);
+    const [row] = await db.select().from(formSubmissions);
+    expect(row!.processed).toEqual(['notify', 'auto_reply', 'webhook', 'handler:0']);
+  });
 });
 
 describe('forms built in the admin', () => {
@@ -148,6 +170,9 @@ describe('forms built in the admin', () => {
     expect(row!.data).toEqual({ email: 'q@x.test', qty: 3, size: 'M', gift: true });
     const bad = await submitForm('quote', await human({ email: 'q@x.test', qty: '1', size: 'XL' }), { headers: headers() });
     expect(bad).toMatchObject({ ok: false, reason: 'invalid' });
+    const empty = await submitForm('quote', await human({ email: 'q@x.test', qty: '', size: 'M' }), { headers: headers() });
+    expect(empty).toMatchObject({ ok: false, reason: 'invalid' }); // obligatorio vacío ≠ 0
+    expect(schemaFromFields([{ name: 'n', label: 'N', type: 'number', required: false }]).parse({ n: ' ' })).toEqual({});
     await runDue();
     expect(sent[0]!.to).toEqual(['ops@site.test']);
   });

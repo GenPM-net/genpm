@@ -73,9 +73,9 @@ export async function listPosts(o: ListPostsOptions = {}): Promise<{ posts: Post
   if (o.featured !== undefined) where.featured = o.featured;
   const q: ContentListQuery = { locale: o.locale, draft: o.draft, contains, where };
   if (o.series) {
-    // Las series se ordenan por su número de capítulo.
-    const all = await listEntries<PostData>('posts', { ...q, limit: 500, orderBy: 'publishedAt' });
-    const inSeries = all.filter((e) => e.data.series?.slug === o.series).sort((a, b) => a.data.series!.order - b.data.series!.order);
+    // Filtra en SQL (no entre los N más recientes) y ordena por número de capítulo.
+    const all = await listEntries<PostData>('posts', { ...q, where: { ...where, 'series.slug': o.series }, limit: 500, orderBy: 'publishedAt' });
+    const inSeries = all.sort((a, b) => (a.data.series?.order ?? 0) - (b.data.series?.order ?? 0));
     return { posts: inSeries.slice((page - 1) * perPage, page * perPage).map(summarize), total: inSeries.length, page, pages: Math.max(1, Math.ceil(inSeries.length / perPage)) };
   }
   const [rows, total] = await Promise.all([
@@ -137,6 +137,6 @@ export async function archive(opts: { locale?: string } = {}): Promise<Array<{ y
 export async function postsInMonth(year: number, month: number, opts: { locale?: string } = {}): Promise<PostSummary[]> {
   const from = Date.UTC(year, month - 1, 1);
   const to = Date.UTC(year, month, 1);
-  const all = await listEntries<PostData>('posts', { locale: opts.locale, orderBy: '-publishedAt', limit: 500 });
-  return all.filter((e) => e.publishedAt && e.publishedAt.getTime() >= from && e.publishedAt.getTime() < to).map(summarize);
+  const rows = await listEntries<PostData>('posts', { locale: opts.locale, orderBy: '-publishedAt', limit: 500, publishedFrom: new Date(from), publishedBefore: new Date(to) });
+  return rows.map(summarize);
 }

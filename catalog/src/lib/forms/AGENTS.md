@@ -26,6 +26,8 @@ HMAC-signed webhook and `onSubmission` handlers. CSV export, retention and erasu
 
 ## Conventions
 - Field names are the keys stored in `data`; keep them stable (exports and webhooks depend on them).
+- `forms.process` records each finished step in `form_submissions.processed` (`notify`, `auto_reply`, `webhook`,
+  `handler:<n>`): a retry skips them, so emails and webhooks aren't repeated. Keep `onSubmission` handlers in a stable order.
 - Webhook receivers must verify `x-genpm-signature` (`t=<unix>,v1=<hmac>` over `"<t>.<body>"`) and reject old timestamps.
 - Ask only for the data you need; define a retention period and schedule `pruneSubmissions(days)`.
 - Permissions: `submissions:read|update|delete|export`, `forms:*` for admin-built forms.
