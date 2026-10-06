@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
 
-TODO 76 · DOING 4 · DONE 214 · BLOCKED 24 · CUT 0
+TODO 74 · DOING 6 · DONE 214 · BLOCKED 24 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -96,6 +96,8 @@ TODO 76 · DOING 4 · DONE 214 · BLOCKED 24 · CUT 0
 - `D0-05` Crear la org de GitHub GenPM-net con 2FA obligatorio · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-10` Cuenta Cloudflare Workers Paid con llaves FIDO2 · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `V011-02` Binario nativo de genpm para macOS, Linux y Windows con instaladores de una línea y genpm upgrade (ADR-025) · B · 8h ([10-post-mvp.md](10-post-mvp.md))
+- `CAT-00-02` Workspace de desarrollo del catálogo (como ../genpm-seeds) con app Next de ejemplo, PGlite, Playwright y Changesets por tren · C · 4h ([11-catalogo.md](11-catalogo.md))
+- `CAT-00-03` Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h ([11-catalogo.md](11-catalogo.md))
 
 **Bloqueadas**
 

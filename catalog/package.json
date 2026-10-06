@@ -1,0 +1,30 @@
+{
+  "name": "genpm-catalog-dev",
+  "private": true,
+  "type": "module",
+  "description": "Workspace de desarrollo de los paquetes del catálogo (docs/catalogo). Cada src/lib/<x> se publica en su repo github.com/genpm-net/<x>.",
+  "engines": { "node": ">=20.11" },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "check": "tsc --noEmit && vitest run"
+  },
+  "dependencies": {
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0",
+    "arctic": "^3.7.0",
+    "aws4fetch": "^1.0.20",
+    "cron-parser": "^5.0.0",
+    "drizzle-orm": "^0.45.0",
+    "hono": "^4.6.0",
+    "postgres": "^3.4.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.0",
+    "@types/node": "^22.0.0",
+    "drizzle-kit": "^0.31.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.2.0"
+  }
+}

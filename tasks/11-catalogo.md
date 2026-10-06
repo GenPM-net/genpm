@@ -8,8 +8,8 @@
 ## F0 · Decisiones
 
 - [x] `CAT-00-01` **DONE** Decidir ADR-033 y las preguntas C1–C6 del catálogo (admin propio vs. CMS existente, scope de los kits, Next primero, licencias, proveedores, impuestos) · F · 2h · deps: —
-- [ ] `CAT-00-02` **TODO** Workspace de desarrollo del catálogo (como ../genpm-seeds) con app Next de ejemplo, PGlite, Playwright y Changesets por tren · C · 4h · deps: CAT-00-01
-- [ ] `CAT-00-03` **TODO** Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h · deps: CAT-00-02
+- [ ] `CAT-00-02` **DOING** Workspace de desarrollo del catálogo (como ../genpm-seeds) con app Next de ejemplo, PGlite, Playwright y Changesets por tren · C · 4h · deps: CAT-00-01
+- [ ] `CAT-00-03` **DOING** Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h · deps: CAT-00-02
 - [ ] `CAT-00-04` **TODO** Implementar y publicar @core/ui con tokens claro/oscuro y axe sin violaciones · C · 12h · deps: CAT-00-02
 
 ## F1 · CMS (kit-cms)

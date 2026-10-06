@@ -1,0 +1,16 @@
+{
+  "contracts": {
+    "s": {
+      "en": "Shared types for GenPM modules: content, sitemap, search, admin resources, payments and tracked events",
+      "es": "Tipos compartidos entre módulos GenPM: contenido, sitemap, búsqueda, recursos de admin, pagos y eventos",
+      "pt-BR": "Tipos compartilhados entre módulos GenPM: conteúdo, sitemap, busca, recursos de admin, pagamentos e eventos",
+      "fr": "Types partagés des modules GenPM : contenu, sitemap, recherche, ressources d'admin, paiements et événements",
+      "de": "Gemeinsame Typen für GenPM-Module: Inhalte, Sitemap, Suche, Admin-Ressourcen, Zahlungen und Events",
+      "ja": "GenPM モジュール共通の型：コンテンツ、サイトマップ、検索、管理リソース、決済、イベント",
+      "zh-CN": "GenPM 模块共享类型：内容、站点地图、搜索、后台资源、支付和追踪事件",
+      "ko": "GenPM 모듈 공용 타입: 콘텐츠, 사이트맵, 검색, 관리 리소스, 결제, 추적 이벤트"
+    },
+    "k": ["contracts", "types", "interfaces", "cms", "commerce"],
+    "p": { "zod": "^4.0.0" }
+  }
+}

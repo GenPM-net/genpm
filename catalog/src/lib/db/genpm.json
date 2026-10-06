@@ -1,0 +1,20 @@
+{
+  "$": 1,
+  "n": "@core/db",
+  "v": "1.0.0",
+  "s": {
+    "en": "Postgres with Drizzle: shared client, per-module schemas, transactions and ULID ids",
+    "es": "Postgres con Drizzle: cliente compartido, esquemas por módulo, transacciones e IDs ULID",
+    "pt-BR": "Postgres com Drizzle: cliente compartilhado, esquemas por módulo, transações e IDs ULID",
+    "fr": "Postgres avec Drizzle : client partagé, schémas par module, transactions et identifiants ULID",
+    "de": "Postgres mit Drizzle: gemeinsamer Client, Schemas pro Modul, Transaktionen und ULID-IDs",
+    "ja": "Drizzle による Postgres：共有クライアント、モジュール別スキーマ、トランザクション、ULID",
+    "zh-CN": "基于 Drizzle 的 Postgres：共享客户端、按模块划分的模式、事务和 ULID",
+    "ko": "Drizzle 기반 Postgres: 공유 클라이언트, 모듈별 스키마, 트랜잭션, ULID"
+  },
+  "d": "src/lib/db",
+  "l": "MIT",
+  "k": ["database", "postgres", "drizzle", "orm", "migrations"],
+  "p": { "drizzle-orm": "^0.45.0", "postgres": "^3.4.0" },
+  "e": ["DATABASE_URL"]
+}

@@ -14,6 +14,7 @@
       "!**/.wrangler",
       "!docs/design",
       "!examples",
+      "!catalog",
       "!**/*.gen.ts",
       "!**/worker-configuration.d.ts",
       "!packages/manifest/schema",
