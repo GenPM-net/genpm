@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **68 %** completado · 215/318 tareas · 717.5h estimadas pendientes
 
-TODO 71 · DOING 8 · DONE 215 · BLOCKED 24 · CUT 0
+TODO 70 · DOING 9 · DONE 215 · BLOCKED 24 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -100,6 +100,7 @@ TODO 71 · DOING 8 · DONE 215 · BLOCKED 24 · CUT 0
 - `CAT-CMS-01` Implementar y publicar @core/rbac · C · 8h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-02` Implementar y publicar @core/storage (S3/R2/MinIO y local) · C · 8h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-03` Implementar y publicar @core/jobs (cola Postgres, cron y runDue serverless) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-04` Implementar y publicar @core/antispam (Turnstile, honeypot, rate limit) · C · 6h ([11-catalogo.md](11-catalogo.md))
 
 **Bloqueadas**
 

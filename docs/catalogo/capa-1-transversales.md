@@ -97,10 +97,10 @@ de envío y limitación de frecuencia por IP/clave sobre Postgres.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/antispam` | `@core/db ^1` | — | `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | — |
+| `src/lib/antispam` | `@core/db ^1` | — | `ANTISPAM_SECRET` (hash de claves y token de tiempo), `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` (o `HCAPTCHA_SECRET_KEY`) | — |
 
 **Tablas.** `rate_limits` (key, windowStart, count).
-**API.** `verifyHuman(request)`, `rateLimit(key, {limit, window})`, componente `<HumanCheck />`, `honeypotField()`.
+**API.** `verifyHuman(headers, fields, {scope})`, `rateLimit(key, {limit, windowMs})`, `formTimingToken()`, `honeypotProps` (sin componente React: lo pinta cada formulario), `verifyCaptcha`, `clientIp`, `pruneRateLimits`.
 **Reglas IA.** Todo endpoint público que escriba (formularios, comentarios, newsletter, login) pasa por aquí.
 **Seguridad.** IPs guardadas con hash y caducidad (RGPD); sin captcha configurado, modo "solo honeypot + rate limit" con aviso.
 **Aceptación.** Rate limit respeta la ventana; Turnstile verificado contra su clave de prueba.

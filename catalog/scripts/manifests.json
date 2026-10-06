@@ -102,5 +102,32 @@
       "STORAGE_SECRET_ACCESS_KEY",
       "STORAGE_PUBLIC_URL"
     ]
+  },
+  "antispam": {
+    "s": {
+      "en": "Spam protection for public forms: honeypot, signed timing, Turnstile or hCaptcha and Postgres rate limits",
+      "es": "Protección antispam para formularios públicos: honeypot, tiempo firmado, Turnstile o hCaptcha y rate limit en Postgres",
+      "pt-BR": "Proteção antispam para formulários públicos: honeypot, tempo assinado, Turnstile ou hCaptcha e rate limit no Postgres",
+      "fr": "Anti-spam pour formulaires publics : honeypot, délai signé, Turnstile ou hCaptcha et limitation de débit Postgres",
+      "de": "Spam-Schutz für öffentliche Formulare: Honeypot, signierte Zeitprüfung, Turnstile oder hCaptcha und Rate-Limits",
+      "ja": "公開フォームのスパム対策：ハニーポット、署名付き時間チェック、Turnstile/hCaptcha、Postgres のレート制限",
+      "zh-CN": "公开表单反垃圾：蜜罐字段、签名计时、Turnstile 或 hCaptcha 以及 Postgres 限流",
+      "ko": "공개 폼 스팸 방지: 허니팟, 서명된 시간 검사, Turnstile 또는 hCaptcha, Postgres 속도 제한"
+    },
+    "k": [
+      "antispam",
+      "captcha",
+      "turnstile",
+      "rate-limit",
+      "forms"
+    ],
+    "g": {
+      "@core/db": "^1.0.0"
+    },
+    "e": [
+      "ANTISPAM_SECRET",
+      "TURNSTILE_SITE_KEY",
+      "TURNSTILE_SECRET_KEY"
+    ]
   }
 }
