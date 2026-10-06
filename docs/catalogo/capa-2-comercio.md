@@ -78,13 +78,14 @@ eventos `onOrderPaid`, `onOrderShipped`, `onOrderCancelled`, `ordersResources` p
 ## `@core/shipping` — envíos
 
 **Para qué.** Zonas (países/regiones), tarifas (fija, gratis a partir de X, por peso, por precio), estimación de entrega
-(días mín./máx., también para dropshipping), y seguimiento: número + transportista con URL de seguimiento; adaptador
-opcional de agregador de seguimiento (17TRACK/AfterShip, verificar APIs vigentes) que actualiza `fulfillments` con `jobs`.
+(días mín./máx., también para dropshipping), y seguimiento: número + transportista con URL de seguimiento (plantillas
+de Correos, SEUR, GLS, DHL, UPS, FedEx, USPS, Royal Mail y 17TRACK como genérico). Consulta automática del estado vía API de
+agregadores: fase posterior.
 **No incluye.** Compra de etiquetas de envío (adaptadores Shippo/EasyPost en F6).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/shipping` | `@core/db ^1`, `@core/money ^1`, `@core/cart ^1` | — | `TRACKING_API_KEY` (opc.) | — |
+| `src/lib/shipping` | `@core/db ^1`, `@core/cart ^1`, `@core/money ^1`, `@core/contracts ^1` | `zod` | — | — |
 
 **Tablas.** `shipping_zones`, `shipping_rates`.
 **API.** `ratesFor(cart, address)`, paso de totales `shipping` en `cart`, `trackingUrl(carrier, number)`, `shippingResources`.
