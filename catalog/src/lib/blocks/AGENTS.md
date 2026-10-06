@@ -10,12 +10,13 @@ posts…) to the same registry. Blocks are stored as JSON inside @core/content e
 - `index.ts` — `defineBlock`, `createBlockRegistry`, `coreBlocks` (and each block), `RenderBlocks`, `collectMediaIds`.
 - `core/*.ts` — one file per block. `parts.ts` — `Section`, `Heading`, `Img`, `CtaLink`, `JsonLd` for new blocks.
 - `media.ts` — `loadBlockMedia(blocks, registry)` (server: one query to @core/media).
-- `editor.ts` — `'use client'`: `blocksRenderer(registry)` for `AdminApp`. `blocks.css` — styles on @core/ui tokens.
+- `editor.ts` — `'use client'`: `blocksRenderer(blockMeta(registry))` for `AdminApp`. `blocks.css` — styles on @core/ui tokens.
 
 ## Integration
 1. Create `src/genpm/blocks.ts`: `export const blocks = createBlockRegistry([...coreBlocks /*, kit blocks */]);`
 2. Add a field to a content collection: schema `blocks: blocks.schema`, admin field `blocks.field('blocks', 'Sections')`.
-3. Admin: `<AdminApp renderers={{ blocks: blocksRenderer(blocks), /* richText, media… */ }} />`.
+3. Admin: compute `blockMeta(blocks)` on the server and pass it to the client component that renders
+   `<AdminApp renderers={{ blocks: blocksRenderer(meta), /* richText, media… */ }} />` (never import the registry in client code).
 4. Page (server component):
    ```tsx
    const media = await loadBlockMedia(page.data.blocks, blocks);

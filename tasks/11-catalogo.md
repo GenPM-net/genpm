@@ -14,6 +14,7 @@
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/contracts` (2026-10-06). Falta crear el repo `genpm-net/contracts` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-00-04` **BLOCKED** Implementar y publicar @core/ui con tokens claro/oscuro y axe sin violaciones · C · 12h · deps: CAT-00-02
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/ui` (2026-10-06). Falta crear el repo `genpm-net/ui` (fundador), publicar, pruebas de agente y revisión ADR-023.
+- [ ] `CAT-00-05` **TODO** Decidir ADR-034 (imports relativos con extensión `.ts` para Turbopack) y, si se aprueba, aplicarlo a semillas y catálogo en un tren · F · 3h · deps: CAT-00-02
 
 ## F1 · CMS (kit-cms)
 
@@ -99,7 +100,8 @@
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/pricing` (2026-10-06). Falta crear el repo `genpm-net/pricing` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-DRP-02` **BLOCKED** Implementar y publicar @core/suppliers con el adaptador manual (CSV) · C · 20h · deps: CAT-DRP-01, CAT-STO-05, CAT-CMS-03
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/suppliers` (2026-10-06). Falta crear el repo `genpm-net/suppliers` (fundador), publicar, pruebas de agente y revisión ADR-023.
-- [ ] `CAT-DRP-03` **TODO** Adaptador CJdropshipping para @core/suppliers (verificar API y términos vigentes) · C · 12h · deps: CAT-DRP-02
+- [ ] `CAT-DRP-03` **BLOCKED** Adaptador CJdropshipping para @core/suppliers (verificar API y términos vigentes) · C · 12h · deps: CAT-DRP-02
+  - Bloqueo: la documentación oficial (developers.cjdropshipping.com/.cn) no es accesible desde el entorno de agentes (proxy de red, 2026-10-06) y solo hay clientes de terceros antiguos (2021). Hace falta verificar API v2 y términos vigentes con acceso real; el contrato `SupplierAdapter` y el test con proveedor simulado ya están listos.
 - [ ] `CAT-DRP-04` **TODO** Alta de la app en AliExpress Open Platform (dropshipping) y aprobación · F · 2h · deps: CAT-00-01
 - [ ] `CAT-DRP-05` **TODO** Adaptador AliExpress para @core/suppliers · C · 14h · deps: CAT-DRP-02, CAT-DRP-04
 - [ ] `CAT-DRP-06` **BLOCKED** Implementar y publicar @core/kit-dropshipping (importar, reenvío, excepciones, landing de producto) · C · 24h · deps: CAT-STO-10, CAT-LND-03, CAT-DRP-02

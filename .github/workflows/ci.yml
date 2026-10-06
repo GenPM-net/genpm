@@ -97,3 +97,5 @@ jobs:
           node-version: 22
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
+      # Proyecto de ejemplo: los kits compilan en un `next build` real (ADR-034: webpack + extensionAlias).
+      - run: pnpm build:example

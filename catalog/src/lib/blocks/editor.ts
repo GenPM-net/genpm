@@ -1,10 +1,11 @@
 'use client';
 // Campo `blocks` para @core/admin: lista ordenable de bloques con añadir, duplicar, ocultar, mover y quitar.
-// Uso: `<AdminApp renderers={{ blocks: blocksRenderer(blocks) }} />` (el registro es el de `src/genpm/blocks.ts`).
+// Uso: en el servidor `const meta = blockMeta(blocks)` (registro de `src/genpm/blocks.ts`) y en el cliente
+// `<AdminApp renderers={{ blocks: blocksRenderer(meta) }} />`: al navegador solo viajan tipos, campos y valores iniciales.
 import { createElement as h, type ReactNode, useId, useState } from 'react';
 import { type FieldRenderer, type FieldRendererProps, FieldControl, getPath, setPath } from '../admin/client.js';
 import { Badge, Button, SelectField } from '../ui/index.js';
-import { type BlockInstance, type BlockRegistry, newBlockId } from './define.js';
+import { type BlockInstance, type BlockMeta, newBlockId } from './define.js';
 
 export const editorLabels = {
   add: 'Add block',
@@ -22,9 +23,10 @@ export const editorLabels = {
   empty: 'No blocks yet.',
 };
 
-function BlocksEditor(p: FieldRendererProps & { registry: BlockRegistry; text: typeof editorLabels }): ReactNode {
+function BlocksEditor(p: FieldRendererProps & { meta: BlockMeta[]; text: typeof editorLabels }): ReactNode {
   const blocks = Array.isArray(p.value) ? (p.value as BlockInstance[]) : [];
-  const defs = p.registry.list();
+  const defs = p.meta;
+  const get = (type: string) => defs.find((d) => d.type === type);
   const [type, setType] = useState(defs[0]?.type ?? '');
   const [open, setOpen] = useState<string | null>(null);
   const legendId = useId();
@@ -46,7 +48,7 @@ function BlocksEditor(p: FieldRendererProps & { registry: BlockRegistry; text: t
       'ol',
       { className: 'blk-editor' },
       blocks.map((b, i) => {
-        const def = p.registry.get(b.type);
+        const def = get(b.type);
         const name = `${i + 1}. ${def?.label ?? L.unknown}`;
         const isOpen = open === b.id;
         return h(
@@ -99,9 +101,9 @@ function BlocksEditor(p: FieldRendererProps & { registry: BlockRegistry; text: t
           {
             disabled: p.disabled || !type,
             onClick: () => {
-              const def = p.registry.get(type);
+              const def = get(type);
               if (!def) return;
-              const b: BlockInstance = { id: newBlockId(), type, data: def.defaults?.() ?? {} };
+              const b: BlockInstance = { id: newBlockId(), type, data: structuredClone(def.defaults) };
               set([...blocks, b]);
               setOpen(b.id);
             },
@@ -114,7 +116,7 @@ function BlocksEditor(p: FieldRendererProps & { registry: BlockRegistry; text: t
 }
 
 /** Renderizador del tipo de campo `blocks` para `AdminApp`; los campos internos usan los demás `renderers` de la app. */
-export function blocksRenderer(registry: BlockRegistry, opts: { labels?: Partial<typeof editorLabels> } = {}): FieldRenderer {
+export function blocksRenderer(meta: BlockMeta[], opts: { labels?: Partial<typeof editorLabels> } = {}): FieldRenderer {
   const text = { ...editorLabels, ...opts.labels };
-  return (props) => h(BlocksEditor, { ...props, registry, text });
+  return (props) => h(BlocksEditor, { ...props, meta, text });
 }

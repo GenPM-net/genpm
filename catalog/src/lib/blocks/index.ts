@@ -4,6 +4,8 @@ export {
   type BlockContext,
   type BlockDefinition,
   type BlockInstance,
+  type BlockMeta,
+  blockMeta,
   BlockInstanceSchema,
   type BlockRegistry,
   blocksToText,

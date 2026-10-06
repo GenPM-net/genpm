@@ -136,3 +136,11 @@ export function blocksToText(blocks: BlockInstance[] | null | undefined, registr
   }
   return out.filter(Boolean).join('\n');
 }
+
+/** Lo que el editor del panel necesita de cada bloque (serializable: se calcula en el servidor y viaja al cliente). */
+export type BlockMeta = { type: string; label: string; icon?: string; fields: AdminField[]; defaults: Record<string, unknown> };
+
+/** Metadatos de los bloques para `blocksRenderer` sin enviar al navegador componentes ni código de servidor. */
+export function blockMeta(registry: BlockRegistry): BlockMeta[] {
+  return registry.list().map((d) => ({ type: d.type, label: d.label, ...(d.icon && { icon: d.icon }), fields: d.fields, defaults: d.defaults?.() ?? {} }));
+}

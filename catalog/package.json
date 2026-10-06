@@ -2,7 +2,7 @@
   "name": "genpm-catalog-dev",
   "private": true,
   "type": "module",
-  "description": "Workspace de desarrollo de los paquetes del catálogo (docs/catalogo). Cada src/lib/<x> se publica en su repo github.com/genpm-net/<x>.",
+  "description": "Workspace de desarrollo de los paquetes del cat\u00e1logo (docs/catalogo). Cada src/lib/<x> se publica en su repo github.com/genpm-net/<x>.",
   "engines": {
     "node": ">=20.11"
   },
@@ -10,7 +10,8 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json",
     "check": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json && vitest run && tsx scripts/check-migrations.ts",
-    "check:migrations": "tsx scripts/check-migrations.ts"
+    "check:migrations": "tsx scripts/check-migrations.ts",
+    "build:example": "next build --experimental-build-mode=compile"
   },
   "dependencies": {
     "@oslojs/crypto": "^1.0.1",

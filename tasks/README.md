@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-06. No editar a mano. -->
 
-**67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
+**67 %** completado · 214/319 tareas · 745.5h estimadas pendientes
 
-TODO 37 · DOING 5 · DONE 214 · BLOCKED 62 · CUT 0
+TODO 37 · DOING 5 · DONE 214 · BLOCKED 63 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -88,7 +88,7 @@ TODO 37 · DOING 5 · DONE 214 · BLOCKED 62 · CUT 0
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 17/18 | 2h |
 | [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓▓▓▓▓▓░░` 83 % | 33/40 | 46.5h |
-| [Catálogo de paquetes y kits](11-catalogo.md) | `░░░░░░░░░░░░` 2 % | 1/50 | 622h |
+| [Catálogo de paquetes y kits](11-catalogo.md) | `░░░░░░░░░░░░` 2 % | 1/51 | 646h |
 
 **En curso**
 
@@ -159,6 +159,7 @@ TODO 37 · DOING 5 · DONE 214 · BLOCKED 62 · CUT 0
 - `CAT-STO-10` Implementar y publicar @core/kit-store (tienda, área de cliente, emails, plantillas legales) · C · 32h ([11-catalogo.md](11-catalogo.md))
 - `CAT-DRP-01` Implementar y publicar @core/pricing (reglas de margen, historial de precios) · C · 10h ([11-catalogo.md](11-catalogo.md))
 - `CAT-DRP-02` Implementar y publicar @core/suppliers con el adaptador manual (CSV) · C · 20h ([11-catalogo.md](11-catalogo.md))
+- `CAT-DRP-03` Adaptador CJdropshipping para @core/suppliers (verificar API y términos vigentes) · C · 12h ([11-catalogo.md](11-catalogo.md))
 - `CAT-DRP-06` Implementar y publicar @core/kit-dropshipping (importar, reenvío, excepciones, landing de producto) · C · 24h ([11-catalogo.md](11-catalogo.md))
 - `CAT-GRO-01` Implementar y publicar @core/experiments y añadirlo a kit-landing 1.1 · C · 16h ([11-catalogo.md](11-catalogo.md))
 - `CAT-GRO-04` Implementar y publicar @core/invoices (facturas españolas con numeración legal y VeriFactu; verificar plazos vigentes) · C · 24h ([11-catalogo.md](11-catalogo.md))
