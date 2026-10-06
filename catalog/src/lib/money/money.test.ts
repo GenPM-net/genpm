@@ -82,6 +82,11 @@ describe('arithmetic', () => {
     expect(charmPrice(eur(1720), '.95')).toEqual(eur(1795));
     expect(charmPrice(eur(1720), '.00')).toEqual(eur(1800));
     expect(charmPrice(money(1234, 'JPY'))).toEqual(money(1239, 'JPY'));
+    // Sin decimales nunca baja del importe original (100 JPY → 109, no 99).
+    expect(charmPrice(money(100, 'JPY'))).toEqual(money(109, 'JPY'));
+    expect(charmPrice(money(1239, 'JPY'))).toEqual(money(1239, 'JPY'));
+    expect(charmPrice(money(100, 'JPY'), '.00')).toEqual(money(100, 'JPY'));
+    expect(charmPrice(money(101, 'JPY'), '.00')).toEqual(money(110, 'JPY'));
     const rates = { base: 'EUR', rates: { USD: 1.08, JPY: 160 } };
     expect(convert(money(1080, 'USD'), 'EUR', rates)).toEqual(eur(1000));
     expect(convert(eur(1000), 'JPY', rates)).toEqual(money(1600, 'JPY'));

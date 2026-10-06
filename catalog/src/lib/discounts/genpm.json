@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/discounts",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Discount codes and automatic discounts: percent, fixed, free shipping, product/category scope, usage and first-order limits",
     "es": "Cupones y descuentos automáticos: porcentaje, importe, envío gratis, por producto o categoría, límites de uso y primer pedido",
@@ -23,9 +23,9 @@
   ],
   "g": {
     "@core/db": "^1.0.0",
-    "@core/cart": "^1.0.0",
+    "@core/cart": "^1.1.0",
     "@core/catalog": "^1.0.0",
-    "@core/orders": "^1.0.0",
+    "@core/orders": "^1.1.0",
     "@core/money": "^1.0.0"
   },
   "p": {

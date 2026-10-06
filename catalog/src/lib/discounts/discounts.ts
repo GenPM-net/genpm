@@ -1,12 +1,12 @@
 // Validación y aplicación de descuentos como pasos de la tubería de totales de @core/cart, y registro de usos al
-// pagarse el pedido (@core/orders).
-import { and, count, eq, inArray, isNull, or, sql } from 'drizzle-orm';
+// pagarse el pedido (@core/orders), en la misma transacción y con la fila del descuento bloqueada.
+import { and, asc, count, eq, inArray, isNull, ne, or, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { type CartTotals, registerTotalsStep } from '../cart/index.ts';
+import { type CartTotals, pendingCodeUses, registerTotalsStep } from '../cart/index.ts';
 import { categories, productCategories } from '../catalog/index.ts';
 import { type Executor, getDb } from '../db/index.ts';
 import { add, allocate, money, percent, sub, zero } from '../money/index.ts';
-import { onOrderEvent, orders } from '../orders/index.ts';
+import { type Order, onOrderPaidTx, orderEvents, orders } from '../orders/index.ts';
 import { type Discount, discountRedemptions, discounts } from './schema.ts';
 
 export const DiscountInput = z
@@ -58,27 +58,46 @@ async function eligibleLines(t: CartTotals, d: Discount, db: Executor): Promise<
   return t.lines.map((l) => d.productSlugs.includes(l.slug) || inCategory.has(l.productId));
 }
 
-/** Por qué no aplica un descuento (o null si aplica). */
+const PAID = ['paid', 'partially_refunded', 'refunded'] as const;
+
+type Who = { email?: string; userId?: string | null };
+const whoRedeemed = (who: Who) => or(who.email ? eq(discountRedemptions.email, who.email) : undefined, who.userId ? eq(discountRedemptions.userId, who.userId) : undefined);
+const whoOrdered = (who: Who) => or(who.email ? eq(orders.email, who.email) : undefined, who.userId ? eq(orders.userId, who.userId) : undefined);
+
+/** Usos ya registrados (sin contar el pedido `exceptOrderId`): de todos y de este cliente. */
+async function redemptions(d: Discount, who: Who, db: Executor, exceptOrderId?: string): Promise<{ total: number; mine: number }> {
+  const base = and(eq(discountRedemptions.discountId, d.id), exceptOrderId ? ne(discountRedemptions.orderId, exceptOrderId) : undefined);
+  const [all] = d.usageLimit != null ? await db.select({ n: count() }).from(discountRedemptions).where(base) : [{ n: 0 }];
+  const [mine] = d.perCustomerLimit != null && (who.email || who.userId) ? await db.select({ n: count() }).from(discountRedemptions).where(and(base, whoRedeemed(who))) : [{ n: 0 }];
+  return { total: all?.n ?? 0, mine: mine?.n ?? 0 };
+}
+
+/** ¿Tiene el cliente pedidos pagados (sin contar `exceptOrderId`)? */
+async function hasPaidOrders(who: Who, db: Executor, exceptOrderId?: string): Promise<boolean> {
+  const [r] = await db
+    .select({ n: count() })
+    .from(orders)
+    .where(and(whoOrdered(who), inArray(orders.status, [...PAID]), exceptOrderId ? ne(orders.id, exceptOrderId) : undefined));
+  return (r?.n ?? 0) > 0;
+}
+
+/**
+ * Por qué no aplica un descuento (o null si aplica). Los límites cuentan los usos registrados más los pagos abiertos
+ * con ese código (reservas de @core/checkout vía `pendingCodeUses`), salvo los del propio carrito.
+ */
 async function rejection(t: CartTotals, d: Discount, now: Date, db: Executor): Promise<string | null> {
   if (!d.active || (d.startsAt && d.startsAt > now) || (d.endsAt && d.endsAt <= now)) return 'This code is not active';
   const remaining = sub(t.subtotal, t.discountTotal).amount;
   if (d.minSubtotal != null && remaining < d.minSubtotal) return 'Minimum order not reached';
-  if (d.usageLimit != null) {
-    const [r] = await db.select({ n: count() }).from(discountRedemptions).where(eq(discountRedemptions.discountId, d.id));
-    if ((r?.n ?? 0) >= d.usageLimit) return 'This code has been used up';
-  }
   const email = t.context.email?.toLowerCase();
-  if (d.perCustomerLimit != null && (email || t.context.userId)) {
-    const who = or(email ? eq(discountRedemptions.email, email) : undefined, t.context.userId ? eq(discountRedemptions.userId, t.context.userId) : undefined);
-    const [r] = await db.select({ n: count() }).from(discountRedemptions).where(and(eq(discountRedemptions.discountId, d.id), who));
-    if ((r?.n ?? 0) >= d.perCustomerLimit) return 'You have already used this code';
-  }
-  if (d.firstOrderOnly) {
-    if (!email && !t.context.userId) return 'Sign in or enter your email to use this code';
-    const who = or(email ? eq(orders.email, email) : undefined, t.context.userId ? eq(orders.userId, t.context.userId) : undefined);
-    const [r] = await db.select({ n: count() }).from(orders).where(and(who, inArray(orders.status, ['paid', 'partially_refunded', 'refunded'])));
-    if ((r?.n ?? 0) > 0) return 'This code is only for first orders';
-  }
+  const who: Who = { email, userId: t.context.userId };
+  if (d.firstOrderOnly && !email && !t.context.userId) return 'Sign in or enter your email to use this code';
+  const limited = d.usageLimit != null || d.perCustomerLimit != null || d.firstOrderOnly;
+  const pending = limited && d.code ? await pendingCodeUses(d.code, { email, userId: t.context.userId, excludeCartId: t.cartId }, db) : { total: 0, mine: 0 };
+  const used = await redemptions(d, who, db);
+  if (d.usageLimit != null && used.total + pending.total >= d.usageLimit) return 'This code has been used up';
+  if (d.perCustomerLimit != null && (email || t.context.userId) && used.mine + pending.mine >= d.perCustomerLimit) return 'You have already used this code';
+  if (d.firstOrderOnly && (pending.mine > 0 || (await hasPaidOrders(who, db)))) return 'This code is only for first orders';
   return null;
 }
 
@@ -135,29 +154,57 @@ export async function discountsStep(t: CartTotals, db: Executor = getDb(), now =
     if (fresh && fresh.amount > 0) out = apply(out, fresh);
   }
   const free = valid.find((c) => c.d.type === 'free_shipping');
-  if (free) out = { ...out, context: { ...out.context, meta: { ...out.context.meta, freeShipping: free.d.code ?? free.d.name } } };
+  if (free) out = { ...out, context: { ...out.context, meta: { ...out.context.meta, freeShipping: free.d.code ?? free.d.name, ...(free.d.code && { freeShippingCode: free.d.code }) } } };
   return out;
 }
 
-/** Paso de envío gratis (orden 250, tras el envío): pone a cero la tarifa si un descuento lo concede. */
+/**
+ * Paso de envío gratis (orden 250, tras el envío): pone a cero la tarifa si un descuento lo concede. El ajuste lleva
+ * el código (si lo hay) para que su uso se registre y cuente para los límites.
+ */
 export function freeShippingStep(t: CartTotals): CartTotals {
   const label = t.context.meta.freeShipping;
   if (!label || !t.shipping || t.shipping.amount.amount === 0) return t;
-  return { ...t, shipping: { ...t.shipping, amount: zero(t.currency) }, discounts: [...t.discounts, { source: 'discounts', label: `Free shipping (${label})`, amount: zero(t.currency) }] };
+  const code = t.context.meta.freeShippingCode;
+  return {
+    ...t,
+    shipping: { ...t.shipping, amount: zero(t.currency) },
+    discounts: [...t.discounts, { source: 'discounts', label: `Free shipping (${label})`, amount: zero(t.currency), ...(code && { code }) }],
+  };
 }
 
-/** Registra los pasos y el contador de usos. Se llama al importar el módulo. */
+/** Por qué este pedido ya no cabía en los límites del descuento (o null). Se evalúa con la fila bloqueada. */
+async function overLimit(d: Discount, o: Order, db: Executor): Promise<string | null> {
+  const who: Who = { email: o.email, userId: o.userId };
+  const used = await redemptions(d, who, db, o.id);
+  if (d.usageLimit != null && used.total >= d.usageLimit) return 'usage_limit';
+  if (d.perCustomerLimit != null && used.mine >= d.perCustomerLimit) return 'per_customer_limit';
+  if (d.firstOrderOnly && (await hasPaidOrders(who, db, o.id))) return 'first_order_only';
+  return null;
+}
+
+/**
+ * Registra los usos de los códigos de un pedido pagado en su misma transacción, bloqueando las filas de los
+ * descuentos (FOR UPDATE) para que pagos simultáneos se serialicen y vuelvan a comprobar los límites. Si el límite
+ * ya se había superado, el pedido sigue adelante (el cliente ya pagó con ese precio) pero el uso se registra igual y
+ * queda un evento `discount_over_limit` en el historial del pedido para que el equipo lo revise.
+ */
+export async function recordRedemptions(o: Order, tx: Executor): Promise<void> {
+  const codes = [...new Set(o.discounts.flatMap((d) => (d.code ? [d.code] : [])))];
+  if (!codes.length) return;
+  const rows = await tx.select().from(discounts).where(inArray(discounts.code, codes)).orderBy(asc(discounts.id)).for('update');
+  for (const d of rows) {
+    const why = await overLimit(d, o, tx);
+    const amount = o.discounts.filter((x) => x.code === d.code).reduce((a, x) => a + x.amount, 0);
+    const [inserted] = await tx.insert(discountRedemptions).values({ discountId: d.id, orderId: o.id, email: o.email, userId: o.userId, amount }).onConflictDoNothing().returning();
+    if (inserted && why) await tx.insert(orderEvents).values({ orderId: o.id, type: 'discount_over_limit', data: { code: d.code, discountId: d.id, limit: why, amount } });
+  }
+}
+
+/** Registra los pasos y el registro de usos al pagarse un pedido. Se llama al importar el módulo. */
 export function registerDiscounts(): void {
   registerTotalsStep({ name: 'discounts', order: 100, run: (t) => discountsStep(t) });
   registerTotalsStep({ name: 'free-shipping', order: 250, run: freeShippingStep });
-  onOrderEvent('paid', 'discounts.redemptions', async (o) => {
-    const codes = o.discounts.filter((d) => d.code).map((d) => d.code!);
-    if (!codes.length) return;
-    const rows = await getDb().select().from(discounts).where(inArray(discounts.code, codes));
-    for (const d of rows) {
-      const amount = o.discounts.filter((x) => x.code === d.code).reduce((a, x) => a + x.amount, 0);
-      await getDb().insert(discountRedemptions).values({ discountId: d.id, orderId: o.id, email: o.email, userId: o.userId, amount }).onConflictDoNothing();
-    }
-  });
+  onOrderPaidTx('discounts.redemptions', recordRedemptions);
 }
 registerDiscounts();

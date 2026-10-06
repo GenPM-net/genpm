@@ -1,6 +1,7 @@
 // Cálculo de totales siempre en servidor, con precios actuales de @core/catalog, y una tubería de pasos que otros
 // módulos registran: descuentos (@core/discounts), envío (@core/shipping), impuestos (checkout/Stripe Tax).
 import type { Money } from '../contracts/index.ts';
+import type { Executor } from '../db/index.ts';
 import { add, allocate, money, sub, sum, zero } from '../money/index.ts';
 
 export type TotalsLine = {
@@ -53,7 +54,34 @@ export function registerTotalsStep(step: TotalsStep): void {
 }
 
 /** Solo tests. */
-export const clearTotalsSteps = () => void steps.splice(0);
+export const clearTotalsSteps = () => {
+  steps.splice(0);
+  pendingCounters.clear();
+};
+
+/**
+ * Usos de un código de descuento que aún no son pedido (p. ej. pagos abiertos de @core/checkout): `total` de todos los
+ * clientes y `mine` de este cliente. Los cuenta quien abre pagos y los consulta quien limita usos (@core/discounts).
+ */
+export type PendingCodeUses = (code: string, who: { email?: string; userId: string | null; excludeCartId: string }, db: Executor) => Promise<{ total: number; mine: number }>;
+
+const pendingCounters = new Map<string, PendingCodeUses>();
+
+export function registerPendingCodeUses(name: string, fn: PendingCodeUses): void {
+  pendingCounters.set(name, fn);
+}
+
+/** Suma de los usos pendientes de `code` según todos los contadores registrados (excluye el carrito `excludeCartId`). */
+export async function pendingCodeUses(code: string, who: Parameters<PendingCodeUses>[1], db: Executor): Promise<{ total: number; mine: number }> {
+  let total = 0;
+  let mine = 0;
+  for (const fn of pendingCounters.values()) {
+    const r = await fn(code, who, db);
+    total += r.total;
+    mine += r.mine;
+  }
+  return { total, mine };
+}
 
 /** Aplica un descuento de pedido: lo reparte entre líneas proporcionalmente (sin perder céntimos). */
 export function applyOrderDiscount(t: CartTotals, adj: Adjustment): CartTotals {

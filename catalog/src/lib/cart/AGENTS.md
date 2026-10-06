@@ -7,7 +7,7 @@ items are dropped with an `issues` entry, then registered steps run (discounts 1
 No payments or orders. Tables: `carts`, `cart_lines`.
 
 ## Map
-- `index.ts` — public API: `getCart`, `getOrCreateCart`, `addLine`, `setLine`, `setDiscountCodes`, `setCartMeta`, `computeTotals`, `registerTotalsStep`, `applyOrderDiscount`, `pruneCarts`.
+- `index.ts` — public API: `getCart`, `getOrCreateCart`, `addLine`, `setLine`, `setDiscountCodes`, `setCartMeta`, `computeTotals`, `registerTotalsStep`, `applyOrderDiscount`, `registerPendingCodeUses`, `pendingCodeUses`, `pruneCarts`.
 - `cart.ts` — operations. `totals.ts` — pipeline and types. `cookie.ts` — signed cookie.
 - `adapters/hono.ts` — `cartRoutes({ currentUserId })`. `adapters/next.ts` — `cartRoute`, `cartLinesRoute`, `cartLineRoute`, `cartCodesRoute`.
 
@@ -18,6 +18,8 @@ No payments or orders. Tables: `carts`, `cart_lines`.
 3. Server pages: `const cart = await getCart(cookieHeader, userId); const totals = cart && await computeTotals(cart)`.
 4. Modules that change totals register a step once at startup: `registerTotalsStep({ name, order, run: (t) => … })`;
    order discounts must go through `applyOrderDiscount` so they are allocated to lines.
+   Modules that open payments before the order exists (@core/checkout) register `registerPendingCodeUses` so
+   usage-limited codes (@core/discounts) count in-flight payments as reserved.
 5. Schedule `pruneCarts()` daily (@core/jobs).
 6. Verify: add a product, change its price in the admin, the cart shows the new price.
 

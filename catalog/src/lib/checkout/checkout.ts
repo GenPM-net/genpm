@@ -1,17 +1,17 @@
 // Del carrito al pago con Stripe Checkout. El pedido SOLO se crea en el webhook (pago confirmado), desde la
-// instantánea guardada al iniciar el pago, de forma idempotente y reservando stock; si el stock se agotó entre
-// medias, se reembolsa automáticamente.
-import { eq } from 'drizzle-orm';
+// instantánea guardada al iniciar el pago, de forma idempotente y reservando stock; si el pedido no se puede crear
+// (stock agotado, variante retirada, datos no válidos), se reembolsa automáticamente.
+import { and, eq, gt, ne, sql } from 'drizzle-orm';
 import type Stripe from 'stripe';
 import { z } from 'zod';
-import { type Cart, type CartTotals, clearCart, computeTotals } from '../cart/index.ts';
+import { type Cart, type CartTotals, clearCart, computeTotals, registerPendingCodeUses } from '../cart/index.ts';
 import { CatalogError } from '../catalog/index.ts';
 import type { CommerceEvent, PaymentProvider } from '../contracts/index.ts';
 import { type Executor, getDb } from '../db/index.ts';
 import { getEmailProvider } from '../email/index.ts';
 import { defineJob } from '../jobs/index.ts';
 import { money, toDecimalString } from '../money/index.ts';
-import { type Address, createOrder, getOrder, type OrderDetail, registerPaymentProvider } from '../orders/index.ts';
+import { type Address, createOrder, getOrder, type OrderDetail, OrderError, registerPaymentProvider } from '../orders/index.ts';
 import { getStripe, onStripeEvent } from '../stripe/index.ts';
 import { type CheckoutSession, checkoutSessions } from './schema.ts';
 
@@ -27,6 +27,8 @@ export class CheckoutError extends Error {
 }
 
 const BLOCKING = new Set(['no_shipping']);
+/** Vida de la sesión de Stripe Checkout (y de la reserva de los códigos de descuento que lleva). */
+const SESSION_TTL_MS = 30 * 60_000;
 
 export type StartCheckoutInput = {
   cart: Cart;
@@ -74,13 +76,21 @@ export async function startCheckout(input: StartCheckoutInput, db: Executor = ge
     payment_intent_data: { metadata: { cartId: t.cartId } },
     success_url: `${input.successUrl}${input.successUrl.includes('?') ? '&' : '?'}session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: input.cancelUrl,
-    expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+    expires_at: Math.floor((Date.now() + SESSION_TTL_MS) / 1000),
   });
   if (!session.url) throw new Error('Stripe did not return a checkout URL');
   await db
     .insert(checkoutSessions)
     .values({ id: session.id, cartId: t.cartId, userId: input.cart.userId, email: email.data, locale: input.locale ?? null, currency: t.currency, total: t.total.amount, snapshot: t })
     .onConflictDoNothing();
+  // Con la sesión ya guardada (y contando como reserva de sus códigos), se recalcula: si otro pago simultáneo agotó
+  // un código limitado, los totales cambian y esta sesión se anula en vez de sobrepasar el límite.
+  const again = await computeTotals(input.cart, { email: email.data }, db);
+  if (again.total.amount !== t.total.amount || again.discountTotal.amount !== t.discountTotal.amount) {
+    await stripe.checkout.sessions.expire(session.id).catch(() => undefined);
+    await db.update(checkoutSessions).set({ status: 'expired' }).where(eq(checkoutSessions.id, session.id));
+    throw new CheckoutError('issues', 'cart totals changed while starting checkout', again.issues);
+  }
   return { url: session.url, sessionId: session.id };
 }
 
@@ -137,22 +147,28 @@ export async function finalizeSession(s: Stripe.Checkout.Session, tx: Executor):
     const [row] = await tx.update(checkoutSessions).set({ status: 'completed', orderId: order.id }).where(eq(checkoutSessions.id, s.id)).returning();
     return row!;
   } catch (e) {
-    if (!(e instanceof CatalogError && e.code === 'out_of_stock')) throw e;
-    // Se agotó entre el carrito y el pago: reembolso completo automático y aviso al cliente.
-    await getStripe().refunds.create({ payment_intent: paymentRef, reason: 'requested_by_customer' }, { idempotencyKey: `oos:${s.id}` });
-    const [row] = await tx.update(checkoutSessions).set({ status: 'refunded_out_of_stock' }).where(eq(checkoutSessions.id, s.id)).returning();
-    await alertJob.enqueue({ sessionId: s.id, reason: 'out_of_stock' }, {}, tx);
+    // Solo los fallos permanentes (el pedido nunca se podrá crear) se reembolsan; el resto (base de datos, red) se
+    // relanza para que Stripe reintente el webhook.
+    if (!permanent(e)) throw e;
+    const oos = e instanceof CatalogError && e.code === 'out_of_stock';
+    // Reembolso completo automático y aviso al cliente y al equipo: nunca un cobro sin pedido.
+    await getStripe().refunds.create({ payment_intent: paymentRef, reason: 'requested_by_customer' }, { idempotencyKey: `${oos ? 'oos' : 'fail'}:${s.id}` });
+    const [row] = await tx.update(checkoutSessions).set({ status: oos ? 'refunded_out_of_stock' : 'refunded_order_failed' }).where(eq(checkoutSessions.id, s.id)).returning();
+    await alertJob.enqueue({ sessionId: s.id, reason: oos ? 'out_of_stock' : 'order_failed', ...(!oos && { detail: (e instanceof Error ? e.message : String(e)).slice(0, 300) }) }, {}, tx);
     return row!;
   }
 }
+
+/** Errores de validación del catálogo o del pedido: reintentar no los arregla (variante retirada, datos no válidos…). */
+const permanent = (e: unknown) => e instanceof CatalogError || e instanceof OrderError || e instanceof z.ZodError;
 
 // createOrder abre su propia lógica transaccional; con SAVEPOINT un fallo de stock deshace solo su parte.
 async function savepoint<T>(tx: Executor, fn: (inner: Executor) => Promise<T>): Promise<T> {
   return (tx as unknown as { transaction<R>(f: (t: Executor) => Promise<R>): Promise<R> }).transaction((inner) => fn(inner));
 }
 
-/** Avisos por email: al cliente si se reembolsó por falta de stock; al equipo (`CHECKOUT_ALERT_TO`) siempre. */
-export const alertJob = defineJob('checkout.alert', z.object({ sessionId: z.string(), reason: z.enum(['out_of_stock', 'amount_mismatch']) }), async ({ sessionId, reason }) => {
+/** Avisos por email: al cliente si se le reembolsó; al equipo (`CHECKOUT_ALERT_TO`) siempre. */
+export const alertJob = defineJob('checkout.alert', z.object({ sessionId: z.string(), reason: z.enum(['out_of_stock', 'order_failed', 'amount_mismatch']), detail: z.string().max(300).optional() }), async ({ sessionId, reason, detail }) => {
   const [cs] = await getDb().select().from(checkoutSessions).where(eq(checkoutSessions.id, sessionId));
   const from = process.env.EMAIL_FROM;
   if (!cs || !from) return;
@@ -165,8 +181,18 @@ export const alertJob = defineJob('checkout.alert', z.object({ sessionId: z.stri
       text: `Sorry: an item in your order sold out while you were paying, so we have refunded the full amount (${total} ${cs.currency}). No order was created.`,
       html: `<p>Sorry: an item in your order sold out while you were paying, so we have refunded the full amount (${total} ${cs.currency}). No order was created.</p>`,
     });
+  if (reason === 'order_failed')
+    await getEmailProvider().send({
+      from,
+      to: cs.email,
+      subject: 'Your payment has been refunded',
+      text: `Sorry: we could not complete your order (an item is no longer available), so we have refunded the full amount (${total} ${cs.currency}). No order was created.`,
+      html: `<p>Sorry: we could not complete your order (an item is no longer available), so we have refunded the full amount (${total} ${cs.currency}). No order was created.</p>`,
+    });
   const team = (process.env.CHECKOUT_ALERT_TO ?? '').split(',').map((x) => x.trim()).filter(Boolean);
-  if (team.length) await getEmailProvider().send({ from, to: team, subject: `Checkout ${reason}: ${sessionId}`, text: `Session ${sessionId} (${cs.email}, ${total} ${cs.currency}): ${reason}.`, html: `<p>Session ${sessionId}: ${reason}.</p>` });
+  const why = detail ? `${reason} (${detail})` : reason;
+  const esc = (x: string) => x.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+  if (team.length) await getEmailProvider().send({ from, to: team, subject: `Checkout ${reason}: ${sessionId}`, text: `Session ${sessionId} (${cs.email}, ${total} ${cs.currency}): ${why}.`, html: `<p>Session ${sessionId}: ${esc(why)}.</p>` });
 });
 
 /** Estado para la página de éxito: consulta la base de datos (lo que dijo el webhook), nunca la URL. */
@@ -178,7 +204,7 @@ export async function getCheckoutStatus(sessionId: string, db: Executor = getDb(
     return { status: 'paid', ...(o && { orderNumber: o.number }) };
   }
   if (cs.status === 'expired') return { status: 'expired' };
-  if (cs.status === 'refunded_out_of_stock') return { status: 'refunded' };
+  if (cs.status === 'refunded_out_of_stock' || cs.status === 'refunded_order_failed') return { status: 'refunded' };
   return { status: 'pending' };
 }
 
@@ -205,6 +231,27 @@ export function registerCheckout(): void {
     await tx.update(checkoutSessions).set({ status: 'expired' }).where(eq(checkoutSessions.id, (event.data.object as Stripe.Checkout.Session).id));
   });
   registerPaymentProvider(stripePaymentProvider);
+  registerPendingCodeUses('checkout', pendingCheckoutCodeUses);
+}
+
+/**
+ * Reservas de códigos de descuento: sesiones de pago abiertas y no caducadas que llevan `code` en su instantánea (sin
+ * contar las del mismo carrito, que se sustituyen al volver a pagar). Las usa @core/discounts para sus límites.
+ */
+async function pendingCheckoutCodeUses(code: string, who: { email?: string; userId: string | null; excludeCartId: string }, db: Executor) {
+  const rows = await db
+    .select({ email: checkoutSessions.email, userId: checkoutSessions.userId })
+    .from(checkoutSessions)
+    .where(
+      and(
+        eq(checkoutSessions.status, 'open'),
+        gt(checkoutSessions.createdAt, new Date(Date.now() - SESSION_TTL_MS)),
+        ne(checkoutSessions.cartId, who.excludeCartId),
+        sql`${checkoutSessions.snapshot}->'discounts' @> ${JSON.stringify([{ code }])}::jsonb`,
+      ),
+    );
+  const mine = rows.filter((r) => (who.email && r.email === who.email) || (who.userId && r.userId === who.userId)).length;
+  return { total: rows.length, mine };
 }
 registerCheckout();
 

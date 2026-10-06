@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/money",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Money in integer minor units: ISO currencies, safe parsing, rounding, lossless allocation, charm prices, formatting",
     "es": "Dinero en enteros (céntimos): monedas ISO, parseo seguro, redondeo, reparto sin pérdidas, precios .99 y formato",
