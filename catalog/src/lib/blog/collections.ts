@@ -18,7 +18,11 @@ export const PostSchema = z.object({
   authors: z.array(Slug).max(5).default([]),
   categories: z.array(Slug).max(5).default([]),
   tags: z.array(Slug).max(20).default([]),
-  series: z.object({ slug: Slug, order: z.number().int().min(1) }).optional(),
+  // Sin serie elegida en el panel llega `{ slug: null }`: se trata como "sin serie".
+  series: z.preprocess(
+    (v) => (v && typeof v === 'object' && (v as { slug?: unknown }).slug ? v : undefined),
+    z.object({ slug: Slug, order: z.coerce.number().int().min(1).default(1) }).optional(),
+  ),
   featured: z.boolean().default(false),
   /** Solo para suscriptores (con @core/billing: `hasEntitlement`). La web decide cómo ocultarlo. */
   membersOnly: z.boolean().default(false),
@@ -42,13 +46,16 @@ const postFields: AdminField[] = [
   { name: 'body', label: 'Body', type: 'richText', required: true },
   { name: 'cover', label: 'Cover image', type: 'media' },
   { name: 'coverAlt', label: 'Cover alt text', type: 'text' },
-  { name: 'authors', label: 'Authors', type: 'relation', relationTo: 'authors', many: true },
-  { name: 'categories', label: 'Categories', type: 'relation', relationTo: 'categories', many: true, list: true },
-  { name: 'tags', label: 'Tags', type: 'relation', relationTo: 'tags', many: true },
-  { name: 'series', label: 'Series', type: 'json' },
+  { name: 'authors', label: 'Authors', type: 'relation', relationTo: 'authors', relationKey: 'slug', many: true },
+  { name: 'categories', label: 'Categories', type: 'relation', relationTo: 'categories', relationKey: 'slug', many: true, list: true },
+  { name: 'tags', label: 'Tags', type: 'relation', relationTo: 'tags', relationKey: 'slug', many: true },
+  { name: 'series.slug', label: 'Series', type: 'relation', relationTo: 'series', relationKey: 'slug' },
+  { name: 'series.order', label: 'Part number in the series', type: 'number' },
   { name: 'featured', label: 'Featured', type: 'boolean', list: true },
   { name: 'membersOnly', label: 'Members only', type: 'boolean' },
-  { name: 'seo', label: 'SEO', type: 'json' },
+  { name: 'seo.title', label: 'SEO title (≤ 70)', type: 'text' },
+  { name: 'seo.description', label: 'SEO description (≤ 170)', type: 'textarea' },
+  { name: 'seo.noindex', label: 'Hide from search engines', type: 'boolean' },
 ];
 
 export const posts = defineCollection('posts', { schema: PostSchema, label: { singular: 'Post', plural: 'Posts' }, fields: postFields });

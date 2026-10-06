@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
 
-TODO 43 · DOING 5 · DONE 214 · BLOCKED 56 · CUT 0
+TODO 42 · DOING 5 · DONE 214 · BLOCKED 57 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -143,6 +143,7 @@ TODO 43 · DOING 5 · DONE 214 · BLOCKED 56 · CUT 0
 - `CAT-BLG-01` Implementar y publicar @core/blog (colecciones, feeds RSS/Atom/JSON, relacionados) · C · 12h ([11-catalogo.md](11-catalogo.md))
 - `CAT-BLG-02` Implementar y publicar @core/comments (moderación, valoración opcional, borrado RGPD) · C · 12h ([11-catalogo.md](11-catalogo.md))
 - `CAT-BLG-03` Implementar y publicar @core/newsletter (doble opt-in, baja RFC 8058, campañas por lotes) · C · 16h ([11-catalogo.md](11-catalogo.md))
+- `CAT-BLG-04` Implementar y publicar @core/kit-blog · C · 14h ([11-catalogo.md](11-catalogo.md))
 - `CAT-LND-01` Implementar y publicar @core/consent (banner, ConsentGate, registro de prueba) · C · 10h ([11-catalogo.md](11-catalogo.md))
 - `CAT-LND-02` Implementar y publicar @core/pixels (GA4, Meta Pixel + CAPI, TikTok + Events API con deduplicación) · C · 14h ([11-catalogo.md](11-catalogo.md))
 - `CAT-STO-01` Implementar y publicar @core/money (tests de propiedades) · C · 6h ([11-catalogo.md](11-catalogo.md))

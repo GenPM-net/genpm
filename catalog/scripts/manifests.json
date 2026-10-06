@@ -995,5 +995,41 @@
       "react": "^19.0.0",
       "zod": "^4.0.0"
     }
+  },
+  "kit-blog": {
+    "d": "src/app/(blog)",
+    "s": {
+      "en": "Blog kit for Next.js: posts with authors, categories, tags, series, feeds, moderated comments and newsletter",
+      "es": "Kit de blog para Next.js: posts con autores, categorías, etiquetas, series, feeds, comentarios moderados y newsletter",
+      "pt-BR": "Kit de blog para Next.js: posts com autores, categorias, tags, séries, feeds, comentários moderados e newsletter",
+      "fr": "Kit blog pour Next.js : articles, auteurs, catégories, tags, séries, flux, commentaires modérés et newsletter",
+      "de": "Blog-Kit für Next.js: Beiträge mit Autoren, Kategorien, Tags, Serien, Feeds, moderierten Kommentaren, Newsletter",
+      "ja": "Next.js 向けブログキット：著者・カテゴリ・タグ・シリーズ付き記事、フィード、承認制コメント、ニュースレター",
+      "zh-CN": "Next.js 博客套件：含作者、分类、标签、系列的文章，订阅源，审核评论和邮件简报",
+      "ko": "Next.js 블로그 키트: 작성자·카테고리·태그·시리즈 글, 피드, 검토 댓글, 뉴스레터"
+    },
+    "k": [
+      "blog",
+      "kit",
+      "nextjs",
+      "rss",
+      "newsletter"
+    ],
+    "g": {
+      "@core/kit-cms": "^1.0.0",
+      "@core/blog": "^1.0.0",
+      "@core/comments": "^1.0.0",
+      "@core/newsletter": "^1.0.0"
+    },
+    "p": {
+      "next": ">=15.5.0",
+      "react": "^19.0.0",
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "NEWSLETTER_FROM",
+      "NEWSLETTER_POSTAL_ADDRESS",
+      "NEWSLETTER_SECRET"
+    ]
   }
 }

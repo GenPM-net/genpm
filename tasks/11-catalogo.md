@@ -55,7 +55,8 @@
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/comments` (2026-10-06). Falta crear el repo `genpm-net/comments` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-BLG-03` **BLOCKED** Implementar y publicar @core/newsletter (doble opt-in, baja RFC 8058, campañas por lotes) · C · 16h · deps: CAT-CMS-03, CAT-CMS-04, CAT-CMS-08
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/newsletter` (2026-10-06). Falta crear el repo `genpm-net/newsletter` (fundador), publicar, pruebas de agente y revisión ADR-023.
-- [ ] `CAT-BLG-04` **TODO** Implementar y publicar @core/kit-blog · C · 14h · deps: CAT-CMS-14, CAT-BLG-01, CAT-BLG-02, CAT-BLG-03
+- [ ] `CAT-BLG-04` **BLOCKED** Implementar y publicar @core/kit-blog · C · 14h · deps: CAT-CMS-14, CAT-BLG-01, CAT-BLG-02, CAT-BLG-03
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/app/(blog)` (2026-10-06). Falta crear el repo `genpm-net/kit-blog` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-BLG-05` **TODO** Aceptación kit-blog: prueba de agente, feeds válidos y Lighthouse ≥ 95 · T · 3h · deps: CAT-BLG-04
 
 ## F3 · Landing (kit-landing)

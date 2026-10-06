@@ -144,5 +144,13 @@ describe('admin and routes', () => {
     const bad = await POST(new Request('http://x', { method: 'POST', body: new FormData() }), { params: Promise.resolve({ type: 'post', id: 'ent_9' }) });
     expect(bad.status).toBe(400);
     expect(((await (await GET(new Request('http://x'), { params: Promise.resolve({ type: 'post', id: 'ent_9' }) })).json()) as { total: number }).total).toBe(2);
+    // Formulario HTML sin JavaScript: vuelve a la página (mismo origen) con el resultado.
+    const html = new FormData();
+    for (const [k, v] of Object.entries({ ...(await fields()), body: 'Plain HTML post', name: 'H', email: 'h@x.test' })) html.set(k, String(v));
+    const back = await POST(new Request('http://x.test/api/comments/post/ent_9', { method: 'POST', body: html, headers: { accept: 'text/html', referer: 'http://x.test/blog/hello', 'x-forwarded-for': '203.0.113.3' } }), { params: Promise.resolve({ type: 'post', id: 'ent_9' }) });
+    expect(back.status).toBe(303);
+    expect(back.headers.get('location')).toBe('http://x.test/blog/hello?comment=approved#comments');
+    const spam = await POST(new Request('http://x.test/api/comments/post/ent_9', { method: 'POST', body: new FormData(), headers: { accept: 'text/html', referer: 'http://x.test/blog/hello' } }), { params: Promise.resolve({ type: 'post', id: 'ent_9' }) });
+    expect(spam.headers.get('location')).toBe('http://x.test/blog/hello?comment=spam#comments');
   });
 });

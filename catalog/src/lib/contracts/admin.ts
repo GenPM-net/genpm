@@ -35,6 +35,8 @@ export type AdminField = {
   options?: Array<{ value: string; label: string }>;
   /** `relation`: nombre del recurso relacionado. */
   relationTo?: string;
+  /** `relation`: campo del registro relacionado que se guarda (por defecto `id`; p. ej. `slug`). */
+  relationKey?: string;
   /** `relation` / `media`: admite varios valores. */
   many?: boolean;
   /** `list`: campos de cada elemento (lista ordenable de objetos: características, preguntas, testimonios…). */

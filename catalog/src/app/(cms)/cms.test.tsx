@@ -82,7 +82,8 @@ beforeEach(async () => {
 describe('registration (src/genpm)', () => {
   it('registers the pages collection and the admin resources of every CMS package', () => {
     expect(pages.name).toBe('pages');
-    expect(admin.resources.map((r) => r.name)).toEqual(['pages', 'media', 'submissions', 'forms', 'site_settings', 'menus', 'redirects', 'users', 'admin-audit']);
+    // El proyecto de ejemplo incluye además los recursos de otros kits (blog…).
+    expect(admin.resources.map((r) => r.name)).toEqual(expect.arrayContaining(['pages', 'media', 'submissions', 'forms', 'site_settings', 'menus', 'redirects', 'users', 'admin-audit']));
   });
 });
 

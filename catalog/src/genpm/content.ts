@@ -1,6 +1,7 @@
 // Colecciones del sitio. Importar @/lib/site y @/lib/forms registra también ajustes, menús y formularios del panel.
 import '@/lib/site';
 import '@/lib/forms';
+import '@/lib/blog'; // kit-blog: posts, authors, categories, tags, series
 import { z } from 'zod';
 import { defineCollection } from '@/lib/content';
 import { SeoFieldsSchema, seoAdminFields } from '@/lib/seo';

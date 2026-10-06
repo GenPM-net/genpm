@@ -17,5 +17,6 @@ export const blogSearchSource = (path: PathFn = defaultPath) =>
     text: (d) => (d.membersOnly ? String(d.excerpt ?? '') : `${d.excerpt ?? ''}\n${toPlainText(d.body as Doc)}`),
   });
 
-/** Recursos del panel: posts, autores, categorías, etiquetas y series. */
-export const blogAdminResources = () => BLOG_COLLECTIONS.map((c) => ({ ...contentAdminResource(c), group: 'Blog' }));
+/** Recursos del panel: posts (con enlaces "Ver" y "Vista previa"), autores, categorías, etiquetas y series. */
+export const blogAdminResources = (path: PathFn = defaultPath) =>
+  BLOG_COLLECTIONS.map((c) => ({ ...contentAdminResource(c, c === 'posts' ? { path } : {}), group: 'Blog' }));

@@ -1,0 +1,15 @@
+/* Plantilla visual del blog sobre los tokens de @core/ui (este archivo es del proyecto: edítalo libremente). */
+.blog-meta { color: var(--ui-muted); font-size: 0.875rem; }
+.blog-list { margin-block: 1.5rem; }
+.blog-card h2, .blog-card h3 { margin: 0 0 0.25rem; font-size: 1.25rem; }
+.blog-card a { color: inherit; }
+.blog-post { max-width: 46rem; }
+.blog-post h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin: 0.25rem 0; }
+.blog-post__cover { width: 100%; height: auto; border-radius: var(--ui-radius); margin-block: 1.5rem; }
+.blog-post__body { font-size: 1.125rem; line-height: 1.7; }
+.blog-post__body img { max-width: 100%; height: auto; }
+.blog-tags, .blog-share { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-block: 1rem; }
+.blog-newsletter, .blog-comments { margin-block: 2.5rem; }
+.blog-comments__list { list-style: none; padding: 0; display: grid; gap: 1rem; }
+.blog-comment__body { white-space: pre-line; overflow-wrap: anywhere; }
+.blog-feeds { margin-block-start: 2rem; font-size: 0.875rem; }

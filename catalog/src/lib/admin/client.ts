@@ -220,7 +220,7 @@ function RelationField(p: FieldRendererProps & { resource: string }): ReactNode 
     let live = true;
     p.api
       .list(p.resource, { pageSize: 100 })
-      .then((r) => live && setOptions(r.rows.map((row) => ({ value: row.id, label: row._title ?? row.id }))))
+      .then((r) => live && setOptions(r.rows.map((row) => ({ value: String(row[p.field.relationKey ?? 'id'] ?? row.id), label: row._title ?? row.id }))))
       .catch(() => live && setOptions([]));
     return () => {
       live = false;

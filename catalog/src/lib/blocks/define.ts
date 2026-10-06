@@ -35,7 +35,8 @@ export type BlockDefinition<S extends z.ZodType = z.ZodType> = {
   defaults?: () => Record<string, unknown>;
   /** Este bloque puede ser el título de la página (`h1`): solo uno por página, lo decide `RenderBlocks`. */
   pageTitle?: (data: z.output<S>) => boolean;
-  Component: (props: { data: z.output<S>; ctx: BlockContext }) => ReactNode;
+  /** Puede ser async (Server Component) para bloques que leen datos: últimos posts, productos… */
+  Component: (props: { data: z.output<S>; ctx: BlockContext }) => ReactNode | Promise<ReactNode>;
 };
 
 /** Declara un bloque con inferencia de tipos de `data`. */
