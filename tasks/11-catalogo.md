@@ -102,7 +102,8 @@
 - [ ] `CAT-DRP-03` **TODO** Adaptador CJdropshipping para @core/suppliers (verificar API y términos vigentes) · C · 12h · deps: CAT-DRP-02
 - [ ] `CAT-DRP-04` **TODO** Alta de la app en AliExpress Open Platform (dropshipping) y aprobación · F · 2h · deps: CAT-00-01
 - [ ] `CAT-DRP-05` **TODO** Adaptador AliExpress para @core/suppliers · C · 14h · deps: CAT-DRP-02, CAT-DRP-04
-- [ ] `CAT-DRP-06` **TODO** Implementar y publicar @core/kit-dropshipping (importar, reenvío, excepciones, landing de producto) · C · 24h · deps: CAT-STO-10, CAT-LND-03, CAT-DRP-02
+- [ ] `CAT-DRP-06` **BLOCKED** Implementar y publicar @core/kit-dropshipping (importar, reenvío, excepciones, landing de producto) · C · 24h · deps: CAT-STO-10, CAT-LND-03, CAT-DRP-02
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/app/(dropshipping)` (2026-10-06). Falta crear el repo `genpm-net/kit-dropshipping` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-DRP-07` **TODO** Aceptación kit-dropshipping: recorrido completo con proveedor simulado en < 45 min de agente · T · 4h · deps: CAT-DRP-06
 
 ## F6 · Crecimiento

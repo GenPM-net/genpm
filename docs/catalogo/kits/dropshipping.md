@@ -65,7 +65,18 @@ reintentos), consultar seguimiento (cada 12 h), recalcular precios cuando cambia
 4. Crear su landing `/p/[slug]` y hacer una compra en modo test: el pedido debe aparecer en "Reenvío" (modo aprobación por defecto).
 5. Activar el cron de `jobs` en el hosting.
 
-## 6. Aceptación específica
+## 6. Implementación 1.0 (notas)
+
+- Código en `catalog/src/app/(dropshipping)`; líneas `// kit-dropshipping` en `catalog/src/genpm`.
+- El test `dropshipping.test.tsx` recorre importar (CSV, adaptador manual) → activar → `/p/[slug]` → compra (Stripe
+  simulado) → webhook duplicado = un pedido y un reenvío → aprobación → email al proveedor → seguimiento → email
+  "enviado" → rentabilidad.
+- Importación desde el panel como acciones de `@core/suppliers` ("Importar CSV", "Importar por id" si el adaptador
+  tiene `getProduct`). Vista previa antes de importar: los productos entran como borradores.
+- Simulador de reglas de precio y rentabilidad por producto: pendiente para 1.1 (hoy: widget de rentabilidad a 7 días).
+- Adaptadores CJ y AliExpress: CAT-DRP-03/05 (requieren verificar API y alta de la app).
+
+## 7. Aceptación específica
 
 - Recorrido completo con proveedor simulado: importar → landing → compra test → pedido reenviado una sola vez →
   seguimiento recibido → email "enviado" al cliente.

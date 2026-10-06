@@ -16,12 +16,14 @@ import * as mediaSchema from '@/lib/media/schema';
 import * as newsletterSchema from '@/lib/newsletter/schema';
 import * as ordersSchema from '@/lib/orders/schema';
 import * as pixelsSchema from '@/lib/pixels/schema';
+import * as pricingSchema from '@/lib/pricing/schema';
 import * as rbacSchema from '@/lib/rbac/schema';
 import * as reviewsSchema from '@/lib/reviews/schema';
 import * as searchSchema from '@/lib/search/schema';
 import * as shippingSchema from '@/lib/shipping/schema';
 import * as siteSchema from '@/lib/site/schema';
 import * as stripeSchema from '@/lib/stripe/schema';
+import * as suppliersSchema from '@/lib/suppliers/schema';
 
 export const projectDb = () =>
   testDb(
@@ -47,4 +49,6 @@ export const projectDb = () =>
     discountsSchema,
     reviewsSchema,
     stripeSchema,
+    pricingSchema,
+    suppliersSchema,
   );

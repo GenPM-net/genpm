@@ -1,0 +1,40 @@
+{
+  "$": 1,
+  "n": "@core/kit-dropshipping",
+  "v": "1.0.0",
+  "s": {
+    "en": "Dropshipping kit for Next.js: supplier import, margin rules, product landings, order forwarding and exceptions",
+    "es": "Kit de dropshipping para Next.js: importar de proveedores, reglas de margen, landings de producto, reenvío y excepciones",
+    "pt-BR": "Kit de dropshipping para Next.js: importação de fornecedores, margens, landings de produto, repasse e exceções",
+    "fr": "Kit dropshipping Next.js : import fournisseurs, règles de marge, landings produit, transfert des commandes",
+    "de": "Dropshipping-Kit für Next.js: Lieferantenimport, Margenregeln, Produkt-Landingpages, Auftragsweiterleitung",
+    "ja": "Next.js 向けドロップシッピングキット：仕入先インポート、マージン規則、商品 LP、注文転送、例外管理",
+    "zh-CN": "Next.js 代发货套件：供应商导入、利润规则、单品落地页、订单转发和异常处理",
+    "ko": "Next.js 드롭쉬핑 키트: 공급사 가져오기, 마진 규칙, 상품 랜딩, 주문 전달, 예외 처리"
+  },
+  "d": "src/app/(dropshipping)",
+  "l": "MIT",
+  "k": [
+    "dropshipping",
+    "kit",
+    "nextjs",
+    "ecommerce",
+    "suppliers"
+  ],
+  "g": {
+    "@core/kit-store": "^1.0.0",
+    "@core/kit-landing": "^1.0.0",
+    "@core/suppliers": "^1.0.0",
+    "@core/pricing": "^1.0.0"
+  },
+  "p": {
+    "next": ">=15.5.0",
+    "react": "^19.0.0"
+  },
+  "e": [
+    "PAYMENT_FEE_BPS",
+    "PAYMENT_FEE_FIXED",
+    "SUPPLIERS_SYNC_CRON",
+    "SUPPLIERS_TRACKING_CRON"
+  ]
+}
