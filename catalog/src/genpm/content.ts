@@ -2,6 +2,8 @@
 import '@/lib/site';
 import '@/lib/forms';
 import '@/lib/blog'; // kit-blog: posts, authors, categories, tags, series
+import '@/app/(landing)/_lib/landings'; // kit-landing: colección landings
+import '@/app/(landing)/_lib/conversion'; // kit-landing: evento lead en servidor (job)
 import { z } from 'zod';
 import { defineCollection } from '@/lib/content';
 import { SeoFieldsSchema, seoAdminFields } from '@/lib/seo';

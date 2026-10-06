@@ -1,5 +1,7 @@
 // Panel de administración: recursos y widgets. Cada kit o paquete instalado indica qué añadir aquí.
 import { withSendAsCampaign } from '@/app/(blog)/_lib/campaign'; // kit-blog
+import { landingPath } from '@/app/(landing)/_lib/landings'; // kit-landing
+import { leadsByLandingWidget } from '@/app/(landing)/_lib/widgets'; // kit-landing
 import { type AdminWidget, auditAdminResource, defineAdmin } from '@/lib/admin';
 import { blogAdminResources } from '@/lib/blog'; // kit-blog
 import { commentsAdminResource } from '@/lib/comments'; // kit-blog
@@ -41,12 +43,14 @@ const widgets: AdminWidget[] = [
     permission: 'comments:read',
     load: async (ctx) => ({ value: (await commentsAdminResource.list({ page: 1, pageSize: 1, filters: { status: 'pending' } }, ctx)).total }),
   },
+  leadsByLandingWidget, // kit-landing
 ];
 
 export const admin = defineAdmin({
   title: 'Admin',
   resources: [
     pagesResource,
+    { ...contentAdminResource('landings', { path: landingPath }), group: 'Marketing' }, // kit-landing
     withSendAsCampaign(postsResource!), // kit-blog
     ...blogTaxonomies, // kit-blog
     commentsAdminResource, // kit-blog

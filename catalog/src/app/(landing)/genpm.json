@@ -1,0 +1,40 @@
+{
+  "$": 1,
+  "n": "@core/kit-landing",
+  "v": "1.0.0",
+  "s": {
+    "en": "Landing page kit for Next.js: block-built pages, lead forms, cookie banner and consent-gated pixels with dedup",
+    "es": "Kit de landings para Next.js: páginas con bloques, formularios de leads, banner de cookies y píxeles con consentimiento",
+    "pt-BR": "Kit de landing pages para Next.js: páginas com blocos, formulários de leads, banner de cookies e pixels com consentimento",
+    "fr": "Kit de landing pages Next.js : pages à blocs, formulaires de leads, bandeau cookies, pixels avec consentement",
+    "de": "Landingpage-Kit für Next.js: Blockseiten, Lead-Formulare, Cookie-Banner und Pixel nur mit Einwilligung",
+    "ja": "Next.js 向けランディングページキット：ブロック構成、リードフォーム、Cookie バナー、同意制ピクセル",
+    "zh-CN": "Next.js 落地页套件：区块页面、线索表单、Cookie 横幅和需同意的转化像素",
+    "ko": "Next.js 랜딩 페이지 키트: 블록 페이지, 리드 폼, 쿠키 배너, 동의 기반 픽셀"
+  },
+  "d": "src/app/(landing)",
+  "l": "MIT",
+  "k": [
+    "landing",
+    "kit",
+    "nextjs",
+    "leads",
+    "conversion"
+  ],
+  "g": {
+    "@core/kit-cms": "^1.0.0",
+    "@core/consent": "^1.0.0",
+    "@core/pixels": "^1.0.0"
+  },
+  "p": {
+    "next": ">=15.5.0",
+    "react": "^19.0.0",
+    "zod": "^4.0.0"
+  },
+  "e": [
+    "GA4_MEASUREMENT_ID",
+    "META_PIXEL_ID",
+    "TIKTOK_PIXEL_ID",
+    "CONSENT_POLICY_VERSION"
+  ]
+}
