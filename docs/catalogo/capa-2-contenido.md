@@ -87,7 +87,7 @@ asignables (privacidad, aviso legal, cookies, términos, devoluciones).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/site` | `@core/content ^1` | — | `SITE_URL` | — |
+| `src/lib/site` | `@core/content ^1`, `@core/db ^1`, `@core/contracts ^1` | `zod` | `SITE_URL`, `SITE_REDIRECT_HOSTS` (opc.) | — |
 
 **Tablas.** `redirects` (from, to, status, hits). Ajustes y menús son singletons/colecciones de `content`.
 **API.** `getSiteSettings()`, `getMenu('header')`, `redirectMiddleware` (Next middleware / Hono), `AdminResource` "Ajustes", "Menús", "Redirecciones".
