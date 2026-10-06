@@ -16,7 +16,10 @@ export const SeoFieldsSchema = z
   .default({});
 
 export const seoAdminFields: AdminField[] = [
-  { name: 'seo', label: 'SEO (title ≤ 70, description ≤ 170, image, noindex)', type: 'json' },
+  { name: 'seo.title', label: 'SEO title (≤ 70)', type: 'text' },
+  { name: 'seo.description', label: 'SEO description (≤ 170)', type: 'textarea' },
+  { name: 'seo.image', label: 'Social image (URL or path)', type: 'text' },
+  { name: 'seo.noindex', label: 'Hide from search engines', type: 'boolean' },
 ];
 
 export type PageSeo = {

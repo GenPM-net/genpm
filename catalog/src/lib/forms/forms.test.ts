@@ -1,4 +1,6 @@
 import { Hono } from 'hono';
+import type { ReactElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { formTimingToken } from '../antispam/index.js';
@@ -20,6 +22,8 @@ import {
   defineForm,
   deleteSubmissionsByEmail,
   exportSubmissionsCsv,
+  Form,
+  fieldsFromSchema,
   formSubmissions,
   onSubmission,
   pruneSubmissions,
@@ -193,5 +197,48 @@ describe('adapters', () => {
       { params: Promise.resolve({ key: 'contact' }) },
     );
     expect(res.status).toBe(201);
+  });
+});
+
+describe('<Form> and HTML posts without JavaScript', () => {
+  const html = async (props: Parameters<typeof Form>[0]) => renderToStaticMarkup((await Form(props)) as ReactElement);
+
+  it('renders fields from the zod schema with honeypot, timing token and consent', async () => {
+    const out = await html({ formKey: 'contact' });
+    expect(out).toContain('action="/api/forms/contact"');
+    const email = out.match(/<input id="form-contact-email"[^>]*>/)![0];
+    for (const attr of ['name="email"', 'type="email"', 'required=""', 'autoComplete="email"']) expect(email).toContain(attr);
+    expect(out).toMatch(/<textarea id="form-contact-message"[^>]*maxLength="2000"/);
+    expect(out).toContain('name="website"');
+    expect(out).toMatch(/name="_ts" value="\d+\.[0-9a-f]+"/);
+    expect(out).toContain('I accept the privacy policy');
+    expect(await html({ formKey: 'nope' })).toBe('');
+    expect(fieldsFromSchema(z.object({ ok: z.boolean().optional(), n: z.number(), kind: z.enum(['a', 'b']) }))).toEqual([
+      { name: 'ok', label: 'Ok', required: false, type: 'checkbox' },
+      { name: 'n', label: 'N', required: true, type: 'number' },
+      { name: 'kind', label: 'Kind', required: true, type: 'select', options: ['a', 'b'] },
+    ]);
+  });
+
+  it('shows the result after a classic POST and redirects back with 303', async () => {
+    const fd = new FormData();
+    for (const [k, v] of Object.entries(await human({ name: 'Ana', email: 'bad', message: 'Hello there', consent: 'on' }))) fd.set(k, String(v));
+    const res = await formRoute(
+      new Request('http://s.test/api/forms/contact', { method: 'POST', body: fd, headers: { accept: 'text/html', referer: 'http://s.test/contact?x=1', 'x-forwarded-for': '198.51.100.20' } }),
+      { params: Promise.resolve({ key: 'contact' }) },
+    );
+    expect(res.status).toBe(303);
+    const loc = new URL(res.headers.get('location')!);
+    expect(`${loc.pathname}?${loc.searchParams}${loc.hash}`).toBe('/contact?x=1&form=contact&form_status=invalid&form_errors=email#form-contact');
+    const out = await html({ formKey: 'contact', searchParams: Object.fromEntries(loc.searchParams) });
+    expect(out).toContain('role="alert"');
+    expect(out).toContain('aria-invalid="true" aria-describedby="form-contact-email-error"');
+    // Un referer de otro sitio no se usa para redirigir: respuesta JSON.
+    const foreign = await formRoute(
+      new Request('http://s.test/api/forms/contact', { method: 'POST', body: fd, headers: { accept: 'text/html', referer: 'https://evil.test/', 'x-forwarded-for': '198.51.100.21' } }),
+      { params: Promise.resolve({ key: 'contact' }) },
+    );
+    expect(foreign.status).toBe(422);
+    expect(await html({ formKey: 'contact', searchParams: { form: 'contact', form_status: 'sent' } })).toContain('role="status"');
   });
 });

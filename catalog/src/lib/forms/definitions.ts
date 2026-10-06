@@ -16,6 +16,8 @@ export type FormDefinition = {
   /** Webhook https que recibe cada envío firmado con `FORMS_WEBHOOK_SECRET`. */
   webhook?: string;
   consent?: ConsentConfig;
+  /** Campos para pintar el formulario (`<Form>`). Los de código se deducen del esquema si faltan. */
+  fields?: BuilderField[];
 };
 
 const KEY_RE = /^[a-z][a-z0-9-]{0,47}$/;
@@ -85,5 +87,5 @@ export async function getForm(key: string): Promise<FormDefinition | null> {
   const entry = await getEntry<z.infer<typeof FormBuilderSchema>>('forms', key);
   if (!entry) return null;
   const d = entry.data;
-  return { key, label: d.label, schema: schemaFromFields(d.fields), notify: d.notify, emailField: d.emailField, autoReply: d.autoReply, webhook: d.webhook, consent: d.consent };
+  return { key, label: d.label, schema: schemaFromFields(d.fields), notify: d.notify, emailField: d.emailField, autoReply: d.autoReply, webhook: d.webhook, consent: d.consent, fields: d.fields };
 }

@@ -35,7 +35,7 @@ function errorResponse(e: unknown): Response {
   if (e instanceof z.ZodError) return json({ error: 'invalid', issues: e.issues.map((i) => ({ path: i.path.join('.'), message: i.message })) }, 422);
   const code = (e as { code?: unknown })?.code;
   if (typeof code === 'string') {
-    const status = code === 'forbidden' ? 403 : code === 'not_found' ? 404 : /^(invalid|slug_taken|too_much|out_of_stock|invalid_state|invalid_transition|invalid_data|no_provider|no_price_rule|redirect_loop|currency|unsupported)/.test(code) ? 422 : 400;
+    const status = code === 'forbidden' ? 403 : code === 'not_found' ? 404 : /^(invalid|slug_taken|too_much|out_of_stock|invalid_state|invalid_transition|invalid_data|no_provider|no_price_rule|redirect_loop|currency|unsupported|unknown_role|last_owner|system_role)/.test(code) ? 422 : 400;
     return json({ error: code, message: (e as Error).message, ...((e as { issues?: unknown }).issues ? { issues: (e as { issues: unknown }).issues } : {}) }, status);
   }
   throw e;
