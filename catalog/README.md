@@ -32,3 +32,4 @@ node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde s
 | `blog` | CAT-BLG-01 | Implementado y validado · pendiente de publicar |
 | `comments` | CAT-BLG-02 | Implementado y validado · pendiente de publicar |
 | `newsletter` | CAT-BLG-03 | Implementado y validado · pendiente de publicar |
+| `money` | CAT-STO-01 | Implementado y validado · pendiente de publicar |

@@ -63,7 +63,8 @@
 
 ## F4 · Tienda (kit-store)
 
-- [ ] `CAT-STO-01` **TODO** Implementar y publicar @core/money (tests de propiedades) · C · 6h · deps: CAT-00-03
+- [ ] `CAT-STO-01` **BLOCKED** Implementar y publicar @core/money (tests de propiedades) · C · 6h · deps: CAT-00-03
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/money` (2026-10-06). Falta crear el repo `genpm-net/money` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-STO-02` **TODO** Implementar y publicar @core/stripe y migrar @core/billing a 2.0 sobre él · C · 12h · deps: CAT-00-02
 - [ ] `CAT-STO-03` **TODO** Implementar y publicar @core/catalog (variantes, colecciones, reserva de stock concurrente) · C · 20h · deps: CAT-CMS-07, CAT-STO-01
 - [ ] `CAT-STO-04` **TODO** Implementar y publicar @core/cart (precios en servidor, tubería de totales) · C · 14h · deps: CAT-STO-03
