@@ -114,14 +114,14 @@ reembolsos. Página de éxito que no confía en la URL (consulta el estado real)
 
 ## `@core/discounts` — cupones y descuentos
 
-**Para qué.** Códigos de cupón y descuentos automáticos: porcentaje, importe fijo, envío gratis, "compra X lleva Y";
+**Para qué.** Códigos de cupón y descuentos automáticos: porcentaje, importe fijo, envío gratis ("compra X lleva Y" en 1.1);
 condiciones (mínimo de compra, productos/categorías, primer pedido, clientes concretos), límites de uso total y por
 cliente, fechas de validez. Se aplica como paso de la tubería de totales de `cart` y se registra en el pedido.
 **No incluye.** Programas de puntos/fidelización, tarjetas regalo (paquetes futuros).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/discounts` | `@core/db ^1`, `@core/cart ^1`, `@core/money ^1` | — | — | — |
+| `src/lib/discounts` | `@core/db ^1`, `@core/cart ^1`, `@core/catalog ^1`, `@core/orders ^1`, `@core/money ^1` | `zod` | — | — |
 
 **Tablas.** `discounts`, `discount_redemptions`.
 **API.** `applyCode(cart, code)`, paso de totales `discounts`, `discountsResources`.

@@ -682,5 +682,34 @@
         ]
       }
     ]
+  },
+  "discounts": {
+    "s": {
+      "en": "Discount codes and automatic discounts: percent, fixed, free shipping, product/category scope, usage and first-order limits",
+      "es": "Cupones y descuentos automáticos: porcentaje, importe, envío gratis, por producto o categoría, límites de uso y primer pedido",
+      "pt-BR": "Cupons e descontos automáticos: percentual, valor fixo, frete grátis, por produto ou categoria, limites e primeira compra",
+      "fr": "Codes promo et remises automatiques : pourcentage, montant, livraison offerte, par produit/catégorie, limites d'usage",
+      "de": "Rabattcodes und automatische Rabatte: Prozent, Betrag, Gratisversand, je Produkt/Kategorie, Nutzungs- und Erstkundenlimits",
+      "ja": "割引コードと自動割引：率・定額・送料無料、商品/カテゴリ指定、利用回数と初回限定の制限",
+      "zh-CN": "优惠码与自动折扣：百分比、固定金额、包邮、按商品或分类、使用次数和首单限制",
+      "ko": "할인 코드와 자동 할인: 비율·정액·무료 배송, 상품/카테고리 지정, 사용 횟수와 첫 주문 제한"
+    },
+    "k": [
+      "ecommerce",
+      "discounts",
+      "coupons",
+      "promotions",
+      "cart"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/cart": "^1.0.0",
+      "@core/catalog": "^1.0.0",
+      "@core/orders": "^1.0.0",
+      "@core/money": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    }
   }
 }
