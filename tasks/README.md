@@ -22,7 +22,7 @@ Cada archivo `NN-*.md` es una fase con sus tareas.
 
 | Parte | Regla |
 |---|---|
-| ID | `D<día>-<track>-<nn>` en el sprint, `D<día>-G-<nn>` para gates, `S-<semilla>-<nn>`, `BR-<nn>`, `V<versión>-<nn>`, `ENT-<nn>`. Nunca se reutiliza. |
+| ID | `D<día>-<track>-<nn>` en el sprint, `D<día>-G-<nn>` para gates, `S-<semilla>-<nn>`, `BR-<nn>`, `V<versión>-<nn>`, `ENT-<nn>`, `CAT-<bloque>-<nn>` (catálogo de kits). Nunca se reutiliza. |
 | Track | `F` fundador · `A` plataforma · `B` cliente · `C` contenido · `W` web · `D` diseño · `T` todo el equipo |
 | Estimación | Horas de trabajo enfocado (`0.5h`, `3h`) |
 | deps | IDs que deben estar en `DONE` o `CUT` antes de empezar, o `—` |
@@ -69,11 +69,11 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 ## Tablero
 
 <!-- board:start -->
-<!-- Generado por `pnpm tasks sync` · 2026-10-05. No editar a mano. -->
+<!-- Generado por `pnpm tasks sync` · 2026-10-06. No editar a mano. -->
 
-**79 %** completado · 213/268 tareas · 99.5h estimadas pendientes
+**67 %** completado · 213/317 tareas · 699.5h estimadas pendientes
 
-TODO 27 · DOING 4 · DONE 213 · BLOCKED 24 · CUT 0
+TODO 76 · DOING 4 · DONE 213 · BLOCKED 24 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -88,6 +88,7 @@ TODO 27 · DOING 4 · DONE 213 · BLOCKED 24 · CUT 0
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 17/18 | 2h |
 | [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓▓▓▓▓▓░░` 83 % | 33/40 | 46.5h |
+| [Catálogo de paquetes y kits](11-catalogo.md) | `░░░░░░░░░░░░` 0 % | 0/49 | 600h |
 
 **En curso**
 

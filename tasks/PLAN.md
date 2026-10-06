@@ -42,6 +42,7 @@ Fechas propuestas (equipo de 2 ingenieros + agentes IA). Con 1 persona, el sprin
 | Transversal · Semillas | Días 1–6 | [08-semillas.md](08-semillas.md) | 5 paquetes `@core/*` aceptados |
 | Transversal · Marca y diseño | Días 0–6 | [09-marca-diseno.md](09-marca-diseno.md) | Activos de marca y preset de tokens listos |
 | Post-MVP | +2 sem → +6 meses | [10-post-mvp.md](10-post-mvp.md) | v0.2 · v0.3 · v1.0 SaaS · Enterprise |
+| Catálogo de kits | Tras ADR-033 (F0–F6) | [11-catalogo.md](11-catalogo.md) | CMS, blog, landing, tienda y dropshipping ([docs/catalogo](../docs/catalogo/README.md)) |
 
 ```mermaid
 gantt

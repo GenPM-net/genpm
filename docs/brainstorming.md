@@ -437,6 +437,33 @@ Triggers, el compartido les reenvía cada ejecución a `POST /__cron` con `CRON_
 prefijo (api-spec §5.2), pasar un cliente de compartido a dedicado es copiar filas (`scripts/provision-dedicated.mjs
 --copy`). Mismas claves de firma (los clientes ya las fijan); cuentas y tokens propios de la D1 del cliente.
 
+### ADR-033 · Catálogo de kits: capas, contratos y kits como pegamento — 🟡 Propuesta (pendiente del fundador, 2026-10-06)
+
+**Contexto:** tras las semillas, el fundador quiere paquetes "completos" (sitio autoadministrable con un CMS de
+TypeScript, blog, landing y tienda de dropshipping) que a su vez se compongan de paquetes reutilizables sin repetirse
+entre ellos. Restricciones del formato: un paquete tiene un solo `d`, como máximo 10 dependencias `g`, y el lockfile
+admite una versión por nombre. Detalle completo en [catalogo/README.md](catalogo/README.md).
+
+**Propuesta:**
+1. **Cuatro capas** con dependencias solo hacia abajo: 0 semillas · 1 transversales (`contracts`, `rbac`, `storage`,
+   `jobs`, `antispam`, `money`, `stripe`, `consent`, `ui`, `admin`) · 2 dominio (contenido, marketing, comercio,
+   dropshipping) · 3 kits. 37 paquetes nuevos, todos en `@core` (kits como `@core/kit-*`).
+2. **Contratos en `@core/contracts`** (`ContentSource`, `SitemapSource`, `SearchSource`, `AdminResource`,
+   `PaymentProvider`, `CommerceEvent`) en lugar de imports cruzados; el registro de piezas se hace en archivos del
+   proyecto (`src/genpm/*.ts`), nunca editando otro paquete, para que el merge 3-way de `update` siga siendo fiable.
+3. **Admin y modelo de contenido propios** (`@core/admin` + `@core/content`), no un CMS de npm: un único sistema de
+   usuarios y roles, contenido y comercio en el mismo panel, y código que es del usuario. Payload (y Keystatic) entran
+   como **adaptadores opcionales** del contrato de contenido en F6 si hay demanda.
+4. **UI en Next.js App Router primero**; los kits se instalan en un route group (`d = src/app/(<kit>)`) y usan el
+   alias `@/`. Astro llega como kits hermanos que reutilizan las capas 1–2 sin cambios.
+5. **Kits = pegamento** (rutas, plantilla, `AGENTS.md`); la lógica vive en capa 2. Kits pueden depender de kits
+   (`kit-dropshipping` → `kit-store` + `kit-landing` → `kit-cms`); el resolvedor deduplica.
+6. **`@core/stripe`** extrae cliente y webhooks de `@core/billing` (que pasa a 2.0) para compartirlos con `checkout`.
+
+**Consecuencias:** coste inicial mayor (F0–F1 antes del primer kit visible), a cambio de que cada kit nuevo sea sobre
+todo reutilización. Publicación en "trenes" coordinados para evitar `E_RANGE_UNSATISFIED`. Cambio incompatible en un
+contrato = versión mayor del tren. Abre las preguntas C1–C6 de [catalogo §10](catalogo/README.md#10-preguntas-abiertas-para-el-fundador).
+
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

@@ -6,7 +6,7 @@ Orden de lectura recomendado:
 
 | # | Documento | Para qué | Audiencia |
 |---|---|---|---|
-| 0 | [brainstorming.md](brainstorming.md) | Dudas y decisiones (ADR-001…025), incluidas las del fundador | Todos — leer primero |
+| 0 | [brainstorming.md](brainstorming.md) | Dudas y decisiones (ADR-001…033), incluidas las del fundador | Todos — leer primero |
 | 1 | [architecture.md](architecture.md) | Diseño del sistema, flujos de datos, seguridad, decisiones tecnológicas, camino a SaaS | Ingeniería |
 | 2 | [manifest-spec.md](manifest-spec.md) | Especificación de `genpm.json`, `genpm.lock` y cómo deben interpretarlos los LLMs | Ingeniería, autores de paquetes |
 | 3 | [api-spec.md](api-spec.md) | Endpoints del registry edge y esquema D1 (preparado para registros privados y patrocinios) | Backend |
@@ -17,6 +17,7 @@ Orden de lectura recomendado:
 | 5 | [roadmap-mvp.md](roadmap-mvp.md) | Plan día a día, criterios de aceptación, plan de recorte, post-MVP | Todos |
 | 6 | [branding.md](branding.md) | Nombre, posicionamiento, voz, paleta, tipografía, CLI, mensajes de lanzamiento | Producto, diseño, marketing |
 | 7 | [web-ui-spec.md](web-ui-spec.md) | Páginas, funcionalidades, componentes y requisitos de genpm.net | Diseño, frontend |
+| 8 | [catalogo/](catalogo/README.md) | Plan de paquetes reutilizables y kits completos (CMS, blog, landing, tienda, dropshipping) — ADR-033 | Producto, autores de paquetes |
 
 Fuera de `/docs`: [tasks/](../tasks/README.md) (plan maestro y tareas del sprint, `pnpm tasks`), [seeds/README.md](../seeds/README.md) (los 5 paquetes semilla) y [AGENTS.md](../AGENTS.md) (reglas para agentes IA que trabajen en este repo).
 
