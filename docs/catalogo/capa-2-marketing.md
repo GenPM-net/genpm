@@ -56,10 +56,11 @@ envío por lotes con `jobs` y el proveedor de `@core/email`, y estadísticas bá
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/newsletter` | `@core/db ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/antispam ^1`, `@core/rich-text ^1` | — | `NEWSLETTER_FROM`, `NEWSLETTER_POSTAL_ADDRESS` | — |
+| `src/lib/newsletter` | `@core/db ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/antispam ^1`, `@core/rich-text ^1`, `@core/contracts ^1` | `zod` | `NEWSLETTER_FROM`, `NEWSLETTER_POSTAL_ADDRESS`, `NEWSLETTER_SECRET`, `SITE_URL`, `RESEND_API_KEY` (producción) | — |
 
-**Tablas.** `subscribers` (id, emailHash, emailEnc, status `pending|active|unsubscribed|bounced`, tags, consentAt,
-source), `campaigns`, `campaign_sends`.
+**Tablas.** `subscribers` (email normalizado, status `pending|active|unsubscribed|bounced|complained`, tags, consentimiento y fechas,
+source), `newsletter_campaigns`, `newsletter_sends` (un envío por suscriptor y campaña: lotes reanudables). Las cabeceras RFC 8058
+requieren un proveedor que acepte cabeceras propias: el paquete llama a la API de Resend directamente (`NewsletterSender` para otros).
 **API.** `subscribe(email, {tags, source})`, `confirm(token)`, `unsubscribe(token)`, `sendCampaign(id)`,
 `<SubscribeForm>`, webhook de rebotes del proveedor, `AdminResource` "Suscriptores" y "Campañas".
 **Reglas IA.** Nunca importar listas sin consentimiento demostrable; todo envío lleva enlace de baja y dirección postal.
