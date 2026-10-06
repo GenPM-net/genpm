@@ -161,14 +161,14 @@ Mismo criterio que la web de GenPM ([ADR-027](../brainstorming.md)).
 
 ## `@core/ui` — sistema de diseño base
 
-**Para qué.** Tokens (CSS variables, claro/oscuro) y componentes accesibles estilo shadcn (Button, Input, Select,
-Dialog, Sheet, Tabs, Table, Toast, Card, Badge, Skeleton, Pagination, DropdownMenu, Form con zod). Base común del
+**Para qué.** Tokens (CSS variables, claro/oscuro con contraste AA verificado) y componentes accesibles sobre elementos nativos
+(Button, TextField, TextareaField, SelectField, Checkbox, Field, DataTable, Pagination, Tabs, Dialog, Alert, Badge, Card, Toasts, Spinner, Skeleton). Base común del
 admin, de los bloques y de las plantillas de los kits.
 **No incluye.** Componentes de dominio (tarjeta de producto, tarjeta de post: viven en su paquete o kit).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/components/ui` | — | `@radix-ui/*` necesarios, `class-variance-authority`, `clsx`, `tailwind-merge`, `lucide-react` | — | — |
+| `src/components/ui` | — | `react` (sin librerías de UI: elementos nativos y `<dialog>`) | — | — |
 
 **Reglas IA.** Los temas se cambian editando tokens (`theme.css`), no componentes; nuevos componentes en la app, no aquí.
 **Accesibilidad.** WCAG 2.2 AA: contraste, foco visible, navegación por teclado, `prefers-reduced-motion`.

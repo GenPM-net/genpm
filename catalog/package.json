@@ -2,7 +2,7 @@
   "name": "genpm-catalog-dev",
   "private": true,
   "type": "module",
-  "description": "Workspace de desarrollo de los paquetes del cat\u00e1logo (docs/catalogo). Cada src/lib/<x> se publica en su repo github.com/genpm-net/<x>.",
+  "description": "Workspace de desarrollo de los paquetes del catálogo (docs/catalogo). Cada src/lib/<x> se publica en su repo github.com/genpm-net/<x>.",
   "engines": {
     "node": ">=20.11"
   },
@@ -39,7 +39,9 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "axe-core": "^4.14.0",
     "drizzle-kit": "^0.31.0",
+    "happy-dom": "^20.14.5",
     "react-dom": "^19.3.0",
     "tsx": "^4.23.15",
     "typescript": "^5.6.0",

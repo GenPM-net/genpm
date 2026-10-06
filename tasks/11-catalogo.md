@@ -12,7 +12,8 @@
   - Hecho (2026-10-06): `catalog/` con estructura de proyecto consumidor, PGlite, `scripts/meta.mjs`, `scripts/validate.sh` y job `catalog` en CI. Falta: app Next de ejemplo, Playwright y Changesets (con los primeros paquetes de UI).
 - [ ] `CAT-00-03` **BLOCKED** Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h · deps: CAT-00-02
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/contracts` (2026-10-06). Falta crear el repo `genpm-net/contracts` (fundador), publicar, pruebas de agente y revisión ADR-023.
-- [ ] `CAT-00-04` **TODO** Implementar y publicar @core/ui con tokens claro/oscuro y axe sin violaciones · C · 12h · deps: CAT-00-02
+- [ ] `CAT-00-04` **BLOCKED** Implementar y publicar @core/ui con tokens claro/oscuro y axe sin violaciones · C · 12h · deps: CAT-00-02
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/ui` (2026-10-06). Falta crear el repo `genpm-net/ui` (fundador), publicar, pruebas de agente y revisión ADR-023.
 
 ## F1 · CMS (kit-cms)
 

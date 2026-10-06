@@ -875,5 +875,27 @@
       "TIKTOK_PIXEL_ID",
       "TIKTOK_EVENTS_TOKEN"
     ]
+  },
+  "ui": {
+    "s": {
+      "en": "Accessible base UI for React on native elements: fields, buttons, table, tabs, dialog, toasts and WCAG AA light/dark tokens",
+      "es": "Interfaz base accesible para React sobre elementos nativos: campos, botones, tabla, pestañas, diálogo, avisos y tokens AA",
+      "pt-BR": "UI base acessível para React com elementos nativos: campos, botões, tabela, abas, diálogo, avisos e tokens AA claro/escuro",
+      "fr": "UI de base accessible pour React sur éléments natifs : champs, boutons, tableau, onglets, dialogue, toasts, jetons AA",
+      "de": "Barrierefreie Basis-UI für React mit nativen Elementen: Felder, Buttons, Tabelle, Tabs, Dialog, Toasts, AA-Tokens",
+      "ja": "ネイティブ要素による React 用アクセシブル UI：フィールド、ボタン、表、タブ、ダイアログ、通知、AA 準拠トークン",
+      "zh-CN": "基于原生元素的 React 无障碍基础组件：表单、按钮、表格、标签页、对话框、提示和符合 AA 的明暗主题",
+      "ko": "네이티브 요소 기반 React 접근성 UI: 필드, 버튼, 표, 탭, 대화상자, 알림, AA 명/암 토큰"
+    },
+    "k": [
+      "ui",
+      "react",
+      "accessibility",
+      "design-tokens",
+      "components"
+    ],
+    "p": {
+      "react": "^19.0.0"
+    }
   }
 }

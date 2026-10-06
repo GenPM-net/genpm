@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
 
-TODO 47 · DOING 5 · DONE 214 · BLOCKED 52 · CUT 0
+TODO 46 · DOING 5 · DONE 214 · BLOCKED 53 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -125,6 +125,7 @@ TODO 47 · DOING 5 · DONE 214 · BLOCKED 52 · CUT 0
 - `S-AI-07` Prueba de agente en Cursor · C · 0.5h ([08-semillas.md](08-semillas.md))
 - `S-AI-08` Escaneo passed y revisión de seguridad (ADR-023) · T · 0.5h ([08-semillas.md](08-semillas.md))
 - `CAT-00-03` Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h ([11-catalogo.md](11-catalogo.md))
+- `CAT-00-04` Implementar y publicar @core/ui con tokens claro/oscuro y axe sin violaciones · C · 12h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-01` Implementar y publicar @core/rbac · C · 8h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-02` Implementar y publicar @core/storage (S3/R2/MinIO y local) · C · 8h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-03` Implementar y publicar @core/jobs (cola Postgres, cron y runDue serverless) · C · 10h ([11-catalogo.md](11-catalogo.md))
