@@ -312,5 +312,33 @@
     "e": [
       "MEDIA_TRANSFORM"
     ]
+  },
+  "rich-text": {
+    "s": {
+      "en": "Rich text: Tiptap editor, allowlisted JSON documents and XSS-safe HTML/React rendering, plain text and TOC",
+      "es": "Texto enriquecido: editor Tiptap, documentos JSON con lista blanca, render HTML/React sin XSS, texto plano e índice",
+      "pt-BR": "Texto rico: editor Tiptap, documentos JSON com lista branca, render HTML/React sem XSS, texto puro e sumário",
+      "fr": "Texte riche : éditeur Tiptap, documents JSON en liste blanche, rendu HTML/React sans XSS, texte brut et sommaire",
+      "de": "Rich Text: Tiptap-Editor, JSON-Dokumente mit Allowlist, XSS-sicheres HTML/React-Rendering, Klartext und TOC",
+      "ja": "リッチテキスト：Tiptap エディタ、許可リスト方式の JSON 文書、XSS 安全な HTML/React 描画、プレーンテキスト、目次",
+      "zh-CN": "富文本：Tiptap 编辑器、白名单 JSON 文档、防 XSS 的 HTML/React 渲染、纯文本和目录",
+      "ko": "리치 텍스트: Tiptap 에디터, 허용 목록 JSON 문서, XSS 안전한 HTML/React 렌더링, 일반 텍스트, 목차"
+    },
+    "k": [
+      "rich-text",
+      "editor",
+      "tiptap",
+      "cms",
+      "xss"
+    ],
+    "p": {
+      "zod": "^4.0.0",
+      "react": "^19.0.0",
+      "@tiptap/react": "^3.0.0",
+      "@tiptap/pm": "^3.0.0",
+      "@tiptap/starter-kit": "^3.0.0",
+      "@tiptap/extension-link": "^3.0.0",
+      "@tiptap/extension-image": "^3.0.0"
+    }
   }
 }

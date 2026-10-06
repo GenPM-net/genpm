@@ -64,13 +64,13 @@ prohibido por defecto; límite de tamaño; eliminación de EXIF/GPS en imágenes
 ## `@core/rich-text` — texto enriquecido
 
 **Para qué.** Editor (Tiptap) con encabezados, listas, enlaces, citas, tablas, código, imágenes de `media`, embeds
-(YouTube/Vimeo con consentimiento) y bloques personalizados; almacenamiento en **JSON** (no HTML) y render a React/HTML,
+(YouTube/Vimeo como enlace por defecto, iframe sin cookies opcional); almacenamiento en **JSON** (no HTML) y render a React/HTML,
 texto plano (para búsqueda) y tiempo de lectura.
-**No incluye.** Colaboración en tiempo real (posible fase futura con Yjs).
+**No incluye.** Tablas (1.1) ni colaboración en tiempo real (posible fase futura con Yjs).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/rich-text` | `@core/media ^1` | `@tiptap/react`, `@tiptap/starter-kit`, extensiones necesarias | — | — |
+| `src/lib/rich-text` | — (las imágenes de `media` se resuelven con una función que pasa la app) | `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/extension-link`, `@tiptap/extension-image`, `react`, `zod` | — | — |
 
 **API.** `<RichTextEditor value onChange extensions>`, `<RichText doc />`, `toPlainText(doc)`, `readingTime(doc)`,
 `defineNode()` para nodos nuevos; tipo de campo `richText` para `admin`.

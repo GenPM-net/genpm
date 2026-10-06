@@ -29,7 +29,8 @@
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/content` (2026-10-06). Falta crear el repo `genpm-net/content` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-CMS-07` **BLOCKED** Implementar y publicar @core/media (subida firmada, variantes, saneado de SVG y EXIF) · C · 14h · deps: CAT-CMS-02, CAT-00-03
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/media` (2026-10-06). Falta crear el repo `genpm-net/media` (fundador), publicar, pruebas de agente y revisión ADR-023.
-- [ ] `CAT-CMS-08` **TODO** Implementar y publicar @core/rich-text (Tiptap, JSON, render anti-XSS) · C · 14h · deps: CAT-CMS-07
+- [ ] `CAT-CMS-08` **BLOCKED** Implementar y publicar @core/rich-text (Tiptap, JSON, render anti-XSS) · C · 14h · deps: CAT-CMS-07
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/rich-text` (2026-10-06). Falta crear el repo `genpm-net/rich-text` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-CMS-09` **BLOCKED** Implementar y publicar @core/site (ajustes, menús, redirecciones sin open redirect) · C · 8h · deps: CAT-CMS-06
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/site` (2026-10-06). Falta crear el repo `genpm-net/site` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-CMS-10` **BLOCKED** Implementar y publicar @core/seo (metadatos, sitemap, robots, llms.txt, JSON-LD, OG) · C · 12h · deps: CAT-CMS-09
