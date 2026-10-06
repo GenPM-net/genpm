@@ -5,6 +5,7 @@ imita un proyecto consumidor: cada módulo vive en `src/lib/<nombre>` tal y como
 relativos entre módulos (`../db/index.js`) se prueban como quedarán tras `genpm add`.
 
 - `src/lib/db`, `src/lib/auth`, `src/lib/email`: copias de las semillas publicadas (no se editan aquí; se editan en sus repos).
+- `src/lib/billing`: **@core/billing 2.0** preparado aquí sobre `@core/stripe` (pendiente de llevar al repo `genpm-net/billing` y publicar).
 - El resto: paquetes nuevos. Al publicar, cada carpeta se separa en su repo `github.com/genpm-net/<nombre>` con
   `git subtree split --prefix catalog/src/lib/<nombre>` y se publica con el CLI.
 
@@ -33,3 +34,4 @@ node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde s
 | `comments` | CAT-BLG-02 | Implementado y validado · pendiente de publicar |
 | `newsletter` | CAT-BLG-03 | Implementado y validado · pendiente de publicar |
 | `money` | CAT-STO-01 | Implementado y validado · pendiente de publicar |
+| `stripe` (+ `billing` 2.0) | CAT-STO-02 | Implementado y validado · pendiente de publicar |
