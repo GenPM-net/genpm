@@ -75,6 +75,26 @@ eventos `onOrderPaid`, `onOrderShipped`, `onOrderCancelled`, `ordersResources` p
 
 ---
 
+## `@core/invoices` — facturas españolas (F6)
+
+**Para qué.** Facturas desde pedidos pagados con numeración correlativa por serie y año, simplificada (≤ 400 €, o
+3000 € en minorista) o completa, rectificativas por diferencias en reembolsos (serie propia), completa en sustitución
+de simplificada, HTML imprimible y registros de facturación encadenados con huella SHA-256 y URL del QR de la AEAT.
+
+| `d` | `g` | `p` | `e` | `m` |
+|---|---|---|---|---|
+| `src/lib/invoices` | `@core/db ^1`, `@core/orders ^1`, `@core/contracts ^1` | `zod` | `INVOICE_ISSUER_NIF`, `INVOICE_ISSUER_NAME`, `INVOICE_ISSUER_ADDRESS`, `INVOICE_SERIES`, `INVOICE_VAT_RATE`, `INVOICE_RETAIL`, `INVOICE_QR_ENV` | — |
+
+**Plazos verificados (6-oct-2026):** el RD-ley 15/2025 fijó la obligatoriedad de los sistemas de facturación
+(RD 1007/2023) el 1-ene-2027 (Impuesto sobre Sociedades) y el 1-jul-2027 (resto); el 5-oct-2026 Hacienda anunció su
+aplazamiento a octubre de 2028, alineado con la factura electrónica B2B (Orden HAC/1028/2026). Volver a verificar
+antes de publicar.
+**Alcance 1.0.** Datos y cadena de registros conforme a la Orden HAC/1177/2024 (huella comprobada con el ejemplo de la
+AEAT); **sin** firma de registros (modo no VERI*FACTU) ni remisión a la AEAT (modo VERI*FACTU): siguiente versión.
+Un solo tipo de IVA por factura; solo EUR.
+
+---
+
 ## `@core/shipping` — envíos
 
 **Para qué.** Zonas (países/regiones), tarifas (fija, gratis a partir de X, por peso, por precio), estimación de entrega

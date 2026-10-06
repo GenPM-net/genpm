@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
 
-TODO 38 · DOING 5 · DONE 214 · BLOCKED 61 · CUT 0
+TODO 37 · DOING 5 · DONE 214 · BLOCKED 62 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -161,6 +161,7 @@ TODO 38 · DOING 5 · DONE 214 · BLOCKED 61 · CUT 0
 - `CAT-DRP-02` Implementar y publicar @core/suppliers con el adaptador manual (CSV) · C · 20h ([11-catalogo.md](11-catalogo.md))
 - `CAT-DRP-06` Implementar y publicar @core/kit-dropshipping (importar, reenvío, excepciones, landing de producto) · C · 24h ([11-catalogo.md](11-catalogo.md))
 - `CAT-GRO-01` Implementar y publicar @core/experiments y añadirlo a kit-landing 1.1 · C · 16h ([11-catalogo.md](11-catalogo.md))
+- `CAT-GRO-04` Implementar y publicar @core/invoices (facturas españolas con numeración legal y VeriFactu; verificar plazos vigentes) · C · 24h ([11-catalogo.md](11-catalogo.md))
 
 **Siguientes disponibles** (TODO con todas sus dependencias cerradas)
 

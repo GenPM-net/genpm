@@ -59,3 +59,4 @@ node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde s
 | `kit-store` (src/app/(store)) | CAT-STO-10 | Implementado y validado · pendiente de publicar y de la aceptación e2e CAT-STO-11 |
 | `kit-dropshipping` (src/app/(dropshipping)) | CAT-DRP-06 | Implementado y validado (recorrido completo con proveedor simulado en test) · pendiente de publicar y CAT-DRP-07 |
 | `experiments` | CAT-GRO-01 | Implementado y validado (estadística con valores de referencia; integrado en kit-landing) · pendiente de publicar |
+| `invoices` | CAT-GRO-04 | Implementado y validado (huella con el ejemplo de la AEAT) · sin firma ni remisión a la AEAT todavía · pendiente de publicar |
