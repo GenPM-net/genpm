@@ -1,7 +1,7 @@
 // Render a HTML con escape completo: solo salen las etiquetas y atributos que este archivo escribe.
-import type { Doc, Mark, Node } from './doc.js';
-import { isSafeHref } from './doc.js';
-import { headingIds } from './text.js';
+import type { Doc, Mark, Node } from './doc.ts';
+import { isSafeHref } from './doc.ts';
+import { headingIds } from './text.ts';
 
 export type ResolvedImage = { src: string; alt: string; width?: number; height?: number; srcSet?: string; sizes?: string };
 

@@ -1,10 +1,10 @@
 // Lectura del blog: listados filtrados y paginados, post con relaciones resueltas, relacionados y archivo.
 import { and, eq, sql } from 'drizzle-orm';
-import { contentEntries, countEntries, getEntry, listEntries } from '../content/index.js';
-import type { ContentEntry, ContentListQuery } from '../contracts/index.js';
-import { getDb } from '../db/index.js';
-import { excerpt, readingTime } from '../rich-text/index.js';
-import type { AuthorData, PostData, TaxonomyData } from './collections.js';
+import { contentEntries, countEntries, getEntry, listEntries } from '../content/index.ts';
+import type { ContentEntry, ContentListQuery } from '../contracts/index.ts';
+import { getDb } from '../db/index.ts';
+import { excerpt, readingTime } from '../rich-text/index.ts';
+import type { AuthorData, PostData, TaxonomyData } from './collections.ts';
 
 export type PostSummary = {
   id: string;

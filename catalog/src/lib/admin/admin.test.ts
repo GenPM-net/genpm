@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { defineRole, grantRole } from '../rbac/index.js';
-import { admin, type Note, notes, notesResource, ORIGIN, owner, setup, userWithCookie } from './__fixtures__/admin.js';
-import { adminRoutes } from './adapters/hono.js';
-import { adminRouteHandlers } from './adapters/next.js';
-import { displayValue, formValues, getPath, inputToMoney, moneyToInput, parseRoute, routePath, setPath } from './client.js';
-import { ADMIN_HEADER, defineAdmin, fieldsFromZod, handleAdminApi, listAudit } from './index.js';
+import { defineRole, grantRole } from '../rbac/index.ts';
+import { admin, type Note, notes, notesResource, ORIGIN, owner, setup, userWithCookie } from './__fixtures__/admin.ts';
+import { adminRoutes } from './adapters/hono.ts';
+import { adminRouteHandlers } from './adapters/next.ts';
+import { displayValue, formValues, getPath, inputToMoney, moneyToInput, parseRoute, routePath, setPath } from './client.ts';
+import { ADMIN_HEADER, defineAdmin, fieldsFromZod, handleAdminApi, listAudit } from './index.ts';
 
 let ownerId: string;
 let ownerCookie: string;

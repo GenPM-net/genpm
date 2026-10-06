@@ -1,7 +1,7 @@
 // Render de una lista de bloques. Sin condicionales por tipo: cada bloque se pinta con el componente de su definición.
 import { createElement as h, Fragment, type ReactNode } from 'react';
-import type { ResolvedImage } from '../rich-text/index.js';
-import type { BlockContext, BlockInstance, BlockRegistry } from './define.js';
+import type { ResolvedImage } from '../rich-text/index.ts';
+import type { BlockContext, BlockInstance, BlockRegistry } from './define.ts';
 
 const dev = () => typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production';
 

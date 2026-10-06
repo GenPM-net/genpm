@@ -1,4 +1,4 @@
-import { type Db, getDb, type Tx } from './client.js';
+import { type Db, getDb, type Tx } from './client.ts';
 
 /**
  * Ejecuta `fn` en una transacción: si lanza, se hace rollback de todo. Los helpers de otros módulos aceptan un

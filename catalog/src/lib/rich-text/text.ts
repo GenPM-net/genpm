@@ -1,5 +1,5 @@
 // Texto plano, tiempo de lectura y tabla de contenidos.
-import type { Doc, Node } from './doc.js';
+import type { Doc, Node } from './doc.ts';
 
 const BLOCKS = new Set(['paragraph', 'heading', 'listItem', 'blockquote', 'codeBlock']);
 

@@ -1,7 +1,7 @@
 import { createElement as h } from 'react';
 import { z } from 'zod';
-import { defineBlock } from '../define.js';
-import { JsonLd, optText, Section, text } from '../parts.js';
+import { defineBlock } from '../define.ts';
+import { JsonLd, optText, Section, text } from '../parts.ts';
 
 export const faq = defineBlock({
   type: 'faq',

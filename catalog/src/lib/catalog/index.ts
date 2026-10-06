@@ -1,5 +1,5 @@
 // @core/catalog — API pública. Importa desde aquí.
-export { catalogAdminResources, categoriesAdminResource, type ProductAdminRow, productsAdminResource, toAdminRow } from './admin.js';
+export { catalogAdminResources, categoriesAdminResource, type ProductAdminRow, productsAdminResource, toAdminRow } from './admin.ts';
 export {
   type Availability,
   availability,
@@ -22,7 +22,7 @@ export {
   updateProduct,
   VariantInput,
   variantPrice,
-} from './products.js';
+} from './products.ts';
 export {
   type Category,
   type Collection,
@@ -37,6 +37,6 @@ export {
   products,
   productVariants,
   type Variant,
-} from './schema.js';
-export { productSearchSource, productSitemapSource } from './sources.js';
-export { CategoryInput, type CategoryNode, categoryTree, setCollection, upsertCategory } from './taxonomy.js';
+} from './schema.ts';
+export { productSearchSource, productSitemapSource } from './sources.ts';
+export { CategoryInput, type CategoryNode, categoryTree, setCollection, upsertCategory } from './taxonomy.ts';

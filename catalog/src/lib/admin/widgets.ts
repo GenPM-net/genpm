@@ -1,5 +1,5 @@
 // Widgets reutilizables del dashboard.
-import type { AdminWidget } from './config.js';
+import type { AdminWidget } from './config.ts';
 
 /** Contador: `countWidget('orders-today', 'Orders today', 'orders:read', () => countOrdersToday())`. */
 export const countWidget = (name: string, title: string, permission: string, count: () => Promise<number>): AdminWidget => ({

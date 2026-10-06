@@ -2,8 +2,8 @@
 // Permisos: `<colección>:read|create|update|delete|publish`, con `:own` para autores (dueño = authorId).
 import { and, count, eq, ilike, or, type SQL, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import type { AdminContext, AdminResource } from '../contracts/index.js';
-import { getDb } from '../db/index.js';
+import type { AdminContext, AdminResource } from '../contracts/index.ts';
+import { getDb } from '../db/index.ts';
 import {
   archive,
   createEntry,
@@ -16,10 +16,10 @@ import {
   schedulePublish,
   unpublish,
   unschedule,
-} from './entries.js';
-import { createPreviewToken } from './preview.js';
-import { ContentError, defaultLocale, getCollection, SINGLETON_SLUG } from './registry.js';
-import { type ContentRow, contentEntries } from './schema.js';
+} from './entries.ts';
+import { createPreviewToken } from './preview.ts';
+import { ContentError, defaultLocale, getCollection, SINGLETON_SLUG } from './registry.ts';
+import { type ContentRow, contentEntries } from './schema.ts';
 
 export type ContentAdminRow = {
   id: string;

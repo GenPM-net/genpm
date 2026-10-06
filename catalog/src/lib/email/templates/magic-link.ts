@@ -1,6 +1,6 @@
 import { Button, Heading, Text } from '@react-email/components';
 import { createElement as h } from 'react';
-import { button, Layout, muted, text } from './layout.js';
+import { button, Layout, muted, text } from './layout.ts';
 
 export type MagicLinkProps = { url: string; expiresInMinutes: number };
 

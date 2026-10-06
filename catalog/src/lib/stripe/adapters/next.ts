@@ -1,5 +1,5 @@
 // Adaptador Next.js: `app/api/stripe/webhook/route.ts` → `export { stripeWebhookRoute as POST } from '@/lib/stripe/adapters/next';`
-import { handleStripeWebhook, WebhookSignatureError } from '../index.js';
+import { handleStripeWebhook, WebhookSignatureError } from '../index.ts';
 
 export async function stripeWebhookRoute(req: Request): Promise<Response> {
   try {

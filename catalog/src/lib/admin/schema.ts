@@ -1,6 +1,6 @@
 // Tablas de @core/admin. Las recoge drizzle-kit vía src/lib/db/drizzle.config.ts.
 import { index, jsonb, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
-import { primaryId } from '../db/index.js';
+import { primaryId } from '../db/index.ts';
 
 /** Quién cambió qué y cuándo en el panel (crear, editar, borrar, acciones). */
 export const adminAudit = pgTable(

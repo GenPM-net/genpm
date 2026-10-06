@@ -1,6 +1,6 @@
 // Adaptador Hono: `app.route('/', seoRoutes())` → /sitemap.xml, /sitemaps/:name/:n.xml y /robots.txt.
 import { Hono } from 'hono';
-import { robotsTxt, sitemapChunkXml, sitemapIndexXml } from '../index.js';
+import { robotsTxt, sitemapChunkXml, sitemapIndexXml } from '../index.ts';
 
 const XML = { 'content-type': 'application/xml; charset=utf-8', 'cache-control': 'public, max-age=3600' };
 

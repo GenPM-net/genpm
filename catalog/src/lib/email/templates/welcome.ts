@@ -1,6 +1,6 @@
 import { Button, Heading, Text } from '@react-email/components';
 import { createElement as h } from 'react';
-import { button, Layout, text } from './layout.js';
+import { button, Layout, text } from './layout.ts';
 
 export type WelcomeProps = { name: string | null; appUrl: string };
 

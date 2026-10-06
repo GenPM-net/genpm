@@ -2,9 +2,9 @@
 // honeypot, token de tiempo y casilla de consentimiento. Componente de servidor (async): carga la definición.
 import { createElement as h, type ReactNode } from 'react';
 import type { z } from 'zod';
-import { AntispamFields } from '../antispam/react.js';
-import { type BuilderField, type FormDefinition, getForm } from './definitions.js';
-import { CONSENT_FIELD } from './submit.js';
+import { AntispamFields } from '../antispam/react.ts';
+import { type BuilderField, type FormDefinition, getForm } from './definitions.ts';
+import { CONSENT_FIELD } from './submit.ts';
 
 export const formLabels = {
   submit: 'Send',

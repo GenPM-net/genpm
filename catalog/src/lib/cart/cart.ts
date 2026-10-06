@@ -1,11 +1,11 @@
 // Carrito: crear/recuperar por cookie, líneas, fusión al iniciar sesión y totales calculados en servidor.
 import { and, eq, inArray, lt, sql } from 'drizzle-orm';
-import { availability, getVariants, storeCurrency } from '../catalog/index.js';
-import { type Executor, getDb, withTransaction } from '../db/index.js';
-import { money } from '../money/index.js';
-import { CART_TTL_DAYS, cartCookie, cartIdFromCookie } from './cookie.js';
-import { type Cart, cartLines, carts } from './schema.js';
-import { type CartTotals, emptyTotals, lineSubtotal, runSteps, sumLines, type TotalsLine } from './totals.js';
+import { availability, getVariants, storeCurrency } from '../catalog/index.ts';
+import { type Executor, getDb, withTransaction } from '../db/index.ts';
+import { money } from '../money/index.ts';
+import { CART_TTL_DAYS, cartCookie, cartIdFromCookie } from './cookie.ts';
+import { type Cart, cartLines, carts } from './schema.ts';
+import { type CartTotals, emptyTotals, lineSubtotal, runSteps, sumLines, type TotalsLine } from './totals.ts';
 
 export class CartError extends Error {
   constructor(

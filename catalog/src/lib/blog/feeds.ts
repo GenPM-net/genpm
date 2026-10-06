@@ -1,8 +1,8 @@
 // Feeds RSS 2.0, Atom 1.0 y JSON Feed 1.1 con los últimos posts publicados (nunca borradores ni programados).
-import { getEntry, listEntries } from '../content/index.js';
-import { type RenderOptions, toHtml } from '../rich-text/index.js';
-import type { AuthorData, PostData } from './collections.js';
-import { summarize } from './posts.js';
+import { getEntry, listEntries } from '../content/index.ts';
+import { type RenderOptions, toHtml } from '../rich-text/index.ts';
+import type { AuthorData, PostData } from './collections.ts';
+import { summarize } from './posts.ts';
 
 export type FeedOptions = {
   /** Origen https del sitio (por defecto SITE_URL). */

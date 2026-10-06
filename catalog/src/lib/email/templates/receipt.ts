@@ -1,6 +1,6 @@
 import { Heading, Section, Text } from '@react-email/components';
 import { createElement as h } from 'react';
-import { Layout, muted, text } from './layout.js';
+import { Layout, muted, text } from './layout.ts';
 
 export type ReceiptProps = {
   number: string;

@@ -1,6 +1,6 @@
 // Tablas de @core/discounts. Las recoge drizzle-kit vía src/lib/db/drizzle.config.ts.
 import { boolean, index, integer, jsonb, pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
-import { primaryId, timestamps } from '../db/index.js';
+import { primaryId, timestamps } from '../db/index.ts';
 
 const ts = (name: string) => timestamp(name, { withTimezone: true, mode: 'date' });
 

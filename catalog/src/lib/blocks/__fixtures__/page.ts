@@ -1,5 +1,5 @@
 // Página de ejemplo con los 15 bloques (tests de render y de accesibilidad).
-import type { BlockInstance } from '../define.js';
+import type { BlockInstance } from '../define.ts';
 
 const doc = { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Hello rich text' }] }] };
 

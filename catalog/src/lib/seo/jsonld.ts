@@ -1,7 +1,7 @@
 // Datos estructurados schema.org (JSON-LD). `jsonLdScript` escapa para incrustar en <script> sin riesgo de XSS.
-import type { Money } from '../contracts/index.js';
-import type { SiteSettings } from '../site/index.js';
-import { absoluteUrl, siteUrl } from './url.js';
+import type { Money } from '../contracts/index.ts';
+import type { SiteSettings } from '../site/index.ts';
+import { absoluteUrl, siteUrl } from './url.ts';
 
 type Thing = Record<string, unknown>;
 

@@ -2,14 +2,14 @@ import { createElement as h } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import { media } from '../media/index.js';
-import * as mediaSchema from '../media/schema.js';
-import { backendStorage, memoryBackend, setStorage } from '../storage/index.js';
-import { toPlainText } from '../rich-text/index.js';
-import { type BlockInstance, blocksToText, collectMediaIds, coreBlocks, createBlockRegistry, defineBlock, hero, parseVideoUrl, RenderBlocks } from './index.js';
-import { allBlocks, allMedia } from './__fixtures__/page.js';
-import { loadBlockMedia } from './media.js';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import { media } from '../media/index.ts';
+import * as mediaSchema from '../media/schema.ts';
+import { backendStorage, memoryBackend, setStorage } from '../storage/index.ts';
+import { toPlainText } from '../rich-text/index.ts';
+import { type BlockInstance, blocksToText, collectMediaIds, coreBlocks, createBlockRegistry, defineBlock, hero, parseVideoUrl, RenderBlocks } from './index.ts';
+import { allBlocks, allMedia } from './__fixtures__/page.ts';
+import { loadBlockMedia } from './media.ts';
 
 const registry = createBlockRegistry(coreBlocks);
 const render = (props: Partial<Parameters<typeof RenderBlocks>[0]> = {}) =>

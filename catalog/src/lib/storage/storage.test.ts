@@ -3,7 +3,7 @@ import { Hono } from 'hono';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { localStorageRoutes } from './adapters/hono.js';
+import { localStorageRoutes } from './adapters/hono.ts';
 import {
   assertSafeKey,
   backendStorage,
@@ -17,7 +17,7 @@ import {
   setStorage,
   StorageError,
   storageFromEnv,
-} from './index.js';
+} from './index.ts';
 
 const SECRET = 'k'.repeat(40);
 const text = (s: string) => new TextEncoder().encode(s);

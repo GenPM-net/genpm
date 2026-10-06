@@ -1,9 +1,9 @@
 // Productos: alta y edición con variantes, lectura pública (solo activos), listados con filtros y stock.
 import { and, asc, count, desc, eq, gte, inArray, lte, ne, type SQL, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { type Executor, getDb, withTransaction } from '../db/index.js';
-import { type Money, money } from '../money/index.js';
-import { RichTextSchema } from '../rich-text/index.js';
+import { type Executor, getDb, withTransaction } from '../db/index.ts';
+import { type Money, money } from '../money/index.ts';
+import { RichTextSchema } from '../rich-text/index.ts';
 import {
   categories,
   collectionProducts,
@@ -14,7 +14,7 @@ import {
   products,
   productVariants,
   type Variant,
-} from './schema.js';
+} from './schema.ts';
 
 export class CatalogError extends Error {
   constructor(

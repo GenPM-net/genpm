@@ -1,5 +1,5 @@
 // @core/content — API pública. Importa desde aquí; vista previa para Next.js en adapters/next.ts.
-export { type ContentAdminRow, contentAdminResource } from './admin.js';
+export { type ContentAdminRow, contentAdminResource } from './admin.ts';
 export {
   archive,
   type CreateEntryInput,
@@ -18,9 +18,9 @@ export {
   seedEntry,
   unpublish,
   unschedule,
-} from './entries.js';
-export { createPreviewToken, type PreviewClaims, safePath, verifyPreviewToken } from './preview.js';
-export { contentSource, countEntries, getEntry, getSingleton, listEntries, reader } from './read.js';
+} from './entries.ts';
+export { createPreviewToken, type PreviewClaims, safePath, verifyPreviewToken } from './preview.ts';
+export { contentSource, countEntries, getEntry, getSingleton, listEntries, reader } from './read.ts';
 export {
   assertSlug,
   type Collection,
@@ -35,6 +35,6 @@ export {
   listCollections,
   SINGLETON_SLUG,
   slugify,
-} from './registry.js';
-export { type ContentRevision, type ContentRow, contentEntries, contentRevisions } from './schema.js';
-export { contentSearchSource, contentSitemapSource } from './sources.js';
+} from './registry.ts';
+export { type ContentRevision, type ContentRow, contentEntries, contentRevisions } from './schema.ts';
+export { contentSearchSource, contentSitemapSource } from './sources.ts';

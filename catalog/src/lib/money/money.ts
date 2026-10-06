@@ -1,5 +1,5 @@
 // Dinero en enteros (unidades menores) con moneda ISO 4217. Sin decimales flotantes en ningún cálculo.
-import type { Money } from '../contracts/index.js';
+import type { Money } from '../contracts/index.ts';
 
 export type { Money };
 

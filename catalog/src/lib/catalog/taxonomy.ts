@@ -1,9 +1,9 @@
 // Categorías (árbol) y colecciones manuales ordenadas.
 import { asc, eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { type Executor, getDb, withTransaction } from '../db/index.js';
-import { CatalogError } from './products.js';
-import { type Category, categories, collectionProducts, collections, products } from './schema.js';
+import { type Executor, getDb, withTransaction } from '../db/index.ts';
+import { CatalogError } from './products.ts';
+import { type Category, categories, collectionProducts, collections, products } from './schema.ts';
 
 const Slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(120);
 export const CategoryInput = z.object({

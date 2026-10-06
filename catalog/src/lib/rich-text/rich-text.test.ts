@@ -17,7 +17,7 @@ import {
   readingTime,
   toHtml,
   toPlainText,
-} from './index.js';
+} from './index.ts';
 
 const doc: Doc = {
   type: 'doc',

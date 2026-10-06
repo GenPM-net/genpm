@@ -3,9 +3,9 @@
 // recurso: lo que un paquete describe con `AdminResource` aparece aquí. Campos especiales (richText, media, blocks…)
 // se inyectan con `renderers` para que este paquete no dependa de editores concretos.
 import { createElement as h, type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import type { AdminField } from '../contracts/index.js';
-import { Alert, Badge, Button, Card, Checkbox, type Column, DataTable, Dialog, Field, Pagination, SelectField, Skeleton, TextareaField, TextField, Toasts, useToasts } from '../ui/index.js';
-import { ADMIN_HEADER } from './constants.js';
+import type { AdminField } from '../contracts/index.ts';
+import { Alert, Badge, Button, Card, Checkbox, type Column, DataTable, Dialog, Field, Pagination, SelectField, Skeleton, TextareaField, TextField, Toasts, useToasts } from '../ui/index.ts';
+import { ADMIN_HEADER } from './constants.ts';
 
 export type SchemaAction = { name: string; label: string; confirm: boolean; fields: AdminField[] };
 export type SchemaResource = {

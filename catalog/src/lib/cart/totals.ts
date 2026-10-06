@@ -1,7 +1,7 @@
 // Cálculo de totales siempre en servidor, con precios actuales de @core/catalog, y una tubería de pasos que otros
 // módulos registran: descuentos (@core/discounts), envío (@core/shipping), impuestos (checkout/Stripe Tax).
-import type { Money } from '../contracts/index.js';
-import { add, allocate, money, sub, sum, zero } from '../money/index.js';
+import type { Money } from '../contracts/index.ts';
+import { add, allocate, money, sub, sum, zero } from '../money/index.ts';
 
 export type TotalsLine = {
   variantId: string;

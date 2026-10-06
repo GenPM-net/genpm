@@ -5,7 +5,7 @@ export {
   formsAdminResources,
   pruneSubmissions,
   submissionsAdminResource,
-} from './admin.js';
+} from './admin.ts';
 export {
   type BuilderField,
   type ConsentConfig,
@@ -16,8 +16,8 @@ export {
   forms,
   getForm,
   schemaFromFields,
-} from './definitions.js';
-export { type FormSubmission, formSubmissions } from './schema.js';
+} from './definitions.ts';
+export { type FormSubmission, formSubmissions } from './schema.ts';
 export {
   CONSENT_FIELD,
   clearSubmissionHandlers,
@@ -27,5 +27,5 @@ export {
   sourceInfo,
   submitForm,
   webhookSignature,
-} from './submit.js';
-export { Form, type FormLabels, type FormProps, fieldsFromSchema, formLabels } from './react.js';
+} from './submit.ts';
+export { Form, type FormLabels, type FormProps, fieldsFromSchema, formLabels } from './react.ts';

@@ -1,12 +1,12 @@
 // Envío de formularios: antispam → validación → consentimiento → guardar → avisos en segundo plano (@core/jobs).
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { verifyHuman } from '../antispam/index.js';
-import { type Executor, getDb } from '../db/index.js';
-import { getEmailProvider } from '../email/index.js';
-import { defineJob } from '../jobs/index.js';
-import { type FormDefinition, getForm } from './definitions.js';
-import { type FormSubmission, formSubmissions } from './schema.js';
+import { verifyHuman } from '../antispam/index.ts';
+import { type Executor, getDb } from '../db/index.ts';
+import { getEmailProvider } from '../email/index.ts';
+import { defineJob } from '../jobs/index.ts';
+import { type FormDefinition, getForm } from './definitions.ts';
+import { type FormSubmission, formSubmissions } from './schema.ts';
 
 export const CONSENT_FIELD = 'consent';
 const RESERVED = new Set(['website', '_ts', 'cf-turnstile-response', 'h-captcha-response', CONSENT_FIELD]);

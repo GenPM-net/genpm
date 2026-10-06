@@ -1,7 +1,7 @@
 import { createElement as h } from 'react';
 import { z } from 'zod';
-import { RichText, RichTextSchema } from '../../rich-text/index.js';
-import { defineBlock } from '../define.js';
+import { RichText, RichTextSchema } from '../../rich-text/index.ts';
+import { defineBlock } from '../define.ts';
 
 export const richText = defineBlock({
   type: 'rich-text',

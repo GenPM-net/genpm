@@ -1,8 +1,8 @@
 import { eq, sql } from 'drizzle-orm';
 import { pgTable, text } from 'drizzle-orm/pg-core';
 import { describe, expect, it } from 'vitest';
-import { testDb } from './__fixtures__/pglite.js';
-import { createDb, getDb, newId, primaryId, timestamps, ulid, ulidTime, withTransaction } from './index.js';
+import { testDb } from './__fixtures__/pglite.ts';
+import { createDb, getDb, newId, primaryId, timestamps, ulid, ulidTime, withTransaction } from './index.ts';
 
 const notes = pgTable('notes', { id: primaryId('note'), body: text('body').notNull(), ...timestamps });
 

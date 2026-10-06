@@ -2,8 +2,8 @@
 // y valores para Google Consent Mode v2. "Rechazar" debe ser tan fácil como "Aceptar" (lo garantiza el banner).
 import { asc, eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { type Executor, getDb, newId } from '../db/index.js';
-import { consentRecords } from './schema.js';
+import { type Executor, getDb, newId } from '../db/index.ts';
+import { consentRecords } from './schema.ts';
 
 export const CATEGORIES = ['analytics', 'marketing', 'preferences'] as const;
 export type Category = (typeof CATEGORIES)[number] | 'necessary';

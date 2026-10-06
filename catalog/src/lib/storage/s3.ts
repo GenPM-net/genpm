@@ -1,7 +1,7 @@
 // Driver S3 compatible (Cloudflare R2, AWS S3, MinIO, Backblaze B2) con firma SigV4 de aws4fetch. Funciona en Node y Workers.
 import { AwsClient, AwsV4Signer } from 'aws4fetch';
-import { assertSafeKey, isPublicKey, StorageError } from './keys.js';
-import { type PresignUploadOptions, type PutBody, type PutOptions, type StorageProvider, toBytes } from './provider.js';
+import { assertSafeKey, isPublicKey, StorageError } from './keys.ts';
+import { type PresignUploadOptions, type PutBody, type PutOptions, type StorageProvider, toBytes } from './provider.ts';
 
 export type S3Config = {
   endpoint: string;

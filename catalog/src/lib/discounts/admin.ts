@@ -1,9 +1,9 @@
 // Panel: descuentos con su número de usos.
 import { count, desc, eq, ilike, or } from 'drizzle-orm';
-import type { AdminContext, AdminResource } from '../contracts/index.js';
-import { getDb } from '../db/index.js';
-import { DiscountInput, upsertDiscount } from './discounts.js';
-import { type Discount, discountRedemptions, discounts } from './schema.js';
+import type { AdminContext, AdminResource } from '../contracts/index.ts';
+import { getDb } from '../db/index.ts';
+import { DiscountInput, upsertDiscount } from './discounts.ts';
+import { type Discount, discountRedemptions, discounts } from './schema.ts';
 
 type Row = Discount & { uses: number };
 

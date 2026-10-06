@@ -1,9 +1,9 @@
 // Render a React (Server Components o cliente) con las mismas reglas que `toHtml`: sin innerHTML.
 import { createElement as h, Fragment, type ReactNode } from 'react';
-import type { Doc, Mark, Node } from './doc.js';
-import { isSafeHref } from './doc.js';
-import { defaultEmbedLabel, embedUrl, isExternal, type RenderOptions } from './html.js';
-import { headingIds } from './text.js';
+import type { Doc, Mark, Node } from './doc.ts';
+import { isSafeHref } from './doc.ts';
+import { defaultEmbedLabel, embedUrl, isExternal, type RenderOptions } from './html.ts';
+import { headingIds } from './text.ts';
 
 const MARK_TAG = { bold: 'strong', italic: 'em', strike: 's', code: 'code', underline: 'u' } as const;
 

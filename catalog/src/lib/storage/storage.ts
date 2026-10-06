@@ -1,7 +1,7 @@
 // Proveedor configurado por variables de entorno: `getStorage()` en toda la app; `setStorage()` en tests.
-import { backendStorage, diskBackend, memoryBackend } from './memory.js';
-import type { StorageProvider } from './provider.js';
-import { s3Storage } from './s3.js';
+import { backendStorage, diskBackend, memoryBackend } from './memory.ts';
+import type { StorageProvider } from './provider.ts';
+import { s3Storage } from './s3.ts';
 
 function need(env: Record<string, string | undefined>, name: string): string {
   const v = env[name];

@@ -2,12 +2,12 @@
 // pagarse el pedido (@core/orders).
 import { and, count, eq, inArray, isNull, or, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { type CartTotals, registerTotalsStep } from '../cart/index.js';
-import { categories, productCategories } from '../catalog/index.js';
-import { type Executor, getDb } from '../db/index.js';
-import { add, allocate, money, percent, sub, zero } from '../money/index.js';
-import { onOrderEvent, orders } from '../orders/index.js';
-import { type Discount, discountRedemptions, discounts } from './schema.js';
+import { type CartTotals, registerTotalsStep } from '../cart/index.ts';
+import { categories, productCategories } from '../catalog/index.ts';
+import { type Executor, getDb } from '../db/index.ts';
+import { add, allocate, money, percent, sub, zero } from '../money/index.ts';
+import { onOrderEvent, orders } from '../orders/index.ts';
+import { type Discount, discountRedemptions, discounts } from './schema.ts';
 
 export const DiscountInput = z
   .object({

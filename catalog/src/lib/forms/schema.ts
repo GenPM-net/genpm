@@ -1,6 +1,6 @@
 // Tablas de @core/forms. Las recoge drizzle-kit vía src/lib/db/drizzle.config.ts.
 import { index, jsonb, pgTable, text } from 'drizzle-orm/pg-core';
-import { primaryId, timestamps } from '../db/index.js';
+import { primaryId, timestamps } from '../db/index.ts';
 
 export const formSubmissions = pgTable(
   'form_submissions',

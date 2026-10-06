@@ -1,10 +1,10 @@
 // Panel: envíos (lista, detalle, marcar, borrar), exportación CSV y formularios editables (colección `forms`).
 import { and, asc, count, desc, eq, lt, type SQL, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { contentAdminResource } from '../content/index.js';
-import type { AdminContext, AdminResource } from '../contracts/index.js';
-import { type Executor, getDb } from '../db/index.js';
-import { type FormSubmission, formSubmissions } from './schema.js';
+import { contentAdminResource } from '../content/index.ts';
+import type { AdminContext, AdminResource } from '../contracts/index.ts';
+import { type Executor, getDb } from '../db/index.ts';
+import { type FormSubmission, formSubmissions } from './schema.ts';
 
 class FormsForbidden extends Error {
   readonly code = 'forbidden';

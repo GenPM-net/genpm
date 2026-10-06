@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { recordConsent } from '../consent/index.js';
-import * as consentSchema from '../consent/schema.js';
-import type { AdminContext } from '../contracts/index.js';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import type { Db } from '../db/index.js';
-import * as jobsSchema from '../jobs/schema.js';
-import * as schema from './schema.js';
+import { recordConsent } from '../consent/index.ts';
+import * as consentSchema from '../consent/schema.ts';
+import type { AdminContext } from '../contracts/index.ts';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import type { Db } from '../db/index.ts';
+import * as jobsSchema from '../jobs/schema.ts';
+import * as schema from './schema.ts';
 import {
   compare,
   experimentParticipants,
@@ -18,7 +18,7 @@ import {
   recordConversion,
   setExperimentStatus,
   upsertExperiment,
-} from './index.js';
+} from './index.ts';
 
 let db: Db;
 const visitor = async (analytics: boolean) => {

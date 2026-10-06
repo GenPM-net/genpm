@@ -1,8 +1,8 @@
 // Límite de frecuencia en ventana fija sobre Postgres (un UPSERT atómico por petición).
 import { lt, sql } from 'drizzle-orm';
-import { type Executor, getDb } from '../db/index.js';
-import { hmacHex } from './crypto.js';
-import { rateLimits } from './schema.js';
+import { type Executor, getDb } from '../db/index.ts';
+import { hmacHex } from './crypto.ts';
+import { rateLimits } from './schema.ts';
 
 export type RateLimitResult = { ok: boolean; remaining: number; resetAt: Date; retryAfterSeconds: number };
 

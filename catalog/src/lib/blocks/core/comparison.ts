@@ -1,7 +1,7 @@
 import { createElement as h, type ReactNode } from 'react';
 import { z } from 'zod';
-import { defineBlock } from '../define.js';
-import { optText, Section, text } from '../parts.js';
+import { defineBlock } from '../define.ts';
+import { optText, Section, text } from '../parts.ts';
 
 const cell = (v: string): ReactNode => {
   const t = v.trim().toLowerCase();

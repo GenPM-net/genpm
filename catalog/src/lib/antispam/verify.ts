@@ -1,6 +1,6 @@
 // Comprobación completa de un envío público: honeypot → tiempo → límite de frecuencia → captcha.
-import type { Executor } from '../db/index.js';
-import { getDb } from '../db/index.js';
+import type { Executor } from '../db/index.ts';
+import { getDb } from '../db/index.ts';
 import {
   CAPTCHA_FIELD,
   type CaptchaConfig,
@@ -11,8 +11,8 @@ import {
   isHoneypotFilled,
   TIMING_FIELD,
   verifyCaptcha,
-} from './checks.js';
-import { rateLimit } from './rate-limit.js';
+} from './checks.ts';
+import { rateLimit } from './rate-limit.ts';
 
 export type HumanCheckFailure = 'honeypot' | 'invalid_token' | 'too_fast' | 'expired' | 'rate_limited' | 'captcha';
 

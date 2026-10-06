@@ -1,6 +1,6 @@
 // Columnas estándar para que todas las tablas de todos los módulos se parezcan.
 import { text, timestamp } from 'drizzle-orm/pg-core';
-import { newId } from './ulid.js';
+import { newId } from './ulid.ts';
 
 /** Clave primaria `text` con ULID prefijado generado en la app: `id: primaryId('usr')`. */
 export const primaryId = (prefix: string) =>

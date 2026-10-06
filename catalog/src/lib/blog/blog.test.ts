@@ -1,11 +1,11 @@
 import { eq } from 'drizzle-orm';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { contentEntries, createEntry, saveDraft, schedulePublish, seedEntry } from '../content/index.js';
-import * as contentSchema from '../content/schema.js';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import type { Db } from '../db/index.js';
-import * as jobsSchema from '../jobs/schema.js';
-import { docFromText } from '../rich-text/index.js';
+import { contentEntries, createEntry, saveDraft, schedulePublish, seedEntry } from '../content/index.ts';
+import * as contentSchema from '../content/schema.ts';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import type { Db } from '../db/index.ts';
+import * as jobsSchema from '../jobs/schema.ts';
+import { docFromText } from '../rich-text/index.ts';
 import {
   archive,
   atomFeed,
@@ -18,7 +18,7 @@ import {
   postsInMonth,
   relatedPosts,
   rssFeed,
-} from './index.js';
+} from './index.ts';
 
 let db: Db;
 

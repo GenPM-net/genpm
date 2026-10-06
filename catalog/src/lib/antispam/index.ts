@@ -12,7 +12,7 @@ export {
   isHoneypotFilled,
   TIMING_FIELD,
   verifyCaptcha,
-} from './checks.js';
-export { pruneRateLimits, type RateLimitResult, rateLimit } from './rate-limit.js';
-export { rateLimits } from './schema.js';
-export { type HumanCheckFailure, type HumanCheckOptions, type HumanCheckResult, verifyHuman } from './verify.js';
+} from './checks.ts';
+export { pruneRateLimits, type RateLimitResult, rateLimit } from './rate-limit.ts';
+export { rateLimits } from './schema.ts';
+export { type HumanCheckFailure, type HumanCheckOptions, type HumanCheckResult, verifyHuman } from './verify.ts';

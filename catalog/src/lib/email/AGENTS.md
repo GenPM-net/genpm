@@ -18,7 +18,7 @@ no queues, no tracking pixels.
    SMTP instead: `EMAIL_PROVIDER=smtp`, `SMTP_URL=smtps://user:pass@host:465` and install `nodemailer`.
 2. Send from server code only:
    ```ts
-   import { sendEmail } from './lib/email/index.js';
+   import { sendEmail } from './lib/email/index.ts';
    await sendEmail('welcome', { to: user.email, props: { name: user.name, appUrl: 'https://app.example.com' } });
    ```
 3. With `@core/auth` (≥ 1.1.0): send `welcome` from its `onLogin` hook when `isNewUser` is true:

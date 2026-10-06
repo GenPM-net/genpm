@@ -1,8 +1,8 @@
 // Driver en memoria y driver local (disco) para desarrollo y tests. Las subidas firmadas apuntan a una ruta de la
 // propia app (`uploadPath`) que valida un token HMAC y escribe con `handleLocalUpload`.
-import { assertSafeKey, isPublicKey, StorageError } from './keys.js';
-import { checkSize } from './s3.js';
-import { type ObjectInfo, type PutBody, type PutOptions, type StorageProvider, streamOf, toBytes } from './provider.js';
+import { assertSafeKey, isPublicKey, StorageError } from './keys.ts';
+import { checkSize } from './s3.ts';
+import { type ObjectInfo, type PutBody, type PutOptions, type StorageProvider, streamOf, toBytes } from './provider.ts';
 
 export type Backend = {
   write(key: string, bytes: Uint8Array, contentType: string): Promise<void>;

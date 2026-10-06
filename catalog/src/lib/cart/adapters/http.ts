@@ -1,6 +1,6 @@
 // API JSON del carrito: GET (totales), POST /lines (añadir), PUT /lines/:variantId (cantidad), PUT /codes.
 import { z } from 'zod';
-import { addLine, CartError, computeTotals, getCart, getOrCreateCart, setDiscountCodes, setLine } from '../index.js';
+import { addLine, CartError, computeTotals, getCart, getOrCreateCart, setDiscountCodes, setLine } from '../index.ts';
 
 export type CurrentUserId = (req: Request) => Promise<string | null>;
 

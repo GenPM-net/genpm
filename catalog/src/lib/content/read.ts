@@ -2,10 +2,10 @@
 import { and, asc, count, desc, eq, inArray, notExists, or, type SQL, sql } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
 import type { z } from 'zod';
-import type { ContentEntry, ContentListQuery, ContentReadOptions, ContentSource } from '../contracts/index.js';
-import { type Executor, getDb } from '../db/index.js';
-import { type Collection, defaultLocale, getCollection, SINGLETON_SLUG } from './registry.js';
-import { type ContentRow, contentEntries } from './schema.js';
+import type { ContentEntry, ContentListQuery, ContentReadOptions, ContentSource } from '../contracts/index.ts';
+import { type Executor, getDb } from '../db/index.ts';
+import { type Collection, defaultLocale, getCollection, SINGLETON_SLUG } from './registry.ts';
+import { type ContentRow, contentEntries } from './schema.ts';
 
 function toEntry<D>(row: ContentRow, draft: boolean): ContentEntry<D> | null {
   const data = draft ? (row.draft ?? row.data) : row.data;

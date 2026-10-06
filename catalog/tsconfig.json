@@ -8,9 +8,21 @@
     "exactOptionalPropertyTypes": false,
     "skipLibCheck": true,
     "noEmit": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["node"]
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "node"
+    ],
+    "allowImportingTsExtensions": true
   },
-  "include": ["src"],
-  "exclude": ["src/app", "src/genpm"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/app",
+    "src/genpm"
+  ]
 }

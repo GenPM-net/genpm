@@ -4,16 +4,16 @@
 import { eq } from 'drizzle-orm';
 import type Stripe from 'stripe';
 import { z } from 'zod';
-import { type Cart, type CartTotals, clearCart, computeTotals } from '../cart/index.js';
-import { CatalogError } from '../catalog/index.js';
-import type { CommerceEvent, PaymentProvider } from '../contracts/index.js';
-import { type Executor, getDb } from '../db/index.js';
-import { getEmailProvider } from '../email/index.js';
-import { defineJob } from '../jobs/index.js';
-import { money, toDecimalString } from '../money/index.js';
-import { type Address, createOrder, getOrder, type OrderDetail, registerPaymentProvider } from '../orders/index.js';
-import { getStripe, onStripeEvent } from '../stripe/index.js';
-import { type CheckoutSession, checkoutSessions } from './schema.js';
+import { type Cart, type CartTotals, clearCart, computeTotals } from '../cart/index.ts';
+import { CatalogError } from '../catalog/index.ts';
+import type { CommerceEvent, PaymentProvider } from '../contracts/index.ts';
+import { type Executor, getDb } from '../db/index.ts';
+import { getEmailProvider } from '../email/index.ts';
+import { defineJob } from '../jobs/index.ts';
+import { money, toDecimalString } from '../money/index.ts';
+import { type Address, createOrder, getOrder, type OrderDetail, registerPaymentProvider } from '../orders/index.ts';
+import { getStripe, onStripeEvent } from '../stripe/index.ts';
+import { type CheckoutSession, checkoutSessions } from './schema.ts';
 
 export class CheckoutError extends Error {
   constructor(

@@ -10,5 +10,5 @@ export {
   type StartCheckoutInput,
   startCheckout,
   stripePaymentProvider,
-} from './checkout.js';
-export { type CheckoutSession, checkoutSessions } from './schema.js';
+} from './checkout.ts';
+export { type CheckoutSession, checkoutSessions } from './schema.ts';

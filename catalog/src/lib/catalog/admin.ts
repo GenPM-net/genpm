@@ -1,11 +1,11 @@
 // Recursos del panel: productos (con variantes en el mismo formulario), categorías y colecciones.
 import { and, asc, count, desc, eq, ilike, inArray, or, type SQL, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import type { AdminContext, AdminResource } from '../contracts/index.js';
-import { getDb } from '../db/index.js';
-import { CatalogError, createProduct, getProductById, ProductInput, type ProductView, updateProduct, VariantInput } from './products.js';
-import { type Category, categories, products } from './schema.js';
-import { CategoryInput, upsertCategory } from './taxonomy.js';
+import type { AdminContext, AdminResource } from '../contracts/index.ts';
+import { getDb } from '../db/index.ts';
+import { CatalogError, createProduct, getProductById, ProductInput, type ProductView, updateProduct, VariantInput } from './products.ts';
+import { type Category, categories, products } from './schema.ts';
+import { CategoryInput, upsertCategory } from './taxonomy.ts';
 
 async function need(ctx: AdminContext, perm: string) {
   if (!(await ctx.can(perm))) throw new CatalogError('forbidden', `forbidden: ${perm}`);

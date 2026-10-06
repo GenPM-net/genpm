@@ -1,7 +1,7 @@
 // Handlers de la ruta de almacenamiento local (drivers `local`/`memory`): subida firmada, descarga firmada y públicos.
-import { assertSafeKey, isPublicKey, StorageError } from './keys.js';
-import { verifyGrant } from './memory.js';
-import type { StorageProvider } from './provider.js';
+import { assertSafeKey, isPublicKey, StorageError } from './keys.ts';
+import { verifyGrant } from './memory.ts';
+import type { StorageProvider } from './provider.ts';
 
 const err = (status: number, error: string) => Response.json({ error }, { status });
 

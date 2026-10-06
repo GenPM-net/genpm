@@ -1,8 +1,8 @@
 import { createElement as h } from 'react';
 import { z } from 'zod';
-import { embedUrl } from '../../rich-text/index.js';
-import { defineBlock } from '../define.js';
-import { optText, Section, text } from '../parts.js';
+import { embedUrl } from '../../rich-text/index.ts';
+import { defineBlock } from '../define.ts';
+import { optText, Section, text } from '../parts.ts';
 
 /** YouTube/Vimeo a partir de la URL que pega el editor. */
 export function parseVideoUrl(url: string): { provider: 'youtube' | 'vimeo'; id: string } | null {

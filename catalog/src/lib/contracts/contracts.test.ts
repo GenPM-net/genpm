@@ -11,7 +11,7 @@ import {
   MoneySchema,
   type PaymentProvider,
   TrackedEventSchema,
-} from './index.js';
+} from './index.ts';
 
 const eur = (amount: number): Money => ({ amount, currency: 'EUR' });
 

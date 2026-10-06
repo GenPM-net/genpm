@@ -1,9 +1,9 @@
 // Fuentes de sitemap y buscador a partir de una colección (para registrar en src/genpm/seo.ts y search.ts).
 import { and, asc, eq, gt } from 'drizzle-orm';
-import { defineSearchSource, defineSitemapSource, type SearchSource, type SitemapSource } from '../contracts/index.js';
-import { getDb } from '../db/index.js';
-import { getCollection } from './registry.js';
-import { type ContentRow, contentEntries } from './schema.js';
+import { defineSearchSource, defineSitemapSource, type SearchSource, type SitemapSource } from '../contracts/index.ts';
+import { getDb } from '../db/index.ts';
+import { getCollection } from './registry.ts';
+import { type ContentRow, contentEntries } from './schema.ts';
 
 type PathFn = (entry: { slug: string; locale: string; data: Record<string, unknown> }) => string;
 

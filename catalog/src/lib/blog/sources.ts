@@ -1,7 +1,7 @@
 // Fuentes de sitemap y buscador del blog, y recursos del panel.
-import { contentAdminResource, contentSearchSource, contentSitemapSource } from '../content/index.js';
-import { type Doc, toPlainText } from '../rich-text/index.js';
-import { BLOG_COLLECTIONS } from './collections.js';
+import { contentAdminResource, contentSearchSource, contentSitemapSource } from '../content/index.ts';
+import { type Doc, toPlainText } from '../rich-text/index.ts';
+import { BLOG_COLLECTIONS } from './collections.ts';
 
 type PathFn = (p: { slug: string; locale: string }) => string;
 const defaultPath: PathFn = ({ slug }) => `/blog/${slug}`;

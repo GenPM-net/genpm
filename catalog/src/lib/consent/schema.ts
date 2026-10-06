@@ -1,6 +1,6 @@
 // Tablas de @core/consent. Las recoge drizzle-kit vía src/lib/db/drizzle.config.ts.
 import { index, jsonb, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
-import { primaryId } from '../db/index.js';
+import { primaryId } from '../db/index.ts';
 
 /** Prueba del consentimiento (RGPD art. 7.1): qué se eligió, con qué versión de la política y cuándo. Sin IP. */
 export const consentRecords = pgTable(

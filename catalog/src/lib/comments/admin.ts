@@ -1,10 +1,10 @@
 // Recurso de panel: cola de moderación (por defecto `pending`) con aprobar, spam, borrar y bloquear al autor.
 import { and, count, desc, eq, ilike, type SQL, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import type { AdminContext, AdminResource } from '../contracts/index.js';
-import { getDb } from '../db/index.js';
-import { ban, CommentError, moderate } from './comments.js';
-import { type Comment, comments } from './schema.js';
+import type { AdminContext, AdminResource } from '../contracts/index.ts';
+import { getDb } from '../db/index.ts';
+import { ban, CommentError, moderate } from './comments.ts';
+import { type Comment, comments } from './schema.ts';
 
 async function need(ctx: AdminContext, perm: string) {
   if (!(await ctx.can(perm))) throw new CommentError('forbidden', `forbidden: ${perm}`);

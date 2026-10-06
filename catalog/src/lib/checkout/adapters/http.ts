@@ -1,7 +1,7 @@
 // POST /api/checkout {email, locale?} → {url}; GET /api/checkout/status?session_id=… → estado para la página de éxito.
 import { z } from 'zod';
-import { getCart } from '../../cart/index.js';
-import { CheckoutError, getCheckoutStatus, startCheckout } from '../index.js';
+import { getCart } from '../../cart/index.ts';
+import { CheckoutError, getCheckoutStatus, startCheckout } from '../index.ts';
 
 export type CurrentUserId = (req: Request) => Promise<string | null>;
 export type CheckoutPaths = { success: string; cancel: string };

@@ -23,4 +23,4 @@ export {
   Toasts,
   useToasts,
   VisuallyHidden,
-} from './components.js';
+} from './components.ts';

@@ -5,7 +5,7 @@
 //     export const GET = previewRoute(draftMode);
 //   app/api/exit-preview/route.ts: `export const GET = exitPreviewRoute(draftMode);`
 //   En la página: `const { isEnabled } = await draftMode(); await getEntry('pages', slug, { draft: isEnabled })`.
-import { ContentError, verifyPreviewToken } from '../index.js';
+import { ContentError, verifyPreviewToken } from '../index.ts';
 
 type DraftMode = () => Promise<{ enable(): void; disable(): void }> | { enable(): void; disable(): void };
 

@@ -3,19 +3,19 @@ import type { ReactElement } from 'react';
 import { renderToReadableStream } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { formTimingToken } from '../antispam/index.js';
-import * as antispamSchema from '../antispam/schema.js';
-import { seedEntry } from '../content/index.js';
-import * as contentSchema from '../content/schema.js';
-import type { AdminContext } from '../contracts/index.js';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import type { Db } from '../db/index.js';
-import { type EmailMessage, setEmailProvider } from '../email/index.js';
-import { runDue } from '../jobs/index.js';
-import * as jobsSchema from '../jobs/schema.js';
-import { formRoutes } from './adapters/hono.js';
-import { formRoute } from './adapters/next.js';
-import * as schema from './schema.js';
+import { formTimingToken } from '../antispam/index.ts';
+import * as antispamSchema from '../antispam/schema.ts';
+import { seedEntry } from '../content/index.ts';
+import * as contentSchema from '../content/schema.ts';
+import type { AdminContext } from '../contracts/index.ts';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import type { Db } from '../db/index.ts';
+import { type EmailMessage, setEmailProvider } from '../email/index.ts';
+import { runDue } from '../jobs/index.ts';
+import * as jobsSchema from '../jobs/schema.ts';
+import { formRoutes } from './adapters/hono.ts';
+import { formRoute } from './adapters/next.ts';
+import * as schema from './schema.ts';
 import {
   clearForms,
   clearSubmissionHandlers,
@@ -31,7 +31,7 @@ import {
   submissionsAdminResource,
   submitForm,
   webhookSignature,
-} from './index.js';
+} from './index.ts';
 
 let db: Db;
 const sent: EmailMessage[] = [];

@@ -1,6 +1,6 @@
 // POST /api/consent {analytics, marketing, preferences, action?} → guarda y fija la cookie. GET → estado actual.
 import { z } from 'zod';
-import { ChoicesInput, getConsent, recordConsent } from '../index.js';
+import { ChoicesInput, getConsent, recordConsent } from '../index.ts';
 
 const Body = ChoicesInput.extend({ action: z.enum(['banner', 'preferences', 'withdraw']).default('banner') });
 

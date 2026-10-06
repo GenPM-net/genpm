@@ -7,7 +7,7 @@ import Link from '@tiptap/extension-link';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { createElement as h, type ReactNode, useEffect } from 'react';
-import { type Doc, isSafeHref, RichTextSchema } from './doc.js';
+import { type Doc, isSafeHref, RichTextSchema } from './doc.ts';
 
 export type EditorLabels = Partial<Record<'bold' | 'italic' | 'link' | 'h2' | 'h3' | 'bulletList' | 'orderedList' | 'quote' | 'image' | 'undo' | 'redo' | 'linkPrompt', string>>;
 

@@ -14,7 +14,7 @@ import {
   sub,
   sum,
   toDecimalString,
-} from './index.js';
+} from './index.ts';
 
 const eur = (n: number) => money(n, 'EUR');
 

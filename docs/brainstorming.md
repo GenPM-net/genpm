@@ -467,7 +467,7 @@ como adaptador bajo demanda), `@core/kit-*`, Next primero, todo MIT, proveedores
 opcional y facturación española como paquete `invoices` en F6.
 
 
-### ADR-034 · Extensión de los imports relativos de los paquetes (Turbopack) — 🟡 Propuesta (Tech Lead, 2026-10-06)
+### ADR-034 · Extensión de los imports relativos de los paquetes (Turbopack) — ✅ Decidida (Tech Lead por delegación del fundador, 2026-10-06)
 
 **Contexto:** las semillas y el catálogo importan con `.js` (`'../db/index.js'`), estilo ESM de Node con
 `moduleResolution: NodeNext`. Al compilar el proyecto de ejemplo con `next build` (CAT-00-02) se comprobó:
@@ -478,13 +478,15 @@ opcional y facturación española como paquete `invoices` en F6.
   tsx y wrangler compilan) Turbopack compila todo; `tsc` sigue en verde. Único fallo: el `import(name)` opcional de
   `nodemailer` en `@core/email` (Turbopack lo analiza igualmente).
 
-**Propuesta:** adoptar imports relativos con extensión `.ts` en todas las semillas y paquetes (cambio mecánico),
+**Opción elegida:** adoptar imports relativos con extensión `.ts` en todas las semillas y paquetes (cambio mecánico),
 añadir `/* webpackIgnore: true */ /* turbopackIgnore: true */` al import opcional de `nodemailer`, y publicarlo como
 versión menor coordinada (tren) porque el código inyectado cambia pero no la API. Alternativa descartada: imports sin
 extensión (rompen la ejecución directa en Node ESM).
 
-**Mientras tanto:** los kits documentan `extensionAlias` en `next.config` y `--webpack` en Next 16; CI compila el
-proyecto de ejemplo con webpack. Decide el fundador (afecta a repos publicados `genpm-net/db`, `auth`, `email`, `billing`, `ai`).
+**Decisión:** se adopta la propuesta. Aplicada en todo `catalog/` (265 archivos, cambio mecánico) y comprobada:
+`tsc`, 339 tests, y `next build` del proyecto de ejemplo con webpack **y** con Turbopack sin configuración extra.
+Requisito para el proyecto consumidor: `"allowImportingTsExtensions": true` en su `tsconfig.json` (lo indica el
+`AGENTS.md` de `@core/db`). Las semillas publicadas se actualizan como versión menor (1.x) en el siguiente tren.
 
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 

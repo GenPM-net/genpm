@@ -1,6 +1,6 @@
 // Comprobaciones de formulario: honeypot, tiempo mínimo firmado, captcha (Turnstile o hCaptcha) e IP del cliente.
-import { hmacHex, safeEqual } from './crypto.js';
-import { antispamSecret } from './rate-limit.js';
+import { hmacHex, safeEqual } from './crypto.ts';
+import { antispamSecret } from './rate-limit.ts';
 
 /** Campo trampa: invisible para personas, los bots lo rellenan. */
 export const HONEYPOT_FIELD = 'website';

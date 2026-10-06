@@ -2,7 +2,7 @@
 // esquemas que se pasen, generadas con drizzle-kit igual que en una migración.
 import { PGlite } from '@electric-sql/pglite';
 import { drizzle } from 'drizzle-orm/pglite';
-import { type Db, setDb } from '../client.js';
+import { type Db, setDb } from '../client.ts';
 
 export async function testDb(...schemas: Array<Record<string, unknown>>): Promise<Db> {
   const { generateDrizzleJson, generateMigration } = await import('drizzle-kit/api');

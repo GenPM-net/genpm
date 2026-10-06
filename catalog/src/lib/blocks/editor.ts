@@ -3,9 +3,9 @@
 // Uso: en el servidor `const meta = blockMeta(blocks)` (registro de `src/genpm/blocks.ts`) y en el cliente
 // `<AdminApp renderers={{ blocks: blocksRenderer(meta) }} />`: al navegador solo viajan tipos, campos y valores iniciales.
 import { createElement as h, type ReactNode, useId, useState } from 'react';
-import { type FieldRenderer, type FieldRendererProps, FieldControl, getPath, setPath } from '../admin/client.js';
-import { Badge, Button, SelectField } from '../ui/index.js';
-import { type BlockInstance, type BlockMeta, newBlockId } from './define.js';
+import { type FieldRenderer, type FieldRendererProps, FieldControl, getPath, setPath } from '../admin/client.ts';
+import { Badge, Button, SelectField } from '../ui/index.ts';
+import { type BlockInstance, type BlockMeta, newBlockId } from './define.ts';
 
 export const editorLabels = {
   add: 'Add block',

@@ -1,6 +1,6 @@
 // Adaptador Next.js (solo drivers `local`/`memory`): `app/api/storage/[[...key]]/route.ts` →
 //   export { localStoragePut as PUT, localStorageGet as GET } from '@/lib/storage/adapters/next';
-import { getStorage, handleLocalDownload, handleLocalUpload } from '../index.js';
+import { getStorage, handleLocalDownload, handleLocalUpload } from '../index.ts';
 
 const secret = () => process.env.STORAGE_SECRET ?? '';
 

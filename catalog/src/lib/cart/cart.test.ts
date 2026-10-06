@@ -1,15 +1,15 @@
 import { eq } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { upsertOAuthUser } from '../auth/index.js';
-import * as authSchema from '../auth/schema.js';
-import { createProduct, getProduct, productVariants } from '../catalog/index.js';
-import * as catalogSchema from '../catalog/schema.js';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import type { Db } from '../db/index.js';
-import { money, percent } from '../money/index.js';
-import { cartRoutes } from './adapters/hono.js';
-import * as schema from './schema.js';
+import { upsertOAuthUser } from '../auth/index.ts';
+import * as authSchema from '../auth/schema.ts';
+import { createProduct, getProduct, productVariants } from '../catalog/index.ts';
+import * as catalogSchema from '../catalog/schema.ts';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import type { Db } from '../db/index.ts';
+import { money, percent } from '../money/index.ts';
+import { cartRoutes } from './adapters/hono.ts';
+import * as schema from './schema.ts';
 import {
   addLine,
   applyOrderDiscount,
@@ -25,7 +25,7 @@ import {
   registerTotalsStep,
   setDiscountCodes,
   setLine,
-} from './index.js';
+} from './index.ts';
 
 let db: Db;
 let red: string;

@@ -1,12 +1,12 @@
 import { Hono } from 'hono';
 import Stripe from 'stripe';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import type { Db } from '../db/index.js';
-import { stripeWebhookRoutes } from './adapters/hono.js';
-import { stripeWebhookRoute } from './adapters/next.js';
-import * as schema from './schema.js';
-import { clearStripeHandlers, getStripe, handleStripeWebhook, onStripeEvent, setStripe, stripeEvents, WebhookSignatureError } from './index.js';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import type { Db } from '../db/index.ts';
+import { stripeWebhookRoutes } from './adapters/hono.ts';
+import { stripeWebhookRoute } from './adapters/next.ts';
+import * as schema from './schema.ts';
+import { clearStripeHandlers, getStripe, handleStripeWebhook, onStripeEvent, setStripe, stripeEvents, WebhookSignatureError } from './index.ts';
 
 const SECRET = 'whsec_test_secret';
 let db: Db;

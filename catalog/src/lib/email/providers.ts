@@ -39,7 +39,7 @@ export function smtpProvider(url: string = process.env.SMTP_URL ?? ''): EmailPro
     async send(m) {
       if (!transport) {
         const name = 'nodemailer';
-        const mod = (await import(name)) as { default: { createTransport(url: string): NonNullable<typeof transport> } };
+        const mod = (await import(/* webpackIgnore: true */ /* turbopackIgnore: true */ name)) as { default: { createTransport(url: string): NonNullable<typeof transport> } };
         transport = mod.default.createTransport(url);
       }
       const info = await transport.sendMail({ from: m.from, to: m.to, subject: m.subject, html: m.html, text: m.text, replyTo: m.replyTo });

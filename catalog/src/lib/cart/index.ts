@@ -13,9 +13,9 @@ export {
   setCartMeta,
   setDiscountCodes,
   setLine,
-} from './cart.js';
-export { CART_COOKIE, cartCookie, cartIdFromCookie, clearCartCookie } from './cookie.js';
-export { type Cart, cartLines, carts } from './schema.js';
+} from './cart.ts';
+export { CART_COOKIE, cartCookie, cartIdFromCookie, clearCartCookie } from './cookie.ts';
+export { type Cart, cartLines, carts } from './schema.ts';
 export {
   type Adjustment,
   applyOrderDiscount,
@@ -24,4 +24,4 @@ export {
   registerTotalsStep,
   type TotalsLine,
   type TotalsStep,
-} from './totals.js';
+} from './totals.ts';

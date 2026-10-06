@@ -1,5 +1,5 @@
 // Handlers comunes: GET lista aprobada, POST nuevo comentario (form-data o JSON).
-import { CommentError, listComments, type Moderation, postComment } from '../index.js';
+import { CommentError, listComments, type Moderation, postComment } from '../index.ts';
 
 export type CurrentUser = (req: Request) => Promise<{ id: string; name: string | null } | null>;
 

@@ -1,10 +1,10 @@
 // Resolución de imágenes de @core/media para los bloques, en una sola consulta.
 import { and, eq, inArray } from 'drizzle-orm';
-import type { Executor } from '../db/index.js';
-import { getDb } from '../db/index.js';
-import { imgAttrs, media } from '../media/index.js';
-import type { ResolvedImage } from '../rich-text/index.js';
-import { type BlockInstance, type BlockRegistry, collectMediaIds } from './define.js';
+import type { Executor } from '../db/index.ts';
+import { getDb } from '../db/index.ts';
+import { imgAttrs, media } from '../media/index.ts';
+import type { ResolvedImage } from '../rich-text/index.ts';
+import { type BlockInstance, type BlockRegistry, collectMediaIds } from './define.ts';
 
 /** `const images = await loadBlockMedia(page.blocks, blocks)` → `<RenderBlocks media={images} />`. */
 export async function loadBlockMedia(

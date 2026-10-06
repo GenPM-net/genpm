@@ -12,8 +12,8 @@ export {
   type TaxonomyData,
   TaxonomySchema,
   tags,
-} from './collections.js';
-export { atomFeed, type FeedOptions, jsonFeed, rssFeed } from './feeds.js';
+} from './collections.ts';
+export { atomFeed, type FeedOptions, jsonFeed, rssFeed } from './feeds.ts';
 export {
   archive,
   getPost,
@@ -25,5 +25,5 @@ export {
   postsInMonth,
   relatedPosts,
   summarize,
-} from './posts.js';
-export { blogAdminResources, blogSearchSource, blogSitemapSource } from './sources.js';
+} from './posts.ts';
+export { blogAdminResources, blogSearchSource, blogSitemapSource } from './sources.ts';

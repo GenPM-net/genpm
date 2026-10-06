@@ -1,6 +1,6 @@
 // Definición de formularios: en código (`defineForm`) o desde el panel (colección `forms` de @core/content).
 import { z } from 'zod';
-import { defineCollection, getEntry } from '../content/index.js';
+import { defineCollection, getEntry } from '../content/index.ts';
 
 export type ConsentConfig = { required: boolean; version: string; text: string };
 

@@ -1,8 +1,8 @@
 // Piezas comunes de los bloques: encabezados con nivel, imágenes resueltas, enlaces seguros y JSON-LD.
 import { createElement as h, type ReactNode } from 'react';
 import { z } from 'zod';
-import { isSafeHref, type ResolvedImage } from '../rich-text/index.js';
-import type { BlockContext } from './define.js';
+import { isSafeHref, type ResolvedImage } from '../rich-text/index.ts';
+import type { BlockContext } from './define.ts';
 
 type Level = BlockContext['level'];
 const clamp = (n: number) => Math.min(Math.max(n, 1), 6) as Level;

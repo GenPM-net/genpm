@@ -1,6 +1,6 @@
 // Eventos de negocio que se miden (píxeles, tests A/B). Mismo `eventId` en navegador y servidor = deduplicación.
 import { z } from 'zod';
-import { MoneySchema } from './money.js';
+import { MoneySchema } from './money.ts';
 
 const Item = z.strictObject({
   id: z.string().min(1).max(128),

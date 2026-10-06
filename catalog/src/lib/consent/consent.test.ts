@@ -2,11 +2,11 @@ import { Hono } from 'hono';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import { consentRoutes } from './adapters/hono.js';
-import { ConsentGate } from './react.js';
-import * as schema from './schema.js';
-import { consentHistory, consentModeDefaultsScript, consentModeValues, getConsent, hasConsent, recordConsent } from './index.js';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import { consentRoutes } from './adapters/hono.ts';
+import { ConsentGate } from './react.ts';
+import * as schema from './schema.ts';
+import { consentHistory, consentModeDefaultsScript, consentModeValues, getConsent, hasConsent, recordConsent } from './index.ts';
 
 beforeEach(async () => {
   await testDb(schema);

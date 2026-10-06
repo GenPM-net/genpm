@@ -7,7 +7,7 @@ import {
   resendProvider,
   sendEmail,
   setEmailProvider,
-} from './index.js';
+} from './index.ts';
 
 const realFetch = globalThis.fetch;
 let sent: EmailMessage[];

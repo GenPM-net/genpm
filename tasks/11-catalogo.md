@@ -14,7 +14,7 @@
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/contracts` (2026-10-06). Falta crear el repo `genpm-net/contracts` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-00-04` **BLOCKED** Implementar y publicar @core/ui con tokens claro/oscuro y axe sin violaciones · C · 12h · deps: CAT-00-02
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/ui` (2026-10-06). Falta crear el repo `genpm-net/ui` (fundador), publicar, pruebas de agente y revisión ADR-023.
-- [ ] `CAT-00-05` **TODO** Decidir ADR-034 (imports relativos con extensión `.ts` para Turbopack) y, si se aprueba, aplicarlo a semillas y catálogo en un tren · F · 3h · deps: CAT-00-02
+- [x] `CAT-00-05` **DONE** Decidir ADR-034 (imports relativos con extensión `.ts` para Turbopack) y, si se aprueba, aplicarlo a semillas y catálogo en un tren · F · 3h · deps: CAT-00-02
 
 ## F1 · CMS (kit-cms)
 

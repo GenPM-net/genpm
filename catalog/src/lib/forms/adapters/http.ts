@@ -1,5 +1,5 @@
 // Respuesta HTTP común a los adaptadores.
-import { type SubmitResult, submitForm } from '../index.js';
+import { type SubmitResult, submitForm } from '../index.ts';
 
 const STATUS: Record<Exclude<SubmitResult, { ok: true }>['reason'], number> = {
   not_found: 404,

@@ -1,6 +1,6 @@
 // Adaptador Hono: `app.route('/api/cart', cartRoutes({ currentUserId }))`.
 import { Hono } from 'hono';
-import { type CurrentUserId, cartHandlers } from './http.js';
+import { type CurrentUserId, cartHandlers } from './http.ts';
 
 export function cartRoutes(opts: { currentUserId: CurrentUserId }) {
   const h = cartHandlers(opts.currentUserId);

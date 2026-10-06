@@ -20,7 +20,7 @@ tables, no runtime dependency besides `zod`.
 2. To expose your own data to the admin, sitemap or search, implement the type and register it in the project file
    the consuming module documents (`src/genpm/admin.ts`, `src/genpm/seo.ts`, `src/genpm/search.ts`):
    ```ts
-   import { defineSitemapSource } from './lib/contracts/index.js';
+   import { defineSitemapSource } from './lib/contracts/index.ts';
    export const projects = defineSitemapSource({ name: 'projects', async *urls() { yield { loc: '/projects' }; } });
    ```
 3. Validate untrusted tracking payloads with `TrackedEventSchema.parse(body)` before forwarding them.

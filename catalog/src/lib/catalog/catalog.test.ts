@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { AdminContext } from '../contracts/index.js';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import { type Db, withTransaction } from '../db/index.js';
-import { docFromText } from '../rich-text/index.js';
-import * as schema from './schema.js';
+import type { AdminContext } from '../contracts/index.ts';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import { type Db, withTransaction } from '../db/index.ts';
+import { docFromText } from '../rich-text/index.ts';
+import * as schema from './schema.ts';
 import {
   availability,
   CatalogError,
@@ -22,7 +22,7 @@ import {
   setCollection,
   updateProduct,
   upsertCategory,
-} from './index.js';
+} from './index.ts';
 
 let db: Db;
 const mug = (over: Partial<ProductInputData> = {}): ProductInputData => ({

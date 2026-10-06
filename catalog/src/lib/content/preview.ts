@@ -1,5 +1,5 @@
 // Tokens de vista previa: permiten leer borradores de una entrada concreta durante un tiempo limitado.
-import { ContentError } from './registry.js';
+import { ContentError } from './registry.ts';
 
 const enc = new TextEncoder();
 const b64url = (b: Uint8Array) => btoa(String.fromCharCode(...b)).replaceAll('+', '-').replaceAll('/', '_').replace(/=+$/, '');

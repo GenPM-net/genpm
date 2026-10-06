@@ -1,5 +1,5 @@
 // @core/seo — API pública. Importa desde aquí; rutas de sitemap y robots en adapters/.
-export { jsonLd, jsonLdScript } from './jsonld.js';
+export { jsonLd, jsonLdScript } from './jsonld.ts';
 export {
   buildMetadata,
   buildMetadataWith,
@@ -8,7 +8,7 @@ export {
   SeoFieldsSchema,
   type SeoMetadata,
   seoAdminFields,
-} from './metadata.js';
+} from './metadata.ts';
 export {
   clearSitemapSources,
   type LlmsSection,
@@ -18,5 +18,5 @@ export {
   SITEMAP_CHUNK,
   sitemapChunkXml,
   sitemapIndexXml,
-} from './sitemap.js';
-export { absoluteUrl, siteUrl } from './url.js';
+} from './sitemap.ts';
+export { absoluteUrl, siteUrl } from './url.ts';

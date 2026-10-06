@@ -22,4 +22,4 @@ export {
   sum,
   toDecimalString,
   zero,
-} from './money.js';
+} from './money.ts';

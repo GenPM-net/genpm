@@ -1,5 +1,5 @@
 // @core/comments — API pública. Importa desde aquí; endpoints en adapters/hono.ts y adapters/next.ts.
-export { commentsAdminResource } from './admin.js';
+export { commentsAdminResource } from './admin.ts';
 export {
   ban,
   CommentError,
@@ -16,5 +16,5 @@ export {
   postComment,
   type RatingSummary,
   ratingSummary,
-} from './comments.js';
-export { type Comment, commentBans, comments } from './schema.js';
+} from './comments.ts';
+export { type Comment, commentBans, comments } from './schema.ts';

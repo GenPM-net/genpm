@@ -2,8 +2,8 @@
 //   import { admin } from '@/genpm/admin';
 //   export const { GET, POST, PUT, DELETE } = adminRouteHandlers(admin);
 //   export const dynamic = 'force-dynamic';
-import type { AdminConfig } from '../config.js';
-import { type AdminApiOptions, handleAdminApi } from '../server.js';
+import type { AdminConfig } from '../config.ts';
+import { type AdminApiOptions, handleAdminApi } from '../server.ts';
 
 export function adminRouteHandlers(admin: AdminConfig, opts: AdminApiOptions = {}) {
   const handler = (req: Request) => handleAdminApi(req, admin, opts);

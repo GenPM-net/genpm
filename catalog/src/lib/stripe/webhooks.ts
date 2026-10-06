@@ -1,9 +1,9 @@
 // Un único endpoint de webhooks para toda la app: verifica la firma, registra el evento (idempotencia) y lo reparte
 // a los manejadores de cada módulo (billing, checkout…) dentro de la misma transacción.
 import type Stripe from 'stripe';
-import { type Executor, withTransaction } from '../db/index.js';
-import { getStripe } from './client.js';
-import { stripeEvents } from './schema.js';
+import { type Executor, withTransaction } from '../db/index.ts';
+import { getStripe } from './client.ts';
+import { stripeEvents } from './schema.ts';
 
 export type StripeEventHandler = (event: Stripe.Event, tx: Executor) => Promise<void>;
 

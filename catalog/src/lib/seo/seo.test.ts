@@ -1,14 +1,14 @@
 import { Hono } from 'hono';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { seedEntry } from '../content/index.js';
-import * as contentSchema from '../content/schema.js';
-import { defineSitemapSource } from '../contracts/index.js';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import * as jobsSchema from '../jobs/schema.js';
-import type { SiteSettings } from '../site/index.js';
-import * as siteSchema from '../site/schema.js';
-import { seoRoutes } from './adapters/hono.js';
-import { robotsRoute, sitemapChunkRoute, sitemapIndexRoute } from './adapters/next.js';
+import { seedEntry } from '../content/index.ts';
+import * as contentSchema from '../content/schema.ts';
+import { defineSitemapSource } from '../contracts/index.ts';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import * as jobsSchema from '../jobs/schema.ts';
+import type { SiteSettings } from '../site/index.ts';
+import * as siteSchema from '../site/schema.ts';
+import { seoRoutes } from './adapters/hono.ts';
+import { robotsRoute, sitemapChunkRoute, sitemapIndexRoute } from './adapters/next.ts';
 import {
   buildMetadata,
   buildMetadataWith,
@@ -23,7 +23,7 @@ import {
   sitemapChunkXml,
   sitemapIndexXml,
   siteUrl,
-} from './index.js';
+} from './index.ts';
 
 const settings: SiteSettings = {
   name: 'Tazas Co',

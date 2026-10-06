@@ -1,6 +1,6 @@
 // Definición de colecciones y singletons. Cada proceso importa las mismas definiciones (p. ej. src/genpm/content.ts).
 import { z } from 'zod';
-import type { AdminField } from '../contracts/index.js';
+import type { AdminField } from '../contracts/index.ts';
 
 export const SINGLETON_SLUG = '_';
 const NAME_RE = /^[a-z][a-z0-9_]{0,47}$/;

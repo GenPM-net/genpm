@@ -1,9 +1,9 @@
 // Metadatos de página con valores por defecto del sitio. Devuelve un objeto compatible con `Metadata` de Next.js
 // (sin importar `next`) y, para otros frameworks, `metaTags()` genera las etiquetas.
 import { z } from 'zod';
-import type { AdminField } from '../contracts/index.js';
-import { getSiteSettings, type SiteSettings } from '../site/index.js';
-import { absoluteUrl, siteUrl } from './url.js';
+import type { AdminField } from '../contracts/index.ts';
+import { getSiteSettings, type SiteSettings } from '../site/index.ts';
+import { absoluteUrl, siteUrl } from './url.ts';
 
 /** Campos SEO que cualquier colección puede añadir a su esquema: `schema: Page.extend({ seo: SeoFieldsSchema })`. */
 export const SeoFieldsSchema = z

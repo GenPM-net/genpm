@@ -1,18 +1,18 @@
 import { Hono } from 'hono';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { formTimingToken } from '../antispam/index.js';
-import * as antispamSchema from '../antispam/schema.js';
-import { upsertOAuthUser } from '../auth/index.js';
-import * as authSchema from '../auth/schema.js';
-import type { AdminContext } from '../contracts/index.js';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import type { Db } from '../db/index.js';
-import { type EmailMessage, setEmailProvider } from '../email/index.js';
-import { runDue } from '../jobs/index.js';
-import * as jobsSchema from '../jobs/schema.js';
-import { commentRoutes } from './adapters/hono.js';
-import { commentRoute } from './adapters/next.js';
-import * as schema from './schema.js';
+import { formTimingToken } from '../antispam/index.ts';
+import * as antispamSchema from '../antispam/schema.ts';
+import { upsertOAuthUser } from '../auth/index.ts';
+import * as authSchema from '../auth/schema.ts';
+import type { AdminContext } from '../contracts/index.ts';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import type { Db } from '../db/index.ts';
+import { type EmailMessage, setEmailProvider } from '../email/index.ts';
+import { runDue } from '../jobs/index.ts';
+import * as jobsSchema from '../jobs/schema.ts';
+import { commentRoutes } from './adapters/hono.ts';
+import { commentRoute } from './adapters/next.ts';
+import * as schema from './schema.ts';
 import {
   ban,
   CommentError,
@@ -24,7 +24,7 @@ import {
   moderate,
   postComment,
   ratingSummary,
-} from './index.js';
+} from './index.ts';
 
 let db: Db;
 const sent: EmailMessage[] = [];

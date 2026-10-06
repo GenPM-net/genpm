@@ -1,13 +1,13 @@
 // Panel de prueba con un recurso en memoria y un propietario con sesión (compartido por los tests de API y de UI).
 import { z } from 'zod';
-import * as authSchema from '../../auth/schema.js';
-import { createSession, generateSessionToken, SESSION_COOKIE, upsertOAuthUser } from '../../auth/index.js';
-import { type AdminContext, defineAdminResource } from '../../contracts/index.js';
-import { testDb } from '../../db/__fixtures__/pglite.js';
-import { bootstrapOwner } from '../../rbac/index.js';
-import * as rbacSchema from '../../rbac/schema.js';
-import * as schema from '../schema.js';
-import { auditAdminResource, countWidget, defineAdmin } from '../index.js';
+import * as authSchema from '../../auth/schema.ts';
+import { createSession, generateSessionToken, SESSION_COOKIE, upsertOAuthUser } from '../../auth/index.ts';
+import { type AdminContext, defineAdminResource } from '../../contracts/index.ts';
+import { testDb } from '../../db/__fixtures__/pglite.ts';
+import { bootstrapOwner } from '../../rbac/index.ts';
+import * as rbacSchema from '../../rbac/schema.ts';
+import * as schema from '../schema.ts';
+import { auditAdminResource, countWidget, defineAdmin } from '../index.ts';
 
 // Recurso en memoria: el panel no sabe nada de tablas, solo del contrato.
 export type Note = { id: string; title: string; body: string; price: number; status: 'draft' | 'published'; ownerId: string };

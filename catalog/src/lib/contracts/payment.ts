@@ -1,6 +1,6 @@
 // Pasarela de pago vista desde los pedidos: la implementa @core/checkout (Stripe); la consume @core/orders para
 // reembolsos sin depender de Stripe.
-import type { Money } from './money.js';
+import type { Money } from './money.ts';
 
 export type PaymentStatus = 'pending' | 'succeeded' | 'failed' | 'refunded' | 'partially_refunded';
 

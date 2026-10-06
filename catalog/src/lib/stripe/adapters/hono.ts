@@ -1,6 +1,6 @@
 // Adaptador Hono: `app.route('/api/stripe/webhook', stripeWebhookRoutes())`.
 import { Hono } from 'hono';
-import { handleStripeWebhook, WebhookSignatureError } from '../index.js';
+import { handleStripeWebhook, WebhookSignatureError } from '../index.ts';
 
 export function stripeWebhookRoutes() {
   return new Hono().post('/', async (c) => {

@@ -1,7 +1,7 @@
 // Escritura: borradores, publicación, programación, archivo, revisiones y migraciones de datos.
 import { and, asc, desc, eq, gt } from 'drizzle-orm';
-import { type Executor, getDb, newId, withTransaction } from '../db/index.js';
-import { defineJob } from '../jobs/index.js';
+import { type Executor, getDb, newId, withTransaction } from '../db/index.ts';
+import { defineJob } from '../jobs/index.ts';
 import { z } from 'zod';
 import {
   assertSlug,
@@ -10,8 +10,8 @@ import {
   getCollection,
   SINGLETON_SLUG,
   validateData,
-} from './registry.js';
-import { type ContentRevision, type ContentRow, contentEntries, contentRevisions } from './schema.js';
+} from './registry.ts';
+import { type ContentRevision, type ContentRow, contentEntries, contentRevisions } from './schema.ts';
 
 type Actor = { authorId?: string | null };
 

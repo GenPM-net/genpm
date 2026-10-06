@@ -1,8 +1,8 @@
 // Definición y registro de bloques. Un bloque = tipo + esquema zod + campos del editor + componente React.
 import type { ReactNode } from 'react';
 import { z } from 'zod';
-import type { AdminField } from '../contracts/index.js';
-import type { ResolvedImage } from '../rich-text/index.js';
+import type { AdminField } from '../contracts/index.ts';
+import type { ResolvedImage } from '../rich-text/index.ts';
 
 /** Bloque guardado en el contenido (`data` se valida con el esquema de su tipo). */
 export type BlockInstance = { id: string; type: string; hidden?: boolean; data: Record<string, unknown> };

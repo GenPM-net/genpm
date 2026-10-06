@@ -19,8 +19,8 @@ auth and rbac (the last two arrive through @core/admin). Public routes: pages cr
 
 ## Integration
 1. Check Next ≥ 15.5 with App Router, `src/app` and the `@/*` → `src/*` alias. Without `src/`: install with `--dest app/(cms)` and adapt `@/` imports.
-   GenPM packages import with `.js` extensions: add to `next.config` `webpack(cfg) { cfg.resolve.extensionAlias = { '.js': ['.ts', '.tsx', '.js'] }; return cfg; }`
-   and, on Next 16, run `next dev --webpack` / `next build --webpack` (Turbopack cannot resolve them yet; see ADR-034).
+   GenPM packages import each other with `.ts` extensions: `tsconfig.json` needs `"allowImportingTsExtensions": true`
+   (Next projects already have `"noEmit": true`). Works with webpack and Turbopack, no extra `next.config`.
 2. Env (see each package's AGENTS.md): `DATABASE_URL`, `AUTH_SECRET`, one OAuth provider (`GITHUB_CLIENT_ID/SECRET` or `GOOGLE_…`),
    `STORAGE_*`, `EMAIL_FROM` + provider, `SITE_URL`, `CONTENT_PREVIEW_SECRET` (≥ 32 chars), `ANTISPAM_SECRET`, `CRON_SECRET`.
 3. Mount the @core/auth routes (`app/auth/login/[provider]`, `app/auth/callback/[provider]`, `app/auth/logout`) as its AGENTS.md says.

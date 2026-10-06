@@ -1,6 +1,6 @@
 // Configuración del panel: recursos registrados, widgets del dashboard y navegación.
 import { z } from 'zod';
-import type { AdminContext, AdminField, AdminResource } from '../contracts/index.js';
+import type { AdminContext, AdminField, AdminResource } from '../contracts/index.ts';
 
 export type AdminWidget = {
   name: string;

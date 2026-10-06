@@ -1,6 +1,6 @@
 // @core/stripe — API pública. Importa desde aquí; ruta del webhook en adapters/hono.ts y adapters/next.ts.
-export { getStripe, Stripe, setStripe } from './client.js';
-export { stripeEvents } from './schema.js';
+export { getStripe, Stripe, setStripe } from './client.ts';
+export { stripeEvents } from './schema.ts';
 export {
   clearStripeHandlers,
   handleStripeWebhook,
@@ -8,4 +8,4 @@ export {
   type StripeEventHandler,
   type WebhookResult,
   WebhookSignatureError,
-} from './webhooks.js';
+} from './webhooks.ts';

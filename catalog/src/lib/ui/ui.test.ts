@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { act, createElement as h, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { afterEach, describe, expect, it } from 'vitest';
-import { Alert, Badge, Button, Card, Checkbox, DataTable, Pagination, SelectField, Tabs, TextareaField, TextField } from './index.js';
+import { Alert, Badge, Button, Card, Checkbox, DataTable, Pagination, SelectField, Tabs, TextareaField, TextField } from './index.ts';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 let container: HTMLElement;

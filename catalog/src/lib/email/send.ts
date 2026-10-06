@@ -1,9 +1,9 @@
 // sendEmail tipado por plantilla: el nombre elige las props obligatorias.
 import { render, toPlainText } from '@react-email/render';
-import { defaultProvider, type EmailProvider, type SendResult } from './providers.js';
-import { type MagicLinkProps, magicLink } from './templates/magic-link.js';
-import { type ReceiptProps, receipt } from './templates/receipt.js';
-import { type WelcomeProps, welcome } from './templates/welcome.js';
+import { defaultProvider, type EmailProvider, type SendResult } from './providers.ts';
+import { type MagicLinkProps, magicLink } from './templates/magic-link.ts';
+import { type ReceiptProps, receipt } from './templates/receipt.ts';
+import { type WelcomeProps, welcome } from './templates/welcome.ts';
 
 export const templates = { welcome, magicLink, receipt } as const;
 export type TemplateProps = { welcome: WelcomeProps; magicLink: MagicLinkProps; receipt: ReceiptProps };

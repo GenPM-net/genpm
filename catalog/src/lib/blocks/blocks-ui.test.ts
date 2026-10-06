@@ -3,11 +3,11 @@ import axe from 'axe-core';
 import { act, createElement as h, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { createAdminApi, defaultLabels } from '../admin/client.js';
-import { allBlocks, allMedia } from './__fixtures__/page.js';
-import { type BlockInstance, blockMeta, coreBlocks, createBlockRegistry } from './index.js';
-import { blocksRenderer } from './editor.js';
-import { RenderBlocks } from './render.js';
+import { createAdminApi, defaultLabels } from '../admin/client.ts';
+import { allBlocks, allMedia } from './__fixtures__/page.ts';
+import { type BlockInstance, blockMeta, coreBlocks, createBlockRegistry } from './index.ts';
+import { blocksRenderer } from './editor.ts';
+import { RenderBlocks } from './render.ts';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 const registry = createBlockRegistry(coreBlocks);

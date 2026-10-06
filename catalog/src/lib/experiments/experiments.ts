@@ -2,11 +2,11 @@
 // registrar nada), conversión por objetivo y resultados con significación estadística.
 import { and, count, eq, isNull, lt, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { getConsent } from '../consent/index.js';
-import { type Executor, getDb } from '../db/index.js';
-import { defineJob } from '../jobs/index.js';
-import { type Experiment, type ExperimentVariant, experimentParticipants, experiments } from './schema.js';
-import { type Comparison, compare } from './stats.js';
+import { getConsent } from '../consent/index.ts';
+import { type Executor, getDb } from '../db/index.ts';
+import { defineJob } from '../jobs/index.ts';
+import { type Experiment, type ExperimentVariant, experimentParticipants, experiments } from './schema.ts';
+import { type Comparison, compare } from './stats.ts';
 
 export class ExperimentError extends Error {
   constructor(

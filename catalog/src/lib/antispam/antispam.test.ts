@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import type { Db } from '../db/index.js';
-import * as schema from './schema.js';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import type { Db } from '../db/index.ts';
+import * as schema from './schema.ts';
 import {
   captchaFromEnv,
   checkFormTiming,
@@ -12,7 +12,7 @@ import {
   rateLimits,
   verifyCaptcha,
   verifyHuman,
-} from './index.js';
+} from './index.ts';
 
 let db: Db;
 beforeEach(async () => {

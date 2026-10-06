@@ -3,7 +3,7 @@
 //   app/sitemaps/[name]/[file]/route.ts      → export { sitemapChunkRoute as GET } from '@/lib/seo/adapters/next';
 //   app/robots.txt/route.ts                  → export { robotsRoute as GET } from '@/lib/seo/adapters/next';
 // Metadatos: `export async function generateMetadata() { return buildMetadata({ title, path }) }`.
-import { robotsTxt, sitemapChunkXml, sitemapIndexXml } from '../index.js';
+import { robotsTxt, sitemapChunkXml, sitemapIndexXml } from '../index.ts';
 
 const XML = { 'content-type': 'application/xml; charset=utf-8', 'cache-control': 'public, max-age=3600' };
 

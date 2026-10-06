@@ -1,11 +1,11 @@
 // Publicar, listar, moderar y valorar. Invitados siempre a moderación; usuarios con historial aprobado, directos.
 import { and, asc, count, desc, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { verifyHuman } from '../antispam/index.js';
-import { type Executor, getDb } from '../db/index.js';
-import { getEmailProvider } from '../email/index.js';
-import { defineJob } from '../jobs/index.js';
-import { type Comment, commentBans, comments } from './schema.js';
+import { verifyHuman } from '../antispam/index.ts';
+import { type Executor, getDb } from '../db/index.ts';
+import { getEmailProvider } from '../email/index.ts';
+import { defineJob } from '../jobs/index.ts';
+import { type Comment, commentBans, comments } from './schema.ts';
 
 export class CommentError extends Error {
   constructor(

@@ -1,6 +1,6 @@
 // sitemap.xml (índice) + trozos de hasta 50 000 URLs por fuente, robots.txt y llms.txt.
-import type { SitemapSource, SitemapUrl } from '../contracts/index.js';
-import { absoluteUrl, siteUrl } from './url.js';
+import type { SitemapSource, SitemapUrl } from '../contracts/index.ts';
+import { absoluteUrl, siteUrl } from './url.ts';
 
 export const SITEMAP_CHUNK = 50_000;
 const sources = new Map<string, SitemapSource>();

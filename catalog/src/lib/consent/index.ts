@@ -12,5 +12,5 @@ export {
   hasConsent,
   policyVersion,
   recordConsent,
-} from './consent.js';
-export { consentRecords } from './schema.js';
+} from './consent.ts';
+export { consentRecords } from './schema.ts';

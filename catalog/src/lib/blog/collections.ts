@@ -1,8 +1,8 @@
 // Colecciones del blog sobre @core/content. Las relaciones se guardan por slug (autores, categorías, etiquetas, serie).
 import { z } from 'zod';
-import { defineCollection } from '../content/index.js';
-import type { AdminField } from '../contracts/index.js';
-import { RichTextSchema } from '../rich-text/index.js';
+import { defineCollection } from '../content/index.ts';
+import type { AdminField } from '../contracts/index.ts';
+import { RichTextSchema } from '../rich-text/index.ts';
 
 const Slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const Seo = z.object({ title: z.string().max(70).optional(), description: z.string().max(170).optional(), noindex: z.boolean().optional() }).default({});

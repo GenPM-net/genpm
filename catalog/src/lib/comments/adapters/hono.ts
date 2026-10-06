@@ -1,7 +1,7 @@
 // Adaptador Hono: `app.route('/api/comments', commentRoutes({ currentUser }))` → GET/POST /api/comments/:type/:id
 import { Hono } from 'hono';
-import type { Moderation } from '../index.js';
-import { type CurrentUser, handleList, handlePost } from './http.js';
+import type { Moderation } from '../index.ts';
+import { type CurrentUser, handleList, handlePost } from './http.ts';
 
 export function commentRoutes(opts: { currentUser: CurrentUser; moderation?: Moderation }) {
   return new Hono()

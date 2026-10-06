@@ -1,9 +1,9 @@
 // Recurso "Experimentos" para @core/admin: crear, empezar, parar y ver resultados con significación.
 import { count, desc, eq } from 'drizzle-orm';
-import type { AdminContext, AdminResource } from '../contracts/index.js';
-import { getDb } from '../db/index.js';
-import { ExperimentError, ExperimentInput, experimentResults, setExperimentStatus, upsertExperiment, type VariantResult } from './experiments.js';
-import { type Experiment, experiments } from './schema.js';
+import type { AdminContext, AdminResource } from '../contracts/index.ts';
+import { getDb } from '../db/index.ts';
+import { ExperimentError, ExperimentInput, experimentResults, setExperimentStatus, upsertExperiment, type VariantResult } from './experiments.ts';
+import { type Experiment, experiments } from './schema.ts';
 
 export type ExperimentAdminRow = Experiment & { summary: string; current: VariantResult[] };
 

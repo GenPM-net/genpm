@@ -1,9 +1,9 @@
 // Fuentes de sitemap y buscador con los productos activos.
 import { and, asc, eq, gt } from 'drizzle-orm';
-import { defineSearchSource, defineSitemapSource } from '../contracts/index.js';
-import { getDb } from '../db/index.js';
-import { toPlainText } from '../rich-text/index.js';
-import { type Product, products } from './schema.js';
+import { defineSearchSource, defineSitemapSource } from '../contracts/index.ts';
+import { getDb } from '../db/index.ts';
+import { toPlainText } from '../rich-text/index.ts';
+import { type Product, products } from './schema.ts';
 
 async function* active(): AsyncGenerator<Product> {
   let after = '';

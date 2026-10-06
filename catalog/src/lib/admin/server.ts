@@ -4,13 +4,13 @@
 //   DELETE /:resource/:id · POST /:resource/:id/actions/:action
 import { and, count, desc, eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { getUserFromCookieHeader, type User } from '../auth/index.js';
-import type { AdminContext, AdminResource } from '../contracts/index.js';
-import { type Executor, getDb } from '../db/index.js';
-import { getGrants, grants } from '../rbac/index.js';
-import { type AdminConfig, fieldsFromZod } from './config.js';
-import { ADMIN_HEADER } from './constants.js';
-import { type AdminAudit, adminAudit } from './schema.js';
+import { getUserFromCookieHeader, type User } from '../auth/index.ts';
+import type { AdminContext, AdminResource } from '../contracts/index.ts';
+import { type Executor, getDb } from '../db/index.ts';
+import { getGrants, grants } from '../rbac/index.ts';
+import { type AdminConfig, fieldsFromZod } from './config.ts';
+import { ADMIN_HEADER } from './constants.ts';
+import { type AdminAudit, adminAudit } from './schema.ts';
 
 export { ADMIN_HEADER };
 

@@ -1,13 +1,13 @@
 import { eq } from 'drizzle-orm';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import type { AdminContext } from '../contracts/index.js';
-import { testDb } from '../db/__fixtures__/pglite.js';
-import type { Db } from '../db/index.js';
-import * as jobsSchema from '../jobs/schema.js';
-import { runDue } from '../jobs/index.js';
-import { exitPreviewRoute, previewRoute } from './adapters/next.js';
-import * as schema from './schema.js';
+import type { AdminContext } from '../contracts/index.ts';
+import { testDb } from '../db/__fixtures__/pglite.ts';
+import type { Db } from '../db/index.ts';
+import * as jobsSchema from '../jobs/schema.ts';
+import { runDue } from '../jobs/index.ts';
+import { exitPreviewRoute, previewRoute } from './adapters/next.ts';
+import * as schema from './schema.ts';
 import {
   clearCollections,
   ContentError,
@@ -36,7 +36,7 @@ import {
   unpublish,
   unschedule,
   verifyPreviewToken,
-} from './index.js';
+} from './index.ts';
 // El job de publicación programada se registra al importar entries; clearCollections no lo borra.
 
 let db: Db;

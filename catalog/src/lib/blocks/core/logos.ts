@@ -1,7 +1,7 @@
 import { createElement as h } from 'react';
 import { z } from 'zod';
-import { defineBlock } from '../define.js';
-import { href, Img, mediaId, optText, Section, text } from '../parts.js';
+import { defineBlock } from '../define.ts';
+import { href, Img, mediaId, optText, Section, text } from '../parts.ts';
 
 export const logos = defineBlock({
   type: 'logos',

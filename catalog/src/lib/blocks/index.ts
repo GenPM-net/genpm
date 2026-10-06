@@ -13,7 +13,7 @@ export {
   createBlockRegistry,
   defineBlock,
   newBlockId,
-} from './define.js';
-export * from './core/index.js';
-export { CtaLink, Heading, Img, JsonLd, Section } from './parts.js';
-export { RenderBlocks, type RenderBlocksProps } from './render.js';
+} from './define.ts';
+export * from './core/index.ts';
+export { CtaLink, Heading, Img, JsonLd, Section } from './parts.ts';
+export { RenderBlocks, type RenderBlocksProps } from './render.ts';

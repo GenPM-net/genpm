@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-06. No editar a mano. -->
 
-**67 %** completado · 214/319 tareas · 745.5h estimadas pendientes
+**67 %** completado · 215/320 tareas · 745.5h estimadas pendientes
 
-TODO 37 · DOING 5 · DONE 214 · BLOCKED 63 · CUT 0
+TODO 37 · DOING 5 · DONE 215 · BLOCKED 63 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -88,7 +88,7 @@ TODO 37 · DOING 5 · DONE 214 · BLOCKED 63 · CUT 0
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 17/18 | 2h |
 | [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓▓▓▓▓▓░░` 83 % | 33/40 | 46.5h |
-| [Catálogo de paquetes y kits](11-catalogo.md) | `░░░░░░░░░░░░` 2 % | 1/51 | 646h |
+| [Catálogo de paquetes y kits](11-catalogo.md) | `░░░░░░░░░░░░` 4 % | 2/52 | 646h |
 
 **En curso**
 

@@ -4,9 +4,9 @@ import axe from 'axe-core';
 import { act, createElement as h } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { AdminApp } from './client.js';
-import { admin, notes, ORIGIN, owner, setup } from './__fixtures__/admin.js';
-import { handleAdminApi } from './server.js';
+import { AdminApp } from './client.ts';
+import { admin, notes, ORIGIN, owner, setup } from './__fixtures__/admin.ts';
+import { handleAdminApi } from './server.ts';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 beforeEach(setup);

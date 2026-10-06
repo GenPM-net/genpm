@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { createElement as h } from 'react';
-import { defineBlock } from '../define.js';
-import { optText, Section, text } from '../parts.js';
+import { defineBlock } from '../define.ts';
+import { optText, Section, text } from '../parts.ts';
 
 export const form = defineBlock({
   type: 'form',
