@@ -62,19 +62,22 @@ export const forms = defineCollection('forms', {
   localized: false,
 });
 
+const blank = (v: unknown) => typeof v === 'string' && v.trim() === '';
+
 export function schemaFromFields(fields: BuilderField[]): z.ZodObject {
   const shape: Record<string, z.ZodType> = {};
   for (const f of fields) {
     let t: z.ZodType;
     const max = f.maxLength ?? (f.type === 'textarea' ? 5000 : 300);
     if (f.type === 'email') t = z.email().max(254);
-    else if (f.type === 'number') t = z.coerce.number();
+    // `''` (campo vacío de un <form>) no es 0: se trata como ausente, también en los obligatorios.
+    else if (f.type === 'number') t = z.preprocess((v) => (blank(v) ? undefined : v), z.coerce.number());
     else if (f.type === 'checkbox') t = z.preprocess((v) => v === true || v === 'on' || v === 'true', z.boolean());
     else if (f.type === 'select' && f.options?.length) t = z.enum(f.options as [string, ...string[]]);
     else t = z.string().trim().max(max);
     if (f.type === 'checkbox') shape[f.name] = f.required ? t.refine((v) => v === true, 'Required') : t;
     else if (f.required) shape[f.name] = f.type === 'number' || f.type === 'select' || f.type === 'email' ? t : (t as z.ZodString).min(1, 'Required');
-    else shape[f.name] = z.preprocess((v) => (v === '' ? undefined : v), t.optional());
+    else shape[f.name] = z.preprocess((v) => (blank(v) ? undefined : v), t.optional());
   }
   return z.object(shape);
 }

@@ -13,6 +13,8 @@ export const formSubmissions = pgTable(
     /** Página desde la que se envió (sin query) y parámetros de campaña capturados. */
     sourcePath: text('source_path'),
     utm: jsonb('utm').$type<Record<string, string>>(),
+    /** Pasos de `forms.process` ya hechos (`notify`, `auto_reply`, `webhook`, `handler:<n>`): un reintento no los repite. */
+    processed: jsonb('processed').$type<string[]>().notNull().default([]),
     status: text('status', { enum: ['new', 'read', 'archived', 'spam'] })
       .notNull()
       .default('new'),

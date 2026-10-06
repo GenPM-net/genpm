@@ -13,6 +13,10 @@ keys (no plain IPs or emails). Not a WAF or DDoS protection. Table: `rate_limits
 ## Integration
 1. Env: `ANTISPAM_SECRET` (≥ 32 random chars). Optional captcha: `TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`
    (or `HCAPTCHA_SECRET_KEY`). Generate and apply migrations (see `src/lib/db/AGENTS.md`).
+   Client IP source (rate limits): by default the right-most `x-forwarded-for` hop, skipping
+   `ANTISPAM_TRUSTED_PROXIES - 1` more hops (default `1`: the address your last proxy saw). Behind a platform that sets
+   a dedicated header, set `ANTISPAM_IP_HEADER` (`cf-connecting-ip` on Cloudflare, `x-vercel-forwarded-for` on Vercel,
+   `x-real-ip`, `fly-client-ip`…). Platform headers are never trusted unless configured: clients can send them.
 2. When rendering the form (server), add two fields:
    `<input {...honeypotProps} />` and `<input type="hidden" name="_ts" value={await formTimingToken()} />`.
    With Turnstile, also render its widget (`<div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY}>` and its script).
@@ -28,7 +32,7 @@ keys (no plain IPs or emails). Not a WAF or DDoS protection. Table: `rate_limits
 ## Conventions
 - Every public write endpoint calls `verifyHuman` (or at least `rateLimit`) with its own `scope`.
 - Show users a generic error; don't reveal which check failed beyond "try again later".
-- `clientIp` is only reliable behind a proxy that sets the headers; use it for limits, never for authorization.
+- `clientIp` is only as reliable as `ANTISPAM_IP_HEADER` / `ANTISPAM_TRUSTED_PROXIES` match your proxies; use it for limits, never for authorization.
 
 ## Don't
 - Don't store raw IPs, emails or captcha tokens; `rateLimit` already hashes keys.

@@ -1,5 +1,5 @@
 // Lectura pública (ContentSource): solo lo publicado, salvo `draft: true` (vista previa autorizada).
-import { and, asc, count, desc, eq, inArray, notExists, or, type SQL, sql } from 'drizzle-orm';
+import { and, asc, count, desc, eq, gte, inArray, lt, notExists, or, type SQL, sql } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
 import type { z } from 'zod';
 import type { ContentEntry, ContentListQuery, ContentReadOptions, ContentSource } from '../contracts/index.ts';
@@ -58,6 +58,14 @@ export async function getEntry<D = Record<string, unknown>>(
 }
 
 const FIELD_RE = /^[a-zA-Z][a-zA-Z0-9_]{0,63}$/;
+/** Ruta a un campo anidado de `data` en `where` (hasta 3 niveles): `series.slug`. */
+const PATH_RE = /^[a-zA-Z][a-zA-Z0-9_]{0,63}(\.[a-zA-Z][a-zA-Z0-9_]{0,63}){0,2}$/;
+
+/**
+ * Consulta de `listEntries`/`countEntries` de este paquete: la de @core/contracts más un rango de `publishedAt`
+ * (`publishedFrom` incluido, `publishedBefore` excluido). En `where`, las claves con punto miran campos anidados.
+ */
+export type EntryListQuery = ContentListQuery & { publishedFrom?: Date; publishedBefore?: Date };
 
 function orderOf(orderBy: string | undefined): SQL {
   const key = orderBy ?? '-publishedAt';
@@ -74,7 +82,7 @@ function orderOf(orderBy: string | undefined): SQL {
  * Lista entradas visibles de una colección en un idioma (con fallback al idioma por defecto si no hay ninguna
  * traducida). `where` compara por igualdad campos de `data`.
  */
-function listConditions(collection: string, query: ContentListQuery, db: Executor): SQL {
+function listConditions(collection: string, query: EntryListQuery, db: Executor): SQL {
   const c = getCollection(collection);
   const conds: SQL[] = [eq(contentEntries.collection, collection), visible(query.draft)!];
   for (const [k, v] of Object.entries(query.contains ?? {})) {
@@ -83,10 +91,13 @@ function listConditions(collection: string, query: ContentListQuery, db: Executo
     conds.push(sql`(${col} -> ${k}) @> ${JSON.stringify([v])}::jsonb`);
   }
   for (const [k, v] of Object.entries(query.where ?? {})) {
-    if (!FIELD_RE.test(k)) throw new Error(`invalid where field: ${k}`);
+    if (!PATH_RE.test(k)) throw new Error(`invalid where field: ${k}`);
     const col = query.draft ? sql`coalesce(${contentEntries.draft}, ${contentEntries.data})` : sql`${contentEntries.data}`;
-    conds.push(v === null ? sql`${col} ->> ${k} is null` : sql`${col} ->> ${k} = ${String(v)}`);
+    const field = k.includes('.') ? sql`${col} #>> ${`{${k.split('.').join(',')}}`}::text[]` : sql`${col} ->> ${k}`;
+    conds.push(v === null ? sql`${field} is null` : sql`${field} = ${String(v)}`);
   }
+  if (query.publishedFrom) conds.push(gte(contentEntries.publishedAt, query.publishedFrom));
+  if (query.publishedBefore) conds.push(lt(contentEntries.publishedAt, query.publishedBefore));
   // Por cada grupo de traducciones, la versión en el idioma pedido o, si no existe visible, la del idioma por defecto.
   const [wanted, fallback] = locales(c, query.locale);
   const t = alias(contentEntries, 't');
@@ -102,7 +113,7 @@ function listConditions(collection: string, query: ContentListQuery, db: Executo
 
 export async function listEntries<D = Record<string, unknown>>(
   collection: string,
-  query: ContentListQuery = {},
+  query: EntryListQuery = {},
   db: Executor = getDb(),
 ): Promise<ContentEntry<D>[]> {
   const limit = Math.min(Math.max(query.limit ?? 50, 1), 500);
@@ -117,7 +128,7 @@ export async function listEntries<D = Record<string, unknown>>(
 }
 
 /** Total de entradas visibles con los mismos filtros que `listEntries` (para paginar). */
-export async function countEntries(collection: string, query: ContentListQuery = {}, db: Executor = getDb()): Promise<number> {
+export async function countEntries(collection: string, query: EntryListQuery = {}, db: Executor = getDb()): Promise<number> {
   const [row] = await db.select({ n: count() }).from(contentEntries).where(listConditions(collection, query, db));
   return row?.n ?? 0;
 }

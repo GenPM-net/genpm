@@ -10,6 +10,8 @@ with fallback and signed preview. Implements `ContentSource`, sitemap/search sou
 - `index.ts` — public API. `registry.ts` — `defineCollection`, `defineSingleton`. `entries.ts` — create, `saveDraft`,
   `publish`, `schedulePublish`, `unpublish`, `archive`, revisions, `seedEntry`, `migrateEntries`.
 - `read.ts` — `getEntry`, `listEntries`, `getSingleton`, `reader(collection)` (typed). `preview.ts` — preview tokens.
+  `listEntries`/`countEntries` also take nested `where` keys (`{ 'series.slug': 'basics' }`) and a `publishedAt` range
+  (`publishedFrom` inclusive, `publishedBefore` exclusive): filter in SQL instead of fetching and filtering in memory.
 - `sources.ts` — `contentSitemapSource`, `contentSearchSource`. `admin.ts` — `contentAdminResource`.
 - `adapters/next.ts` — `previewRoute(draftMode)`, `exitPreviewRoute(draftMode)`.
 

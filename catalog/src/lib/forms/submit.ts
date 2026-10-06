@@ -1,5 +1,5 @@
 // Envío de formularios: antispam → validación → consentimiento → guardar → avisos en segundo plano (@core/jobs).
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { verifyHuman } from '../antispam/index.ts';
 import { type Executor, getDb } from '../db/index.ts';
@@ -94,45 +94,66 @@ export async function webhookSignature(body: string, t: number, secret = process
   return `t=${t},v1=${await sign(secret, `${t}.${body}`)}`;
 }
 
-/** Aviso al equipo, respuesta automática, webhook y `onSubmission`. Idempotente salvo por el reenvío de emails. */
+/**
+ * Aviso al equipo, respuesta automática, webhook y `onSubmission`. Cada paso se anota en `processed` al terminar:
+ * si uno falla y la tarea se reintenta, los ya hechos no se repiten (no se reenvían emails ni se repite el webhook).
+ */
 export const processSubmissionJob = defineJob(
   'forms.process',
   z.object({ submissionId: z.string() }),
   async ({ submissionId }, { signal }) => {
-    const [sub] = await getDb().select().from(formSubmissions).where(eq(formSubmissions.id, submissionId));
+    const db = getDb();
+    const [sub] = await db.select().from(formSubmissions).where(eq(formSubmissions.id, submissionId));
     if (!sub) return;
     const form = await getForm(sub.formKey);
     if (!form) return;
+    const done = new Set(sub.processed ?? []);
+    const step = async (name: string, run: () => Promise<void>) => {
+      if (done.has(name)) return;
+      await run();
+      done.add(name);
+      await db
+        .update(formSubmissions)
+        .set({ processed: sql`${formSubmissions.processed} || ${JSON.stringify([name])}::jsonb` })
+        .where(eq(formSubmissions.id, sub.id));
+    };
     const from = process.env.EMAIL_FROM;
     const notify = form.notify?.length ? form.notify : (process.env.FORMS_NOTIFY_TO ?? '').split(',').map((s) => s.trim()).filter(Boolean);
     const sender = form.emailField ? z.email().safeParse(sub.data[form.emailField]) : null;
     const lines = Object.entries(sub.data).map(([k, v]) => [k, show(v)] as const);
-    if (from && notify.length) {
-      await getEmailProvider().send({
-        from,
-        to: notify,
-        subject: `New ${form.label} submission`,
-        text: lines.map(([k, v]) => `${k}: ${v}`).join('\n'),
-        html: `<table>${lines.map(([k, v]) => `<tr><th align="left">${esc(k)}</th><td>${esc(v).replaceAll('\n', '<br>')}</td></tr>`).join('')}</table>`,
-        ...(sender?.success && { replyTo: sender.data }),
+    if (from && notify.length)
+      await step('notify', async () => {
+        await getEmailProvider().send({
+          from,
+          to: notify,
+          subject: `New ${form.label} submission`,
+          text: lines.map(([k, v]) => `${k}: ${v}`).join('\n'),
+          html: `<table>${lines.map(([k, v]) => `<tr><th align="left">${esc(k)}</th><td>${esc(v).replaceAll('\n', '<br>')}</td></tr>`).join('')}</table>`,
+          ...(sender?.success && { replyTo: sender.data }),
+        });
       });
-    }
     if (from && form.autoReply && sender?.success) {
-      await getEmailProvider().send({ from, to: sender.data, subject: form.autoReply.subject, text: form.autoReply.text, html: `<p>${esc(form.autoReply.text).replaceAll('\n', '<br>')}</p>` });
+      const reply = form.autoReply;
+      await step('auto_reply', async () => {
+        await getEmailProvider().send({ from, to: sender.data, subject: reply.subject, text: reply.text, html: `<p>${esc(reply.text).replaceAll('\n', '<br>')}</p>` });
+      });
     }
     if (form.webhook) {
-      const body = JSON.stringify({ id: sub.id, form: sub.formKey, data: sub.data, createdAt: sub.createdAt.toISOString(), utm: sub.utm });
-      const t = Math.floor(Date.now() / 1000);
-      const res = await fetch(form.webhook, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', 'x-genpm-signature': await webhookSignature(body, t) },
-        body,
-        redirect: 'error',
-        signal,
+      const url = form.webhook;
+      await step('webhook', async () => {
+        const body = JSON.stringify({ id: sub.id, form: sub.formKey, data: sub.data, createdAt: sub.createdAt.toISOString(), utm: sub.utm });
+        const t = Math.floor(Date.now() / 1000);
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'x-genpm-signature': await webhookSignature(body, t) },
+          body,
+          redirect: 'error',
+          signal,
+        });
+        if (!res.ok) throw new Error(`webhook responded ${res.status}`);
       });
-      if (!res.ok) throw new Error(`webhook responded ${res.status}`);
     }
-    for (const h of handlers.get(sub.formKey) ?? []) await h(sub, form);
+    for (const [i, h] of (handlers.get(sub.formKey) ?? []).entries()) await step(`handler:${i}`, async () => void (await h(sub, form)));
   },
   { maxAttempts: 5, timeoutMs: 30_000 },
 );

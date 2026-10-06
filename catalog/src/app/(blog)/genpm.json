@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/kit-blog",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Blog kit for Next.js: posts with authors, categories, tags, series, feeds, moderated comments and newsletter",
     "es": "Kit de blog para Next.js: posts con autores, categorías, etiquetas, series, feeds, comentarios moderados y newsletter",
@@ -25,7 +25,7 @@
     "@core/kit-cms": "^1.0.0",
     "@core/blog": "^1.0.0",
     "@core/comments": "^1.0.0",
-    "@core/newsletter": "^1.0.0"
+    "@core/newsletter": "^1.1.0"
   },
   "p": {
     "next": ">=15.5.0",

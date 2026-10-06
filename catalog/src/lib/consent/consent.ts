@@ -67,10 +67,35 @@ export async function recordConsent(
   const value = encodeURIComponent(b64(JSON.stringify({ s: subjectId, v: policyVersion(), c: choices })));
   const secure = opts.secure ?? process.env.NODE_ENV === 'production';
   const setCookies = [`${CONSENT_COOKIE}=${value}; Path=/; SameSite=Lax; Max-Age=${MAX_AGE_DAYS * 86_400}${secure ? '; Secure' : ''}`];
-  // Al retirar una categoría, se borran sus cookies conocidas (p. ej. `_ga`, `_fbp`).
+  // Al retirar una categoría, se borran sus cookies conocidas (p. ej. `_ga`, `_fbp`): sin dominio y con el dominio
+  // registrable, que es donde las fijan GA, Meta y TikTok (`Domain=.example.com`).
+  const domain = cookieDomain();
   for (const c of CATEGORIES)
-    if (!choices[c]) for (const name of opts.cookiesByCategory?.[c] ?? []) if (/^[\w.-]{1,64}$/.test(name)) setCookies.push(`${name}=; Path=/; Max-Age=0`);
+    if (!choices[c])
+      for (const name of opts.cookiesByCategory?.[c] ?? [])
+        if (/^[\w.-]{1,64}$/.test(name)) {
+          setCookies.push(`${name}=; Path=/; Max-Age=0`);
+          if (domain) setCookies.push(`${name}=; Path=/; Domain=${domain}; Max-Age=0`);
+        }
   return { state: { decided: true, subjectId, policyVersion: policyVersion(), choices }, setCookies };
+}
+
+/**
+ * Dominio con el que las etiquetas de terceros fijan sus cookies: `CONSENT_COOKIE_DOMAIN` (p. ej. `example.co.uk` cuando
+ * el sufijo tiene dos niveles) o, si no, las dos últimas etiquetas del host de `SITE_URL`. Null para IPs y `localhost`.
+ */
+export function cookieDomain(env: Record<string, string | undefined> = process.env): string | null {
+  const explicit = env.CONSENT_COOKIE_DOMAIN?.trim().replace(/^\./, '').toLowerCase();
+  if (explicit) return /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(explicit) ? explicit : null;
+  let host: string;
+  try {
+    host = new URL(env.SITE_URL ?? '').hostname.toLowerCase();
+  } catch {
+    return null;
+  }
+  const labels = host.split('.');
+  if (labels.length < 2 || /^\d+$/.test(labels.at(-1)!) || host.includes(':')) return null;
+  return labels.slice(-2).join('.');
 }
 
 /** Historial de un navegador (para atender una solicitud de prueba o de acceso). */

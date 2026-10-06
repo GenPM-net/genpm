@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/kit-landing",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Landing page kit for Next.js: block-built pages, lead forms, cookie banner and consent-gated pixels with dedup",
     "es": "Kit de landings para Next.js: páginas con bloques, formularios de leads, banner de cookies y píxeles con consentimiento",
@@ -23,7 +23,7 @@
   ],
   "g": {
     "@core/kit-cms": "^1.0.0",
-    "@core/consent": "^1.0.0",
+    "@core/consent": "^1.1.0",
     "@core/pixels": "^1.0.0",
     "@core/experiments": "^1.0.0"
   },

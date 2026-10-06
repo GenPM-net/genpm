@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/ui",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Accessible base UI for React on native elements: fields, buttons, table, tabs, dialog, toasts and WCAG AA light/dark tokens",
     "es": "Interfaz base accesible para React sobre elementos nativos: campos, botones, tabla, pestañas, diálogo, avisos y tokens AA",

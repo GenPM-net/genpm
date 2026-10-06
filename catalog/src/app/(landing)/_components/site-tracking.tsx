@@ -9,16 +9,17 @@ export function SiteTracking({ policyHref = '/cookies' }: { policyHref?: string 
   const ga4 = process.env.GA4_MEASUREMENT_ID;
   const meta = process.env.META_PIXEL_ID;
   const tiktok = process.env.TIKTOK_PIXEL_ID;
+  const version = policyVersion();
   return (
     <>
-      <ConsentBanner policyVersion={policyVersion()} policyHref={policyHref} />
+      <ConsentBanner policyVersion={version} policyHref={policyHref} />
       {ga4 && (
-        <ConsentGate category="analytics">
+        <ConsentGate category="analytics" policyVersion={version}>
           <PixelScripts ga4MeasurementId={ga4} />
         </ConsentGate>
       )}
       {(meta || tiktok) && (
-        <ConsentGate category="marketing">
+        <ConsentGate category="marketing" policyVersion={version}>
           <PixelScripts {...(meta && { metaPixelId: meta })} {...(tiktok && { tiktokPixelId: tiktok })} />
         </ConsentGate>
       )}
