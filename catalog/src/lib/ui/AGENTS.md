@@ -12,7 +12,7 @@ Used by @core/admin, @core/blocks and the kits.
 - `components.ts` — implementation. `ui.css` — tokens and styles.
 
 ## Integration
-1. Import the stylesheet once in the root layout: `import '@/components/ui/ui.css'` and add `className="ui-root"` to `<body>`.
+1. Import the stylesheet once in the root layout: `import '@/lib/ui/ui.css'` and add `className="ui-root"` to `<body>`.
 2. Use components: `<TextField label="Email" type="email" required error={errors.email} />`, `<Button variant="primary" loading={saving}>Save</Button>`.
 3. Theme: change `--ui-*` variables in your CSS; force a theme with `<html data-theme="dark">`.
 4. Verify: tab through a form; every control has a visible focus ring and a label.

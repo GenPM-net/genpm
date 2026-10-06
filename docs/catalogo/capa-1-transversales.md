@@ -168,7 +168,7 @@ admin, de los bloques y de las plantillas de los kits.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/components/ui` | — | `react` (sin librerías de UI: elementos nativos y `<dialog>`) | — | — |
+| `src/lib/ui` | — | `react` (sin librerías de UI: elementos nativos y `<dialog>`) | — | — |
 
 **Reglas IA.** Los temas se cambian editando tokens (`theme.css`), no componentes; nuevos componentes en la app, no aquí.
 **Accesibilidad.** WCAG 2.2 AA: contraste, foco visible, navegación por teclado, `prefers-reduced-motion`.
