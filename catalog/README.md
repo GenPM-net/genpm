@@ -45,3 +45,4 @@ node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde s
 | `pricing` | CAT-DRP-01 | Implementado y validado · pendiente de publicar |
 | `suppliers` (adaptador manual) | CAT-DRP-02 | Implementado y validado · pendiente de publicar |
 | `consent` | CAT-LND-01 | Implementado y validado · pendiente de publicar |
+| `pixels` | CAT-LND-02 | Implementado y validado · pendiente de publicar |

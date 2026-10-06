@@ -97,7 +97,7 @@ servidor para compras con deduplicación por `eventId`. Captura de UTM y `fbclid
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/pixels` | `@core/consent ^1`, `@core/contracts ^1` | — | `GA4_MEASUREMENT_ID`, `GA4_API_SECRET`, `META_PIXEL_ID`, `META_CAPI_TOKEN`, `TIKTOK_PIXEL_ID`, `TIKTOK_EVENTS_TOKEN` (todas opcionales) | — |
+| `src/lib/pixels` | `@core/consent ^1`, `@core/antispam ^1`, `@core/contracts ^1`, `@core/money ^1`, `@core/db ^1` | `react` | `GA4_MEASUREMENT_ID`, `GA4_API_SECRET`, `META_PIXEL_ID`, `META_CAPI_TOKEN`, `TIKTOK_PIXEL_ID`, `TIKTOK_EVENTS_TOKEN` (todas opcionales) | — |
 
 **API.** `track(event)` (cliente), `trackServer(event, request)`, `<PixelsScripts />` (dentro de `ConsentGate`),
 `registerPixelAdapter()`. Solo se activan las plataformas con variables configuradas.
