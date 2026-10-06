@@ -897,5 +897,35 @@
     "p": {
       "react": "^19.0.0"
     }
+  },
+  "admin": {
+    "s": {
+      "en": "Admin panel generated from AdminResource: lists, forms, actions, dashboard, RBAC, CSRF protection and audit log",
+      "es": "Panel de administración generado desde AdminResource: listas, formularios, acciones, dashboard, RBAC, anti-CSRF y auditoría",
+      "pt-BR": "Painel admin gerado a partir de AdminResource: listas, formulários, ações, dashboard, RBAC, anti-CSRF e auditoria",
+      "fr": "Back-office généré depuis AdminResource : listes, formulaires, actions, tableau de bord, RBAC, anti-CSRF et audit",
+      "de": "Admin-Panel aus AdminResource generiert: Listen, Formulare, Aktionen, Dashboard, RBAC, CSRF-Schutz und Audit-Log",
+      "ja": "AdminResource から生成する管理画面：一覧、フォーム、アクション、ダッシュボード、RBAC、CSRF 対策、監査ログ",
+      "zh-CN": "由 AdminResource 生成的管理后台：列表、表单、操作、仪表盘、RBAC、CSRF 防护和审计日志",
+      "ko": "AdminResource로 생성되는 관리자 패널: 목록, 폼, 액션, 대시보드, RBAC, CSRF 방지, 감사 로그"
+    },
+    "k": [
+      "admin",
+      "cms",
+      "dashboard",
+      "crud",
+      "rbac"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/auth": "^1.1.0",
+      "@core/rbac": "^1.0.0",
+      "@core/ui": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "react": "^19.0.0",
+      "zod": "^4.0.0"
+    }
   }
 }

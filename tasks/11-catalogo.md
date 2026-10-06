@@ -25,7 +25,8 @@
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/jobs` (2026-10-06). Falta crear el repo `genpm-net/jobs` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-CMS-04` **BLOCKED** Implementar y publicar @core/antispam (Turnstile, honeypot, rate limit) · C · 6h · deps: CAT-00-02
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/antispam` (2026-10-06). Falta crear el repo `genpm-net/antispam` (fundador), publicar, pruebas de agente y revisión ADR-023.
-- [ ] `CAT-CMS-05` **TODO** Implementar y publicar @core/admin (shell, CRUD genérico de AdminResource, auditoría) · C · 32h · deps: CAT-00-04, CAT-CMS-01
+- [ ] `CAT-CMS-05` **BLOCKED** Implementar y publicar @core/admin (shell, CRUD genérico de AdminResource, auditoría) · C · 32h · deps: CAT-00-04, CAT-CMS-01
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/admin` (2026-10-06). Falta crear el repo `genpm-net/admin` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-CMS-06` **BLOCKED** Implementar y publicar @core/content (colecciones, singletons, revisiones, programación, vista previa, retrofit) · C · 28h · deps: CAT-00-03, CAT-CMS-03
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/content` (2026-10-06). Falta crear el repo `genpm-net/content` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-CMS-07` **BLOCKED** Implementar y publicar @core/media (subida firmada, variantes, saneado de SVG y EXIF) · C · 14h · deps: CAT-CMS-02, CAT-00-03

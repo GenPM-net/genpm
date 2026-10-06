@@ -1,0 +1,18 @@
+/* Maquetación del panel sobre los tokens de @core/ui (importa antes ../ui/ui.css). */
+.admin { display: grid; grid-template-columns: 15rem 1fr; min-height: 100vh; font-family: var(--ui-font); color: var(--ui-text); background: var(--ui-bg); line-height: 1.5; }
+.admin :focus-visible { outline: 2px solid var(--ui-focus); outline-offset: 2px; }
+.admin-nav { background: var(--ui-surface); border-inline-end: 1px solid var(--ui-border); padding: 1rem; }
+.admin-nav ul { list-style: none; margin: 0 0 1rem; padding: 0; }
+.admin-nav a { display: block; padding: 0.375rem 0.5rem; border-radius: var(--ui-radius); color: inherit; text-decoration: none; }
+.admin-nav a[aria-current="page"] { background: var(--ui-bg); font-weight: 600; }
+.admin-nav__title { font-weight: 700; margin: 0 0 1rem; }
+.admin-nav__group { color: var(--ui-muted); font-size: 0.75rem; text-transform: uppercase; margin: 0 0 0.25rem; }
+.admin-main { padding: 1.5rem 2rem; max-width: 72rem; outline: none; }
+.admin-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.admin-search { display: flex; gap: 0.5rem; align-items: start; max-width: 28rem; }
+.admin-widgets { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 1rem; }
+.admin-widget__value { font-size: 2rem; font-weight: 700; margin: 0; }
+.admin-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-block: 1rem; }
+.admin-form { max-width: 48rem; }
+.admin-form__footer { display: flex; gap: 0.5rem; margin-block-start: 1rem; }
+@media (max-width: 48rem) { .admin { grid-template-columns: 1fr; } .admin-main { padding: 1rem; } }

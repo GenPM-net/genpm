@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
 
-TODO 46 · DOING 5 · DONE 214 · BLOCKED 53 · CUT 0
+TODO 45 · DOING 5 · DONE 214 · BLOCKED 54 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -130,6 +130,7 @@ TODO 46 · DOING 5 · DONE 214 · BLOCKED 53 · CUT 0
 - `CAT-CMS-02` Implementar y publicar @core/storage (S3/R2/MinIO y local) · C · 8h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-03` Implementar y publicar @core/jobs (cola Postgres, cron y runDue serverless) · C · 10h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-04` Implementar y publicar @core/antispam (Turnstile, honeypot, rate limit) · C · 6h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-05` Implementar y publicar @core/admin (shell, CRUD genérico de AdminResource, auditoría) · C · 32h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-06` Implementar y publicar @core/content (colecciones, singletons, revisiones, programación, vista previa, retrofit) · C · 28h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-07` Implementar y publicar @core/media (subida firmada, variantes, saneado de SVG y EXIF) · C · 14h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-08` Implementar y publicar @core/rich-text (Tiptap, JSON, render anti-XSS) · C · 14h ([11-catalogo.md](11-catalogo.md))

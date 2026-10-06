@@ -47,3 +47,4 @@ node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde s
 | `consent` | CAT-LND-01 | Implementado y validado · pendiente de publicar |
 | `pixels` | CAT-LND-02 | Implementado y validado · pendiente de publicar |
 | `ui` | CAT-00-04 | Implementado y validado (axe + contraste AA) · pendiente de publicar |
+| `admin` | CAT-CMS-05 | Implementado y validado (API + app cliente, axe) · pendiente de publicar |

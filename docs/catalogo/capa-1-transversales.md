@@ -187,12 +187,16 @@ aparece en el panel sin escribir pantallas.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/admin` | `@core/auth ^1`, `@core/rbac ^1`, `@core/ui ^1`, `@core/contracts ^1` | `@tanstack/react-table`, `react-hook-form`, `@hookform/resolvers` | — | — |
+| `src/lib/admin` | `@core/db ^1`, `@core/auth ^1`, `@core/rbac ^1`, `@core/ui ^1`, `@core/contracts ^1` | `react`, `zod` | — | — |
+
+Implementación 1.0: sin `@tanstack/react-table` ni `react-hook-form` (la tabla y el formulario de `@core/ui` bastan). El panel
+es un API JSON (`handleAdminApi`, adaptadores Hono/Next) + una app cliente (`<AdminApp>`) que se construye desde `GET /schema`;
+los campos `richText`, `media` y `blocks` se inyectan con `renderers` (sin ellos: JSON o selector de relación).
 
 **Tablas.** `admin_audit` (userId, resource, recordId, action, diff jsonb, at).
-**API.** `defineAdmin({resources, widgets, nav})`, `<AdminShell>`, `<ResourceList>`, `<ResourceForm>`, tipos de campo
-(`text`, `slug`, `richText`, `media`, `relation`, `select`, `money`, `date`, `json`, `blocks`), `registerFieldType()` para campos nuevos.
+**API.** `defineAdmin({title, resources, widgets})`, `handleAdminApi(req, admin)`, `<AdminApp basePath path renderers labels>`, tipos de campo
+(`text`, `slug`, `richText`, `media`, `relation`, `select`, `money`, `date`, `json`, `blocks`), `renderers` para campos nuevos, `auditAdminResource`.
 **Registro.** Archivo del proyecto `src/genpm/admin.ts`: `export default defineAdmin({ resources: [...cmsResources, ...storeResources] })`.
 **Reglas IA.** Un recurso nuevo se registra, no se crea una página a mano; las vistas personalizadas reemplazan solo la pieza necesaria.
-**Seguridad.** Acciones de servidor con CSRF y comprobación `can()` por recurso/acción; auditoría obligatoria en escrituras.
+**Seguridad.** Escrituras solo con cabecera `x-admin-request: 1` y mismo origen (anti-CSRF), `admin:access` + `can()` por recurso/acción; auditoría obligatoria en escrituras.
 **Aceptación.** Recurso de ejemplo con 10 tipos de campo: lista, crea, edita, borra; `editor` no ve `orders`; auditoría con diff.
