@@ -78,7 +78,10 @@ registran sus paquetes/kits. Cada bloque = esquema zod + componente React + vist
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/blocks` | `@core/content ^1`, `@core/rich-text ^1`, `@core/media ^1`, `@core/ui ^1` | — | — | — |
+| `src/lib/blocks` | `@core/rich-text ^1`, `@core/media ^1`, `@core/ui ^1`, `@core/admin ^1`, `@core/contracts ^1`, `@core/db ^1` | `react`, `zod` | — | — |
+
+Implementación 1.0: los bloques se guardan como JSON en un campo de `content` (`registry.schema`), por eso no depende de `content`;
+el editor usa el tipo de campo `list` del admin (lista ordenable de objetos) para preguntas, planes, testimonios, etc.
 
 **API.** `defineBlock(type, {schema, Component, icon, preview})`, tipo de campo `blocks` para `admin` (lista ordenable
 con añadir/duplicar/ocultar), `<RenderBlocks blocks />`, registro de bloques extra en `src/genpm/blocks.ts`.

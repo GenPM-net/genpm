@@ -16,3 +16,6 @@
 .admin-form { max-width: 48rem; }
 .admin-form__footer { display: flex; gap: 0.5rem; margin-block-start: 1rem; }
 @media (max-width: 48rem) { .admin { grid-template-columns: 1fr; } .admin-main { padding: 1rem; } }
+.admin-list { border: 1px solid var(--ui-border); border-radius: var(--ui-radius); padding: 1rem; }
+.admin-list__item { border: 1px dashed var(--ui-border); border-radius: var(--ui-radius); padding: 0.75rem; margin-block-end: 0.75rem; }
+.admin-list__tools { display: flex; gap: 0.25rem; }

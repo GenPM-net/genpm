@@ -1,0 +1,43 @@
+/* Estilos de los bloques sobre los tokens de @core/ui. Cópialos o impórtalos después de ui.css. */
+.blk { padding-block: clamp(2rem, 6vw, 5rem); padding-inline: 1rem; max-width: 72rem; margin-inline: auto; }
+.blk__title { margin: 0 0 0.75rem; font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.2; }
+.blk__intro { color: var(--ui-muted); max-width: 48rem; margin: 0 0 2rem; }
+.blk__note { color: var(--ui-muted); font-size: 0.875rem; }
+.blk__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-block-start: 1.5rem; }
+.blk-hero { display: grid; gap: 2rem; align-items: center; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+.blk-hero--center { text-align: center; grid-template-columns: 1fr; justify-items: center; }
+.blk-hero__eyebrow { color: var(--ui-primary); font-weight: 600; margin: 0 0 0.5rem; }
+.blk-hero__title { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; margin: 0; }
+.blk-hero__subtitle { font-size: 1.125rem; color: var(--ui-muted); max-width: 40rem; }
+.blk-hero__image, .blk img { max-width: 100%; height: auto; border-radius: var(--ui-radius); }
+.blk-grid { display: grid; gap: 1.5rem; list-style: none; padding: 0; margin: 0; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+@media (min-width: 64rem) { .blk-grid--2 { grid-template-columns: repeat(2, 1fr); } .blk-grid--3 { grid-template-columns: repeat(3, 1fr); } .blk-grid--4 { grid-template-columns: repeat(4, 1fr); } }
+.blk-card { border: 1px solid var(--ui-border); border-radius: var(--ui-radius); background: var(--ui-surface); padding: 1.25rem; }
+.blk-card__icon { font-size: 1.5rem; }
+.blk-split { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); align-items: center; }
+.blk-checklist { list-style: none; padding: 0; display: grid; gap: 0.5rem; }
+.blk-checklist li::before { content: "✓ "; color: var(--ui-success); font-weight: 700; }
+.blk-rating { color: var(--ui-warning); margin: 0; }
+.blk-card blockquote { margin: 0.5rem 0; }
+.blk-avatar { width: 2.5rem; height: 2.5rem; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-inline-end: 0.5rem; }
+.blk-logos { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: center; list-style: none; padding: 0; }
+.blk-logos img { max-height: 3rem; width: auto; filter: grayscale(1); }
+.blk-plan--highlighted { border-color: var(--ui-primary); border-width: 2px; }
+.blk-plan__price strong { font-size: 2rem; }
+.blk-faq__item { border-block-end: 1px solid var(--ui-border); padding-block: 0.75rem; }
+.blk-faq__item summary { cursor: pointer; font-weight: 600; }
+.blk-cta { text-align: center; }
+.blk-cta--primary { background: var(--ui-surface); border-radius: var(--ui-radius); }
+.blk-gallery { display: grid; gap: 1rem; list-style: none; padding: 0; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); }
+.blk-gallery figure { margin: 0; }
+.blk-gallery img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+.blk-video { position: relative; aspect-ratio: 16 / 9; }
+.blk-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: var(--ui-radius); }
+.blk-stats { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); margin: 0; }
+.blk-stats div { display: flex; flex-direction: column-reverse; }
+.blk-stats dd { margin: 0; font-size: 2.5rem; font-weight: 700; }
+.blk-stats dt { color: var(--ui-muted); }
+.blk-guarantee { text-align: center; max-width: 48rem; }
+.blk-guarantee__badge { display: inline-block; border: 2px solid var(--ui-success); color: var(--ui-success); border-radius: 999px; padding: 0.25rem 1rem; font-weight: 700; }
+.blk-rich-text--narrow { max-width: 44rem; }
+.blk-editor { list-style: none; padding: 0; margin: 0; }

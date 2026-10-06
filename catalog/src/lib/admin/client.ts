@@ -28,6 +28,9 @@ export type FieldRendererProps = {
   error?: string;
   disabled: boolean;
   api: AdminApi;
+  /** Textos del panel y renderizadores propios (para campos anidados). */
+  labels: AdminLabels;
+  renderers?: Record<string, FieldRenderer> | undefined;
 };
 export type FieldRenderer = (props: FieldRendererProps) => ReactNode;
 
@@ -61,6 +64,11 @@ export const defaultLabels = {
   none: '—',
   selectPlaceholder: 'Choose…',
   invalidJson: 'Invalid JSON',
+  addItem: 'Add item',
+  removeItem: 'Remove',
+  moveUp: 'Move up',
+  moveDown: 'Move down',
+  item: (n: number) => `Item ${n}`,
 };
 export type AdminLabels = typeof defaultLabels;
 
@@ -132,7 +140,7 @@ export function formValues(fields: AdminField[], row: Record<string, unknown> | 
   for (const f of fields) {
     if (f.readOnly) continue;
     const v = row ? getPath(row, f.name) : undefined;
-    out = setPath(out, f.name, v ?? (f.type === 'boolean' ? false : f.many ? [] : undefined));
+    out = setPath(out, f.name, v ?? (f.type === 'boolean' ? false : f.many || f.type === 'list' ? [] : undefined));
   }
   return out;
 }
@@ -176,7 +184,7 @@ const toLocalInput = (v: unknown, withTime: boolean) => {
   return withTime ? `${date}T${pad(d.getHours())}:${pad(d.getMinutes())}` : date;
 };
 
-function JsonField(p: FieldRendererProps & { labels: AdminLabels }): ReactNode {
+function JsonField(p: FieldRendererProps): ReactNode {
   const [text, setText] = useState(() => (p.value === undefined ? '' : JSON.stringify(p.value, null, 2)));
   const [bad, setBad] = useState(false);
   return h(TextareaField, {
@@ -206,7 +214,7 @@ function JsonField(p: FieldRendererProps & { labels: AdminLabels }): ReactNode {
   });
 }
 
-function RelationField(p: FieldRendererProps & { labels: AdminLabels; resource: string }): ReactNode {
+function RelationField(p: FieldRendererProps & { resource: string }): ReactNode {
   const [options, setOptions] = useState<Array<{ value: string; label: string }> | null>(null);
   useEffect(() => {
     let live = true;
@@ -255,8 +263,55 @@ function RelationField(p: FieldRendererProps & { labels: AdminLabels; resource: 
   });
 }
 
+/** Lista ordenable de objetos (`type: 'list'` con `fields`): añadir, quitar y reordenar. */
+function ListField(p: FieldRendererProps): ReactNode {
+  const items = Array.isArray(p.value) ? (p.value as Array<Record<string, unknown>>) : [];
+  const sub = p.field.fields ?? [];
+  const set = (next: Array<Record<string, unknown>>) => p.onChange(next);
+  const move = (i: number, d: -1 | 1) => {
+    const next = [...items];
+    const [it] = next.splice(i, 1);
+    next.splice(i + d, 0, it!);
+    set(next);
+  };
+  return h(
+    'fieldset',
+    { className: 'ui-field admin-list' },
+    h('legend', { className: 'ui-field__label' }, p.field.label),
+    p.field.help && h('p', { className: 'ui-field__help' }, p.field.help),
+    items.map((item, i) =>
+      h(
+        'fieldset',
+        { key: i, className: 'admin-list__item' },
+        h('legend', null, p.labels.item(i + 1)),
+        sub.map((f) =>
+          h(FieldControl, {
+            key: f.name,
+            field: f,
+            value: getPath(item, f.name),
+            onChange: (v) => set(items.map((it, j) => (j === i ? setPath(it, f.name, v) : it))),
+            disabled: p.disabled,
+            api: p.api,
+            labels: p.labels,
+            renderers: p.renderers,
+          }),
+        ),
+        h(
+          'div',
+          { className: 'admin-list__tools' },
+          h(Button, { size: 'sm', disabled: p.disabled || i === 0, onClick: () => move(i, -1), 'aria-label': `${p.labels.moveUp}: ${p.labels.item(i + 1)}` }, '↑'),
+          h(Button, { size: 'sm', disabled: p.disabled || i === items.length - 1, onClick: () => move(i, 1), 'aria-label': `${p.labels.moveDown}: ${p.labels.item(i + 1)}` }, '↓'),
+          h(Button, { size: 'sm', variant: 'danger', disabled: p.disabled, onClick: () => set(items.filter((_, j) => j !== i)) }, `${p.labels.removeItem} ${p.labels.item(i + 1).toLowerCase()}`),
+        ),
+      ),
+    ),
+    h(Button, { size: 'sm', disabled: p.disabled, onClick: () => set([...items, formValues(sub, null)]) }, p.labels.addItem),
+    p.error && h('span', { className: 'ui-field__error', role: 'alert' }, p.error),
+  );
+}
+
 /** Control para un campo: renderizador propio si existe; si no, uno nativo según el tipo. */
-export function FieldControl(p: FieldRendererProps & { labels: AdminLabels; renderers?: Record<string, FieldRenderer> }): ReactNode {
+export function FieldControl(p: FieldRendererProps): ReactNode {
   const { field, value, onChange, error, disabled, labels } = p;
   const custom = p.renderers?.[field.type];
   if (custom) return custom(p);
@@ -300,6 +355,8 @@ export function FieldControl(p: FieldRendererProps & { labels: AdminLabels; rend
       return field.relationTo ? h(RelationField, { ...p, resource: field.relationTo }) : h(JsonField, p);
     case 'media':
       return h(RelationField, { ...p, resource: field.relationTo ?? 'media' });
+    case 'list':
+      return h(ListField, p);
     case 'richText':
     case 'blocks':
     case 'json':

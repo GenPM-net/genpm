@@ -1,0 +1,36 @@
+{
+  "$": 1,
+  "n": "@core/blocks",
+  "v": "1.0.0",
+  "s": {
+    "en": "Page builder blocks: 15 accessible sections (hero, pricing, FAQ with JSON-LD…), admin editor and registry for more",
+    "es": "Bloques de página: 15 secciones accesibles (hero, precios, FAQ con JSON-LD…), editor en el admin y registro ampliable",
+    "pt-BR": "Blocos de página: 15 seções acessíveis (hero, preços, FAQ com JSON-LD…), editor no admin e registro extensível",
+    "fr": "Blocs de page : 15 sections accessibles (hero, tarifs, FAQ avec JSON-LD…), éditeur d'admin et registre extensible",
+    "de": "Seitenblöcke: 15 barrierefreie Sektionen (Hero, Preise, FAQ mit JSON-LD…), Admin-Editor und erweiterbares Register",
+    "ja": "ページブロック：アクセシブルな 15 セクション（ヒーロー、料金、JSON-LD 付き FAQ など）、管理エディタ、拡張可能な登録",
+    "zh-CN": "页面区块：15 个无障碍版块（首屏、价格、带 JSON-LD 的 FAQ 等）、后台编辑器和可扩展注册表",
+    "ko": "페이지 블록: 접근성 갖춘 15개 섹션(히어로, 가격, JSON-LD FAQ 등), 관리자 편집기, 확장 가능한 등록"
+  },
+  "d": "src/lib/blocks",
+  "l": "MIT",
+  "k": [
+    "blocks",
+    "page-builder",
+    "landing",
+    "cms",
+    "accessibility"
+  ],
+  "g": {
+    "@core/db": "^1.0.0",
+    "@core/contracts": "^1.0.0",
+    "@core/rich-text": "^1.0.0",
+    "@core/media": "^1.0.0",
+    "@core/ui": "^1.0.0",
+    "@core/admin": "^1.0.0"
+  },
+  "p": {
+    "react": "^19.0.0",
+    "zod": "^4.0.0"
+  }
+}

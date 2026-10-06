@@ -18,6 +18,7 @@ export type AdminFieldType =
   | 'media'
   | 'richText'
   | 'blocks'
+  | 'list'
   | 'json'
   | (string & {});
 
@@ -36,6 +37,8 @@ export type AdminField = {
   relationTo?: string;
   /** `relation` / `media`: admite varios valores. */
   many?: boolean;
+  /** `list`: campos de cada elemento (lista ordenable de objetos: características, preguntas, testimonios…). */
+  fields?: AdminField[];
 };
 
 /** Usuario que actúa en el panel. `can` ya resuelve los permisos (lo inyecta @core/admin con @core/rbac). */
