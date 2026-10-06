@@ -56,7 +56,8 @@
 
 ## F3 · Landing (kit-landing)
 
-- [ ] `CAT-LND-01` **TODO** Implementar y publicar @core/consent (banner, ConsentGate, registro de prueba) · C · 10h · deps: CAT-00-04
+- [ ] `CAT-LND-01` **BLOCKED** Implementar y publicar @core/consent (banner, ConsentGate, registro de prueba) · C · 10h · deps: CAT-00-04
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/consent` (2026-10-06). Falta crear el repo `genpm-net/consent` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-LND-02` **TODO** Implementar y publicar @core/pixels (GA4, Meta Pixel + CAPI, TikTok + Events API con deduplicación) · C · 14h · deps: CAT-LND-01, CAT-00-03
 - [ ] `CAT-LND-03` **TODO** Implementar y publicar @core/kit-landing · C · 12h · deps: CAT-CMS-14, CAT-LND-02
 - [ ] `CAT-LND-04` **TODO** Aceptación kit-landing: 0 peticiones a terceros sin consentimiento y Lighthouse móvil ≥ 95 · T · 3h · deps: CAT-LND-03

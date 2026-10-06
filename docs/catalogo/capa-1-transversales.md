@@ -150,7 +150,7 @@ Mismo criterio que la web de GenPM ([ADR-027](../brainstorming.md)).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/consent` | `@core/db ^1`, `@core/ui ^1` | — | — | — |
+| `src/lib/consent` | `@core/db ^1` (componentes sin estilos propios: clases `consent-*`) | `zod`, `react` | `CONSENT_POLICY_VERSION` | — |
 
 **Tablas.** `consent_records` (id anónimo, categorías, versión de la política, fecha; sin IP en claro).
 **API.** `getConsent(request)`, `hasConsent(cat)`, `onConsentChange(cb)`, `<ConsentBanner />`, `<ConsentGate category>`, Google Consent Mode v2 opcional.
