@@ -86,7 +86,8 @@
 
 ## F5 · Dropshipping (kit-dropshipping)
 
-- [ ] `CAT-DRP-01` **TODO** Implementar y publicar @core/pricing (reglas de margen, historial de precios) · C · 10h · deps: CAT-STO-03
+- [ ] `CAT-DRP-01` **BLOCKED** Implementar y publicar @core/pricing (reglas de margen, historial de precios) · C · 10h · deps: CAT-STO-03
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/pricing` (2026-10-06). Falta crear el repo `genpm-net/pricing` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-DRP-02` **TODO** Implementar y publicar @core/suppliers con el adaptador manual (CSV) · C · 20h · deps: CAT-DRP-01, CAT-STO-05, CAT-CMS-03
 - [ ] `CAT-DRP-03` **TODO** Adaptador CJdropshipping para @core/suppliers (verificar API y términos vigentes) · C · 12h · deps: CAT-DRP-02
 - [ ] `CAT-DRP-04` **TODO** Alta de la app en AliExpress Open Platform (dropshipping) y aprobación · F · 2h · deps: CAT-00-01

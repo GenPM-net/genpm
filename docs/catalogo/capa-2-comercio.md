@@ -159,7 +159,7 @@ moneda del proveedor a la de la tienda, y **historial de precios** (necesario pa
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/pricing` | `@core/db ^1`, `@core/catalog ^1`, `@core/money ^1` | — | — | — |
+| `src/lib/pricing` | `@core/db ^1`, `@core/catalog ^1`, `@core/money ^1`, `@core/contracts ^1` | `zod` | — | — |
 
 **Tablas.** `price_rules` (ámbito, prioridad, fórmula), `price_history` (variantId, price, from, to).
 **API.** `priceFromCost(cost, ctx)`, `applyRules(product)`, `lowestPrice30d(variantId)`, `pricingResources`, simulador en admin ("con estas reglas, este producto costaría…").
