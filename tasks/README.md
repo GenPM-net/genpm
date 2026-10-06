@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-06. No editar a mano. -->
 
-**67 %** completado · 215/320 tareas · 745.5h estimadas pendientes
+**68 %** completado · 216/320 tareas · 741.5h estimadas pendientes
 
-TODO 37 · DOING 5 · DONE 215 · BLOCKED 63 · CUT 0
+TODO 37 · DOING 4 · DONE 216 · BLOCKED 63 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -88,7 +88,7 @@ TODO 37 · DOING 5 · DONE 215 · BLOCKED 63 · CUT 0
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 17/18 | 2h |
 | [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓▓▓▓▓▓░░` 83 % | 33/40 | 46.5h |
-| [Catálogo de paquetes y kits](11-catalogo.md) | `░░░░░░░░░░░░` 4 % | 2/52 | 646h |
+| [Catálogo de paquetes y kits](11-catalogo.md) | `▓░░░░░░░░░░░` 6 % | 3/52 | 642h |
 
 **En curso**
 
@@ -96,7 +96,6 @@ TODO 37 · DOING 5 · DONE 215 · BLOCKED 63 · CUT 0
 - `D0-05` Crear la org de GitHub GenPM-net con 2FA obligatorio · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `D0-10` Cuenta Cloudflare Workers Paid con llaves FIDO2 · F · 0.5h ([00-dia-0-preparacion.md](00-dia-0-preparacion.md))
 - `V011-02` Binario nativo de genpm para macOS, Linux y Windows con instaladores de una línea y genpm upgrade (ADR-025) · B · 8h ([10-post-mvp.md](10-post-mvp.md))
-- `CAT-00-02` Workspace de desarrollo del catálogo (como ../genpm-seeds) con app Next de ejemplo, PGlite, Playwright y Changesets por tren · C · 4h ([11-catalogo.md](11-catalogo.md))
 
 **Bloqueadas**
 

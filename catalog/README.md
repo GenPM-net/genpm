@@ -18,6 +18,11 @@ pnpm install
 pnpm check                          # tsc + vitest (PGlite) + migración conjunta de todos los módulos
 node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde scripts/manifests.json
 ./scripts/validate.sh <modulo>…     # genpm validate con el CLI del monorepo
+pnpm build:example                  # next build del proyecto de ejemplo (solo compilación)
+DATABASE_URL=postgres://…/vacia pnpm e2e   # build de producción + Playwright contra Postgres (vacía la BD)
+node scripts/check-versions.mjs     # tren de versiones: módulo cambiado ⇒ `v` sube (respecto a origin/main)
+node scripts/simulate-add.mjs <proyecto> @core/kit-cms   # simula `genpm add` sin registro
+./scripts/split-repos.sh            # crea/actualiza los repos genpm-net/<módulo> (admin de la org)
 ```
 
 | Módulo | Tarea | Estado |

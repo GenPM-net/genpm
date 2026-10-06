@@ -2,7 +2,7 @@
   "name": "genpm-catalog-dev",
   "private": true,
   "type": "module",
-  "description": "Workspace de desarrollo de los paquetes del cat\u00e1logo (docs/catalogo). Cada src/lib/<x> se publica en su repo github.com/genpm-net/<x>.",
+  "description": "Workspace de desarrollo de los paquetes del catálogo (docs/catalogo). Cada src/lib/<x> se publica en su repo github.com/genpm-net/<x>.",
   "engines": {
     "node": ">=20.11"
   },
@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json",
     "check": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json && vitest run && tsx scripts/check-migrations.ts",
     "check:migrations": "tsx scripts/check-migrations.ts",
-    "build:example": "next build --turbopack --experimental-build-mode=compile"
+    "build:example": "next build --turbopack --experimental-build-mode=compile",
+    "e2e": "next build --turbopack && tsx --tsconfig tsconfig.app.json e2e/run.ts"
   },
   "dependencies": {
     "@oslojs/crypto": "^1.0.1",
@@ -44,6 +45,7 @@
     "drizzle-kit": "^0.31.0",
     "happy-dom": "^20.14.5",
     "next": "^15.5.27",
+    "playwright-core": "1.56.1",
     "react-dom": "^19.3.0",
     "tsx": "^4.23.15",
     "typescript": "^5.6.0",
