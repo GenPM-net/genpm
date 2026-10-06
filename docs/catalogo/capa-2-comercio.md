@@ -43,7 +43,7 @@ atributos libres.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/cart` | `@core/db ^1`, `@core/auth ^1`, `@core/catalog ^1`, `@core/money ^1`, `@core/contracts ^1` | — | `CART_COOKIE_SECRET` | — |
+| `src/lib/cart` | `@core/db ^1`, `@core/auth ^1`, `@core/catalog ^1`, `@core/money ^1`, `@core/contracts ^1` | `zod` | `CART_COOKIE_SECRET` | — |
 
 **Tablas.** `carts` (id, userId, currency, expiresAt), `cart_lines` (cartId, variantId, qty).
 **API.** `getCart(request)`, `addLine`, `updateQty`, `removeLine`, `mergeCarts`, `computeTotals(cart)`,

@@ -1,0 +1,37 @@
+{
+  "$": 1,
+  "n": "@core/cart",
+  "v": "1.0.0",
+  "s": {
+    "en": "Shopping cart: signed guest cookie, merge on login, server-side prices and a pluggable totals pipeline",
+    "es": "Carrito: cookie firmada de invitado, fusión al iniciar sesión, precios en servidor y cálculo de totales enchufable",
+    "pt-BR": "Carrinho: cookie assinado de visitante, fusão no login, preços no servidor e cálculo de totais extensível",
+    "fr": "Panier : cookie invité signé, fusion à la connexion, prix côté serveur et calcul des totaux extensible",
+    "de": "Warenkorb: signiertes Gast-Cookie, Zusammenführung beim Login, Serverpreise und erweiterbare Summenberechnung",
+    "ja": "ショッピングカート：署名付きゲスト Cookie、ログイン時の統合、サーバー側価格、拡張可能な合計計算",
+    "zh-CN": "购物车：签名访客 Cookie、登录时合并、服务端定价和可扩展的金额计算流水线",
+    "ko": "장바구니: 서명된 게스트 쿠키, 로그인 시 병합, 서버 측 가격, 확장 가능한 합계 계산"
+  },
+  "d": "src/lib/cart",
+  "l": "MIT",
+  "k": [
+    "ecommerce",
+    "cart",
+    "checkout",
+    "pricing",
+    "sessions"
+  ],
+  "g": {
+    "@core/db": "^1.0.0",
+    "@core/auth": "^1.1.0",
+    "@core/catalog": "^1.0.0",
+    "@core/money": "^1.0.0",
+    "@core/contracts": "^1.0.0"
+  },
+  "p": {
+    "zod": "^4.0.0"
+  },
+  "e": [
+    "CART_COOKIE_SECRET"
+  ]
+}

@@ -69,7 +69,8 @@
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/stripe`, y @core/billing 2.0 sobre él en `catalog/src/lib/billing` con sus tests originales en verde (2026-10-06). Falta crear el repo `genpm-net/stripe`, llevar billing 2.0 a `genpm-net/billing` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-STO-03` **BLOCKED** Implementar y publicar @core/catalog (variantes, colecciones, reserva de stock concurrente) · C · 20h · deps: CAT-CMS-07, CAT-STO-01
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/catalog` (2026-10-06). Falta crear el repo `genpm-net/catalog` (fundador), publicar, pruebas de agente y revisión ADR-023.
-- [ ] `CAT-STO-04` **TODO** Implementar y publicar @core/cart (precios en servidor, tubería de totales) · C · 14h · deps: CAT-STO-03
+- [ ] `CAT-STO-04` **BLOCKED** Implementar y publicar @core/cart (precios en servidor, tubería de totales) · C · 14h · deps: CAT-STO-03
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/cart` (2026-10-06). Falta crear el repo `genpm-net/cart` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-STO-05` **TODO** Implementar y publicar @core/orders (máquina de estados, envíos parciales, reembolsos, anti-IDOR) · C · 20h · deps: CAT-STO-01, CAT-00-03
 - [ ] `CAT-STO-06` **TODO** Implementar y publicar @core/shipping (zonas, tarifas, seguimiento) · C · 10h · deps: CAT-STO-04
 - [ ] `CAT-STO-07` **TODO** Implementar y publicar @core/checkout (Stripe Checkout, pedido solo en webhook, idempotente) · C · 16h · deps: CAT-STO-02, CAT-STO-05, CAT-STO-06
