@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
 
-TODO 56 · DOING 5 · DONE 214 · BLOCKED 43 · CUT 0
+TODO 55 · DOING 5 · DONE 214 · BLOCKED 44 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -143,6 +143,7 @@ TODO 56 · DOING 5 · DONE 214 · BLOCKED 43 · CUT 0
 - `CAT-STO-02` Implementar y publicar @core/stripe y migrar @core/billing a 2.0 sobre él · C · 12h ([11-catalogo.md](11-catalogo.md))
 - `CAT-STO-03` Implementar y publicar @core/catalog (variantes, colecciones, reserva de stock concurrente) · C · 20h ([11-catalogo.md](11-catalogo.md))
 - `CAT-STO-04` Implementar y publicar @core/cart (precios en servidor, tubería de totales) · C · 14h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-05` Implementar y publicar @core/orders (máquina de estados, envíos parciales, reembolsos, anti-IDOR) · C · 20h ([11-catalogo.md](11-catalogo.md))
 
 **Siguientes disponibles** (TODO con todas sus dependencias cerradas)
 

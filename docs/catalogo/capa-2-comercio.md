@@ -54,8 +54,8 @@ atributos libres.
 
 ## `@core/orders` — pedidos y clientes
 
-**Para qué.** Pedidos con líneas **congeladas** (snapshot de nombre, precio, impuestos), máquina de estados
-(`pending → paid → fulfilling → shipped → delivered`, `cancelled`, `refunded`, `partially_refunded`), clientes
+**Para qué.** Pedidos con líneas **congeladas** (snapshot de nombre, precio, impuestos), dos estados independientes:
+pago (`pending → paid → partially_refunded/refunded`, o `cancelled`) y envío (`unfulfilled → partial → fulfilled → delivered`), clientes
 (usuario o invitado por email), direcciones, envíos parciales (`fulfillments` con seguimiento), reembolsos vía
 `PaymentProvider`, notas internas, emails transaccionales (confirmación, enviado, reembolso) y acceso del invitado a su
 pedido con enlace firmado.
@@ -63,7 +63,7 @@ pedido con enlace firmado.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/orders` | `@core/db ^1`, `@core/auth ^1`, `@core/email ^1`, `@core/money ^1`, `@core/contracts ^1` | — | `ORDER_LINK_SECRET` | — |
+| `src/lib/orders` | `@core/db ^1`, `@core/auth ^1`, `@core/catalog ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/money ^1`, `@core/contracts ^1` | `zod` | `ORDER_LINK_SECRET`, `ORDER_NUMBER_PREFIX` (opc.), `SITE_URL` | — |
 
 **Tablas.** `orders` (number legible secuencial, status, email, userId, currency, totales, addresses jsonb, paymentRef,
 placedAt), `order_lines`, `fulfillments`, `refunds`, `order_events` (historial).

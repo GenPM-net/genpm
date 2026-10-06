@@ -71,7 +71,8 @@
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/catalog` (2026-10-06). Falta crear el repo `genpm-net/catalog` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-STO-04` **BLOCKED** Implementar y publicar @core/cart (precios en servidor, tubería de totales) · C · 14h · deps: CAT-STO-03
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/cart` (2026-10-06). Falta crear el repo `genpm-net/cart` (fundador), publicar, pruebas de agente y revisión ADR-023.
-- [ ] `CAT-STO-05` **TODO** Implementar y publicar @core/orders (máquina de estados, envíos parciales, reembolsos, anti-IDOR) · C · 20h · deps: CAT-STO-01, CAT-00-03
+- [ ] `CAT-STO-05` **BLOCKED** Implementar y publicar @core/orders (máquina de estados, envíos parciales, reembolsos, anti-IDOR) · C · 20h · deps: CAT-STO-01, CAT-00-03
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/orders` (2026-10-06). Falta crear el repo `genpm-net/orders` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-STO-06` **TODO** Implementar y publicar @core/shipping (zonas, tarifas, seguimiento) · C · 10h · deps: CAT-STO-04
 - [ ] `CAT-STO-07` **TODO** Implementar y publicar @core/checkout (Stripe Checkout, pedido solo en webhook, idempotente) · C · 16h · deps: CAT-STO-02, CAT-STO-05, CAT-STO-06
 - [ ] `CAT-STO-08` **TODO** Implementar y publicar @core/discounts (cupones, límites, regla Ómnibus de 30 días) · C · 12h · deps: CAT-STO-04
