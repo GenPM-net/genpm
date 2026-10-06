@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
 
-TODO 50 · DOING 5 · DONE 214 · BLOCKED 49 · CUT 0
+TODO 49 · DOING 5 · DONE 214 · BLOCKED 50 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -149,6 +149,7 @@ TODO 50 · DOING 5 · DONE 214 · BLOCKED 49 · CUT 0
 - `CAT-STO-08` Implementar y publicar @core/discounts (cupones, límites, regla Ómnibus de 30 días) · C · 12h ([11-catalogo.md](11-catalogo.md))
 - `CAT-STO-09` Implementar y publicar @core/reviews (compra verificada, importadas etiquetadas, AggregateRating) · C · 10h ([11-catalogo.md](11-catalogo.md))
 - `CAT-DRP-01` Implementar y publicar @core/pricing (reglas de margen, historial de precios) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-DRP-02` Implementar y publicar @core/suppliers con el adaptador manual (CSV) · C · 20h ([11-catalogo.md](11-catalogo.md))
 
 **Siguientes disponibles** (TODO con todas sus dependencias cerradas)
 

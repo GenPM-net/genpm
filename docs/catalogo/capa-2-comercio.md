@@ -177,7 +177,7 @@ periódicamente (`jobs`), **reenviar pedidos** pagados al proveedor (`onOrderPai
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/suppliers` | `@core/catalog ^1`, `@core/orders ^1`, `@core/pricing ^1`, `@core/jobs ^1` | — | Por adaptador: `CJ_API_KEY`; `ALIEXPRESS_APP_KEY`, `ALIEXPRESS_APP_SECRET` | — |
+| `src/lib/suppliers` | `@core/catalog ^1`, `@core/orders ^1`, `@core/pricing ^1`, `@core/jobs ^1`, `@core/media ^1`, `@core/email ^1`, `@core/money ^1`, `@core/rich-text ^1`, `@core/db ^1`, `@core/contracts ^1` | `zod` | `SUPPLIER_COST_ALERT_PCT` (opc.); credenciales de cada adaptador | — |
 
 **Adaptadores (orden propuesto, C5):**
 
