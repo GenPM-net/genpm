@@ -15,7 +15,9 @@ BlogPosting, Product+Offer+AggregateRating, FAQPage) e imágenes OG generadas.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/seo` | `@core/contracts ^1`, `@core/site ^1` | `satori` (OG, opcional) | `SITE_URL` | — |
+| `src/lib/seo` | `@core/contracts ^1`, `@core/site ^1` | `zod` | `SITE_URL`, `SEO_NOINDEX` (staging) | — |
+
+La generación de imágenes OG (satori) queda fuera de la 1.0: se usa la imagen social de los ajustes o de cada entrada.
 
 **API.** `buildMetadata(page)` (devuelve `Metadata` de Next), `<JsonLd data>`, constructores `jsonLd.product(...)`, etc.,
 `sitemapHandler()`, `robotsHandler({disallow})`, `llmsTxtHandler()`, `ogImage({title, image})`, campos SEO reutilizables

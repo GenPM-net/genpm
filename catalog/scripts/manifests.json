@@ -218,5 +218,35 @@
       "SITE_URL",
       "SITE_REDIRECT_HOSTS"
     ]
+  },
+  "seo": {
+    "s": {
+      "en": "SEO for GenPM sites: metadata with canonical and hreflang, chunked sitemaps, robots.txt, llms.txt and safe JSON-LD",
+      "es": "SEO para sitios GenPM: metadatos con canónica y hreflang, sitemaps troceados, robots.txt, llms.txt y JSON-LD seguro",
+      "pt-BR": "SEO para sites GenPM: metadados com canônica e hreflang, sitemaps em partes, robots.txt, llms.txt e JSON-LD seguro",
+      "fr": "SEO pour sites GenPM : métadonnées avec canonique et hreflang, sitemaps découpés, robots.txt, llms.txt et JSON-LD sûr",
+      "de": "SEO für GenPM-Seiten: Metadaten mit Canonical und hreflang, geteilte Sitemaps, robots.txt, llms.txt, sicheres JSON-LD",
+      "ja": "GenPM サイトの SEO：canonical と hreflang 付きメタデータ、分割サイトマップ、robots.txt、llms.txt、安全な JSON-LD",
+      "zh-CN": "GenPM 站点 SEO：带 canonical 和 hreflang 的元数据、分片站点地图、robots.txt、llms.txt 和安全的 JSON-LD",
+      "ko": "GenPM 사이트 SEO: canonical·hreflang 메타데이터, 분할 사이트맵, robots.txt, llms.txt, 안전한 JSON-LD"
+    },
+    "k": [
+      "seo",
+      "sitemap",
+      "json-ld",
+      "metadata",
+      "robots"
+    ],
+    "g": {
+      "@core/site": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "SITE_URL",
+      "SEO_NOINDEX"
+    ]
   }
 }
