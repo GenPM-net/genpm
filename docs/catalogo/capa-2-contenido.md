@@ -143,7 +143,7 @@ JSON-LD `BlogPosting`.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/blog` | `@core/content ^1`, `@core/rich-text ^1`, `@core/media ^1`, `@core/contracts ^1` | — | — | — |
+| `src/lib/blog` | `@core/content ^1`, `@core/rich-text ^1`, `@core/contracts ^1`, `@core/db ^1` | `zod` | `SITE_URL` | — |
 
 **Tablas.** Ninguna propia: todo son colecciones de `content` (demuestra que el modelo es suficiente).
 **API.** `listPosts({category, tag, author, page})`, `getPost(slug)`, `relatedPosts(post)`, `archive()`,

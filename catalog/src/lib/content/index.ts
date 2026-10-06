@@ -20,7 +20,7 @@ export {
   unschedule,
 } from './entries.js';
 export { createPreviewToken, type PreviewClaims, safePath, verifyPreviewToken } from './preview.js';
-export { contentSource, getEntry, getSingleton, listEntries, reader } from './read.js';
+export { contentSource, countEntries, getEntry, getSingleton, listEntries, reader } from './read.js';
 export {
   assertSlug,
   type Collection,

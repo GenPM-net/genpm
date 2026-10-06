@@ -16,6 +16,7 @@ import {
   contentSearchSource,
   contentSitemapSource,
   contentSource,
+  countEntries,
   createEntry,
   createPreviewToken,
   defineCollection,
@@ -144,6 +145,8 @@ describe('locales and listing', () => {
     const list = await listEntries<{ title: string }>('pages', { locale: 'es', orderBy: 'slug' });
     expect(list.map((e) => e.data.title)).toEqual(['A es', 'B en']);
     expect((await listEntries('pages', { where: { category: 'y' } })).map((e) => e.slug)).toEqual(['b']);
+    expect(await countEntries('pages', { locale: 'es' })).toBe(2);
+    expect(await countEntries('pages', { where: { category: 'y' } })).toBe(1);
     expect((await listEntries('pages', { orderBy: '-title', limit: 1 })).map((e) => e.slug)).toEqual(['b']);
     expect((await listEntries('pages', { orderBy: 'title', offset: 1 })).map((e) => e.slug)).toEqual(['b']);
     await expect(listEntries('pages', { orderBy: 'x; drop table' })).rejects.toThrow();
@@ -160,6 +163,15 @@ describe('locales and listing', () => {
     const typed = await reader(home).singleton();
     expect(typed?.data.heroTitle).toBe('Edited');
     expect((await getSingleton('home'))?.data.cta).toBe('Buy');
+  });
+
+  it('filters list fields with contains', async () => {
+    defineCollection('notes', { schema: z.object({ title: z.string(), tags: z.array(z.string()).default([]) }) });
+    await seedEntry({ collection: 'notes', slug: 'a', data: { title: 'A', tags: ['news', 'mugs'] } });
+    await seedEntry({ collection: 'notes', slug: 'b', data: { title: 'B', tags: ['mugs'] } });
+    expect((await listEntries('notes', { contains: { tags: 'news' } })).map((e) => e.slug)).toEqual(['a']);
+    expect(await countEntries('notes', { contains: { tags: 'mugs' } })).toBe(2);
+    expect(await countEntries('notes', { contains: { tags: "x' or 1=1 --" } })).toBe(0);
   });
 
   it('migrateEntries rewrites data and drafts and validates them', async () => {

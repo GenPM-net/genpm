@@ -28,6 +28,8 @@ export type ContentListQuery = ContentReadOptions & {
   orderBy?: string;
   /** Igualdad sobre campos de `data` (p. ej. `{ category: 'news' }`). */
   where?: Record<string, string | number | boolean | null>;
+  /** El campo de `data` es una lista que contiene este valor (p. ej. `{ tags: 'news' }`). */
+  contains?: Record<string, string>;
 };
 
 export interface ContentSource {

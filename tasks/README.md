@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
 
-TODO 63 · DOING 5 · DONE 214 · BLOCKED 36 · CUT 0
+TODO 62 · DOING 5 · DONE 214 · BLOCKED 37 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -136,6 +136,7 @@ TODO 63 · DOING 5 · DONE 214 · BLOCKED 36 · CUT 0
 - `CAT-CMS-10` Implementar y publicar @core/seo (metadatos, sitemap, robots, llms.txt, JSON-LD, OG) · C · 12h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-11` Implementar y publicar @core/search (tsvector + pg_trgm, SearchSource) · C · 10h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-12` Implementar y publicar @core/forms (definiciones, envíos, emails, webhook firmado) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-BLG-01` Implementar y publicar @core/blog (colecciones, feeds RSS/Atom/JSON, relacionados) · C · 12h ([11-catalogo.md](11-catalogo.md))
 
 **Siguientes disponibles** (TODO con todas sus dependencias cerradas)
 

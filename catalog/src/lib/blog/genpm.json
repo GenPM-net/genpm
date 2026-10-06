@@ -1,0 +1,36 @@
+{
+  "$": 1,
+  "n": "@core/blog",
+  "v": "1.0.0",
+  "s": {
+    "en": "Blog domain on @core/content: posts, authors, categories, tags, series, related posts, archive and RSS/Atom/JSON feeds",
+    "es": "Dominio de blog sobre @core/content: posts, autores, categorías, etiquetas, series, relacionados, archivo y feeds RSS/Atom/JSON",
+    "pt-BR": "Domínio de blog sobre @core/content: posts, autores, categorias, tags, séries, relacionados, arquivo e feeds RSS/Atom/JSON",
+    "fr": "Blog sur @core/content : articles, auteurs, catégories, tags, séries, articles liés, archives et flux RSS/Atom/JSON",
+    "de": "Blog auf @core/content: Beiträge, Autoren, Kategorien, Tags, Serien, ähnliche Beiträge, Archiv und RSS/Atom/JSON-Feeds",
+    "ja": "@core/content 上のブログ：記事、著者、カテゴリ、タグ、シリーズ、関連記事、アーカイブ、RSS/Atom/JSON フィード",
+    "zh-CN": "基于 @core/content 的博客：文章、作者、分类、标签、系列、相关文章、归档和 RSS/Atom/JSON 订阅",
+    "ko": "@core/content 기반 블로그: 글, 작성자, 카테고리, 태그, 시리즈, 관련 글, 아카이브, RSS/Atom/JSON 피드"
+  },
+  "d": "src/lib/blog",
+  "l": "MIT",
+  "k": [
+    "blog",
+    "cms",
+    "rss",
+    "content",
+    "feeds"
+  ],
+  "g": {
+    "@core/content": "^1.0.0",
+    "@core/rich-text": "^1.0.0",
+    "@core/contracts": "^1.0.0",
+    "@core/db": "^1.0.0"
+  },
+  "p": {
+    "zod": "^4.0.0"
+  },
+  "e": [
+    "SITE_URL"
+  ]
+}

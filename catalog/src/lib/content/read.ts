@@ -1,5 +1,5 @@
 // Lectura pública (ContentSource): solo lo publicado, salvo `draft: true` (vista previa autorizada).
-import { and, asc, desc, eq, inArray, notExists, or, type SQL, sql } from 'drizzle-orm';
+import { and, asc, count, desc, eq, inArray, notExists, or, type SQL, sql } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
 import type { z } from 'zod';
 import type { ContentEntry, ContentListQuery, ContentReadOptions, ContentSource } from '../contracts/index.js';
@@ -74,14 +74,14 @@ function orderOf(orderBy: string | undefined): SQL {
  * Lista entradas visibles de una colección en un idioma (con fallback al idioma por defecto si no hay ninguna
  * traducida). `where` compara por igualdad campos de `data`.
  */
-export async function listEntries<D = Record<string, unknown>>(
-  collection: string,
-  query: ContentListQuery = {},
-  db: Executor = getDb(),
-): Promise<ContentEntry<D>[]> {
+function listConditions(collection: string, query: ContentListQuery, db: Executor): SQL {
   const c = getCollection(collection);
-  const limit = Math.min(Math.max(query.limit ?? 50, 1), 500);
   const conds: SQL[] = [eq(contentEntries.collection, collection), visible(query.draft)!];
+  for (const [k, v] of Object.entries(query.contains ?? {})) {
+    if (!FIELD_RE.test(k)) throw new Error(`invalid contains field: ${k}`);
+    const col = query.draft ? sql`coalesce(${contentEntries.draft}, ${contentEntries.data})` : sql`${contentEntries.data}`;
+    conds.push(sql`(${col} -> ${k}) @> ${JSON.stringify([v])}::jsonb`);
+  }
   for (const [k, v] of Object.entries(query.where ?? {})) {
     if (!FIELD_RE.test(k)) throw new Error(`invalid where field: ${k}`);
     const col = query.draft ? sql`coalesce(${contentEntries.draft}, ${contentEntries.data})` : sql`${contentEntries.data}`;
@@ -97,14 +97,29 @@ export async function listEntries<D = Record<string, unknown>>(
   const localeCond = fallback
     ? or(eq(contentEntries.locale, wanted!), and(eq(contentEntries.locale, fallback), notExists(translated)))!
     : eq(contentEntries.locale, wanted!);
+  return and(...conds, localeCond)!;
+}
+
+export async function listEntries<D = Record<string, unknown>>(
+  collection: string,
+  query: ContentListQuery = {},
+  db: Executor = getDb(),
+): Promise<ContentEntry<D>[]> {
+  const limit = Math.min(Math.max(query.limit ?? 50, 1), 500);
   const rows = await db
     .select()
     .from(contentEntries)
-    .where(and(...conds, localeCond))
+    .where(listConditions(collection, query, db))
     .orderBy(orderOf(query.orderBy), asc(contentEntries.id))
     .limit(limit)
     .offset(Math.max(query.offset ?? 0, 0));
   return rows.map((r) => toEntry<D>(r, !!query.draft)).filter((e): e is ContentEntry<D> => e !== null);
+}
+
+/** Total de entradas visibles con los mismos filtros que `listEntries` (para paginar). */
+export async function countEntries(collection: string, query: ContentListQuery = {}, db: Executor = getDb()): Promise<number> {
+  const [row] = await db.select({ n: count() }).from(contentEntries).where(listConditions(collection, query, db));
+  return row?.n ?? 0;
 }
 
 export const getSingleton = <D = Record<string, unknown>>(name: string, opts?: ContentReadOptions, db?: Executor) =>
