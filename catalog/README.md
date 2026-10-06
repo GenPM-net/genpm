@@ -4,7 +4,7 @@ Paquetes del [catálogo](../docs/catalogo/README.md) (ADR-033) en desarrollo. Ig
 imita un proyecto consumidor: cada módulo vive en `src/lib/<nombre>` tal y como lo inyecta GenPM, así los imports
 relativos entre módulos (`../db/index.js`) se prueban como quedarán tras `genpm add`.
 
-- `src/lib/db`, `src/lib/auth`: copias de las semillas publicadas (no se editan aquí; se editan en sus repos).
+- `src/lib/db`, `src/lib/auth`, `src/lib/email`: copias de las semillas publicadas (no se editan aquí; se editan en sus repos).
 - El resto: paquetes nuevos. Al publicar, cada carpeta se separa en su repo `github.com/genpm-net/<nombre>` con
   `git subtree split --prefix catalog/src/lib/<nombre>` y se publica con el CLI.
 
@@ -26,3 +26,4 @@ node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde s
 | `search` | CAT-CMS-11 | Implementado y validado · pendiente de publicar |
 | `site` | CAT-CMS-09 | Implementado y validado · pendiente de publicar |
 | `seo` | CAT-CMS-10 | Implementado y validado · pendiente de publicar |
+| `forms` | CAT-CMS-12 | Implementado y validado · pendiente de publicar |

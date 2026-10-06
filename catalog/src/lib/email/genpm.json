@@ -1,0 +1,36 @@
+{
+  "$": 1,
+  "n": "@core/email",
+  "v": "1.0.1",
+  "s": {
+    "en": "Transactional email with typed React Email templates: Resend, SMTP or console in dev",
+    "es": "Email transaccional con plantillas React Email tipadas: Resend, SMTP o consola en desarrollo",
+    "pt-BR": "E-mail transacional com templates React Email tipados: Resend, SMTP ou console em dev",
+    "fr": "E-mails transactionnels avec modèles React Email typés : Resend, SMTP ou console en dev",
+    "de": "Transaktions-E-Mails mit typisierten React-Email-Vorlagen: Resend, SMTP oder Konsole in Dev",
+    "ja": "型付き React Email テンプレートによるトランザクションメール：Resend、SMTP、開発時はコンソール",
+    "zh-CN": "带类型化 React Email 模板的事务邮件：Resend、SMTP 或开发时输出到控制台",
+    "ko": "타입이 지정된 React Email 템플릿의 트랜잭션 이메일: Resend, SMTP, 개발 시 콘솔"
+  },
+  "d": "src/lib/email",
+  "l": "MIT",
+  "k": [
+    "email",
+    "resend",
+    "smtp",
+    "react-email",
+    "templates",
+    "transactional"
+  ],
+  "p": {
+    "resend": "^6.32.0",
+    "@react-email/components": "^1.0.12",
+    "@react-email/render": "^2.1.0",
+    "react": "^19.0.0",
+    "@types/react": "^19.0.0"
+  },
+  "e": [
+    "RESEND_API_KEY",
+    "EMAIL_FROM"
+  ]
+}

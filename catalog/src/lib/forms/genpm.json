@@ -1,0 +1,39 @@
+{
+  "$": 1,
+  "n": "@core/forms",
+  "v": "1.0.0",
+  "s": {
+    "en": "Forms and lead capture: code or admin-built forms, spam checks, GDPR consent, email alerts, signed webhooks, CSV",
+    "es": "Formularios y captación de leads: en código o desde el admin, antispam, consentimiento RGPD, avisos, webhooks firmados y CSV",
+    "pt-BR": "Formulários e captação de leads: em código ou no admin, antispam, consentimento LGPD/RGPD, avisos, webhooks assinados e CSV",
+    "fr": "Formulaires et leads : en code ou depuis l'admin, anti-spam, consentement RGPD, alertes e-mail, webhooks signés, CSV",
+    "de": "Formulare und Leads: im Code oder im Admin, Spam-Schutz, DSGVO-Einwilligung, E-Mail-Hinweise, signierte Webhooks, CSV",
+    "ja": "フォームとリード獲得：コードまたは管理画面で作成、スパム対策、GDPR 同意、メール通知、署名付き Webhook、CSV",
+    "zh-CN": "表单与线索收集：代码或后台创建、反垃圾、GDPR 同意、邮件通知、签名 Webhook、CSV 导出",
+    "ko": "폼과 리드 수집: 코드 또는 관리자에서 생성, 스팸 방지, GDPR 동의, 이메일 알림, 서명된 웹훅, CSV"
+  },
+  "d": "src/lib/forms",
+  "l": "MIT",
+  "k": [
+    "forms",
+    "leads",
+    "contact-form",
+    "gdpr",
+    "webhooks"
+  ],
+  "g": {
+    "@core/db": "^1.0.0",
+    "@core/antispam": "^1.0.0",
+    "@core/email": "^1.0.1",
+    "@core/jobs": "^1.0.0",
+    "@core/content": "^1.0.0",
+    "@core/contracts": "^1.0.0"
+  },
+  "p": {
+    "zod": "^4.0.0"
+  },
+  "e": [
+    "FORMS_NOTIFY_TO",
+    "FORMS_WEBHOOK_SECRET"
+  ]
+}

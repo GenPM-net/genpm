@@ -36,7 +36,7 @@ con texto versionado, exportación CSV y webhook saliente opcional (CRM, Zapier/
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/forms` | `@core/db ^1`, `@core/email ^1`, `@core/antispam ^1`, `@core/content ^1` | — | `FORMS_WEBHOOK_SECRET` (opc.) | — |
+| `src/lib/forms` | `@core/db ^1`, `@core/email ^1`, `@core/antispam ^1`, `@core/content ^1`, `@core/jobs ^1`, `@core/contracts ^1` | `zod` | `FORMS_NOTIFY_TO`, `FORMS_WEBHOOK_SECRET` (opc.) | — |
 
 **Tablas.** `form_submissions` (id, formKey, data jsonb, consentVersion, sourceUrl, utm jsonb, createdAt, status).
 Las definiciones editables desde el admin son una colección de `content`.
