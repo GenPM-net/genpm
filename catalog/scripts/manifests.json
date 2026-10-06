@@ -371,5 +371,38 @@
     "e": [
       "SITE_URL"
     ]
+  },
+  "comments": {
+    "s": {
+      "en": "Moderated comments on any entity: guest or user, replies, optional 1–5 ratings, bans, GDPR erasure, safe HTML",
+      "es": "Comentarios moderados sobre cualquier entidad: invitado o usuario, respuestas, valoración 1–5, bloqueos, RGPD y HTML seguro",
+      "pt-BR": "Comentários moderados em qualquer entidade: visitante ou usuário, respostas, nota 1–5, bloqueios, LGPD e HTML seguro",
+      "fr": "Commentaires modérés sur toute entité : invité ou compte, réponses, note 1–5, bannissements, RGPD et HTML sûr",
+      "de": "Moderierte Kommentare zu allem: Gast oder Konto, Antworten, Bewertung 1–5, Sperren, DSGVO-Löschung, sicheres HTML",
+      "ja": "任意のエンティティへのモデレーション付きコメント：ゲスト/ユーザー、返信、1〜5 評価、ブロック、GDPR 削除、安全な HTML",
+      "zh-CN": "任意实体的审核评论：访客或用户、回复、1–5 评分、封禁、GDPR 删除和安全 HTML",
+      "ko": "모든 엔티티에 대한 검토 댓글: 게스트/사용자, 답글, 1–5 평점, 차단, GDPR 삭제, 안전한 HTML"
+    },
+    "k": [
+      "comments",
+      "moderation",
+      "reviews",
+      "community",
+      "gdpr"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/auth": "^1.1.0",
+      "@core/antispam": "^1.0.0",
+      "@core/email": "^1.0.1",
+      "@core/jobs": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "COMMENTS_NOTIFY_TO"
+    ]
   }
 }

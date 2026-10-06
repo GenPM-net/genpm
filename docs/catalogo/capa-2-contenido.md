@@ -123,7 +123,7 @@ usuarios con sesión, y **valoración opcional 1–5** (que `reviews` reutiliza)
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/comments` | `@core/db ^1`, `@core/auth ^1`, `@core/rbac ^1`, `@core/antispam ^1`, `@core/email ^1` | — | — | — |
+| `src/lib/comments` | `@core/db ^1`, `@core/auth ^1`, `@core/antispam ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/contracts ^1` | `zod` | `COMMENTS_NOTIFY_TO` (opc.) | — |
 
 **Tablas.** `comments` (id, entityType, entityId, parentId, authorId, guestName, guestEmailHash, body, rating, status
 `pending|approved|spam|deleted`, createdAt), `comment_bans`.
