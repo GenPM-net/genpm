@@ -27,3 +27,4 @@ node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde s
 | `site` | CAT-CMS-09 | Implementado y validado · pendiente de publicar |
 | `seo` | CAT-CMS-10 | Implementado y validado · pendiente de publicar |
 | `forms` | CAT-CMS-12 | Implementado y validado · pendiente de publicar |
+| `media` | CAT-CMS-07 | Implementado y validado · pendiente de publicar |

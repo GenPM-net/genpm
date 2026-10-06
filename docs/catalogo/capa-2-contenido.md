@@ -48,7 +48,9 @@ obligatorio, punto focal, dimensiones, variantes responsivas (`srcset`) y compon
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/media` | `@core/db ^1`, `@core/storage ^1`, `@core/contracts ^1` | `sharp` (opcional, solo driver Node) | `MEDIA_TRANSFORM` (`sharp` \| `cloudflare` \| `vercel` \| `none`) | — |
+| `src/lib/media` | `@core/db ^1`, `@core/storage ^1`, `@core/contracts ^1` | `zod` | `MEDIA_TRANSFORM` (`cloudflare` \| `vercel` \| `none`) | — |
+
+Sin `sharp` en la 1.0: los metadatos se quitan sin recodificar (JPEG, PNG, WebP) y el redimensionado lo hace la CDN.
 
 **Tablas.** `media` (id, key, filename, mime, size, width, height, alt, focalX, focalY, folder, uploadedBy, createdAt).
 **API.** `createUpload({filename, mime, size})`, `confirmUpload(id)`, `<Img media sizes>`, `imageUrl(media, {w, h, fit})`,
