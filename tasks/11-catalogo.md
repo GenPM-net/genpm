@@ -1,13 +1,13 @@
 # Catálogo de paquetes y kits
 
-> Ref: [docs/catalogo/README.md](../docs/catalogo/README.md) y [ADR-033](../docs/brainstorming.md) (🟡 propuesta).
+> Ref: [docs/catalogo/README.md](../docs/catalogo/README.md) y [ADR-033](../docs/brainstorming.md) (✅ decidida).
 > Nivel épica: cada tarea "Implementar y publicar" cubre las 8 tareas de una semilla (implementar, AGENTS.md, tests,
 > validate, publicar, prueba de agente en Claude Code y en Cursor, revisión ADR-023) y se desglosa al empezar su fase.
 > El DoD de cada paquete y kit está en [catálogo §8](../docs/catalogo/README.md#8-definición-de-terminado); su alcance, en su ficha.
 
 ## F0 · Decisiones
 
-- [ ] `CAT-00-01` **TODO** Decidir ADR-033 y las preguntas C1–C6 del catálogo (admin propio vs. CMS existente, scope de los kits, Next primero, licencias, proveedores, impuestos) · F · 2h · deps: —
+- [x] `CAT-00-01` **DONE** Decidir ADR-033 y las preguntas C1–C6 del catálogo (admin propio vs. CMS existente, scope de los kits, Next primero, licencias, proveedores, impuestos) · F · 2h · deps: —
 - [ ] `CAT-00-02` **TODO** Workspace de desarrollo del catálogo (como ../genpm-seeds) con app Next de ejemplo, PGlite, Playwright y Changesets por tren · C · 4h · deps: CAT-00-01
 - [ ] `CAT-00-03` **TODO** Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h · deps: CAT-00-02
 - [ ] `CAT-00-04` **TODO** Implementar y publicar @core/ui con tokens claro/oscuro y axe sin violaciones · C · 12h · deps: CAT-00-02
@@ -74,3 +74,4 @@
 - [ ] `CAT-GRO-01` **TODO** Implementar y publicar @core/experiments y añadirlo a kit-landing 1.1 · C · 16h · deps: CAT-LND-03
 - [ ] `CAT-GRO-02` **TODO** Adaptador @core/content-payload si hay demanda (decisión C1) · C · 16h · deps: CAT-CMS-14
 - [ ] `CAT-GRO-03` **TODO** Priorizar kits futuros (kits/futuros.md) con la demanda no cubierta del panel de analítica · F · 2h · deps: CAT-DRP-07
+- [ ] `CAT-GRO-04` **TODO** Implementar y publicar @core/invoices (facturas españolas con numeración legal y VeriFactu; verificar plazos vigentes) · C · 24h · deps: CAT-STO-05

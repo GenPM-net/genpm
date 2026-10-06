@@ -437,14 +437,14 @@ Triggers, el compartido les reenvía cada ejecución a `POST /__cron` con `CRON_
 prefijo (api-spec §5.2), pasar un cliente de compartido a dedicado es copiar filas (`scripts/provision-dedicated.mjs
 --copy`). Mismas claves de firma (los clientes ya las fijan); cuentas y tokens propios de la D1 del cliente.
 
-### ADR-033 · Catálogo de kits: capas, contratos y kits como pegamento — 🟡 Propuesta (pendiente del fundador, 2026-10-06)
+### ADR-033 · Catálogo de kits: capas, contratos y kits como pegamento — ✅ Decidida (Tech Lead por delegación del fundador, 2026-10-06)
 
 **Contexto:** tras las semillas, el fundador quiere paquetes "completos" (sitio autoadministrable con un CMS de
 TypeScript, blog, landing y tienda de dropshipping) que a su vez se compongan de paquetes reutilizables sin repetirse
 entre ellos. Restricciones del formato: un paquete tiene un solo `d`, como máximo 10 dependencias `g`, y el lockfile
 admite una versión por nombre. Detalle completo en [catalogo/README.md](catalogo/README.md).
 
-**Propuesta:**
+**Decisión:**
 1. **Cuatro capas** con dependencias solo hacia abajo: 0 semillas · 1 transversales (`contracts`, `rbac`, `storage`,
    `jobs`, `antispam`, `money`, `stripe`, `consent`, `ui`, `admin`) · 2 dominio (contenido, marketing, comercio,
    dropshipping) · 3 kits. 37 paquetes nuevos, todos en `@core` (kits como `@core/kit-*`).
@@ -462,7 +462,9 @@ admite una versión por nombre. Detalle completo en [catalogo/README.md](catalog
 
 **Consecuencias:** coste inicial mayor (F0–F1 antes del primer kit visible), a cambio de que cada kit nuevo sea sobre
 todo reutilización. Publicación en "trenes" coordinados para evitar `E_RANGE_UNSATISFIED`. Cambio incompatible en un
-contrato = versión mayor del tren. Abre las preguntas C1–C6 de [catalogo §10](catalogo/README.md#10-preguntas-abiertas-para-el-fundador).
+contrato = versión mayor del tren. Preguntas C1–C6 cerradas en [catalogo §10](catalogo/README.md#10-decisiones-c1c6): admin propio (Payload solo
+como adaptador bajo demanda), `@core/kit-*`, Next primero, todo MIT, proveedores manual → CJ → AliExpress, Stripe Tax
+opcional y facturación española como paquete `invoices` en F6.
 
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 

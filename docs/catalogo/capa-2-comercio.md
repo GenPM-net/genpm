@@ -59,7 +59,7 @@ atributos libres.
 (usuario o invitado por email), direcciones, envíos parciales (`fulfillments` con seguimiento), reembolsos vía
 `PaymentProvider`, notas internas, emails transaccionales (confirmación, enviado, reembolso) y acceso del invitado a su
 pedido con enlace firmado.
-**No incluye.** Cobro (lo hace `checkout`), facturas fiscales con numeración legal (paquete futuro `invoices`, ver C6).
+**No incluye.** Cobro (lo hace `checkout`), facturas fiscales con numeración legal (paquete `@core/invoices` en F6, ver C6).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|

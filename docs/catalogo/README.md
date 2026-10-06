@@ -1,6 +1,6 @@
 # Catálogo de paquetes y kits — plan
 
-> Estado: **planificación** (nada implementado) · Fecha: 2026-10-05 · Decisión de fondo: [ADR-033](../brainstorming.md) (🟡 propuesta, pendiente del fundador).
+> Estado: **planificación** (nada implementado) · Fecha: 2026-10-05 · Decisión de fondo: [ADR-033](../brainstorming.md) (✅ decidida, 2026-10-06).
 > Tareas: [tasks/11-catalogo.md](../../tasks/11-catalogo.md). Las semillas `@core/{db,auth,billing,email,ai}` ya existen: [seeds/README.md](../../seeds/README.md).
 
 ## 1. Objetivo
@@ -195,13 +195,15 @@ una pieza obliga a publicar en el mismo tren los kits que la usan (Changesets en
 
 Cada fase termina con algo **usable y anunciable** por sí mismo; si el plan se corta tras F1, el CMS ya aporta valor.
 
-## 10. Preguntas abiertas (para el fundador)
+## 10. Decisiones C1–C6
 
-| # | Pregunta | Recomendación |
-|---|---|---|
-| C1 | ¿Admin propio o integrar un CMS de TypeScript existente (Payload, Keystatic, TinaCMS)? | Propio + adaptador Payload opcional (ADR-033 §3) |
-| C2 | ¿Scope `@core/kit-*` o un scope nuevo `@kits`? | `@core/kit-*`: un solo scope verificado que mantener |
-| C3 | ¿Next.js primero o Astro primero para la UI? | Next.js primero; Astro como kits hermanos en F6 |
-| C4 | ¿Kits gratuitos (MIT) o algún kit premium (ADR-012, repos privados)? | Capas 0–2 siempre MIT; plantillas visuales premium como posible negocio en F6 |
-| C5 | ¿Qué proveedores de dropshipping primero? | Manual/CSV (sin API) → CJdropshipping → AliExpress (exige alta como desarrollador) |
-| C6 | ¿Impuestos (IVA OSS UE, sales tax EE. UU.)? | Stripe Tax opcional en `checkout`; sin motor propio |
+Decididas por el Tech Lead por delegación del fundador (2026-10-06, ADR-033).
+
+| # | Pregunta | Decisión | Motivo |
+|---|---|---|---|
+| C1 | ¿Admin propio o un CMS de TypeScript existente (Payload, Keystatic, TinaCMS)? | **Admin propio** (`@core/admin` + `@core/content`). Payload solo como adaptador `content-payload` si aparece demanda medida (búsquedas o issues) | Un único sistema de usuarios y roles, contenido y comercio en el mismo panel, y código que es del usuario y se actualiza con merge 3-way |
+| C2 | ¿Scope `@core/kit-*` o un scope nuevo `@kits`? | **`@core/kit-*`** | Un solo scope verificado que mantener y proteger; el prefijo basta para buscar |
+| C3 | ¿Next.js o Astro primero? | **Next.js App Router**; kits Astro en F6 | Es lo que más generan los agentes, y tienda y admin necesitan servidor y React |
+| C4 | ¿Kits gratuitos o premium? | **Todo MIT** (capas 0–3). Se revisa tras F5 con datos de uso; si hay premium, serán plantillas visuales, nunca lógica ni seguridad | La adopción y la confianza valen más que unos ingresos tempranos; ADR-012 sigue disponible |
+| C5 | ¿Qué proveedores de dropshipping primero? | **Manual/CSV → CJdropshipping → AliExpress** | El manual funciona sin aprobaciones; CJ tiene API abierta; AliExpress exige alta (`CAT-DRP-04`) |
+| C6 | ¿Impuestos y facturas? | **Stripe Tax opcional** en `checkout`, sin motor propio. **Facturación española** (numeración legal, factura simplificada, VeriFactu) como paquete `@core/invoices` en F6 (`CAT-GRO-04`), verificando antes los plazos vigentes de VeriFactu | Calcular impuestos es un problema resuelto; emitir facturas legales en España sí es un hueco real del mercado |
