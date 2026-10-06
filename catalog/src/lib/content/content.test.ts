@@ -206,6 +206,39 @@ describe('preview tokens and Next adapter', () => {
     expect(out.headers.get('location')).toBe('/');
     expect(state.enabled).toBe(false);
   });
+
+  it('exit-preview rejects paths that browsers turn into another origin (tabs, newlines, control chars)', async () => {
+    const draftMode = async () => ({ enable: () => {}, disable: () => {} });
+    for (const bad of ['/\t/evil.com', '/%09/evil.com', '/\n/evil.com', '/\r/evil.com', '/\u0001/evil.com', '/ /evil.com']) {
+      const url = new URL('http://site/api/exit-preview');
+      url.searchParams.set('path', bad.startsWith('/%') ? decodeURIComponent(bad) : bad);
+      const out = await exitPreviewRoute(draftMode)(new Request(url));
+      expect(out.headers.get('location'), JSON.stringify(bad)).toBe('/');
+    }
+    const ok = await exitPreviewRoute(draftMode)(new Request('http://site/api/exit-preview?path=/blog/x%3Fa%3D1'));
+    expect(ok.headers.get('location')).toBe('/blog/x?a=1');
+    for (const bad of ['/\t/evil.com', '/\u0000x']) expect(await code(createPreviewToken('e', bad))).toBe('invalid_state');
+  });
+
+  it('draft mode expires with the preview token when cookies are passed', async () => {
+    const jar = new Map<string, Record<string, unknown>>();
+    const cookies = async () => ({
+      get: (name: string) => (jar.has(name) ? { value: String(jar.get(name)!.value) } : undefined),
+      set: (c: { name: string; value: string }) => void jar.set(c.name, c),
+    });
+    // Imita a Next 15: `enable()` escribe la cookie de sesión sin caducidad.
+    const draftMode = async () => ({
+      enable: () => void jar.set('__prerender_bypass', { name: '__prerender_bypass', value: 'preview-id', httpOnly: true, sameSite: 'none', secure: true, path: '/' }),
+      disable: () => {},
+    });
+    const t = await createPreviewToken('ent_1', '/blog/x', { ttlSeconds: 600 });
+    const res = await previewRoute(draftMode, cookies)(new Request(`http://site/api/preview?token=${t}`));
+    expect(res.status).toBe(307);
+    const c = jar.get('__prerender_bypass')!;
+    expect(c).toMatchObject({ value: 'preview-id', httpOnly: true, path: '/', sameSite: 'none', secure: true });
+    expect(c.maxAge).toBeGreaterThan(590);
+    expect(c.maxAge).toBeLessThanOrEqual(600);
+  });
 });
 
 describe('sources', () => {
@@ -255,6 +288,18 @@ describe('admin resource', () => {
     expect(await code(r.delete!(theirs.id, author))).toBe('forbidden');
     await r.delete!(theirs.id, editor);
     expect(await r.get(theirs.id, editor)).toBeNull();
+  });
+
+  it('update is atomic: invalid data does not leave the entry renamed', async () => {
+    defineCollection('posts', { schema: Page });
+    const r = contentAdminResource('posts');
+    const editor = ctxFor('usr_ed', ['posts:read', 'posts:create', 'posts:update']);
+    const row = await r.create!({ slug: 'keep', data: { title: 'Keep' } }, editor);
+    expect(await code(r.update!(row.id, { slug: 'renamed', data: { title: 123 } }, editor))).toBe('invalid_data');
+    expect((await r.get(row.id, editor))?.slug).toBe('keep');
+    await r.create!({ slug: 'taken', data: { title: 'Taken' } }, editor);
+    expect(await code(r.update!(row.id, { slug: 'taken', data: { title: 'X' } }, editor))).toBe('slug_taken');
+    expect((await r.get(row.id, editor))?.data.title).toBe('Keep');
   });
 
   it('links each entry to its public page and a short-lived signed preview', async () => {

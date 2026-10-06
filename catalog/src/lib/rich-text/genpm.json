@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/rich-text",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Rich text: Tiptap editor, allowlisted JSON documents and XSS-safe HTML/React rendering, plain text and TOC",
     "es": "Texto enriquecido: editor Tiptap, documentos JSON con lista blanca, render HTML/React sin XSS, texto plano e índice",

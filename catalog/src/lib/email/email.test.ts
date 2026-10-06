@@ -39,6 +39,14 @@ describe('templates', () => {
     expect(r.text).toContain('$24.00');
     expect(r.subject).toBe('Receipt R-1');
   });
+  it('receipt amounts use the currency minor unit (JPY has none, KWD has 3)', async () => {
+    const date = new Date('2026-10-03T00:00:00Z');
+    const jpy = await renderEmail('receipt', { number: 'R-2', currency: 'JPY', date, items: [{ description: 'Mug', amount: 500 }] });
+    expect(jpy.text).toContain('¥500');
+    expect(jpy.text).not.toContain('¥5.');
+    const kwd = await renderEmail('receipt', { number: 'R-3', currency: 'KWD', date, items: [{ description: 'Mug', amount: 1500 }] });
+    expect(kwd.text).toContain('1.500');
+  });
   it('escapes user content', async () => {
     const w = await renderEmail('welcome', { name: '<script>x</script>', appUrl: 'https://a' });
     expect(w.html).not.toContain('<script>x</script>');

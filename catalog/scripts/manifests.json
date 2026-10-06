@@ -46,6 +46,7 @@
     }
   },
   "jobs": {
+    "v": "1.1.0",
     "s": {
       "en": "Background jobs on Postgres: durable queue, retries with backoff, cron schedules and a serverless cron endpoint",
       "es": "Tareas en segundo plano sobre Postgres: cola durable, reintentos con backoff, cron y endpoint para serverless",
@@ -135,6 +136,7 @@
     }
   },
   "content": {
+    "v": "1.1.0",
     "s": {
       "en": "Headless CMS core: typed collections and singletons with drafts, revisions, scheduling, locales and preview",
       "es": "Núcleo de CMS headless: colecciones y singletons tipados con borradores, revisiones, programación, idiomas y vista previa",
@@ -193,6 +195,7 @@
     }
   },
   "site": {
+    "v": "1.1.0",
     "s": {
       "en": "Site settings, editable nested menus and managed redirects with loop and open-redirect protection",
       "es": "Ajustes del sitio, menús anidados editables y redirecciones gestionables sin bucles ni open redirect",
@@ -288,6 +291,7 @@
     ]
   },
   "media": {
+    "v": "1.1.0",
     "s": {
       "en": "Media library: signed direct uploads, real file-type checks, EXIF/GPS removal, alt text, focal point, srcset",
       "es": "Biblioteca de medios: subida directa firmada, tipo real comprobado, sin EXIF/GPS, texto alternativo, punto focal, srcset",
@@ -318,6 +322,7 @@
     ]
   },
   "rich-text": {
+    "v": "1.0.1",
     "s": {
       "en": "Rich text: Tiptap editor, allowlisted JSON documents and XSS-safe HTML/React rendering, plain text and TOC",
       "es": "Texto enriquecido: editor Tiptap, documentos JSON con lista blanca, render HTML/React sin XSS, texto plano e índice",
@@ -964,6 +969,7 @@
     }
   },
   "kit-cms": {
+    "v": "1.0.1",
     "d": "src/app/(cms)",
     "s": {
       "en": "Self-managed website kit for Next.js: /admin to edit pages with blocks, media, menus, settings, forms and users",
@@ -984,7 +990,7 @@
     ],
     "g": {
       "@core/admin": "^1.0.0",
-      "@core/content": "^1.0.0",
+      "@core/content": "^1.1.0",
       "@core/media": "^1.0.0",
       "@core/rich-text": "^1.0.0",
       "@core/blocks": "^1.0.0",

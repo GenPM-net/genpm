@@ -35,7 +35,7 @@ no queues, no tracking pixels.
 - New template: create `templates/<name>.ts` exporting `{ subject(props), render(props) }` built with
   `createElement as h` (no JSX, so it works with any `jsxImportSource`), then add it to `templates` and
   `TemplateProps` in `send.ts`. TypeScript then enforces its props everywhere.
-- Amounts in minor units (cents); links absolute (`https://…`).
+- Amounts in the currency minor unit (cents; whole yen for JPY; 3 decimals for KWD); links absolute (`https://…`).
 - Keep `sendEmail` calls out of request hot paths when possible (after the response, or in a job).
 
 ## Don't

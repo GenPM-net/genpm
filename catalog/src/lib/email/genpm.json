@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/email",
-  "v": "1.0.1",
+  "v": "1.0.2",
   "s": {
     "en": "Transactional email with typed React Email templates: Resend, SMTP or console in dev",
     "es": "Email transaccional con plantillas React Email tipadas: Resend, SMTP o consola en desarrollo",

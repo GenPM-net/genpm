@@ -40,8 +40,12 @@ export async function verifyPreviewToken(token: string | null | undefined, opts:
   return claims;
 }
 
-/** Solo rutas relativas del propio sitio (anti open redirect): `/blog/x`, nunca `//evil.com` ni `https://…`. */
+/**
+ * Solo rutas relativas del propio sitio (anti open redirect): `/blog/x`, nunca `//evil.com` ni `https://…`. Rechaza
+ * espacios y caracteres de control: los navegadores quitan tabuladores y saltos de línea, y `/\t/evil.com` acabaría
+ * siendo `//evil.com`.
+ */
 export function safePath(path: string): string {
-  if (!/^\/(?![/\\])[^\s\\]*$/.test(path) || path.includes('://')) throw new ContentError('invalid_state', `unsafe preview path: ${path}`);
+  if (!/^\/(?![/\\])[^\s\\\u0000-\u001f\u007f]*$/.test(path) || path.includes('://')) throw new ContentError('invalid_state', `unsafe preview path: ${path}`);
   return path;
 }

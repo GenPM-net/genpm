@@ -3,7 +3,7 @@
 import { and, count, eq, ilike, or, type SQL, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import type { AdminContext, AdminResource } from '../contracts/index.ts';
-import { getDb } from '../db/index.ts';
+import { getDb, withTransaction } from '../db/index.ts';
 import {
   archive,
   createEntry,
@@ -128,8 +128,12 @@ export function contentAdminResource(
       const row = await load(id);
       await assertCan(ctx, collection, 'update', row);
       const i = Input.parse(input);
-      if (i.slug && i.slug !== row.slug && c.kind === 'collection') await renameEntry(id, i.slug);
-      return toRow(await saveDraft(id, i.data));
+      // Renombrar y guardar el borrador van juntos: si los datos no validan, el slug no cambia.
+      const saved = await withTransaction(async (t) => {
+        if (i.slug && i.slug !== row.slug && c.kind === 'collection') await renameEntry(id, i.slug, t);
+        return saveDraft(id, i.data, t);
+      });
+      return toRow(saved);
     },
     async delete(id, ctx) {
       await assertCan(ctx, collection, 'delete', await load(id));
