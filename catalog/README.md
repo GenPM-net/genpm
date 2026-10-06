@@ -19,3 +19,4 @@ node scripts/meta.mjs <modulo>      # genpm.json, LICENSE y .genpmignore desde s
 |---|---|---|
 | `contracts` | CAT-00-03 | Implementado y validado · pendiente de publicar |
 | `rbac` | CAT-CMS-01 | Implementado y validado · pendiente de publicar |
+| `jobs` | CAT-CMS-03 | Implementado y validado · pendiente de publicar |

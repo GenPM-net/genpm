@@ -73,7 +73,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 
 **68 %** completado · 215/318 tareas · 717.5h estimadas pendientes
 
-TODO 73 · DOING 6 · DONE 215 · BLOCKED 24 · CUT 0
+TODO 72 · DOING 7 · DONE 215 · BLOCKED 24 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -98,6 +98,7 @@ TODO 73 · DOING 6 · DONE 215 · BLOCKED 24 · CUT 0
 - `V011-02` Binario nativo de genpm para macOS, Linux y Windows con instaladores de una línea y genpm upgrade (ADR-025) · B · 8h ([10-post-mvp.md](10-post-mvp.md))
 - `CAT-00-03` Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h ([11-catalogo.md](11-catalogo.md))
 - `CAT-CMS-01` Implementar y publicar @core/rbac · C · 8h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-03` Implementar y publicar @core/jobs (cola Postgres, cron y runDue serverless) · C · 10h ([11-catalogo.md](11-catalogo.md))
 
 **Bloqueadas**
 
