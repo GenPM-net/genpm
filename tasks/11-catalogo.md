@@ -75,7 +75,8 @@
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/orders` (2026-10-06). Falta crear el repo `genpm-net/orders` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-STO-06` **BLOCKED** Implementar y publicar @core/shipping (zonas, tarifas, seguimiento) · C · 10h · deps: CAT-STO-04
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/shipping` (2026-10-06). Falta crear el repo `genpm-net/shipping` (fundador), publicar, pruebas de agente y revisión ADR-023.
-- [ ] `CAT-STO-07` **TODO** Implementar y publicar @core/checkout (Stripe Checkout, pedido solo en webhook, idempotente) · C · 16h · deps: CAT-STO-02, CAT-STO-05, CAT-STO-06
+- [ ] `CAT-STO-07` **BLOCKED** Implementar y publicar @core/checkout (Stripe Checkout, pedido solo en webhook, idempotente) · C · 16h · deps: CAT-STO-02, CAT-STO-05, CAT-STO-06
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/checkout` (2026-10-06). Falta crear el repo `genpm-net/checkout` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-STO-08` **TODO** Implementar y publicar @core/discounts (cupones, límites, regla Ómnibus de 30 días) · C · 12h · deps: CAT-STO-04
 - [ ] `CAT-STO-09` **TODO** Implementar y publicar @core/reviews (compra verificada, importadas etiquetadas, AggregateRating) · C · 10h · deps: CAT-BLG-02, CAT-STO-05, CAT-STO-03
 - [ ] `CAT-STO-10` **TODO** Implementar y publicar @core/kit-store (tienda, área de cliente, emails, plantillas legales) · C · 32h · deps: CAT-CMS-14, CAT-STO-07, CAT-STO-08, CAT-STO-09

@@ -631,5 +631,56 @@
     "p": {
       "zod": "^4.0.0"
     }
+  },
+  "checkout": {
+    "s": {
+      "en": "Stripe Checkout for one-off purchases: server-priced sessions, orders created only from the webhook, auto-refund if sold out",
+      "es": "Stripe Checkout para compras: sesiones con precios del servidor, pedido solo desde el webhook y reembolso automático si se agota",
+      "pt-BR": "Stripe Checkout para compras: sessões com preços do servidor, pedido só pelo webhook e reembolso automático se esgotar",
+      "fr": "Stripe Checkout pour les achats : prix serveur, commande créée uniquement par le webhook, remboursement auto en rupture",
+      "de": "Stripe Checkout für Einkäufe: Serverpreise, Bestellung nur per Webhook, automatische Erstattung bei Ausverkauf",
+      "ja": "単発購入向け Stripe Checkout：サーバー価格、Webhook のみで注文作成、在庫切れ時は自動返金",
+      "zh-CN": "一次性购买的 Stripe Checkout：服务端定价、仅由 Webhook 创建订单、售罄时自动退款",
+      "ko": "일회성 구매용 Stripe Checkout: 서버 가격, 웹훅에서만 주문 생성, 품절 시 자동 환불"
+    },
+    "k": [
+      "ecommerce",
+      "checkout",
+      "stripe",
+      "payments",
+      "orders"
+    ],
+    "g": {
+      "@core/cart": "^1.0.0",
+      "@core/orders": "^1.0.0",
+      "@core/shipping": "^1.0.0",
+      "@core/stripe": "^1.0.0",
+      "@core/catalog": "^1.0.0",
+      "@core/email": "^1.0.1",
+      "@core/jobs": "^1.0.0",
+      "@core/money": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0",
+      "stripe": "^23.0.0"
+    },
+    "e": [
+      "SITE_URL",
+      "STRIPE_TAX",
+      "CHECKOUT_ALERT_TO"
+    ],
+    "m": [
+      {
+        "n": "stripe",
+        "c": "npx",
+        "a": [
+          "-y",
+          "@stripe/mcp"
+        ],
+        "e": [
+          "STRIPE_SECRET_KEY"
+        ]
+      }
+    ]
   }
 }

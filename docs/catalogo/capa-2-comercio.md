@@ -96,14 +96,14 @@ agregadores: fase posterior.
 ## `@core/checkout` — pago con Stripe
 
 **Para qué.** Del carrito al pago: validación final (stock, precios, dirección, envío), sesión de **Stripe Checkout**
-(o Payment Element embebido), Stripe Tax opcional, y en el webhook `checkout.session.completed` la creación
-**idempotente** del pedido + reserva definitiva de stock en una transacción. Implementa `PaymentProvider` para
+con una instantánea de los totales (tabla `checkout_sessions`), Stripe Tax opcional, y en el webhook `checkout.session.completed` la creación
+**idempotente** del pedido desde esa instantánea + reserva definitiva de stock en una transacción (Payment Element embebido: fase posterior). Implementa `PaymentProvider` para
 reembolsos. Página de éxito que no confía en la URL (consulta el estado real).
 **No incluye.** Otras pasarelas (PayPal, Mercado Pago, Redsys: adaptadores futuros del mismo contrato).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/checkout` | `@core/cart ^1`, `@core/orders ^1`, `@core/shipping ^1`, `@core/stripe ^1` | — | `CHECKOUT_SUCCESS_URL`, `CHECKOUT_CANCEL_URL`, `STRIPE_TAX` (opc.) | (hereda Stripe de `@core/stripe`) |
+| `src/lib/checkout` | `@core/cart ^1`, `@core/orders ^1`, `@core/shipping ^1`, `@core/stripe ^1`, `@core/catalog ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/money ^1` | `zod`, `stripe` | `SITE_URL`, `STRIPE_TAX` (opc.), `CHECKOUT_ALERT_TO` (opc.) | (hereda Stripe de `@core/stripe`) |
 
 **API.** `startCheckout(cart, {email, locale})`, handler del webhook registrado en `onStripeEvent`, `getCheckoutStatus(sessionId)`, emite `begin_checkout` y `purchase` (servidor).
 **Reglas IA.** El pedido **solo** nace en el webhook, nunca en la redirección de éxito; los importes se envían a Stripe desde el carrito recalculado.
