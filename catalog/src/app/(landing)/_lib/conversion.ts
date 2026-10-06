@@ -2,6 +2,7 @@
 // de servidor (Meta CAPI, TikTok Events, GA4 MP, solo con consentimiento) y la página de gracias lanza el mismo
 // evento en el navegador con el mismo `eventId`, para que las plataformas lo cuenten una vez.
 import { z } from 'zod';
+import { recordConversion } from '@/lib/experiments';
 import { submitForm } from '@/lib/forms';
 import { defineJob } from '@/lib/jobs';
 import { attributionFromRequest, saveAttribution, takeAttribution, trackServer } from '@/lib/pixels';
@@ -35,6 +36,8 @@ export async function handleLandingLead(req: Request, slug: string, formKey: str
     back.hash = `form-${formKey}`;
     return new Response(null, { status: 303, headers: { location: back.toString() } });
   }
+  // Conversión para los tests A/B en marcha con objetivo `lead` (solo si el visitante participa).
+  await recordConversion('lead', req.headers.get('cookie'));
   const eventId = leadEventId(result.id);
   const attribution = attributionFromRequest(new Request(source, { headers: req.headers }));
   if (attribution.consent.analytics || attribution.consent.marketing) {

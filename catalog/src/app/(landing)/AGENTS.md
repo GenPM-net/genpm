@@ -5,7 +5,7 @@ Conversion landing pages on top of @core/kit-cms: the `landings` collection (blo
 site navigation, conversion goal, thank-you page) served at `/lp/<slug>`, lead forms that store the submission with
 its UTM parameters and fire one deduplicated `lead` event (server + browser with the same `eventId`, only with
 consent), a cookie banner, consent-gated GA4/Meta/TikTok pixels and a real-deadline countdown block.
-A/B tests arrive in 1.1 with @core/experiments.
+A/B tests with @core/experiments: a landing can name an experiment and show `blocksB` to variant `b`.
 
 ## Map
 - `lp/[slug]/page.tsx` — landing. `lp/[slug]/lead/[formKey]/route.ts` — form posts. `lp/[slug]/thanks/page.tsx` — thank-you + browser event.
@@ -27,8 +27,10 @@ A/B tests arrive in 1.1 with @core/experiments.
 4. Env (all optional; a platform is active only when configured): public ids `GA4_MEASUREMENT_ID`, `META_PIXEL_ID`,
    `TIKTOK_PIXEL_ID` and the server tokens described in src/lib/pixels/AGENTS.md. Bump `CONSENT_POLICY_VERSION`
    when the cookie policy changes (everyone is asked again).
-5. Give editors the `landings:*` permission if they should manage landings (`defineRole`, @core/rbac).
-6. Verify: create a landing with a hero and a form block, submit it with UTM parameters, see the submission with
+5. A/B tests: set `EXPERIMENTS_SECRET`, add `experimentsAdminResource` to `src/genpm/admin.ts`, create an experiment
+   with variants `a` (control) and `b` and goal `lead`, then set its key and the "variant B" sections on the landing.
+6. Give editors the `landings:*` permission if they should manage landings (`defineRole`, @core/rbac).
+7. Verify: create a landing with a hero and a form block, submit it with UTM parameters, see the submission with
    its UTM in Admin → Submissions, and the `Lead` event in each platform's test tool after accepting cookies.
 
 ## Conventions

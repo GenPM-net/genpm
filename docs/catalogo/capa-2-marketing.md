@@ -124,3 +124,8 @@ reparto de tráfico y resultado con intervalo de confianza.
 **Tablas.** `experiments`, `experiment_exposures` (agregado diario, no por visitante), `experiment_conversions`.
 **API.** `getVariant(experimentKey, request)`, `recordConversion(goal)`, `<Experiment>`, `AdminResource` "Experimentos".
 **Aceptación.** Asignación estable entre visitas; sin consentimiento siempre control; cálculo estadístico con tests de referencia.
+
+Implementación 1.0: en lugar de agregados diarios se guarda un participante por experimento con un seudónimo (HMAC del
+id de consentimiento, sin cookie propia) para no contar dos veces la misma persona; se borran 30 días después de parar
+y los resultados quedan congelados en el experimento. `e`: `EXPERIMENTS_SECRET`. En `kit-landing`: campo `experiment` y
+bloques `blocksB` por landing, conversión `lead` al enviar el formulario.

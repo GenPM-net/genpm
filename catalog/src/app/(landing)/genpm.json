@@ -24,7 +24,8 @@
   "g": {
     "@core/kit-cms": "^1.0.0",
     "@core/consent": "^1.0.0",
-    "@core/pixels": "^1.0.0"
+    "@core/pixels": "^1.0.0",
+    "@core/experiments": "^1.0.0"
   },
   "p": {
     "next": ">=15.5.0",
@@ -35,6 +36,7 @@
     "GA4_MEASUREMENT_ID",
     "META_PIXEL_ID",
     "TIKTOK_PIXEL_ID",
-    "CONSENT_POLICY_VERSION"
+    "CONSENT_POLICY_VERSION",
+    "EXPERIMENTS_SECRET"
   ]
 }

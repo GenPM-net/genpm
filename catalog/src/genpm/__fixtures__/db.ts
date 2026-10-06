@@ -10,6 +10,7 @@ import * as consentSchema from '@/lib/consent/schema';
 import * as contentSchema from '@/lib/content/schema';
 import { testDb } from '@/lib/db/__fixtures__/pglite';
 import * as discountsSchema from '@/lib/discounts/schema';
+import * as experimentsSchema from '@/lib/experiments/schema';
 import * as formsSchema from '@/lib/forms/schema';
 import * as jobsSchema from '@/lib/jobs/schema';
 import * as mediaSchema from '@/lib/media/schema';
@@ -51,4 +52,5 @@ export const projectDb = () =>
     stripeSchema,
     pricingSchema,
     suppliersSchema,
+    experimentsSchema,
   );

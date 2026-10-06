@@ -1,0 +1,37 @@
+{
+  "$": 1,
+  "n": "@core/experiments",
+  "v": "1.0.0",
+  "s": {
+    "en": "A/B tests with consent: stable assignment, conversion goals and results with significance, no extra cookies",
+    "es": "Tests A/B con consentimiento: asignación estable, objetivos de conversión y resultados con significación",
+    "pt-BR": "Testes A/B com consentimento: atribuição estável, metas de conversão e resultados com significância",
+    "fr": "Tests A/B avec consentement : affectation stable, objectifs de conversion et résultats significatifs",
+    "de": "A/B-Tests mit Einwilligung: stabile Zuteilung, Conversion-Ziele und Ergebnisse mit Signifikanz",
+    "ja": "同意ベースの A/B テスト：安定した割り当て、コンバージョン目標、有意性付きの結果",
+    "zh-CN": "基于同意的 A/B 测试：稳定分组、转化目标和带显著性的结果",
+    "ko": "동의 기반 A/B 테스트: 안정적 배정, 전환 목표, 유의성 포함 결과"
+  },
+  "d": "src/lib/experiments",
+  "l": "MIT",
+  "k": [
+    "ab-testing",
+    "experiments",
+    "conversion",
+    "analytics",
+    "privacy"
+  ],
+  "g": {
+    "@core/db": "^1.0.0",
+    "@core/consent": "^1.0.0",
+    "@core/contracts": "^1.0.0",
+    "@core/jobs": "^1.0.0"
+  },
+  "p": {
+    "zod": "^4.0.0",
+    "react": "^19.0.0"
+  },
+  "e": [
+    "EXPERIMENTS_SECRET"
+  ]
+}

@@ -14,6 +14,9 @@ export const LandingSchema = z.object({
   layout: z.enum(['full', 'minimal']).default('minimal'),
   /** Qué cuenta como conversión. `lead`: un envío de formulario desde la landing. */
   goal: z.enum(['lead', 'click']).default('lead'),
+  /** Test A/B (@core/experiments): clave de un experimento cuya variante `b` muestra `blocksB` en lugar de `blocks`. */
+  experiment: z.string().max(48).optional().transform((v) => v || undefined),
+  blocksB: blocks.schema.default([]),
   thanksTitle: z.string().max(160).default('Thank you!'),
   thanksText: z.string().max(2000).default('We have received your details and will get back to you soon.'),
   seo: SeoFieldsSchema,
@@ -37,6 +40,8 @@ export const landings = defineCollection('landings', {
       ],
     },
     { name: 'goal', label: 'Conversion goal', type: 'select', list: true, options: [{ value: 'lead', label: 'Lead (form submission)' }, { value: 'click', label: 'Click on a call to action' }] },
+    { name: 'experiment', label: 'A/B test key (optional)', type: 'text', help: 'Create the experiment in Admin → Experiments with variants a and b and goal "lead".' },
+    blocks.field('blocksB', 'Sections for variant B (A/B test)'),
     { name: 'thanksTitle', label: 'Thank-you page title', type: 'text' },
     { name: 'thanksText', label: 'Thank-you page text', type: 'textarea' },
     ...seoAdminFields,

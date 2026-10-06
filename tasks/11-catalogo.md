@@ -108,7 +108,8 @@
 
 ## F6 · Crecimiento
 
-- [ ] `CAT-GRO-01` **TODO** Implementar y publicar @core/experiments y añadirlo a kit-landing 1.1 · C · 16h · deps: CAT-LND-03
+- [ ] `CAT-GRO-01` **BLOCKED** Implementar y publicar @core/experiments y añadirlo a kit-landing 1.1 · C · 16h · deps: CAT-LND-03
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/lib/experiments` (2026-10-06). Falta crear el repo `genpm-net/experiments` (fundador), publicar, pruebas de agente y revisión ADR-023.
 - [ ] `CAT-GRO-02` **TODO** Adaptador @core/content-payload si hay demanda (decisión C1) · C · 16h · deps: CAT-CMS-14
 - [ ] `CAT-GRO-03` **TODO** Priorizar kits futuros (kits/futuros.md) con la demanda no cubierta del panel de analítica · F · 2h · deps: CAT-DRP-07
 - [ ] `CAT-GRO-04` **TODO** Implementar y publicar @core/invoices (facturas españolas con numeración legal y VeriFactu; verificar plazos vigentes) · C · 24h · deps: CAT-STO-05

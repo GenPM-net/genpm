@@ -101,6 +101,33 @@ describe('landing page', () => {
   });
 });
 
+describe('A/B test (experiments)', () => {
+  it('shows variant B to consenting visitors assigned to it and counts the lead conversion', async () => {
+    process.env.EXPERIMENTS_SECRET = 'x'.repeat(40);
+    const { upsertExperiment, setExperimentStatus, experimentResults } = await import('@/lib/experiments');
+    const { recordConsent } = await import('@/lib/consent');
+    const { contentEntries, saveDraft, publish } = await import('@/lib/content');
+    const [row] = await db.select().from(contentEntries).where((await import('drizzle-orm')).eq(contentEntries.slug, 'launch'));
+    await saveDraft(row!.id, { ...(row!.data as object), experiment: 'hero-test', blocksB: [{ id: 'hb', type: 'hero', data: { title: 'Variant B headline' } }, { id: 'fb', type: 'form', data: { formKey: 'contact' } }] });
+    await publish(row!.id);
+    // Todo el tráfico a B (peso 1/99) para que el test sea determinista.
+    const e = await upsertExperiment({ key: 'hero-test', name: 'Hero', goal: 'lead', variants: [{ key: 'a', weight: 1 }, { key: 'b', weight: 99 }] });
+    await setExperimentStatus(e.id, 'running');
+
+    expect(await html(Landing(props('launch')))).toContain('The best mug'); // sin consentimiento: control
+    let cookie = '';
+    for (let i = 0; i < 20 && !cookie; i++) {
+      const c = (await recordConsent({ choices: { analytics: true, marketing: false, preferences: false }, action: 'banner' })).setCookies[0]!.split(';')[0]!;
+      state.cookie = c;
+      if ((await html(Landing(props('launch')))).includes('Variant B headline')) cookie = c;
+    }
+    expect(cookie).not.toBe('');
+    await lead({ name: 'Ana', email: 'ana@x.test', message: 'Hello there', consent: 'on' }, { ip: '198.51.100.9', cookie });
+    const r = await experimentResults(e.id);
+    expect(r.find((x) => x.variant === 'b')).toMatchObject({ conversions: 1 });
+  });
+});
+
 describe('lead conversion', () => {
   const fields = { name: 'Ana', email: 'ana@x.test', message: 'I want one please', consent: 'on' };
 

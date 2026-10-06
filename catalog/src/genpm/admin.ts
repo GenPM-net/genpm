@@ -10,6 +10,7 @@ import { blogAdminResources } from '@/lib/blog'; // kit-blog
 import { catalogAdminResources } from '@/lib/catalog'; // kit-store
 import { commentsAdminResource } from '@/lib/comments'; // kit-blog
 import { contentAdminResource } from '@/lib/content';
+import { experimentsAdminResource } from '@/lib/experiments'; // kit-landing
 import { discountsAdminResource } from '@/lib/discounts'; // kit-store
 import { formsAdminResources, submissionsAdminResource } from '@/lib/forms';
 import { mediaAdminResource } from '@/lib/media';
@@ -63,6 +64,7 @@ export const admin = defineAdmin({
   resources: [
     pagesResource,
     { ...contentAdminResource('landings', { path: landingPath }), group: 'Marketing' }, // kit-landing
+    experimentsAdminResource, // kit-landing
     withSendAsCampaign(postsResource!), // kit-blog
     ...blogTaxonomies, // kit-blog
     commentsAdminResource, // kit-blog
