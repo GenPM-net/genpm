@@ -74,7 +74,7 @@ reintentos), consultar seguimiento (cada 12 h), recalcular precios cuando cambia
 - Importación desde el panel como acciones de `@core/suppliers` ("Importar CSV", "Importar por id" si el adaptador
   tiene `getProduct`). Vista previa antes de importar: los productos entran como borradores.
 - Simulador de reglas de precio y rentabilidad por producto: pendiente para 1.1 (hoy: widget de rentabilidad a 7 días).
-- Adaptadores CJ y AliExpress: CAT-DRP-03/05 (requieren verificar API y alta de la app).
+- Adaptador CJ: hecho (CAT-DRP-03, `@core/suppliers` 1.2.0). AliExpress: CAT-DRP-05, pendiente de que se apruebe la app (CAT-DRP-04).
 
 ## 7. Aceptación específica
 

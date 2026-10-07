@@ -69,7 +69,7 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 ## Tablero
 
 <!-- board:start -->
-<!-- Generado por `pnpm tasks sync` · 2026-10-06. No editar a mano. -->
+<!-- Generado por `pnpm tasks sync` · 2026-10-07. No editar a mano. -->
 
 **68 %** completado · 216/320 tareas · 741.5h estimadas pendientes
 
