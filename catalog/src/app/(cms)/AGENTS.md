@@ -24,7 +24,9 @@ auth and rbac (the last two arrive through @core/admin). Public routes: pages cr
 ## Integration
 1. Check Next ≥ 15.5 with App Router, `src/app` and the `@/*` → `src/*` alias. Without `src/`: install with `--dest app/(cms)` and adapt `@/` imports.
    GenPM packages import each other with `.ts` extensions: `tsconfig.json` needs `"allowImportingTsExtensions": true`
-   (Next projects already have `"noEmit": true`). Works with webpack and Turbopack, no extra `next.config`.
+   (Next projects already have `"noEmit": true`). Works with webpack and Turbopack. In `next.config` set
+   `htmlLimitedBots: /.*/`: metadata comes from the database, and without it Next 15 streams `<title>`, description and
+   canonical into `<body>` for every client except a few bots (Lighthouse, link previews and some crawlers miss them).
 2. Env: copy `_templates/env.example` to the project's `.env.example` (merge if it exists; Next's default `.gitignore`
    has `.env*`, so add a line `!.env.example`) and the real values to `.env.local`. Required: `DATABASE_URL`, `AUTH_SECRET`, one OAuth provider
    (`GITHUB_CLIENT_ID/SECRET` or `GOOGLE_…`), `STORAGE_*`, `EMAIL_FROM` + `RESEND_API_KEY`, `SITE_URL`,

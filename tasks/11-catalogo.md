@@ -61,6 +61,7 @@
 - [ ] `CAT-BLG-04` **BLOCKED** Implementar y publicar @core/kit-blog · C · 14h · deps: CAT-CMS-14, CAT-BLG-01, CAT-BLG-02, CAT-BLG-03
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/app/(blog)` (2026-10-06). Falta crear el repo `genpm-net/kit-blog` (fundador), publicar, pruebas de agente y la autorrevisión diferida de ADR-023 (la revisión independiente con IA ya se hizo y sus hallazgos están corregidos, 2026-10-06).
 - [ ] `CAT-BLG-05` **TODO** Aceptación kit-blog: prueba de agente, feeds válidos y Lighthouse ≥ 95 · T · 3h · deps: CAT-BLG-04
+  - Nota (2026-10-07): en el e2e, RSS y Atom bien formados y JSON Feed 1.1 con el post; Lighthouse móvil 100 en las cuatro categorías en `/blog/hello`. Falta la prueba de agente específica del blog y repetirla con el kit publicado.
 
 ## F3 · Landing (kit-landing)
 
@@ -71,6 +72,7 @@
 - [ ] `CAT-LND-03` **BLOCKED** Implementar y publicar @core/kit-landing · C · 12h · deps: CAT-CMS-14, CAT-LND-02
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/app/(landing)` (2026-10-06). Falta crear el repo `genpm-net/kit-landing` (fundador), publicar, pruebas de agente y la autorrevisión diferida de ADR-023 (la revisión independiente con IA ya se hizo y sus hallazgos están corregidos, 2026-10-06).
 - [ ] `CAT-LND-04` **TODO** Aceptación kit-landing: 0 peticiones a terceros sin consentimiento y Lighthouse móvil ≥ 95 · T · 3h · deps: CAT-LND-03
+  - Nota (2026-10-07): medido en el e2e (`pnpm e2e`, Postgres + build de producción): 0 peticiones a terceros sin consentimiento con GA4 y Meta configurados (y GA4 se carga tras «Accept all»); Lighthouse móvil 100/100/100/100 en `/lp/promo`. Queda repetirla con el kit publicado.
 
 ## F4 · Tienda (kit-store)
 

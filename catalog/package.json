@@ -47,6 +47,7 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "15.5.27",
     "happy-dom": "^20.14.5",
+    "lighthouse": "^12.8.2",
     "next": "^15.5.27",
     "playwright-core": "1.56.1",
     "react-dom": "^19.3.0",

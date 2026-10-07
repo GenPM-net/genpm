@@ -39,7 +39,7 @@ Work page by page, one commit per page, without changing markup or styles:
    already-seeded database: set it in the admin or with `saveDraft` + `publish`), e.g. from a seed script.
 4. Replace literals with typed reads; keep a fallback only where a value is optional.
 5. Render before/after and compare the HTML: it must be identical. Next 15 streams metadata into `<body>` for browsers
-   once `generateMetadata` awaits data; set `htmlLimitedBots: /.*/` in `next.config` to keep it in `<head>` (as before).
+   once `generateMetadata` awaits data; `htmlLimitedBots: /.*/` in `next.config` (kit-cms Integration 1) keeps it in `<head>`.
 6. Grant editors the new singletons: `defineRole` with `<singleton>:*` (e.g. `home:*`, `site_settings:*`) — the
    default `editor` role only covers the kit's collections.
 

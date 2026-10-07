@@ -2,7 +2,7 @@
 // el recorrido de quien edita (login → crear página con bloques → publicar → verla) y de quien visita.
 // Uso: DATABASE_URL=postgres://…/vacia pnpm e2e   (la base de datos se vacía y migra al empezar).
 // Chromium: PLAYWRIGHT_CHROMIUM (ruta del ejecutable) o el de playwright-core.
-import { type ChildProcess, spawn } from 'node:child_process';
+import { type ChildProcess, execFileSync, spawn } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import postgres from 'postgres';
@@ -27,9 +27,28 @@ const env = {
   STORAGE_SECRET: 'e2e-storage-secret-'.padEnd(40, 'x'),
   STORAGE_PUBLIC_URL: base,
   EMAIL_FROM: 'Site <site@example.test>',
+  CONSENT_POLICY_VERSION: '2026-10',
+  GA4_MEASUREMENT_ID: 'G-E2ETEST000',
+  META_PIXEL_ID: '1234567890',
+  NEWSLETTER_SECRET: 'e2e-newsletter-secret-'.padEnd(40, 'x'),
+  NEWSLETTER_FROM: 'News <news@example.test>',
+  NEWSLETTER_POSTAL_ADDRESS: 'Calle Sol 4, Valencia',
   NODE_ENV: 'production' as const,
 };
 Object.assign(process.env, env);
+
+/** Lighthouse CLI (móvil por defecto) con el Chromium de Playwright; devuelve las puntuaciones 0–100. */
+function lighthouse(target: string): Record<string, number> {
+  const out = `${process.env.TMPDIR ?? '/tmp'}/genpm-lh-${Date.now()}.json`;
+  execFileSync(
+    process.execPath,
+    [require.resolve('lighthouse/cli/index.js'), target, '--quiet', '--output=json', `--output-path=${out}`, '--only-categories=performance,accessibility,best-practices,seo', '--chrome-flags=--headless=new --no-sandbox'],
+    { env: { ...process.env, CHROME_PATH: process.env.PLAYWRIGHT_CHROMIUM ?? chromium.executablePath() }, stdio: 'ignore' },
+  );
+  if (process.env.E2E_KEEP_LIGHTHOUSE) console.log(`  report: ${out}`);
+  const r = JSON.parse(readFileSync(out, 'utf8')) as { categories: Record<string, { score: number }> };
+  return Object.fromEntries(Object.entries(r.categories).map(([k, v]) => [k, Math.round(v.score * 100)]));
+}
 
 const step = async (name: string, fn: () => Promise<void>) => {
   const t = Date.now();
@@ -57,6 +76,29 @@ expect(await bootstrapOwner(owner.id), 'owner not created');
 const token = generateSessionToken();
 await createSession(token, owner.id);
 await seedEntry({ collection: 'site_settings', data: { name: 'E2E Mugs', tagline: 'Mugs for everyone' } });
+// Contenido de los kits: una landing (hero + formulario) y un post del blog, publicados.
+const { createEntry, publish } = await import('../src/lib/content/index.ts');
+const { docFromText } = await import('../src/lib/rich-text/index.ts');
+await publish(
+  (
+    await createEntry({
+      collection: 'landings',
+      slug: 'promo',
+      data: {
+        title: 'Promo',
+        blocks: [
+          { id: 'h', type: 'hero', data: { title: 'The mug that keeps coffee hot for 6 hours', subtitle: 'Free shipping this week.' } },
+          { id: 'f', type: 'form', data: { title: 'Get 10% off', formKey: 'contact' } },
+        ],
+      },
+    })
+  ).id,
+);
+await publish((await createEntry({ collection: 'authors', slug: 'ana', data: { name: 'Ana' } })).id);
+await publish(
+  (await createEntry({ collection: 'posts', slug: 'hello', data: { title: 'Hello world', excerpt: 'First post', authors: ['ana'], body: docFromText('Body of the first post.') } })).id,
+);
+
 // Tareas diarias de todos los kits del proyecto de ejemplo (lo que ejecuta la persona tras migrar).
 const { setupSchedules } = await import('../src/app/(cms)/_scripts/setup-schedules.ts');
 const scheduled = await setupSchedules();
@@ -153,6 +195,52 @@ try {
     expect(!v.length, `axe: ${v.join(', ')}`);
     expect(!errors.length, `page errors: ${errors.join(' | ')}`);
   });
+
+  await step('a landing makes no third-party request before consent, and loads pixels after it', async () => {
+    const ctx = await browser.newContext();
+    const page = await ctx.newPage();
+    const external: string[] = [];
+    page.on('request', (r) => {
+      if (!r.url().startsWith(base) && !r.url().startsWith('data:')) external.push(r.url());
+    });
+    await page.goto(`${base}/lp/promo`, { waitUntil: 'networkidle' });
+    expect((await page.locator('h1').innerText()).includes('keeps coffee hot'), 'landing hero missing');
+    expect(!external.length, `third-party requests without consent: ${external.join(', ')}`);
+    await page.getByRole('button', { name: 'Accept all' }).click();
+    await page.waitForTimeout(1500);
+    expect(external.some((u) => u.includes('googletagmanager.com')), `GA4 not requested after consent: ${external.join(', ')}`);
+    await ctx.close();
+  });
+
+  await step('the blog feeds are valid RSS, Atom and JSON Feed', async () => {
+    const [rss, atom, json] = (await Promise.all(['feed.xml', 'atom.xml', 'feed.json'].map(async (f) => (await fetch(`${base}/blog/${f}`)).text()))) as [string, string, string];
+    // Como cadena: tsx añadiría `__name(...)` a una función, y en el navegador no existe.
+    const parsed = (await visitor.evaluate(`(() => {
+      const p = (x) => new DOMParser().parseFromString(x, 'application/xml');
+      const dr = p(${JSON.stringify(rss)});
+      const da = p(${JSON.stringify(atom)});
+      return {
+        errors: dr.getElementsByTagName('parsererror').length + da.getElementsByTagName('parsererror').length,
+        rssItem: dr.querySelector('rss > channel > item > title')?.textContent,
+        atomEntry: da.getElementsByTagName('entry')[0]?.getElementsByTagName('title')[0]?.textContent,
+        atomNs: da.documentElement.namespaceURI,
+      };
+    })()`)) as { errors: number; rssItem?: string; atomEntry?: string; atomNs: string };
+    expect(!parsed.errors, 'feed XML is not well-formed');
+    expect(parsed.rssItem === 'Hello world' && parsed.atomEntry === 'Hello world', `feed items: ${JSON.stringify(parsed)}`);
+    expect(parsed.atomNs === 'http://www.w3.org/2005/Atom', 'Atom namespace');
+    const feed = JSON.parse(json) as { version: string; items: Array<{ id: string; title: string; url: string }> };
+    expect(feed.version === 'https://jsonfeed.org/version/1.1' && feed.items[0]?.title === 'Hello world' && feed.items[0].url === `${base}/blog/hello`, `JSON Feed: ${json.slice(0, 200)}`);
+  });
+
+  if (!process.env.E2E_SKIP_LIGHTHOUSE) {
+    for (const [name, path] of [['landing', '/lp/promo'], ['blog post', '/blog/hello'], ['CMS page', '/about-e2e']] as const)
+      await step(`Lighthouse (mobile) on the ${name}: every category ≥ 95`, async () => {
+        const scores = lighthouse(`${base}${path}`);
+        console.log(`  ${Object.entries(scores).map(([k, v]) => `${k} ${v}`).join(' · ')}`);
+        expect(Object.values(scores).every((v) => v >= 95), `scores below 95 on ${path}`);
+      });
+  }
 
   console.log('E2E OK');
 } catch (e) {
