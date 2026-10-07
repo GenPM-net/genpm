@@ -33,6 +33,7 @@ export function CtaLink(p: { href?: string | null; label?: string | null; varian
 /** `<script type="application/ld+json">` sin posibilidad de cerrar la etiqueta desde los datos. */
 export function JsonLd(p: { data: unknown }): ReactNode {
   const json = JSON.stringify(p.data).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+  // nosemgrep: typescript.react.security.audit.react-dangerouslysetinnerhtml.react-dangerouslysetinnerhtml -- JSON escapado en la línea anterior: no puede cerrar el <script>
   return h('script', { type: 'application/ld+json', dangerouslySetInnerHTML: { __html: json } });
 }
 

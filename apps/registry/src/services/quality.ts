@@ -20,6 +20,7 @@ type Row = {
 
 /** Recalcula la puntuación de un paquete (o de todos los activos). Devuelve cuántos actualizó. */
 export async function recomputeQuality(env: Env, packageId?: string, now = Date.now()): Promise<number> {
+  // nosemgrep: semgrep.d1-prepare-no-template -- el único fragmento interpolado es el literal fijo AND p.id = ?1; el valor va por bind()
   const { results } = await env.DB.prepare(
     `SELECT p.id, p.license, p.summary, p.is_deprecated, a.is_verified, v.scan_status, v.scan_report, v.context_excerpt,
             v.published_at, (SELECT count(*) FROM package_keywords k WHERE k.package_id = p.id) AS keywords

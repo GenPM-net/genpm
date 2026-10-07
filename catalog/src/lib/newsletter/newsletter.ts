@@ -145,6 +145,7 @@ export async function renderCampaign(c: Pick<Campaign, 'subject' | 'preheader' |
   const preheader = c.preheader ? `<div style="display:none;max-height:0;overflow:hidden">${esc(c.preheader)}</div>` : '';
   return {
     subject: c.subject,
+    // nosemgrep: javascript.express.security.injection.raw-html-format.raw-html-format -- cada valor pasa por esc() y el cuerpo por el render con lista blanca de @core/rich-text
     html: `${preheader}${toHtml(c.body as Doc, { siteHost: host })}<hr><p style="font-size:12px;color:#666">${esc(address)}<br><a href="${esc(unsub)}">${esc(label)}</a></p>`,
     text: `${toPlainText(c.body as Doc)}\n\n--\n${address}\n${label}: ${unsub}`,
     headers: { 'List-Unsubscribe': `<${unsub}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' },

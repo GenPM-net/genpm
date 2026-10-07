@@ -5,7 +5,7 @@ title = "genpm"
 [extend]
 useDefault = true
 
-[allowlist]
+[[allowlists]]
 description = "Fixtures de test y artefactos de build"
 paths = [
   '''(^|/)test/''',
@@ -13,3 +13,12 @@ paths = [
   '''(^|/)apps/registry/seeds/fixtures\.sql$''',
   '''(^|/)dist/''',
 ]
+
+# Valores públicos por diseño en la config de despliegue: la clave de proyecto de PostHog (phc_…) va al navegador y
+# la de IndexNow se publica en https://genpm.net/<clave>.txt. Solo esas dos variables y solo en wrangler.jsonc.
+[[allowlists]]
+description = "Claves públicas de PostHog e IndexNow en wrangler.jsonc"
+paths = ['''(^|/)wrangler\.jsonc$''']
+regexTarget = "line"
+regexes = ['''"(POSTHOG_KEY|INDEXNOW_KEY)"\s*:\s*"[^"]*"''']
+condition = "AND"

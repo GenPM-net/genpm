@@ -9,3 +9,8 @@ reason = "braces <= 3.0.3 sin versión corregida. Solo la usa @changesets/cli (d
 id = "GHSA-ch52-4w7c-c8xp"
 ignoreUntil = 2027-01-03
 reason = "http-cache-semantics <= 4.2.0 sin versión corregida. Dependencia de Astro para la caché de imágenes remotas en build/dev; no está en el bundle de producción de apps/web (comprobado en dist/server) y la web usa image service passthrough."
+
+[[IgnoredVulns]]
+id = "GHSA-hp3w-g68c-fv3c"
+ignoreUntil = 2027-01-07
+reason = "sprintf-js <= 1.1.3 sin versión corregida (DoS con precisiones enormes). Solo llega vía js-yaml 3 de @changesets/cli (devDependency), que formatea sus propios mensajes; ningún dato de terceros entra en un formato y no está en el CLI publicado, el registry ni la web."

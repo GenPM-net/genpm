@@ -92,6 +92,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
         </section>
       )}
       <Reviews productId={p.id} slug={p.slug} rating={rating} status={one(sp.review)} />
+      {/* nosemgrep: typescript.react.security.audit.react-dangerouslysetinnerhtml.react-dangerouslysetinnerhtml -- JSON-LD escapado por jsonLdScript (<, >, &, U+2028/9): no puede cerrar el <script> */}
       {ld && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(ld) }} />}
     </main>
   );

@@ -157,6 +157,7 @@ export class Repo {
     limit: number,
     offset: number,
   ): Promise<Array<PackageRow & { dep_range: string; is_verified: number }>> {
+    // nosemgrep: semgrep.d1-prepare-no-template -- this.vis es una de tres constantes (PUBLIC/MEMBER/ADMIN); los valores van por bind()
     const { results } = await this.db
       .prepare(
         `SELECT p.*, d.dep_range, coalesce(a.is_verified, 0) AS is_verified
@@ -173,6 +174,7 @@ export class Repo {
   }
 
   async dependentsCount(name: string): Promise<number> {
+    // nosemgrep: semgrep.d1-prepare-no-template -- this.vis es una de tres constantes (PUBLIC/MEMBER/ADMIN); los valores van por bind()
     const row = await this.db
       .prepare(
         `SELECT count(*) AS n FROM package_dependencies d
