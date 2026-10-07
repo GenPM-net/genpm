@@ -1,10 +1,14 @@
-# CI de GenPM (D1-A-02). Matriz 3 SO × Node 20/22. Actions fijadas por SHA (security §6).
+# CI de GenPM (D1-A-02). Actions fijadas por SHA (security §6). Linux × Node 20/22 en cada push y PR; la matriz completa
+# de 3 SO solo semanal o a mano (ADR-034: macOS gasta ×10 y Windows ×2 de la cuota de Actions del repo privado).
 name: ci
 
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 4 * * 1'
 
 permissions:
   contents: read
@@ -20,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: ${{ fromJSON((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '["ubuntu-latest","macos-latest","windows-latest"]' || '["ubuntu-latest"]') }}
         node: [20, 22]
     steps:
       - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
