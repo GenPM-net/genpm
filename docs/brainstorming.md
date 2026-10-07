@@ -466,6 +466,28 @@ contrato = versión mayor del tren. Preguntas C1–C6 cerradas en [catalogo §10
 como adaptador bajo demanda), `@core/kit-*`, Next primero, todo MIT, proveedores manual → CJ → AliExpress, Stripe Tax
 opcional y facturación española como paquete `invoices` en F6.
 
+
+### ADR-034 · Extensión de los imports relativos de los paquetes (Turbopack) — ✅ Decidida (Tech Lead por delegación del fundador, 2026-10-06)
+
+**Contexto:** las semillas y el catálogo importan con `.js` (`'../db/index.js'`), estilo ESM de Node con
+`moduleResolution: NodeNext`. Al compilar el proyecto de ejemplo con `next build` (CAT-00-02) se comprobó:
+- Next 15.5 con webpack **no** resuelve `x.js` → `x.ts` por defecto; funciona con `webpack.resolve.extensionAlias`.
+- Next 16 usa **Turbopack** por defecto y Turbopack no tiene `extensionAlias`: 141 errores "Module not found".
+  Con `next build --webpack` + `extensionAlias` compila.
+- Reescribiendo los imports a `.ts` (`allowImportingTsExtensions`, válido porque nadie emite JS: Next, Vite, Vitest,
+  tsx y wrangler compilan) Turbopack compila todo; `tsc` sigue en verde. Único fallo: el `import(name)` opcional de
+  `nodemailer` en `@core/email` (Turbopack lo analiza igualmente).
+
+**Opción elegida:** adoptar imports relativos con extensión `.ts` en todas las semillas y paquetes (cambio mecánico),
+añadir `/* webpackIgnore: true */ /* turbopackIgnore: true */` al import opcional de `nodemailer`, y publicarlo como
+versión menor coordinada (tren) porque el código inyectado cambia pero no la API. Alternativa descartada: imports sin
+extensión (rompen la ejecución directa en Node ESM).
+
+**Decisión:** se adopta la propuesta. Aplicada en todo `catalog/` (265 archivos, cambio mecánico) y comprobada:
+`tsc`, 339 tests, y `next build` del proyecto de ejemplo con webpack **y** con Turbopack sin configuración extra.
+Requisito para el proyecto consumidor: `"allowImportingTsExtensions": true` en su `tsconfig.json` (lo indica el
+`AGENTS.md` de `@core/db`). Las semillas publicadas se actualizan como versión menor (1.x) en el siguiente tren.
+
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

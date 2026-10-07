@@ -14,12 +14,13 @@ publicación programada, idiomas y vista previa.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/content` | `@core/db ^1`, `@core/jobs ^1`, `@core/contracts ^1` | — | `CONTENT_PREVIEW_SECRET` | — |
+| `src/lib/content` | `@core/db ^1`, `@core/jobs ^1`, `@core/contracts ^1` | `zod` | `CONTENT_PREVIEW_SECRET`, `CONTENT_DEFAULT_LOCALE` (opc.) | — |
 
-**Tablas.** `content_entries` (id, collection, slug, locale, status `draft|scheduled|published|archived`, data jsonb,
-authorId, publishedAt, scheduledAt, translationOf), `content_revisions` (entryId, data, authorId, at, message).
+**Tablas.** `content_entries` (id, collection, slug, locale, groupId de traducciones, status `draft|scheduled|published|archived`,
+`data` = lo publicado, `draft` = cambios sin publicar, authorId, publishedAt, scheduledAt), `content_revisions` (una por publicación).
+Editar una entrada publicada no cambia la web hasta volver a publicar.
 **API.**
-- `defineCollection(name, {fields, slug, localized, versions, publicRead})`, `defineSingleton(name, {fields})`.
+- `defineCollection(name, {schema, fields, localized, titleField})`, `defineSingleton(name, {...})`. Las lecturas públicas solo devuelven lo publicado; no hay API HTTP pública de contenido (cada kit decide qué rutas exponer).
 - Lectura tipada: `getEntry('pages', 'about', {locale})`, `listEntries('pages', {where, orderBy, limit})`, `getSingleton('home')`.
 - Escritura: `saveDraft`, `publish`, `schedule(at)` (vía `jobs`), `unpublish`, `restoreRevision`.
 - Vista previa: `createPreviewToken(entryId)` + adaptador Next `draftMode`.
@@ -47,7 +48,9 @@ obligatorio, punto focal, dimensiones, variantes responsivas (`srcset`) y compon
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/media` | `@core/db ^1`, `@core/storage ^1`, `@core/contracts ^1` | `sharp` (opcional, solo driver Node) | `MEDIA_TRANSFORM` (`sharp` \| `cloudflare` \| `vercel` \| `none`) | — |
+| `src/lib/media` | `@core/db ^1`, `@core/storage ^1`, `@core/contracts ^1` | `zod` | `MEDIA_TRANSFORM` (`cloudflare` \| `vercel` \| `none`) | — |
+
+Sin `sharp` en la 1.0: los metadatos se quitan sin recodificar (JPEG, PNG, WebP) y el redimensionado lo hace la CDN.
 
 **Tablas.** `media` (id, key, filename, mime, size, width, height, alt, focalX, focalY, folder, uploadedBy, createdAt).
 **API.** `createUpload({filename, mime, size})`, `confirmUpload(id)`, `<Img media sizes>`, `imageUrl(media, {w, h, fit})`,
@@ -61,13 +64,13 @@ prohibido por defecto; límite de tamaño; eliminación de EXIF/GPS en imágenes
 ## `@core/rich-text` — texto enriquecido
 
 **Para qué.** Editor (Tiptap) con encabezados, listas, enlaces, citas, tablas, código, imágenes de `media`, embeds
-(YouTube/Vimeo con consentimiento) y bloques personalizados; almacenamiento en **JSON** (no HTML) y render a React/HTML,
+(YouTube/Vimeo como enlace por defecto, iframe sin cookies opcional); almacenamiento en **JSON** (no HTML) y render a React/HTML,
 texto plano (para búsqueda) y tiempo de lectura.
-**No incluye.** Colaboración en tiempo real (posible fase futura con Yjs).
+**No incluye.** Tablas (1.1) ni colaboración en tiempo real (posible fase futura con Yjs).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/rich-text` | `@core/media ^1` | `@tiptap/react`, `@tiptap/starter-kit`, extensiones necesarias | — | — |
+| `src/lib/rich-text` | — (las imágenes de `media` se resuelven con una función que pasa la app) | `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/extension-link`, `@tiptap/extension-image`, `react`, `zod` | — | — |
 
 **API.** `<RichTextEditor value onChange extensions>`, `<RichText doc />`, `toPlainText(doc)`, `readingTime(doc)`,
 `defineNode()` para nodos nuevos; tipo de campo `richText` para `admin`.
@@ -86,7 +89,7 @@ asignables (privacidad, aviso legal, cookies, términos, devoluciones).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/site` | `@core/content ^1` | — | `SITE_URL` | — |
+| `src/lib/site` | `@core/content ^1`, `@core/db ^1`, `@core/contracts ^1` | `zod` | `SITE_URL`, `SITE_REDIRECT_HOSTS` (opc.) | — |
 
 **Tablas.** `redirects` (from, to, status, hits). Ajustes y menús son singletons/colecciones de `content`.
 **API.** `getSiteSettings()`, `getMenu('header')`, `redirectMiddleware` (Next middleware / Hono), `AdminResource` "Ajustes", "Menús", "Redirecciones".
@@ -120,7 +123,7 @@ usuarios con sesión, y **valoración opcional 1–5** (que `reviews` reutiliza)
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/comments` | `@core/db ^1`, `@core/auth ^1`, `@core/rbac ^1`, `@core/antispam ^1`, `@core/email ^1` | — | — | — |
+| `src/lib/comments` | `@core/db ^1`, `@core/auth ^1`, `@core/antispam ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/contracts ^1` | `zod` | `COMMENTS_NOTIFY_TO` (opc.) | — |
 
 **Tablas.** `comments` (id, entityType, entityId, parentId, authorId, guestName, guestEmailHash, body, rating, status
 `pending|approved|spam|deleted`, createdAt), `comment_bans`.
@@ -140,7 +143,7 @@ JSON-LD `BlogPosting`.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/blog` | `@core/content ^1`, `@core/rich-text ^1`, `@core/media ^1`, `@core/contracts ^1` | — | — | — |
+| `src/lib/blog` | `@core/content ^1`, `@core/rich-text ^1`, `@core/contracts ^1`, `@core/db ^1` | `zod` | `SITE_URL` | — |
 
 **Tablas.** Ninguna propia: todo son colecciones de `content` (demuestra que el modelo es suficiente).
 **API.** `listPosts({category, tag, author, page})`, `getPost(slug)`, `relatedPosts(post)`, `archive()`,

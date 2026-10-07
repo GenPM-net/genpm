@@ -90,8 +90,6 @@ async function setActive(c: Context<AppEnv>, conn: Conn, scimId: string, active:
   return true;
 }
 
-const SELECT = 'SELECT scim_id, subject, email, active, account_id, created_at FROM sso_identities';
-
 export const scim = new Hono<AppEnv>()
   .get('/:org/ServiceProviderConfig', async (c) => {
     if (!(await connection(c))) return scimError(c, 401, 'Invalid SCIM token');
@@ -119,12 +117,12 @@ export const scim = new Hono<AppEnv>()
     const count = Math.min(100, Math.max(0, Number(c.req.query('count') ?? 100) || 100));
     const { results } = eq
       ? await c.env.DB.prepare(
-          `${SELECT} WHERE connection_id = ?1 AND scim_id IS NOT NULL AND (email = ?2 OR subject = ?2)`,
+          `SELECT scim_id, subject, email, active, account_id, created_at FROM sso_identities WHERE connection_id = ?1 AND scim_id IS NOT NULL AND (email = ?2 OR subject = ?2)`,
         )
           .bind(conn.id, eq[1]!.toLowerCase())
           .all<Row>()
       : await c.env.DB.prepare(
-          `${SELECT} WHERE connection_id = ?1 AND scim_id IS NOT NULL ORDER BY created_at LIMIT ?2 OFFSET ?3`,
+          `SELECT scim_id, subject, email, active, account_id, created_at FROM sso_identities WHERE connection_id = ?1 AND scim_id IS NOT NULL ORDER BY created_at LIMIT ?2 OFFSET ?3`,
         )
           .bind(conn.id, count, start - 1)
           .all<Row>();
@@ -180,7 +178,9 @@ export const scim = new Hono<AppEnv>()
     )
       .bind(conn.id, userName, email, body?.active === false ? 0 : 1, id, now)
       .run();
-    const row = (await c.env.DB.prepare(`${SELECT} WHERE connection_id = ?1 AND scim_id = ?2`)
+    const row = (await c.env.DB.prepare(
+      `SELECT scim_id, subject, email, active, account_id, created_at FROM sso_identities WHERE connection_id = ?1 AND scim_id = ?2`,
+    )
       .bind(conn.id, id)
       .first<Row>())!;
     return scimJson(c, user(row, `${new URL(c.req.url).origin}/scim/v2/${c.req.param('org')}`), 201);
@@ -188,7 +188,9 @@ export const scim = new Hono<AppEnv>()
   .get('/:org/Users/:id', async (c) => {
     const conn = await connection(c);
     if (!conn) return scimError(c, 401, 'Invalid SCIM token');
-    const row = await c.env.DB.prepare(`${SELECT} WHERE connection_id = ?1 AND scim_id = ?2`)
+    const row = await c.env.DB.prepare(
+      `SELECT scim_id, subject, email, active, account_id, created_at FROM sso_identities WHERE connection_id = ?1 AND scim_id = ?2`,
+    )
       .bind(conn.id, c.req.param('id'))
       .first<Row>();
     if (!row) return scimError(c, 404, 'User not found');
@@ -215,7 +217,9 @@ export const scim = new Hono<AppEnv>()
     }
     const id = c.req.param('id') ?? '';
     if (active !== undefined && !(await setActive(c, conn, id, active))) return scimError(c, 404, 'User not found');
-    const row = await c.env.DB.prepare(`${SELECT} WHERE connection_id = ?1 AND scim_id = ?2`)
+    const row = await c.env.DB.prepare(
+      `SELECT scim_id, subject, email, active, account_id, created_at FROM sso_identities WHERE connection_id = ?1 AND scim_id = ?2`,
+    )
       .bind(conn.id, id)
       .first<Row>();
     if (!row) return scimError(c, 404, 'User not found');

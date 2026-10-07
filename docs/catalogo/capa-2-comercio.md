@@ -23,7 +23,7 @@ atributos libres.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/catalog` | `@core/db ^1`, `@core/media ^1`, `@core/money ^1`, `@core/contracts ^1` | — | — | — |
+| `src/lib/catalog` | `@core/db ^1`, `@core/money ^1`, `@core/rich-text ^1`, `@core/contracts ^1` (imágenes por id de `media`) | `zod` | `STORE_CURRENCY` | — |
 
 **Tablas.** `products`, `product_variants` (sku, price, compareAtPrice, cost, currency, stock, weight, options jsonb),
 `product_options`, `product_media`, `categories`, `product_categories`, `collections`.
@@ -43,7 +43,7 @@ atributos libres.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/cart` | `@core/db ^1`, `@core/auth ^1`, `@core/catalog ^1`, `@core/money ^1`, `@core/contracts ^1` | — | `CART_COOKIE_SECRET` | — |
+| `src/lib/cart` | `@core/db ^1`, `@core/auth ^1`, `@core/catalog ^1`, `@core/money ^1`, `@core/contracts ^1` | `zod` | `CART_COOKIE_SECRET` | — |
 
 **Tablas.** `carts` (id, userId, currency, expiresAt), `cart_lines` (cartId, variantId, qty).
 **API.** `getCart(request)`, `addLine`, `updateQty`, `removeLine`, `mergeCarts`, `computeTotals(cart)`,
@@ -54,8 +54,8 @@ atributos libres.
 
 ## `@core/orders` — pedidos y clientes
 
-**Para qué.** Pedidos con líneas **congeladas** (snapshot de nombre, precio, impuestos), máquina de estados
-(`pending → paid → fulfilling → shipped → delivered`, `cancelled`, `refunded`, `partially_refunded`), clientes
+**Para qué.** Pedidos con líneas **congeladas** (snapshot de nombre, precio, impuestos), dos estados independientes:
+pago (`pending → paid → partially_refunded/refunded`, o `cancelled`) y envío (`unfulfilled → partial → fulfilled → delivered`), clientes
 (usuario o invitado por email), direcciones, envíos parciales (`fulfillments` con seguimiento), reembolsos vía
 `PaymentProvider`, notas internas, emails transaccionales (confirmación, enviado, reembolso) y acceso del invitado a su
 pedido con enlace firmado.
@@ -63,7 +63,7 @@ pedido con enlace firmado.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/orders` | `@core/db ^1`, `@core/auth ^1`, `@core/email ^1`, `@core/money ^1`, `@core/contracts ^1` | — | `ORDER_LINK_SECRET` | — |
+| `src/lib/orders` | `@core/db ^1`, `@core/auth ^1`, `@core/catalog ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/money ^1`, `@core/contracts ^1` | `zod` | `ORDER_LINK_SECRET`, `ORDER_NUMBER_PREFIX` (opc.), `SITE_URL` | — |
 
 **Tablas.** `orders` (number legible secuencial, status, email, userId, currency, totales, addresses jsonb, paymentRef,
 placedAt), `order_lines`, `fulfillments`, `refunds`, `order_events` (historial).
@@ -75,16 +75,37 @@ eventos `onOrderPaid`, `onOrderShipped`, `onOrderCancelled`, `ordersResources` p
 
 ---
 
+## `@core/invoices` — facturas españolas (F6)
+
+**Para qué.** Facturas desde pedidos pagados con numeración correlativa por serie y año, simplificada (≤ 400 €, o
+3000 € en minorista) o completa, rectificativas por diferencias en reembolsos (serie propia), completa en sustitución
+de simplificada, HTML imprimible y registros de facturación encadenados con huella SHA-256 y URL del QR de la AEAT.
+
+| `d` | `g` | `p` | `e` | `m` |
+|---|---|---|---|---|
+| `src/lib/invoices` | `@core/db ^1`, `@core/orders ^1`, `@core/contracts ^1` | `zod` | `INVOICE_ISSUER_NIF`, `INVOICE_ISSUER_NAME`, `INVOICE_ISSUER_ADDRESS`, `INVOICE_SERIES`, `INVOICE_VAT_RATE`, `INVOICE_RETAIL`, `INVOICE_QR_ENV` | — |
+
+**Plazos verificados (6-oct-2026):** el RD-ley 15/2025 fijó la obligatoriedad de los sistemas de facturación
+(RD 1007/2023) el 1-ene-2027 (Impuesto sobre Sociedades) y el 1-jul-2027 (resto); el 5-oct-2026 Hacienda anunció su
+aplazamiento a octubre de 2028, alineado con la factura electrónica B2B (Orden HAC/1028/2026). Volver a verificar
+antes de publicar.
+**Alcance 1.0.** Datos y cadena de registros conforme a la Orden HAC/1177/2024 (huella comprobada con el ejemplo de la
+AEAT); **sin** firma de registros (modo no VERI*FACTU) ni remisión a la AEAT (modo VERI*FACTU): siguiente versión.
+Un solo tipo de IVA por factura; solo EUR.
+
+---
+
 ## `@core/shipping` — envíos
 
 **Para qué.** Zonas (países/regiones), tarifas (fija, gratis a partir de X, por peso, por precio), estimación de entrega
-(días mín./máx., también para dropshipping), y seguimiento: número + transportista con URL de seguimiento; adaptador
-opcional de agregador de seguimiento (17TRACK/AfterShip, verificar APIs vigentes) que actualiza `fulfillments` con `jobs`.
+(días mín./máx., también para dropshipping), y seguimiento: número + transportista con URL de seguimiento (plantillas
+de Correos, SEUR, GLS, DHL, UPS, FedEx, USPS, Royal Mail y 17TRACK como genérico). Consulta automática del estado vía API de
+agregadores: fase posterior.
 **No incluye.** Compra de etiquetas de envío (adaptadores Shippo/EasyPost en F6).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/shipping` | `@core/db ^1`, `@core/money ^1`, `@core/cart ^1` | — | `TRACKING_API_KEY` (opc.) | — |
+| `src/lib/shipping` | `@core/db ^1`, `@core/cart ^1`, `@core/money ^1`, `@core/contracts ^1` | `zod` | — | — |
 
 **Tablas.** `shipping_zones`, `shipping_rates`.
 **API.** `ratesFor(cart, address)`, paso de totales `shipping` en `cart`, `trackingUrl(carrier, number)`, `shippingResources`.
@@ -95,14 +116,14 @@ opcional de agregador de seguimiento (17TRACK/AfterShip, verificar APIs vigentes
 ## `@core/checkout` — pago con Stripe
 
 **Para qué.** Del carrito al pago: validación final (stock, precios, dirección, envío), sesión de **Stripe Checkout**
-(o Payment Element embebido), Stripe Tax opcional, y en el webhook `checkout.session.completed` la creación
-**idempotente** del pedido + reserva definitiva de stock en una transacción. Implementa `PaymentProvider` para
+con una instantánea de los totales (tabla `checkout_sessions`), Stripe Tax opcional, y en el webhook `checkout.session.completed` la creación
+**idempotente** del pedido desde esa instantánea + reserva definitiva de stock en una transacción (Payment Element embebido: fase posterior). Implementa `PaymentProvider` para
 reembolsos. Página de éxito que no confía en la URL (consulta el estado real).
 **No incluye.** Otras pasarelas (PayPal, Mercado Pago, Redsys: adaptadores futuros del mismo contrato).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/checkout` | `@core/cart ^1`, `@core/orders ^1`, `@core/shipping ^1`, `@core/stripe ^1` | — | `CHECKOUT_SUCCESS_URL`, `CHECKOUT_CANCEL_URL`, `STRIPE_TAX` (opc.) | (hereda Stripe de `@core/stripe`) |
+| `src/lib/checkout` | `@core/cart ^1`, `@core/orders ^1`, `@core/shipping ^1`, `@core/stripe ^1`, `@core/catalog ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/money ^1` | `zod`, `stripe` | `SITE_URL`, `STRIPE_TAX` (opc.), `CHECKOUT_ALERT_TO` (opc.) | (hereda Stripe de `@core/stripe`) |
 
 **API.** `startCheckout(cart, {email, locale})`, handler del webhook registrado en `onStripeEvent`, `getCheckoutStatus(sessionId)`, emite `begin_checkout` y `purchase` (servidor).
 **Reglas IA.** El pedido **solo** nace en el webhook, nunca en la redirección de éxito; los importes se envían a Stripe desde el carrito recalculado.
@@ -113,14 +134,14 @@ reembolsos. Página de éxito que no confía en la URL (consulta el estado real)
 
 ## `@core/discounts` — cupones y descuentos
 
-**Para qué.** Códigos de cupón y descuentos automáticos: porcentaje, importe fijo, envío gratis, "compra X lleva Y";
+**Para qué.** Códigos de cupón y descuentos automáticos: porcentaje, importe fijo, envío gratis ("compra X lleva Y" en 1.1);
 condiciones (mínimo de compra, productos/categorías, primer pedido, clientes concretos), límites de uso total y por
 cliente, fechas de validez. Se aplica como paso de la tubería de totales de `cart` y se registra en el pedido.
 **No incluye.** Programas de puntos/fidelización, tarjetas regalo (paquetes futuros).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/discounts` | `@core/db ^1`, `@core/cart ^1`, `@core/money ^1` | — | — | — |
+| `src/lib/discounts` | `@core/db ^1`, `@core/cart ^1`, `@core/catalog ^1`, `@core/orders ^1`, `@core/money ^1` | `zod` | — | — |
 
 **Tablas.** `discounts`, `discount_redemptions`.
 **API.** `applyCode(cart, code)`, paso de totales `discounts`, `discountsResources`.
@@ -139,9 +160,9 @@ distribución por producto, JSON-LD `AggregateRating`, y reseñas **importadas**
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/reviews` | `@core/comments ^1`, `@core/orders ^1`, `@core/catalog ^1`, `@core/jobs ^1` | — | — | — |
+| `src/lib/reviews` | `@core/comments ^1`, `@core/catalog ^1`, `@core/orders ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/db ^1` | `zod` | `REVIEW_REQUEST_DELAY_DAYS` (opc.) | — |
 
-**Tablas.** `review_stats` (productId, count, avg, histogram) — materializada; las reseñas viven en `comments`.
+**Tablas.** `review_meta` (verificada, pedido, origen, fotos) y `review_stats` (count, avg, histogram) — las reseñas viven en `comments`.
 **API.** `<ProductReviews productId>`, `requestReview(order)`, `productRating(productId)`, `importReviews(productId, rows, {source})`.
 **Reglas IA (legal UE).** Indicar si y cómo se verifica que las reseñas proceden de compradores (Ómnibus); nunca
 generar reseñas falsas ni ocultar las negativas por defecto; las importadas muestran su origen.
@@ -158,7 +179,7 @@ moneda del proveedor a la de la tienda, y **historial de precios** (necesario pa
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/pricing` | `@core/db ^1`, `@core/catalog ^1`, `@core/money ^1` | — | — | — |
+| `src/lib/pricing` | `@core/db ^1`, `@core/catalog ^1`, `@core/money ^1`, `@core/contracts ^1` | `zod` | — | — |
 
 **Tablas.** `price_rules` (ámbito, prioridad, fórmula), `price_history` (variantId, price, from, to).
 **API.** `priceFromCost(cost, ctx)`, `applyRules(product)`, `lowestPrice30d(variantId)`, `pricingResources`, simulador en admin ("con estas reglas, este producto costaría…").
@@ -176,7 +197,7 @@ periódicamente (`jobs`), **reenviar pedidos** pagados al proveedor (`onOrderPai
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/suppliers` | `@core/catalog ^1`, `@core/orders ^1`, `@core/pricing ^1`, `@core/jobs ^1` | — | Por adaptador: `CJ_API_KEY`; `ALIEXPRESS_APP_KEY`, `ALIEXPRESS_APP_SECRET` | — |
+| `src/lib/suppliers` | `@core/catalog ^1`, `@core/orders ^1`, `@core/pricing ^1`, `@core/jobs ^1`, `@core/media ^1`, `@core/email ^1`, `@core/money ^1`, `@core/rich-text ^1`, `@core/db ^1`, `@core/contracts ^1` | `zod` | `SUPPLIER_COST_ALERT_PCT` (opc.); credenciales de cada adaptador | — |
 
 **Adaptadores (orden propuesto, C5):**
 

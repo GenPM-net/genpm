@@ -6,7 +6,7 @@ Orden de lectura recomendado:
 
 | # | Documento | Para qué | Audiencia |
 |---|---|---|---|
-| 0 | [brainstorming.md](brainstorming.md) | Dudas y decisiones (ADR-001…033), incluidas las del fundador | Todos — leer primero |
+| 0 | [brainstorming.md](brainstorming.md) | Dudas y decisiones (ADR-001…034), incluidas las del fundador | Todos — leer primero |
 | 1 | [architecture.md](architecture.md) | Diseño del sistema, flujos de datos, seguridad, decisiones tecnológicas, camino a SaaS | Ingeniería |
 | 2 | [manifest-spec.md](manifest-spec.md) | Especificación de `genpm.json`, `genpm.lock` y cómo deben interpretarlos los LLMs | Ingeniería, autores de paquetes |
 | 3 | [api-spec.md](api-spec.md) | Endpoints del registry edge y esquema D1 (preparado para registros privados y patrocinios) | Backend |

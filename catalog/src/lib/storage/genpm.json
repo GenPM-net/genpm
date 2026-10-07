@@ -1,0 +1,37 @@
+{
+  "$": 1,
+  "n": "@core/storage",
+  "v": "1.0.1",
+  "s": {
+    "en": "File storage for S3-compatible buckets (R2, S3, MinIO) and local disk, with signed direct uploads",
+    "es": "Almacenamiento de archivos en buckets S3 compatibles (R2, S3, MinIO) y disco local, con subidas firmadas",
+    "pt-BR": "Armazenamento de arquivos em buckets compatíveis com S3 (R2, S3, MinIO) e disco local, com uploads assinados",
+    "fr": "Stockage de fichiers sur buckets compatibles S3 (R2, S3, MinIO) et disque local, avec envois signés",
+    "de": "Dateispeicher für S3-kompatible Buckets (R2, S3, MinIO) und lokale Platte, mit signierten Direkt-Uploads",
+    "ja": "S3 互換バケット（R2、S3、MinIO）とローカルディスクのファイル保存、署名付き直接アップロード対応",
+    "zh-CN": "S3 兼容存储桶（R2、S3、MinIO）与本地磁盘的文件存储，支持签名直传",
+    "ko": "S3 호환 버킷(R2, S3, MinIO)과 로컬 디스크 파일 저장, 서명된 직접 업로드"
+  },
+  "d": "src/lib/storage",
+  "l": "MIT",
+  "k": [
+    "storage",
+    "s3",
+    "r2",
+    "uploads",
+    "files"
+  ],
+  "p": {
+    "aws4fetch": "^1.0.20"
+  },
+  "e": [
+    "STORAGE_DRIVER",
+    "STORAGE_BUCKET",
+    "STORAGE_ENDPOINT",
+    "STORAGE_ACCESS_KEY_ID",
+    "STORAGE_SECRET_ACCESS_KEY",
+    "STORAGE_PUBLIC_URL",
+    "STORAGE_SECRET",
+    "STORAGE_LOCAL_DIR"
+  ]
+}

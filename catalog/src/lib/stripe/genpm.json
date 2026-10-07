@@ -1,0 +1,47 @@
+{
+  "$": 1,
+  "n": "@core/stripe",
+  "v": "1.0.0",
+  "s": {
+    "en": "Shared Stripe client and one idempotent, signature-verified webhook endpoint dispatching events to every module",
+    "es": "Cliente de Stripe compartido y un único webhook idempotente y con firma verificada que reparte eventos a cada módulo",
+    "pt-BR": "Cliente Stripe compartilhado e um único webhook idempotente com assinatura verificada que distribui eventos",
+    "fr": "Client Stripe partagé et un webhook unique, idempotent et signé, qui distribue les événements à chaque module",
+    "de": "Gemeinsamer Stripe-Client und ein idempotenter, signaturgeprüfter Webhook, der Events an alle Module verteilt",
+    "ja": "共有 Stripe クライアントと、署名検証済みで冪等な単一 Webhook（各モジュールへイベントを配信）",
+    "zh-CN": "共享 Stripe 客户端和单一的幂等、验签 Webhook 端点，将事件分发给各模块",
+    "ko": "공유 Stripe 클라이언트와 서명 검증·멱등 처리되는 단일 웹훅, 각 모듈로 이벤트 전달"
+  },
+  "d": "src/lib/stripe",
+  "l": "MIT",
+  "k": [
+    "stripe",
+    "payments",
+    "webhooks",
+    "billing",
+    "commerce"
+  ],
+  "g": {
+    "@core/db": "^1.0.0"
+  },
+  "p": {
+    "stripe": "^23.0.0"
+  },
+  "e": [
+    "STRIPE_SECRET_KEY",
+    "STRIPE_WEBHOOK_SECRET"
+  ],
+  "m": [
+    {
+      "n": "stripe",
+      "c": "npx",
+      "a": [
+        "-y",
+        "@stripe/mcp"
+      ],
+      "e": [
+        "STRIPE_SECRET_KEY"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "$": 1,
+  "n": "@core/money",
+  "v": "1.0.1",
+  "s": {
+    "en": "Money in integer minor units: ISO currencies, safe parsing, rounding, lossless allocation, charm prices, formatting",
+    "es": "Dinero en enteros (céntimos): monedas ISO, parseo seguro, redondeo, reparto sin pérdidas, precios .99 y formato",
+    "pt-BR": "Dinheiro em inteiros (centavos): moedas ISO, parsing seguro, arredondamento, rateio sem perdas, preços .99 e formato",
+    "fr": "Argent en entiers (centimes) : devises ISO, parsing sûr, arrondis, répartition sans perte, prix en .99, formatage",
+    "de": "Geld als Ganzzahlen (Cent): ISO-Währungen, sicheres Parsen, Rundung, verlustfreie Aufteilung, .99-Preise, Format",
+    "ja": "整数（最小単位）で扱う金額：ISO 通貨、安全なパース、丸め、端数の出ない配分、.99 価格、書式化",
+    "zh-CN": "以整数最小单位表示金额：ISO 货币、安全解析、舍入、无损分摊、.99 定价和格式化",
+    "ko": "정수(최소 단위) 금액: ISO 통화, 안전한 파싱, 반올림, 손실 없는 배분, .99 가격, 서식"
+  },
+  "d": "src/lib/money",
+  "l": "MIT",
+  "k": [
+    "money",
+    "currency",
+    "pricing",
+    "commerce",
+    "i18n"
+  ],
+  "g": {
+    "@core/contracts": "^1.0.0"
+  }
+}

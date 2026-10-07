@@ -1,0 +1,59 @@
+{
+  "name": "genpm-catalog-dev",
+  "private": true,
+  "type": "module",
+  "description": "Workspace de desarrollo de los paquetes del catálogo (docs/catalogo). Cada src/lib/<x> se publica en su repo github.com/genpm-net/<x>.",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json",
+    "check": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json && eslint src && vitest run && tsx scripts/check-migrations.ts && node scripts/kit-snippets.mjs --check",
+    "check:migrations": "tsx scripts/check-migrations.ts",
+    "build:example": "next build --turbopack --experimental-build-mode=compile",
+    "e2e": "next build --turbopack && tsx --tsconfig tsconfig.app.json e2e/run.ts",
+    "test:pg": "vitest run"
+  },
+  "dependencies": {
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0",
+    "@react-email/components": "^1.0.12",
+    "@react-email/render": "^2.1.0",
+    "@tiptap/extension-image": "^3.31.4",
+    "@tiptap/extension-link": "^3.31.4",
+    "@tiptap/pm": "^3.31.4",
+    "@tiptap/react": "^3.31.4",
+    "@tiptap/starter-kit": "^3.31.4",
+    "arctic": "^3.7.0",
+    "aws4fetch": "^1.0.20",
+    "cron-parser": "^5.0.0",
+    "drizzle-orm": "^0.45.0",
+    "hono": "^4.6.0",
+    "postgres": "^3.4.0",
+    "react": "^19.3.0",
+    "resend": "^6.32.0",
+    "stripe": "^23.0.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.0",
+    "@eslint/eslintrc": "^3.3.7",
+    "@tiptap/core": "^3.31.4",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "axe-core": "^4.14.0",
+    "drizzle-kit": "^0.31.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "15.5.27",
+    "happy-dom": "^20.14.5",
+    "lighthouse": "^12.8.2",
+    "next": "^15.5.27",
+    "playwright-core": "1.56.1",
+    "react-dom": "^19.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.6.0",
+    "vitest": "^3.2.0"
+  }
+}

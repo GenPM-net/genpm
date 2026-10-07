@@ -1,0 +1,23 @@
+/* Plantilla visual de la tienda sobre los tokens de @core/ui (este archivo es del proyecto: edítalo libremente). */
+.store-card { display: grid; gap: 0.5rem; }
+.store-card__image { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--ui-radius); }
+.store-card__title { font-size: 1rem; margin: 0; }
+.store-card__title a { color: inherit; }
+.store-price { font-weight: 700; margin: 0; }
+.store-price--big { font-size: 1.75rem; }
+.store-filters { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-block: 1rem; }
+.store-product__grid { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+.store-gallery { display: grid; gap: 0.5rem; grid-template-columns: repeat(4, 1fr); }
+.store-gallery img { width: 100%; height: auto; border-radius: var(--ui-radius); }
+.store-gallery img:first-child { grid-column: 1 / -1; }
+.store-add { display: grid; gap: 0.75rem; max-width: 22rem; margin-block: 1rem; }
+.store-qty { max-width: 6rem; }
+.store-inline { display: inline-flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+.store-cart__thumb { width: 4rem; height: 4rem; object-fit: cover; vertical-align: middle; margin-inline-end: 0.5rem; border-radius: var(--ui-radius); }
+.store-cart__side { display: grid; gap: 1.5rem; max-width: 28rem; margin-inline-start: auto; margin-block-start: 2rem; }
+.store-totals { display: grid; gap: 0.25rem; margin: 0; }
+.store-totals div { display: flex; justify-content: space-between; }
+.store-totals dd { margin: 0; }
+.store-totals__total { font-weight: 700; font-size: 1.25rem; border-block-start: 1px solid var(--ui-border); padding-block-start: 0.5rem; }
+.store-reviews__list { list-style: none; padding: 0; display: grid; gap: 1rem; }
+.store-review__body { white-space: pre-line; overflow-wrap: anywhere; }

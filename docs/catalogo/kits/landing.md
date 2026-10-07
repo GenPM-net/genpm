@@ -49,7 +49,16 @@ Reutiliza sin repetir: `blocks`, `forms`, `newsletter` si está instalado, `seo`
 3. Configurar las variables de las plataformas que se usen (ninguna es obligatoria).
 4. Verificar: crear landing, enviar lead, ver evento en el modo de prueba de cada plataforma.
 
-## 6. Aceptación específica
+## 6. Implementación 1.0 (notas)
+
+- Código en `catalog/src/app/(landing)`; líneas `// kit-landing` en `catalog/src/genpm`.
+- Lead: `POST /lp/<slug>/lead/<form>` guarda con `@core/forms` (UTM desde la URL de la landing), guarda la atribución
+  y encola el evento de servidor solo con consentimiento; la página de gracias lanza el mismo `eventId` en el navegador.
+- Diseño mínimo: la landing oculta lo marcado `.site-chrome` en el layout raíz (el layout es del usuario).
+- Pendiente para 1.1: bloque "Prueba social" con datos reales (`reviews`/`newsletter`), vista previa por dispositivo
+  y tests A/B (`@core/experiments`, CAT-GRO-01).
+
+## 7. Aceptación específica
 
 - Sin consentimiento: 0 peticiones a dominios de terceros (Playwright con interceptación).
 - Lead ⇒ envío guardado con UTM, email al equipo y evento `lead` deduplicado.

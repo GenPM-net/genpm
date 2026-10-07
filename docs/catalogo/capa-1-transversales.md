@@ -22,7 +22,7 @@ contrato" sin depender del paquete concreto. Es la pieza que evita los imports c
 | `ContentSource` | `get(collection, slugOrId, {locale, draft})`, `list(collection, query)` | `content`, adaptador Payload | `blog`, `blocks`, `site`, kits |
 | `SitemapSource` | `async *urls(): {loc, lastmod, alternates}` | `content`, `blog`, `catalog` | `seo` |
 | `SearchSource` | `async *documents(): {id, type, url, title, body, locale}` + `onChange` | `content`, `blog`, `catalog` | `search` |
-| `AdminResource` | `{name, label, icon, schema (zod), fields (meta UI), list, get, create, update, delete, permissions}` | `content`, `media`, `catalog`, `orders`, `forms`, … | `admin` |
+| `AdminResource` | `{name, label, icon, group, input (zod), fields (meta UI), title, list, get, create, update, delete, actions}` (acciones: publicar, programar, reembolsar…) | `content`, `media`, `catalog`, `orders`, `forms`, … | `admin` |
 | `PaymentProvider` | `refund(paymentId, amount)`, `getPayment(id)` | `checkout` (Stripe) | `orders` |
 | `CommerceEvent` | Unión `view_item \| add_to_cart \| begin_checkout \| purchase` con `eventId` | `cart`, `checkout`, kits | `pixels`, `experiments` |
 | `Money` | `{amount: number /* entero, unidades menores */, currency: string}` | `money` | comercio |
@@ -62,6 +62,8 @@ Backblaze B2) y disco local en desarrollo. URLs de subida firmadas para subir di
 |---|---|---|---|---|
 | `src/lib/storage` | — | `aws4fetch` (firma SigV4, funciona en Node y Workers) | `STORAGE_DRIVER`, `STORAGE_BUCKET`, `STORAGE_ENDPOINT`, `STORAGE_ACCESS_KEY_ID`, `STORAGE_SECRET_ACCESS_KEY`, `STORAGE_PUBLIC_URL` | — |
 
+Opcionales: `STORAGE_REGION` (default `auto`); con los drivers `local`/`memory`, `STORAGE_SECRET` (firma de subidas locales) y `STORAGE_LOCAL_DIR`.
+
 **API.** `put(key, body, {contentType})`, `get`, `delete`, `presignUpload(key, {maxBytes, contentType, expiresIn})`, `publicUrl(key)`.
 **Seguridad.** Claves generadas por el servidor (nunca el nombre del archivo del usuario como ruta); `maxBytes` y
 `contentType` firmados en la URL; bucket privado por defecto con lectura pública solo por prefijo `public/`.
@@ -95,10 +97,10 @@ de envío y limitación de frecuencia por IP/clave sobre Postgres.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/antispam` | `@core/db ^1` | — | `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | — |
+| `src/lib/antispam` | `@core/db ^1` | — | `ANTISPAM_SECRET` (hash de claves y token de tiempo), `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` (o `HCAPTCHA_SECRET_KEY`) | — |
 
 **Tablas.** `rate_limits` (key, windowStart, count).
-**API.** `verifyHuman(request)`, `rateLimit(key, {limit, window})`, componente `<HumanCheck />`, `honeypotField()`.
+**API.** `verifyHuman(headers, fields, {scope})`, `rateLimit(key, {limit, windowMs})`, `formTimingToken()`, `honeypotProps` (sin componente React: lo pinta cada formulario), `verifyCaptcha`, `clientIp`, `pruneRateLimits`.
 **Reglas IA.** Todo endpoint público que escriba (formularios, comentarios, newsletter, login) pasa por aquí.
 **Seguridad.** IPs guardadas con hash y caducidad (RGPD); sin captcha configurado, modo "solo honeypot + rate limit" con aviso.
 **Aceptación.** Rate limit respeta la ventana; Turnstile verificado contra su clave de prueba.
@@ -148,7 +150,7 @@ Mismo criterio que la web de GenPM ([ADR-027](../brainstorming.md)).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/consent` | `@core/db ^1`, `@core/ui ^1` | — | — | — |
+| `src/lib/consent` | `@core/db ^1` (componentes sin estilos propios: clases `consent-*`) | `zod`, `react` | `CONSENT_POLICY_VERSION` | — |
 
 **Tablas.** `consent_records` (id anónimo, categorías, versión de la política, fecha; sin IP en claro).
 **API.** `getConsent(request)`, `hasConsent(cat)`, `onConsentChange(cb)`, `<ConsentBanner />`, `<ConsentGate category>`, Google Consent Mode v2 opcional.
@@ -159,14 +161,14 @@ Mismo criterio que la web de GenPM ([ADR-027](../brainstorming.md)).
 
 ## `@core/ui` — sistema de diseño base
 
-**Para qué.** Tokens (CSS variables, claro/oscuro) y componentes accesibles estilo shadcn (Button, Input, Select,
-Dialog, Sheet, Tabs, Table, Toast, Card, Badge, Skeleton, Pagination, DropdownMenu, Form con zod). Base común del
+**Para qué.** Tokens (CSS variables, claro/oscuro con contraste AA verificado) y componentes accesibles sobre elementos nativos
+(Button, TextField, TextareaField, SelectField, Checkbox, Field, DataTable, Pagination, Tabs, Dialog, Alert, Badge, Card, Toasts, Spinner, Skeleton). Base común del
 admin, de los bloques y de las plantillas de los kits.
 **No incluye.** Componentes de dominio (tarjeta de producto, tarjeta de post: viven en su paquete o kit).
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/components/ui` | — | `@radix-ui/*` necesarios, `class-variance-authority`, `clsx`, `tailwind-merge`, `lucide-react` | — | — |
+| `src/lib/ui` | — | `react` (sin librerías de UI: elementos nativos y `<dialog>`) | — | — |
 
 **Reglas IA.** Los temas se cambian editando tokens (`theme.css`), no componentes; nuevos componentes en la app, no aquí.
 **Accesibilidad.** WCAG 2.2 AA: contraste, foco visible, navegación por teclado, `prefers-reduced-motion`.
@@ -185,12 +187,16 @@ aparece en el panel sin escribir pantallas.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/admin` | `@core/auth ^1`, `@core/rbac ^1`, `@core/ui ^1`, `@core/contracts ^1` | `@tanstack/react-table`, `react-hook-form`, `@hookform/resolvers` | — | — |
+| `src/lib/admin` | `@core/db ^1`, `@core/auth ^1`, `@core/rbac ^1`, `@core/ui ^1`, `@core/contracts ^1` | `react`, `zod` | — | — |
+
+Implementación 1.0: sin `@tanstack/react-table` ni `react-hook-form` (la tabla y el formulario de `@core/ui` bastan). El panel
+es un API JSON (`handleAdminApi`, adaptadores Hono/Next) + una app cliente (`<AdminApp>`) que se construye desde `GET /schema`;
+los campos `richText`, `media` y `blocks` se inyectan con `renderers` (sin ellos: JSON o selector de relación).
 
 **Tablas.** `admin_audit` (userId, resource, recordId, action, diff jsonb, at).
-**API.** `defineAdmin({resources, widgets, nav})`, `<AdminShell>`, `<ResourceList>`, `<ResourceForm>`, tipos de campo
-(`text`, `slug`, `richText`, `media`, `relation`, `select`, `money`, `date`, `json`, `blocks`), `registerFieldType()` para campos nuevos.
+**API.** `defineAdmin({title, resources, widgets})`, `handleAdminApi(req, admin)`, `<AdminApp basePath path renderers labels>`, tipos de campo
+(`text`, `slug`, `richText`, `media`, `relation`, `select`, `money`, `date`, `json`, `blocks`), `renderers` para campos nuevos, `auditAdminResource`.
 **Registro.** Archivo del proyecto `src/genpm/admin.ts`: `export default defineAdmin({ resources: [...cmsResources, ...storeResources] })`.
 **Reglas IA.** Un recurso nuevo se registra, no se crea una página a mano; las vistas personalizadas reemplazan solo la pieza necesaria.
-**Seguridad.** Acciones de servidor con CSRF y comprobación `can()` por recurso/acción; auditoría obligatoria en escrituras.
+**Seguridad.** Escrituras solo con cabecera `x-admin-request: 1` y mismo origen (anti-CSRF), `admin:access` + `can()` por recurso/acción; auditoría obligatoria en escrituras.
 **Aceptación.** Recurso de ejemplo con 10 tipos de campo: lista, crea, edita, borra; `editor` no ve `orders`; auditoría con diff.

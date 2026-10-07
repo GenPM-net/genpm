@@ -71,9 +71,9 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 <!-- board:start -->
 <!-- Generado por `pnpm tasks sync` · 2026-10-06. No editar a mano. -->
 
-**67 %** completado · 214/318 tareas · 721.5h estimadas pendientes
+**68 %** completado · 216/320 tareas · 741.5h estimadas pendientes
 
-TODO 76 · DOING 4 · DONE 214 · BLOCKED 24 · CUT 0
+TODO 37 · DOING 4 · DONE 216 · BLOCKED 63 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -88,7 +88,7 @@ TODO 76 · DOING 4 · DONE 214 · BLOCKED 24 · CUT 0
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 17/18 | 2h |
 | [Post-MVP](10-post-mvp.md) | `▓▓▓▓▓▓▓▓▓▓░░` 83 % | 33/40 | 46.5h |
-| [Catálogo de paquetes y kits](11-catalogo.md) | `░░░░░░░░░░░░` 2 % | 1/50 | 622h |
+| [Catálogo de paquetes y kits](11-catalogo.md) | `▓░░░░░░░░░░░` 6 % | 3/52 | 642h |
 
 **En curso**
 
@@ -123,6 +123,45 @@ TODO 76 · DOING 4 · DONE 214 · BLOCKED 24 · CUT 0
 - `S-EM-08` Escaneo passed y revisión de seguridad (ADR-023) · T · 0.5h ([08-semillas.md](08-semillas.md))
 - `S-AI-07` Prueba de agente en Cursor · C · 0.5h ([08-semillas.md](08-semillas.md))
 - `S-AI-08` Escaneo passed y revisión de seguridad (ADR-023) · T · 0.5h ([08-semillas.md](08-semillas.md))
+- `CAT-00-03` Implementar y publicar @core/contracts (capa-1-transversales.md) · C · 6h ([11-catalogo.md](11-catalogo.md))
+- `CAT-00-04` Implementar y publicar @core/ui con tokens claro/oscuro y axe sin violaciones · C · 12h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-01` Implementar y publicar @core/rbac · C · 8h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-02` Implementar y publicar @core/storage (S3/R2/MinIO y local) · C · 8h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-03` Implementar y publicar @core/jobs (cola Postgres, cron y runDue serverless) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-04` Implementar y publicar @core/antispam (Turnstile, honeypot, rate limit) · C · 6h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-05` Implementar y publicar @core/admin (shell, CRUD genérico de AdminResource, auditoría) · C · 32h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-06` Implementar y publicar @core/content (colecciones, singletons, revisiones, programación, vista previa, retrofit) · C · 28h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-07` Implementar y publicar @core/media (subida firmada, variantes, saneado de SVG y EXIF) · C · 14h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-08` Implementar y publicar @core/rich-text (Tiptap, JSON, render anti-XSS) · C · 14h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-09` Implementar y publicar @core/site (ajustes, menús, redirecciones sin open redirect) · C · 8h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-10` Implementar y publicar @core/seo (metadatos, sitemap, robots, llms.txt, JSON-LD, OG) · C · 12h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-11` Implementar y publicar @core/search (tsvector + pg_trgm, SearchSource) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-12` Implementar y publicar @core/forms (definiciones, envíos, emails, webhook firmado) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-13` Implementar y publicar @core/blocks (15 bloques, campo blocks en admin) · C · 20h ([11-catalogo.md](11-catalogo.md))
+- `CAT-CMS-14` Implementar y publicar @core/kit-cms (rutas /admin, páginas, vista previa, cron, registro en src/genpm) · C · 20h ([11-catalogo.md](11-catalogo.md))
+- `CAT-BLG-01` Implementar y publicar @core/blog (colecciones, feeds RSS/Atom/JSON, relacionados) · C · 12h ([11-catalogo.md](11-catalogo.md))
+- `CAT-BLG-02` Implementar y publicar @core/comments (moderación, valoración opcional, borrado RGPD) · C · 12h ([11-catalogo.md](11-catalogo.md))
+- `CAT-BLG-03` Implementar y publicar @core/newsletter (doble opt-in, baja RFC 8058, campañas por lotes) · C · 16h ([11-catalogo.md](11-catalogo.md))
+- `CAT-BLG-04` Implementar y publicar @core/kit-blog · C · 14h ([11-catalogo.md](11-catalogo.md))
+- `CAT-LND-01` Implementar y publicar @core/consent (banner, ConsentGate, registro de prueba) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-LND-02` Implementar y publicar @core/pixels (GA4, Meta Pixel + CAPI, TikTok + Events API con deduplicación) · C · 14h ([11-catalogo.md](11-catalogo.md))
+- `CAT-LND-03` Implementar y publicar @core/kit-landing · C · 12h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-01` Implementar y publicar @core/money (tests de propiedades) · C · 6h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-02` Implementar y publicar @core/stripe y migrar @core/billing a 2.0 sobre él · C · 12h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-03` Implementar y publicar @core/catalog (variantes, colecciones, reserva de stock concurrente) · C · 20h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-04` Implementar y publicar @core/cart (precios en servidor, tubería de totales) · C · 14h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-05` Implementar y publicar @core/orders (máquina de estados, envíos parciales, reembolsos, anti-IDOR) · C · 20h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-06` Implementar y publicar @core/shipping (zonas, tarifas, seguimiento) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-07` Implementar y publicar @core/checkout (Stripe Checkout, pedido solo en webhook, idempotente) · C · 16h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-08` Implementar y publicar @core/discounts (cupones, límites, regla Ómnibus de 30 días) · C · 12h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-09` Implementar y publicar @core/reviews (compra verificada, importadas etiquetadas, AggregateRating) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-STO-10` Implementar y publicar @core/kit-store (tienda, área de cliente, emails, plantillas legales) · C · 32h ([11-catalogo.md](11-catalogo.md))
+- `CAT-DRP-01` Implementar y publicar @core/pricing (reglas de margen, historial de precios) · C · 10h ([11-catalogo.md](11-catalogo.md))
+- `CAT-DRP-02` Implementar y publicar @core/suppliers con el adaptador manual (CSV) · C · 20h ([11-catalogo.md](11-catalogo.md))
+- `CAT-DRP-03` Adaptador CJdropshipping para @core/suppliers (verificar API y términos vigentes) · C · 12h ([11-catalogo.md](11-catalogo.md))
+- `CAT-DRP-06` Implementar y publicar @core/kit-dropshipping (importar, reenvío, excepciones, landing de producto) · C · 24h ([11-catalogo.md](11-catalogo.md))
+- `CAT-GRO-01` Implementar y publicar @core/experiments y añadirlo a kit-landing 1.1 · C · 16h ([11-catalogo.md](11-catalogo.md))
+- `CAT-GRO-04` Implementar y publicar @core/invoices (facturas españolas con numeración legal y VeriFactu; verificar plazos vigentes) · C · 24h ([11-catalogo.md](11-catalogo.md))
 
 **Siguientes disponibles** (TODO con todas sus dependencias cerradas)
 

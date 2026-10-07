@@ -1,0 +1,36 @@
+{
+  "$": 1,
+  "n": "@core/content",
+  "v": "1.1.0",
+  "s": {
+    "en": "Headless CMS core: typed collections and singletons with drafts, revisions, scheduling, locales and preview",
+    "es": "Núcleo de CMS headless: colecciones y singletons tipados con borradores, revisiones, programación, idiomas y vista previa",
+    "pt-BR": "Núcleo de CMS headless: coleções e singletons tipados com rascunhos, revisões, agendamento, idiomas e pré-visualização",
+    "fr": "Cœur de CMS headless : collections et singletons typés avec brouillons, révisions, planification, langues et aperçu",
+    "de": "Headless-CMS-Kern: typisierte Collections und Singletons mit Entwürfen, Revisionen, Planung, Sprachen und Vorschau",
+    "ja": "ヘッドレス CMS の中核：型付きコレクションとシングルトン、下書き、履歴、予約公開、多言語、プレビュー",
+    "zh-CN": "无头 CMS 核心：类型化集合与单例，支持草稿、修订、定时发布、多语言和预览",
+    "ko": "헤드리스 CMS 핵심: 타입 있는 컬렉션과 싱글턴, 초안, 리비전, 예약 발행, 다국어, 미리보기"
+  },
+  "d": "src/lib/content",
+  "l": "MIT",
+  "k": [
+    "cms",
+    "content",
+    "headless",
+    "drafts",
+    "i18n"
+  ],
+  "g": {
+    "@core/db": "^1.0.0",
+    "@core/jobs": "^1.0.0",
+    "@core/contracts": "^1.0.0"
+  },
+  "p": {
+    "zod": "^4.0.0"
+  },
+  "e": [
+    "CONTENT_PREVIEW_SECRET",
+    "CONTENT_DEFAULT_LOCALE"
+  ]
+}

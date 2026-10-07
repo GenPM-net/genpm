@@ -81,7 +81,18 @@ Para quien ya usa o prefiere **Payload CMS** (TypeScript, se instala dentro de N
 `blog`, `blocks`, `seo` y `search` funcionen igual. El panel sería el de Payload. Se planifica en F6 si hay demanda
 (ADR-033 §3). Keystatic (contenido en Git, sin BD) es otro candidato de adaptador para landings simples.
 
-## 7. Aceptación específica
+## 7. Implementación 1.0 (notas)
+
+- Código en `catalog/src/app/(cms)`; el registro del proyecto de ejemplo (composición de todos los kits) en
+  `catalog/src/genpm`, copiado de `_templates/genpm` del kit. Los kits siguientes añaden líneas a esos archivos.
+- Login solo OAuth (lo que ofrece `@core/auth` 1.x): el primer `owner` se crea con `_scripts/create-owner.ts` tras el
+  primer inicio de sesión; los demás usuarios aparecen al iniciar sesión y se les asigna rol en Admin → Usuarios
+  (`usersAdminResource` de `@core/rbac`). La invitación por email queda para cuando `auth` tenga enlace mágico.
+- `/admin/media`, menús, ajustes y redirecciones usan el CRUD genérico (sin vistas a medida en 1.0); el campo `media`
+  del panel permite elegir de la biblioteca o subir. Vista previa firmada desde el enlace "Preview" de cada página.
+- Límite del manifiesto: 10 dependencias GenPM; `auth`, `rbac`, `db`… llegan por `admin` y se importan igualmente.
+
+## 8. Aceptación específica
 
 - Retrofit de un sitio Next de ejemplo de 5 páginas (`examples/` del workspace de desarrollo): snapshots idénticos,
   todos los textos e imágenes editables, < 30 min de agente.

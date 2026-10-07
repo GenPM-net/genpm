@@ -15,7 +15,9 @@ BlogPosting, Product+Offer+AggregateRating, FAQPage) e imágenes OG generadas.
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/seo` | `@core/contracts ^1`, `@core/site ^1` | `satori` (OG, opcional) | `SITE_URL` | — |
+| `src/lib/seo` | `@core/contracts ^1`, `@core/site ^1` | `zod` | `SITE_URL`, `SEO_NOINDEX` (staging) | — |
+
+La generación de imágenes OG (satori) queda fuera de la 1.0: se usa la imagen social de los ajustes o de cada entrada.
 
 **API.** `buildMetadata(page)` (devuelve `Metadata` de Next), `<JsonLd data>`, constructores `jsonLd.product(...)`, etc.,
 `sitemapHandler()`, `robotsHandler({disallow})`, `llmsTxtHandler()`, `ogImage({title, image})`, campos SEO reutilizables
@@ -34,7 +36,7 @@ con texto versionado, exportación CSV y webhook saliente opcional (CRM, Zapier/
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/forms` | `@core/db ^1`, `@core/email ^1`, `@core/antispam ^1`, `@core/content ^1` | — | `FORMS_WEBHOOK_SECRET` (opc.) | — |
+| `src/lib/forms` | `@core/db ^1`, `@core/email ^1`, `@core/antispam ^1`, `@core/content ^1`, `@core/jobs ^1`, `@core/contracts ^1` | `zod` | `FORMS_NOTIFY_TO`, `FORMS_WEBHOOK_SECRET` (opc.) | — |
 
 **Tablas.** `form_submissions` (id, formKey, data jsonb, consentVersion, sourceUrl, utm jsonb, createdAt, status).
 Las definiciones editables desde el admin son una colección de `content`.
@@ -54,10 +56,11 @@ envío por lotes con `jobs` y el proveedor de `@core/email`, y estadísticas bá
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/newsletter` | `@core/db ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/antispam ^1`, `@core/rich-text ^1` | — | `NEWSLETTER_FROM`, `NEWSLETTER_POSTAL_ADDRESS` | — |
+| `src/lib/newsletter` | `@core/db ^1`, `@core/email ^1`, `@core/jobs ^1`, `@core/antispam ^1`, `@core/rich-text ^1`, `@core/contracts ^1` | `zod` | `NEWSLETTER_FROM`, `NEWSLETTER_POSTAL_ADDRESS`, `NEWSLETTER_SECRET`, `SITE_URL`, `RESEND_API_KEY` (producción) | — |
 
-**Tablas.** `subscribers` (id, emailHash, emailEnc, status `pending|active|unsubscribed|bounced`, tags, consentAt,
-source), `campaigns`, `campaign_sends`.
+**Tablas.** `subscribers` (email normalizado, status `pending|active|unsubscribed|bounced|complained`, tags, consentimiento y fechas,
+source), `newsletter_campaigns`, `newsletter_sends` (un envío por suscriptor y campaña: lotes reanudables). Las cabeceras RFC 8058
+requieren un proveedor que acepte cabeceras propias: el paquete llama a la API de Resend directamente (`NewsletterSender` para otros).
 **API.** `subscribe(email, {tags, source})`, `confirm(token)`, `unsubscribe(token)`, `sendCampaign(id)`,
 `<SubscribeForm>`, webhook de rebotes del proveedor, `AdminResource` "Suscriptores" y "Campañas".
 **Reglas IA.** Nunca importar listas sin consentimiento demostrable; todo envío lleva enlace de baja y dirección postal.
@@ -75,7 +78,10 @@ registran sus paquetes/kits. Cada bloque = esquema zod + componente React + vist
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/blocks` | `@core/content ^1`, `@core/rich-text ^1`, `@core/media ^1`, `@core/ui ^1` | — | — | — |
+| `src/lib/blocks` | `@core/rich-text ^1`, `@core/media ^1`, `@core/ui ^1`, `@core/admin ^1`, `@core/contracts ^1`, `@core/db ^1` | `react`, `zod` | — | — |
+
+Implementación 1.0: los bloques se guardan como JSON en un campo de `content` (`registry.schema`), por eso no depende de `content`;
+el editor usa el tipo de campo `list` del admin (lista ordenable de objetos) para preguntas, planes, testimonios, etc.
 
 **API.** `defineBlock(type, {schema, Component, icon, preview})`, tipo de campo `blocks` para `admin` (lista ordenable
 con añadir/duplicar/ocultar), `<RenderBlocks blocks />`, registro de bloques extra en `src/genpm/blocks.ts`.
@@ -94,7 +100,7 @@ servidor para compras con deduplicación por `eventId`. Captura de UTM y `fbclid
 
 | `d` | `g` | `p` | `e` | `m` |
 |---|---|---|---|---|
-| `src/lib/pixels` | `@core/consent ^1`, `@core/contracts ^1` | — | `GA4_MEASUREMENT_ID`, `GA4_API_SECRET`, `META_PIXEL_ID`, `META_CAPI_TOKEN`, `TIKTOK_PIXEL_ID`, `TIKTOK_EVENTS_TOKEN` (todas opcionales) | — |
+| `src/lib/pixels` | `@core/consent ^1`, `@core/antispam ^1`, `@core/contracts ^1`, `@core/money ^1`, `@core/db ^1` | `react` | `GA4_MEASUREMENT_ID`, `GA4_API_SECRET`, `META_PIXEL_ID`, `META_CAPI_TOKEN`, `TIKTOK_PIXEL_ID`, `TIKTOK_EVENTS_TOKEN` (todas opcionales) | — |
 
 **API.** `track(event)` (cliente), `trackServer(event, request)`, `<PixelsScripts />` (dentro de `ConsentGate`),
 `registerPixelAdapter()`. Solo se activan las plataformas con variables configuradas.
@@ -118,3 +124,8 @@ reparto de tráfico y resultado con intervalo de confianza.
 **Tablas.** `experiments`, `experiment_exposures` (agregado diario, no por visitante), `experiment_conversions`.
 **API.** `getVariant(experimentKey, request)`, `recordConversion(goal)`, `<Experiment>`, `AdminResource` "Experimentos".
 **Aceptación.** Asignación estable entre visitas; sin consentimiento siempre control; cálculo estadístico con tests de referencia.
+
+Implementación 1.0: en lugar de agregados diarios se guarda un participante por experimento con un seudónimo (HMAC del
+id de consentimiento, sin cookie propia) para no contar dos veces la misma persona; se borran 30 días después de parar
+y los resultados quedan congelados en el experimento. `e`: `EXPERIMENTS_SECRET`. En `kit-landing`: campo `experiment` y
+bloques `blocksB` por landing, conversión `lead` al enviar el formulario.

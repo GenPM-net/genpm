@@ -1,0 +1,46 @@
+{
+  "$": 1,
+  "n": "@core/kit-store",
+  "v": "1.0.1",
+  "s": {
+    "en": "Online store kit for Next.js: catalog, cart, Stripe checkout, orders, shipping, coupons, verified reviews, accounts",
+    "es": "Kit de tienda online para Next.js: catálogo, carrito, pago con Stripe, pedidos, envíos, cupones, reseñas y cuentas",
+    "pt-BR": "Kit de loja online para Next.js: catálogo, carrinho, Stripe, pedidos, frete, cupons, avaliações e contas",
+    "fr": "Kit boutique en ligne Next.js : catalogue, panier, paiement Stripe, commandes, livraison, coupons, avis, comptes",
+    "de": "Online-Shop-Kit für Next.js: Katalog, Warenkorb, Stripe-Checkout, Bestellungen, Versand, Gutscheine, Bewertungen",
+    "ja": "Next.js 向けオンラインストアキット：カタログ、カート、Stripe 決済、注文、配送、クーポン、レビュー、アカウント",
+    "zh-CN": "Next.js 网店套件：商品目录、购物车、Stripe 结账、订单、配送、优惠券、真实评价和账户",
+    "ko": "Next.js 온라인 스토어 키트: 카탈로그, 장바구니, Stripe 결제, 주문, 배송, 쿠폰, 검증 리뷰, 계정"
+  },
+  "d": "src/app/(store)",
+  "l": "MIT",
+  "k": [
+    "ecommerce",
+    "kit",
+    "nextjs",
+    "stripe",
+    "shop"
+  ],
+  "g": {
+    "@core/kit-cms": "^1.0.0",
+    "@core/catalog": "^1.0.0",
+    "@core/cart": "^1.0.0",
+    "@core/checkout": "^1.0.0",
+    "@core/orders": "^1.0.0",
+    "@core/shipping": "^1.0.0",
+    "@core/discounts": "^1.0.0",
+    "@core/reviews": "^1.0.0"
+  },
+  "p": {
+    "next": ">=15.5.0",
+    "react": "^19.0.0",
+    "zod": "^4.0.0"
+  },
+  "e": [
+    "STRIPE_SECRET_KEY",
+    "STRIPE_WEBHOOK_SECRET",
+    "CART_COOKIE_SECRET",
+    "ORDER_LINK_SECRET",
+    "STORE_CURRENCY"
+  ]
+}

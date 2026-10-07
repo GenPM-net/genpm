@@ -51,7 +51,15 @@ dashboard), `subscribers`, `campaigns` ("enviar este post como campaña" en un c
 - `@core/ai` instalado ⇒ el kit muestra en el editor "sugerir título/resumen/etiquetas" y "traducir post" (borrador, nunca publica solo).
 - `@core/billing` instalado ⇒ posts "solo suscriptores" con `hasEntitlement` (base del futuro kit de membresías).
 
-## 6. Aceptación específica
+## 6. Implementación 1.0 (notas)
+
+- Código en `catalog/src/app/(blog)`; las líneas de registro marcadas `// kit-blog` en `catalog/src/genpm`.
+- Comentarios, newsletter y formularios funcionan sin JavaScript (POST + 303 de vuelta con el resultado en la URL).
+- Los campos de relación del panel guardan el slug (`relationKey: 'slug'` en `@core/admin`), como espera `@core/blog`.
+- "Enviar como campaña" crea un **borrador** de campaña; el envío se lanza desde Campañas (nunca automático).
+- Opcionales `ai` y `billing`: no incluidos en 1.0 (puntos de extensión documentados en el `AGENTS.md`).
+
+## 7. Aceptación específica
 
 - Feeds válidos; post programado no aparece antes de su hora en web, feed, sitemap ni buscador.
 - Comentario de invitado con enlace ⇒ moderación; spam ⇒ bloqueado por `antispam`.

@@ -1,0 +1,1258 @@
+{
+  "contracts": {
+    "s": {
+      "en": "Shared types for GenPM modules: content, sitemap, search, admin resources, payments and tracked events",
+      "es": "Tipos compartidos entre módulos GenPM: contenido, sitemap, búsqueda, recursos de admin, pagos y eventos",
+      "pt-BR": "Tipos compartilhados entre módulos GenPM: conteúdo, sitemap, busca, recursos de admin, pagamentos e eventos",
+      "fr": "Types partagés des modules GenPM : contenu, sitemap, recherche, ressources d'admin, paiements et événements",
+      "de": "Gemeinsame Typen für GenPM-Module: Inhalte, Sitemap, Suche, Admin-Ressourcen, Zahlungen und Events",
+      "ja": "GenPM モジュール共通の型：コンテンツ、サイトマップ、検索、管理リソース、決済、イベント",
+      "zh-CN": "GenPM 模块共享类型：内容、站点地图、搜索、后台资源、支付和追踪事件",
+      "ko": "GenPM 모듈 공용 타입: 콘텐츠, 사이트맵, 검색, 관리 리소스, 결제, 추적 이벤트"
+    },
+    "k": [
+      "contracts",
+      "types",
+      "interfaces",
+      "cms",
+      "commerce"
+    ],
+    "p": {
+      "zod": "^4.0.0"
+    }
+  },
+  "rbac": {
+    "v": "1.0.1",
+    "s": {
+      "en": "Roles and permissions on top of @core/auth: wildcards, own-only rules and escalation-safe grants",
+      "es": "Roles y permisos sobre @core/auth: comodines, permisos sobre lo propio y concesiones sin escalada",
+      "pt-BR": "Papéis e permissões sobre @core/auth: curingas, regras de próprio dono e concessões sem escalada",
+      "fr": "Rôles et permissions sur @core/auth : jokers, droits sur ses propres données, attributions sans escalade",
+      "de": "Rollen und Rechte auf @core/auth: Platzhalter, Eigentümer-Regeln und Vergabe ohne Rechteausweitung",
+      "ja": "@core/auth 上のロールと権限：ワイルドカード、本人限定ルール、権限昇格を防ぐ付与",
+      "zh-CN": "基于 @core/auth 的角色与权限：通配符、仅限本人规则、防提权授予",
+      "ko": "@core/auth 기반 역할과 권한: 와일드카드, 본인 전용 규칙, 권한 상승 방지 부여"
+    },
+    "k": [
+      "rbac",
+      "roles",
+      "permissions",
+      "authorization",
+      "admin"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/auth": "^1.1.0",
+      "@core/contracts": "^1.0.0"
+    }
+  },
+  "jobs": {
+    "v": "1.1.0",
+    "s": {
+      "en": "Background jobs on Postgres: durable queue, retries with backoff, cron schedules and a serverless cron endpoint",
+      "es": "Tareas en segundo plano sobre Postgres: cola durable, reintentos con backoff, cron y endpoint para serverless",
+      "pt-BR": "Tarefas em segundo plano no Postgres: fila durável, novas tentativas com backoff, cron e endpoint serverless",
+      "fr": "Tâches de fond sur Postgres : file durable, relances avec backoff, cron et point d'entrée serverless",
+      "de": "Hintergrundjobs auf Postgres: dauerhafte Queue, Wiederholungen mit Backoff, Cron und Serverless-Endpoint",
+      "ja": "Postgres 上のバックグラウンドジョブ：永続キュー、バックオフ付き再試行、cron、サーバーレス用エンドポイント",
+      "zh-CN": "基于 Postgres 的后台任务：持久队列、退避重试、cron 计划和无服务器 cron 端点",
+      "ko": "Postgres 기반 백그라운드 작업: 영속 큐, 백오프 재시도, cron 일정, 서버리스 cron 엔드포인트"
+    },
+    "k": [
+      "jobs",
+      "queue",
+      "cron",
+      "background",
+      "scheduler"
+    ],
+    "g": {
+      "@core/db": "^1.0.0"
+    },
+    "p": {
+      "cron-parser": "^5.0.0",
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "CRON_SECRET"
+    ]
+  },
+  "storage": {
+    "v": "1.0.1",
+    "s": {
+      "en": "File storage for S3-compatible buckets (R2, S3, MinIO) and local disk, with signed direct uploads",
+      "es": "Almacenamiento de archivos en buckets S3 compatibles (R2, S3, MinIO) y disco local, con subidas firmadas",
+      "pt-BR": "Armazenamento de arquivos em buckets compatíveis com S3 (R2, S3, MinIO) e disco local, com uploads assinados",
+      "fr": "Stockage de fichiers sur buckets compatibles S3 (R2, S3, MinIO) et disque local, avec envois signés",
+      "de": "Dateispeicher für S3-kompatible Buckets (R2, S3, MinIO) und lokale Platte, mit signierten Direkt-Uploads",
+      "ja": "S3 互換バケット（R2、S3、MinIO）とローカルディスクのファイル保存、署名付き直接アップロード対応",
+      "zh-CN": "S3 兼容存储桶（R2、S3、MinIO）与本地磁盘的文件存储，支持签名直传",
+      "ko": "S3 호환 버킷(R2, S3, MinIO)과 로컬 디스크 파일 저장, 서명된 직접 업로드"
+    },
+    "k": [
+      "storage",
+      "s3",
+      "r2",
+      "uploads",
+      "files"
+    ],
+    "p": {
+      "aws4fetch": "^1.0.20"
+    },
+    "e": [
+      "STORAGE_DRIVER",
+      "STORAGE_BUCKET",
+      "STORAGE_ENDPOINT",
+      "STORAGE_ACCESS_KEY_ID",
+      "STORAGE_SECRET_ACCESS_KEY",
+      "STORAGE_PUBLIC_URL",
+      "STORAGE_SECRET",
+      "STORAGE_LOCAL_DIR"
+    ]
+  },
+  "antispam": {
+    "v": "1.1.0",
+    "s": {
+      "en": "Spam protection for public forms: honeypot, signed timing, Turnstile or hCaptcha and Postgres rate limits",
+      "es": "Protección antispam para formularios públicos: honeypot, tiempo firmado, Turnstile o hCaptcha y rate limit en Postgres",
+      "pt-BR": "Proteção antispam para formulários públicos: honeypot, tempo assinado, Turnstile ou hCaptcha e rate limit no Postgres",
+      "fr": "Anti-spam pour formulaires publics : honeypot, délai signé, Turnstile ou hCaptcha et limitation de débit Postgres",
+      "de": "Spam-Schutz für öffentliche Formulare: Honeypot, signierte Zeitprüfung, Turnstile oder hCaptcha und Rate-Limits",
+      "ja": "公開フォームのスパム対策：ハニーポット、署名付き時間チェック、Turnstile/hCaptcha、Postgres のレート制限",
+      "zh-CN": "公开表单反垃圾：蜜罐字段、签名计时、Turnstile 或 hCaptcha 以及 Postgres 限流",
+      "ko": "공개 폼 스팸 방지: 허니팟, 서명된 시간 검사, Turnstile 또는 hCaptcha, Postgres 속도 제한"
+    },
+    "k": [
+      "antispam",
+      "captcha",
+      "turnstile",
+      "rate-limit",
+      "forms"
+    ],
+    "g": {
+      "@core/db": "^1.0.0"
+    },
+    "e": [
+      "ANTISPAM_SECRET",
+      "TURNSTILE_SITE_KEY",
+      "TURNSTILE_SECRET_KEY",
+      "ANTISPAM_IP_HEADER",
+      "ANTISPAM_TRUSTED_PROXIES"
+    ],
+    "p": {
+      "react": "^19.0.0"
+    }
+  },
+  "content": {
+    "v": "1.1.0",
+    "s": {
+      "en": "Headless CMS core: typed collections and singletons with drafts, revisions, scheduling, locales and preview",
+      "es": "Núcleo de CMS headless: colecciones y singletons tipados con borradores, revisiones, programación, idiomas y vista previa",
+      "pt-BR": "Núcleo de CMS headless: coleções e singletons tipados com rascunhos, revisões, agendamento, idiomas e pré-visualização",
+      "fr": "Cœur de CMS headless : collections et singletons typés avec brouillons, révisions, planification, langues et aperçu",
+      "de": "Headless-CMS-Kern: typisierte Collections und Singletons mit Entwürfen, Revisionen, Planung, Sprachen und Vorschau",
+      "ja": "ヘッドレス CMS の中核：型付きコレクションとシングルトン、下書き、履歴、予約公開、多言語、プレビュー",
+      "zh-CN": "无头 CMS 核心：类型化集合与单例，支持草稿、修订、定时发布、多语言和预览",
+      "ko": "헤드리스 CMS 핵심: 타입 있는 컬렉션과 싱글턴, 초안, 리비전, 예약 발행, 다국어, 미리보기"
+    },
+    "k": [
+      "cms",
+      "content",
+      "headless",
+      "drafts",
+      "i18n"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/jobs": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "CONTENT_PREVIEW_SECRET",
+      "CONTENT_DEFAULT_LOCALE"
+    ]
+  },
+  "search": {
+    "s": {
+      "en": "Site search on Postgres full-text: per-language stemming, prefix matching, safe snippets and typo fallback",
+      "es": "Buscador del sitio con texto completo de Postgres: raíces por idioma, prefijos, fragmentos seguros y erratas",
+      "pt-BR": "Busca do site com texto completo do Postgres: radicais por idioma, prefixos, trechos seguros e erros de digitação",
+      "fr": "Recherche du site en texte intégral Postgres : racines par langue, préfixes, extraits sûrs et fautes de frappe",
+      "de": "Seitensuche mit Postgres-Volltext: Stammformen je Sprache, Präfixe, sichere Ausschnitte und Tippfehler-Fallback",
+      "ja": "Postgres 全文検索によるサイト内検索：言語別語幹、前方一致、安全なスニペット、誤字への対応",
+      "zh-CN": "基于 Postgres 全文检索的站内搜索：按语言词干、前缀匹配、安全摘要和错字容错",
+      "ko": "Postgres 전문 검색 기반 사이트 검색: 언어별 어간, 접두어 일치, 안전한 스니펫, 오타 대응"
+    },
+    "k": [
+      "search",
+      "full-text",
+      "postgres",
+      "site-search",
+      "cms"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/jobs": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    }
+  },
+  "site": {
+    "v": "1.1.0",
+    "s": {
+      "en": "Site settings, editable nested menus and managed redirects with loop and open-redirect protection",
+      "es": "Ajustes del sitio, menús anidados editables y redirecciones gestionables sin bucles ni open redirect",
+      "pt-BR": "Configurações do site, menus aninhados editáveis e redirecionamentos sem loops nem open redirect",
+      "fr": "Réglages du site, menus imbriqués modifiables et redirections gérées sans boucles ni open redirect",
+      "de": "Website-Einstellungen, bearbeitbare verschachtelte Menüs und Weiterleitungen ohne Schleifen und Open Redirects",
+      "ja": "サイト設定、編集可能な入れ子メニュー、ループとオープンリダイレクトを防ぐリダイレクト管理",
+      "zh-CN": "站点设置、可编辑的多级菜单，以及防循环和开放重定向的重定向管理",
+      "ko": "사이트 설정, 편집 가능한 중첩 메뉴, 루프와 오픈 리다이렉트를 막는 리다이렉트 관리"
+    },
+    "k": [
+      "cms",
+      "menus",
+      "redirects",
+      "settings",
+      "navigation"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/content": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "SITE_URL",
+      "SITE_REDIRECT_HOSTS"
+    ]
+  },
+  "seo": {
+    "s": {
+      "en": "SEO for GenPM sites: metadata with canonical and hreflang, chunked sitemaps, robots.txt, llms.txt and safe JSON-LD",
+      "es": "SEO para sitios GenPM: metadatos con canónica y hreflang, sitemaps troceados, robots.txt, llms.txt y JSON-LD seguro",
+      "pt-BR": "SEO para sites GenPM: metadados com canônica e hreflang, sitemaps em partes, robots.txt, llms.txt e JSON-LD seguro",
+      "fr": "SEO pour sites GenPM : métadonnées avec canonique et hreflang, sitemaps découpés, robots.txt, llms.txt et JSON-LD sûr",
+      "de": "SEO für GenPM-Seiten: Metadaten mit Canonical und hreflang, geteilte Sitemaps, robots.txt, llms.txt, sicheres JSON-LD",
+      "ja": "GenPM サイトの SEO：canonical と hreflang 付きメタデータ、分割サイトマップ、robots.txt、llms.txt、安全な JSON-LD",
+      "zh-CN": "GenPM 站点 SEO：带 canonical 和 hreflang 的元数据、分片站点地图、robots.txt、llms.txt 和安全的 JSON-LD",
+      "ko": "GenPM 사이트 SEO: canonical·hreflang 메타데이터, 분할 사이트맵, robots.txt, llms.txt, 안전한 JSON-LD"
+    },
+    "k": [
+      "seo",
+      "sitemap",
+      "json-ld",
+      "metadata",
+      "robots"
+    ],
+    "g": {
+      "@core/site": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "SITE_URL",
+      "SEO_NOINDEX"
+    ]
+  },
+  "forms": {
+    "v": "1.1.0",
+    "s": {
+      "en": "Forms and lead capture: code or admin-built forms, spam checks, GDPR consent, email alerts, signed webhooks, CSV",
+      "es": "Formularios y captación de leads: en código o desde el admin, antispam, consentimiento RGPD, avisos, webhooks firmados y CSV",
+      "pt-BR": "Formulários e captação de leads: em código ou no admin, antispam, consentimento LGPD/RGPD, avisos, webhooks assinados e CSV",
+      "fr": "Formulaires et leads : en code ou depuis l'admin, anti-spam, consentement RGPD, alertes e-mail, webhooks signés, CSV",
+      "de": "Formulare und Leads: im Code oder im Admin, Spam-Schutz, DSGVO-Einwilligung, E-Mail-Hinweise, signierte Webhooks, CSV",
+      "ja": "フォームとリード獲得：コードまたは管理画面で作成、スパム対策、GDPR 同意、メール通知、署名付き Webhook、CSV",
+      "zh-CN": "表单与线索收集：代码或后台创建、反垃圾、GDPR 同意、邮件通知、签名 Webhook、CSV 导出",
+      "ko": "폼과 리드 수집: 코드 또는 관리자에서 생성, 스팸 방지, GDPR 동의, 이메일 알림, 서명된 웹훅, CSV"
+    },
+    "k": [
+      "forms",
+      "leads",
+      "contact-form",
+      "gdpr",
+      "webhooks"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/antispam": "^1.0.0",
+      "@core/email": "^1.0.1",
+      "@core/jobs": "^1.0.0",
+      "@core/content": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "FORMS_NOTIFY_TO",
+      "FORMS_WEBHOOK_SECRET"
+    ]
+  },
+  "media": {
+    "v": "1.1.0",
+    "s": {
+      "en": "Media library: signed direct uploads, real file-type checks, EXIF/GPS removal, alt text, focal point, srcset",
+      "es": "Biblioteca de medios: subida directa firmada, tipo real comprobado, sin EXIF/GPS, texto alternativo, punto focal, srcset",
+      "pt-BR": "Biblioteca de mídia: upload direto assinado, tipo real verificado, sem EXIF/GPS, texto alternativo, ponto focal, srcset",
+      "fr": "Médiathèque : envoi direct signé, vrai type vérifié, EXIF/GPS supprimés, texte alternatif, point focal, srcset",
+      "de": "Medienbibliothek: signierte Direkt-Uploads, echte Typprüfung, EXIF/GPS entfernt, Alt-Text, Fokuspunkt, srcset",
+      "ja": "メディアライブラリ：署名付き直接アップロード、実ファイル形式の検証、EXIF/GPS 除去、代替テキスト、焦点、srcset",
+      "zh-CN": "媒体库：签名直传、真实文件类型校验、去除 EXIF/GPS、替代文本、焦点和 srcset",
+      "ko": "미디어 라이브러리: 서명된 직접 업로드, 실제 파일 형식 확인, EXIF/GPS 제거, 대체 텍스트, 초점, srcset"
+    },
+    "k": [
+      "media",
+      "uploads",
+      "images",
+      "cms",
+      "accessibility"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/storage": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "MEDIA_TRANSFORM"
+    ]
+  },
+  "rich-text": {
+    "v": "1.0.1",
+    "s": {
+      "en": "Rich text: Tiptap editor, allowlisted JSON documents and XSS-safe HTML/React rendering, plain text and TOC",
+      "es": "Texto enriquecido: editor Tiptap, documentos JSON con lista blanca, render HTML/React sin XSS, texto plano e índice",
+      "pt-BR": "Texto rico: editor Tiptap, documentos JSON com lista branca, render HTML/React sem XSS, texto puro e sumário",
+      "fr": "Texte riche : éditeur Tiptap, documents JSON en liste blanche, rendu HTML/React sans XSS, texte brut et sommaire",
+      "de": "Rich Text: Tiptap-Editor, JSON-Dokumente mit Allowlist, XSS-sicheres HTML/React-Rendering, Klartext und TOC",
+      "ja": "リッチテキスト：Tiptap エディタ、許可リスト方式の JSON 文書、XSS 安全な HTML/React 描画、プレーンテキスト、目次",
+      "zh-CN": "富文本：Tiptap 编辑器、白名单 JSON 文档、防 XSS 的 HTML/React 渲染、纯文本和目录",
+      "ko": "리치 텍스트: Tiptap 에디터, 허용 목록 JSON 문서, XSS 안전한 HTML/React 렌더링, 일반 텍스트, 목차"
+    },
+    "k": [
+      "rich-text",
+      "editor",
+      "tiptap",
+      "cms",
+      "xss"
+    ],
+    "p": {
+      "zod": "^4.0.0",
+      "react": "^19.0.0",
+      "@tiptap/react": "^3.0.0",
+      "@tiptap/pm": "^3.0.0",
+      "@tiptap/starter-kit": "^3.0.0",
+      "@tiptap/extension-link": "^3.0.0",
+      "@tiptap/extension-image": "^3.0.0"
+    }
+  },
+  "blog": {
+    "v": "1.0.1",
+    "s": {
+      "en": "Blog domain on @core/content: posts, authors, categories, tags, series, related posts, archive and RSS/Atom/JSON feeds",
+      "es": "Dominio de blog sobre @core/content: posts, autores, categorías, etiquetas, series, relacionados, archivo y feeds RSS/Atom/JSON",
+      "pt-BR": "Domínio de blog sobre @core/content: posts, autores, categorias, tags, séries, relacionados, arquivo e feeds RSS/Atom/JSON",
+      "fr": "Blog sur @core/content : articles, auteurs, catégories, tags, séries, articles liés, archives et flux RSS/Atom/JSON",
+      "de": "Blog auf @core/content: Beiträge, Autoren, Kategorien, Tags, Serien, ähnliche Beiträge, Archiv und RSS/Atom/JSON-Feeds",
+      "ja": "@core/content 上のブログ：記事、著者、カテゴリ、タグ、シリーズ、関連記事、アーカイブ、RSS/Atom/JSON フィード",
+      "zh-CN": "基于 @core/content 的博客：文章、作者、分类、标签、系列、相关文章、归档和 RSS/Atom/JSON 订阅",
+      "ko": "@core/content 기반 블로그: 글, 작성자, 카테고리, 태그, 시리즈, 관련 글, 아카이브, RSS/Atom/JSON 피드"
+    },
+    "k": [
+      "blog",
+      "cms",
+      "rss",
+      "content",
+      "feeds"
+    ],
+    "g": {
+      "@core/content": "^1.1.0",
+      "@core/rich-text": "^1.0.0",
+      "@core/contracts": "^1.0.0",
+      "@core/db": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "SITE_URL"
+    ]
+  },
+  "comments": {
+    "v": "1.0.1",
+    "s": {
+      "en": "Moderated comments on any entity: guest or user, replies, optional 1–5 ratings, bans, GDPR erasure, safe HTML",
+      "es": "Comentarios moderados sobre cualquier entidad: invitado o usuario, respuestas, valoración 1–5, bloqueos, RGPD y HTML seguro",
+      "pt-BR": "Comentários moderados em qualquer entidade: visitante ou usuário, respostas, nota 1–5, bloqueios, LGPD e HTML seguro",
+      "fr": "Commentaires modérés sur toute entité : invité ou compte, réponses, note 1–5, bannissements, RGPD et HTML sûr",
+      "de": "Moderierte Kommentare zu allem: Gast oder Konto, Antworten, Bewertung 1–5, Sperren, DSGVO-Löschung, sicheres HTML",
+      "ja": "任意のエンティティへのモデレーション付きコメント：ゲスト/ユーザー、返信、1〜5 評価、ブロック、GDPR 削除、安全な HTML",
+      "zh-CN": "任意实体的审核评论：访客或用户、回复、1–5 评分、封禁、GDPR 删除和安全 HTML",
+      "ko": "모든 엔티티에 대한 검토 댓글: 게스트/사용자, 답글, 1–5 평점, 차단, GDPR 삭제, 안전한 HTML"
+    },
+    "k": [
+      "comments",
+      "moderation",
+      "reviews",
+      "community",
+      "gdpr"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/auth": "^1.1.0",
+      "@core/antispam": "^1.0.0",
+      "@core/email": "^1.0.1",
+      "@core/jobs": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "COMMENTS_NOTIFY_TO"
+    ]
+  },
+  "newsletter": {
+    "v": "1.1.0",
+    "s": {
+      "en": "Newsletter: double opt-in, one-click unsubscribe (RFC 8058), tags, rich-text campaigns sent in resumable batches",
+      "es": "Newsletter: doble opt-in, baja en un clic (RFC 8058), etiquetas y campañas con texto enriquecido en lotes reanudables",
+      "pt-BR": "Newsletter: double opt-in, descadastro em um clique (RFC 8058), tags e campanhas em lotes retomáveis",
+      "fr": "Newsletter : double opt-in, désinscription en un clic (RFC 8058), tags et campagnes envoyées par lots reprenables",
+      "de": "Newsletter: Double-Opt-in, Abmeldung mit einem Klick (RFC 8058), Tags und Kampagnen in fortsetzbaren Stapeln",
+      "ja": "ニュースレター：ダブルオプトイン、ワンクリック配信停止（RFC 8058）、タグ、再開可能なバッチ配信",
+      "zh-CN": "邮件订阅：双重确认、一键退订（RFC 8058）、标签以及可续发的批量群发",
+      "ko": "뉴스레터: 더블 옵트인, 원클릭 구독 해지(RFC 8058), 태그, 재개 가능한 일괄 캠페인 발송"
+    },
+    "k": [
+      "newsletter",
+      "email-marketing",
+      "double-opt-in",
+      "gdpr",
+      "campaigns"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/antispam": "^1.0.0",
+      "@core/email": "^1.0.1",
+      "@core/jobs": "^1.0.0",
+      "@core/rich-text": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "NEWSLETTER_FROM",
+      "NEWSLETTER_POSTAL_ADDRESS",
+      "NEWSLETTER_SECRET",
+      "SITE_URL"
+    ]
+  },
+  "money": {
+    "v": "1.0.1",
+    "s": {
+      "en": "Money in integer minor units: ISO currencies, safe parsing, rounding, lossless allocation, charm prices, formatting",
+      "es": "Dinero en enteros (céntimos): monedas ISO, parseo seguro, redondeo, reparto sin pérdidas, precios .99 y formato",
+      "pt-BR": "Dinheiro em inteiros (centavos): moedas ISO, parsing seguro, arredondamento, rateio sem perdas, preços .99 e formato",
+      "fr": "Argent en entiers (centimes) : devises ISO, parsing sûr, arrondis, répartition sans perte, prix en .99, formatage",
+      "de": "Geld als Ganzzahlen (Cent): ISO-Währungen, sicheres Parsen, Rundung, verlustfreie Aufteilung, .99-Preise, Format",
+      "ja": "整数（最小単位）で扱う金額：ISO 通貨、安全なパース、丸め、端数の出ない配分、.99 価格、書式化",
+      "zh-CN": "以整数最小单位表示金额：ISO 货币、安全解析、舍入、无损分摊、.99 定价和格式化",
+      "ko": "정수(최소 단위) 금액: ISO 통화, 안전한 파싱, 반올림, 손실 없는 배분, .99 가격, 서식"
+    },
+    "k": [
+      "money",
+      "currency",
+      "pricing",
+      "commerce",
+      "i18n"
+    ],
+    "g": {
+      "@core/contracts": "^1.0.0"
+    }
+  },
+  "stripe": {
+    "s": {
+      "en": "Shared Stripe client and one idempotent, signature-verified webhook endpoint dispatching events to every module",
+      "es": "Cliente de Stripe compartido y un único webhook idempotente y con firma verificada que reparte eventos a cada módulo",
+      "pt-BR": "Cliente Stripe compartilhado e um único webhook idempotente com assinatura verificada que distribui eventos",
+      "fr": "Client Stripe partagé et un webhook unique, idempotent et signé, qui distribue les événements à chaque module",
+      "de": "Gemeinsamer Stripe-Client und ein idempotenter, signaturgeprüfter Webhook, der Events an alle Module verteilt",
+      "ja": "共有 Stripe クライアントと、署名検証済みで冪等な単一 Webhook（各モジュールへイベントを配信）",
+      "zh-CN": "共享 Stripe 客户端和单一的幂等、验签 Webhook 端点，将事件分发给各模块",
+      "ko": "공유 Stripe 클라이언트와 서명 검증·멱등 처리되는 단일 웹훅, 각 모듈로 이벤트 전달"
+    },
+    "k": [
+      "stripe",
+      "payments",
+      "webhooks",
+      "billing",
+      "commerce"
+    ],
+    "g": {
+      "@core/db": "^1.0.0"
+    },
+    "p": {
+      "stripe": "^23.0.0"
+    },
+    "e": [
+      "STRIPE_SECRET_KEY",
+      "STRIPE_WEBHOOK_SECRET"
+    ],
+    "m": [
+      {
+        "n": "stripe",
+        "c": "npx",
+        "a": [
+          "-y",
+          "@stripe/mcp"
+        ],
+        "e": [
+          "STRIPE_SECRET_KEY"
+        ]
+      }
+    ]
+  },
+  "catalog": {
+    "s": {
+      "en": "Product catalog: variants with options, prices in cents, categories, collections, translations and safe stock reservations",
+      "es": "Catálogo de productos: variantes con opciones, precios en céntimos, categorías, colecciones, traducciones y reserva de stock segura",
+      "pt-BR": "Catálogo de produtos: variantes com opções, preços em centavos, categorias, coleções, traduções e reserva de estoque segura",
+      "fr": "Catalogue produits : variantes à options, prix en centimes, catégories, collections, traductions et réservation de stock sûre",
+      "de": "Produktkatalog: Varianten mit Optionen, Preise in Cent, Kategorien, Kollektionen, Übersetzungen und sichere Lagerreservierung",
+      "ja": "商品カタログ：オプション付きバリアント、最小単位の価格、カテゴリ、コレクション、翻訳、安全な在庫引当",
+      "zh-CN": "商品目录：带选项的变体、以分计价、分类、合集、翻译和安全的库存预留",
+      "ko": "상품 카탈로그: 옵션 변형, 최소 단위 가격, 카테고리, 컬렉션, 번역, 안전한 재고 예약"
+    },
+    "k": [
+      "ecommerce",
+      "catalog",
+      "products",
+      "inventory",
+      "variants"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/money": "^1.0.0",
+      "@core/rich-text": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "STORE_CURRENCY"
+    ]
+  },
+  "cart": {
+    "v": "1.1.0",
+    "s": {
+      "en": "Shopping cart: signed guest cookie, merge on login, server-side prices and a pluggable totals pipeline",
+      "es": "Carrito: cookie firmada de invitado, fusión al iniciar sesión, precios en servidor y cálculo de totales enchufable",
+      "pt-BR": "Carrinho: cookie assinado de visitante, fusão no login, preços no servidor e cálculo de totais extensível",
+      "fr": "Panier : cookie invité signé, fusion à la connexion, prix côté serveur et calcul des totaux extensible",
+      "de": "Warenkorb: signiertes Gast-Cookie, Zusammenführung beim Login, Serverpreise und erweiterbare Summenberechnung",
+      "ja": "ショッピングカート：署名付きゲスト Cookie、ログイン時の統合、サーバー側価格、拡張可能な合計計算",
+      "zh-CN": "购物车：签名访客 Cookie、登录时合并、服务端定价和可扩展的金额计算流水线",
+      "ko": "장바구니: 서명된 게스트 쿠키, 로그인 시 병합, 서버 측 가격, 확장 가능한 합계 계산"
+    },
+    "k": [
+      "ecommerce",
+      "cart",
+      "checkout",
+      "pricing",
+      "sessions"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/auth": "^1.1.0",
+      "@core/catalog": "^1.0.0",
+      "@core/money": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "CART_COOKIE_SECRET"
+    ]
+  },
+  "orders": {
+    "v": "1.1.0",
+    "s": {
+      "en": "Orders: frozen lines, stock reservation, payment and shipping states, partial shipments, refunds, emails and events",
+      "es": "Pedidos: líneas congeladas, reserva de stock, estados de pago y envío, envíos parciales, reembolsos, emails y eventos",
+      "pt-BR": "Pedidos: linhas congeladas, reserva de estoque, estados de pagamento e envio, envios parciais, reembolsos e e-mails",
+      "fr": "Commandes : lignes figées, réservation de stock, états de paiement et d'expédition, envois partiels, remboursements",
+      "de": "Bestellungen: eingefrorene Positionen, Lagerreservierung, Zahlungs- und Versandstatus, Teillieferungen, Erstattungen",
+      "ja": "注文：明細の固定、在庫引当、支払いと配送の状態、分割出荷、返金、メールとイベント",
+      "zh-CN": "订单：冻结明细、库存预留、支付与发货状态、部分发货、退款、邮件和事件",
+      "ko": "주문: 고정된 주문 항목, 재고 예약, 결제·배송 상태, 부분 배송, 환불, 이메일과 이벤트"
+    },
+    "k": [
+      "ecommerce",
+      "orders",
+      "fulfillment",
+      "refunds",
+      "checkout"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/auth": "^1.1.0",
+      "@core/catalog": "^1.0.0",
+      "@core/email": "^1.0.1",
+      "@core/jobs": "^1.0.0",
+      "@core/money": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "ORDER_LINK_SECRET",
+      "ORDER_NUMBER_PREFIX",
+      "SITE_URL"
+    ]
+  },
+  "shipping": {
+    "s": {
+      "en": "Shipping zones and rates (flat, weight, order value, free over X) with delivery estimates and tracking URLs",
+      "es": "Zonas y tarifas de envío (fija, por peso, por importe, gratis desde X) con plazos estimados y URLs de seguimiento",
+      "pt-BR": "Zonas e tarifas de frete (fixa, por peso, por valor, grátis acima de X) com prazos e links de rastreio",
+      "fr": "Zones et tarifs de livraison (fixe, poids, montant, gratuit dès X) avec délais estimés et liens de suivi",
+      "de": "Versandzonen und -tarife (pauschal, Gewicht, Bestellwert, gratis ab X) mit Lieferzeiten und Tracking-Links",
+      "ja": "配送ゾーンと料金（定額・重量・金額・X 以上無料）、配達目安、追跡 URL",
+      "zh-CN": "配送区域与运费（固定、按重量、按金额、满额包邮），含预计送达时间和物流跟踪链接",
+      "ko": "배송 지역과 요금(정액·무게·금액·X 이상 무료), 예상 배송일, 배송 추적 URL"
+    },
+    "k": [
+      "ecommerce",
+      "shipping",
+      "delivery",
+      "tracking",
+      "cart"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/cart": "^1.0.0",
+      "@core/money": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    }
+  },
+  "checkout": {
+    "v": "1.0.1",
+    "s": {
+      "en": "Stripe Checkout for one-off purchases: server-priced sessions, orders created only from the webhook, auto-refund if sold out",
+      "es": "Stripe Checkout para compras: sesiones con precios del servidor, pedido solo desde el webhook y reembolso automático si se agota",
+      "pt-BR": "Stripe Checkout para compras: sessões com preços do servidor, pedido só pelo webhook e reembolso automático se esgotar",
+      "fr": "Stripe Checkout pour les achats : prix serveur, commande créée uniquement par le webhook, remboursement auto en rupture",
+      "de": "Stripe Checkout für Einkäufe: Serverpreise, Bestellung nur per Webhook, automatische Erstattung bei Ausverkauf",
+      "ja": "単発購入向け Stripe Checkout：サーバー価格、Webhook のみで注文作成、在庫切れ時は自動返金",
+      "zh-CN": "一次性购买的 Stripe Checkout：服务端定价、仅由 Webhook 创建订单、售罄时自动退款",
+      "ko": "일회성 구매용 Stripe Checkout: 서버 가격, 웹훅에서만 주문 생성, 품절 시 자동 환불"
+    },
+    "k": [
+      "ecommerce",
+      "checkout",
+      "stripe",
+      "payments",
+      "orders"
+    ],
+    "g": {
+      "@core/cart": "^1.1.0",
+      "@core/orders": "^1.0.0",
+      "@core/shipping": "^1.0.0",
+      "@core/stripe": "^1.0.0",
+      "@core/catalog": "^1.0.0",
+      "@core/email": "^1.0.1",
+      "@core/jobs": "^1.0.0",
+      "@core/money": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0",
+      "stripe": "^23.0.0"
+    },
+    "e": [
+      "SITE_URL",
+      "STRIPE_TAX",
+      "CHECKOUT_ALERT_TO"
+    ],
+    "m": [
+      {
+        "n": "stripe",
+        "c": "npx",
+        "a": [
+          "-y",
+          "@stripe/mcp"
+        ],
+        "e": [
+          "STRIPE_SECRET_KEY"
+        ]
+      }
+    ]
+  },
+  "discounts": {
+    "v": "1.0.1",
+    "s": {
+      "en": "Discount codes and automatic discounts: percent, fixed, free shipping, product/category scope, usage and first-order limits",
+      "es": "Cupones y descuentos automáticos: porcentaje, importe, envío gratis, por producto o categoría, límites de uso y primer pedido",
+      "pt-BR": "Cupons e descontos automáticos: percentual, valor fixo, frete grátis, por produto ou categoria, limites e primeira compra",
+      "fr": "Codes promo et remises automatiques : pourcentage, montant, livraison offerte, par produit/catégorie, limites d'usage",
+      "de": "Rabattcodes und automatische Rabatte: Prozent, Betrag, Gratisversand, je Produkt/Kategorie, Nutzungs- und Erstkundenlimits",
+      "ja": "割引コードと自動割引：率・定額・送料無料、商品/カテゴリ指定、利用回数と初回限定の制限",
+      "zh-CN": "优惠码与自动折扣：百分比、固定金额、包邮、按商品或分类、使用次数和首单限制",
+      "ko": "할인 코드와 자동 할인: 비율·정액·무료 배송, 상품/카테고리 지정, 사용 횟수와 첫 주문 제한"
+    },
+    "k": [
+      "ecommerce",
+      "discounts",
+      "coupons",
+      "promotions",
+      "cart"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/cart": "^1.1.0",
+      "@core/catalog": "^1.0.0",
+      "@core/orders": "^1.1.0",
+      "@core/money": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    }
+  },
+  "reviews": {
+    "v": "1.0.1",
+    "s": {
+      "en": "Product reviews on @core/comments: verified purchases, photos, labeled imported reviews, ratings and review requests",
+      "es": "Reseñas de producto sobre @core/comments: compra verificada, fotos, importadas etiquetadas, valoraciones y solicitud por email",
+      "pt-BR": "Avaliações de produto sobre @core/comments: compra verificada, fotos, importadas sinalizadas, notas e pedido por e-mail",
+      "fr": "Avis produits sur @core/comments : achat vérifié, photos, avis importés signalés, notes et demande d'avis par e-mail",
+      "de": "Produktbewertungen auf @core/comments: verifizierte Käufe, Fotos, gekennzeichnete Importe, Sterne und Bewertungsanfragen",
+      "ja": "@core/comments 上の商品レビュー：購入確認、写真、出典表示付きインポート、評価、レビュー依頼メール",
+      "zh-CN": "基于 @core/comments 的商品评价：已验证购买、图片、标注来源的导入评价、评分和邀评邮件",
+      "ko": "@core/comments 기반 상품 리뷰: 구매 인증, 사진, 출처 표시된 가져온 리뷰, 평점, 리뷰 요청 메일"
+    },
+    "k": [
+      "ecommerce",
+      "reviews",
+      "ratings",
+      "social-proof",
+      "comments"
+    ],
+    "g": {
+      "@core/comments": "^1.0.0",
+      "@core/catalog": "^1.0.0",
+      "@core/orders": "^1.0.0",
+      "@core/email": "^1.0.1",
+      "@core/jobs": "^1.0.0",
+      "@core/db": "^1.0.0",
+      "@core/auth": "^1.1.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "REVIEW_REQUEST_DELAY_DAYS"
+    ]
+  },
+  "pricing": {
+    "s": {
+      "en": "Pricing from cost: markup rules by category/supplier/product, charm rounding, margin alerts and EU 30-day price history",
+      "es": "Precios desde el coste: reglas de margen por categoría/proveedor/producto, redondeo .99, alertas de margen e historial de 30 días UE",
+      "pt-BR": "Preços a partir do custo: regras de margem, arredondamento .99, alertas de margem e histórico de preços de 30 dias",
+      "fr": "Prix depuis le coût : règles de marge par catégorie/fournisseur/produit, arrondi .99, alertes de marge, historique 30 jours UE",
+      "de": "Preise aus Kosten: Aufschlagsregeln je Kategorie/Lieferant/Produkt, .99-Rundung, Margenwarnungen, EU-30-Tage-Preishistorie",
+      "ja": "原価からの価格設定：カテゴリ/仕入先/商品別の利益ルール、.99 丸め、利益率アラート、EU 30 日価格履歴",
+      "zh-CN": "基于成本定价：按分类/供应商/商品的加价规则、.99 取整、毛利预警和欧盟 30 天价格历史",
+      "ko": "원가 기반 가격: 카테고리/공급사/상품별 마진 규칙, .99 반올림, 마진 경고, EU 30일 가격 이력"
+    },
+    "k": [
+      "ecommerce",
+      "pricing",
+      "margins",
+      "dropshipping",
+      "omnibus"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/catalog": "^1.0.0",
+      "@core/money": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    }
+  },
+  "suppliers": {
+    "v": "1.1.0",
+    "s": {
+      "en": "Dropshipping suppliers: import products priced by rules, sync cost and stock, forward paid orders, tracking and exceptions",
+      "es": "Proveedores de dropshipping: importar productos con precio por reglas, sincronizar coste y stock, reenviar pedidos y seguimiento",
+      "pt-BR": "Fornecedores de dropshipping: importar produtos com preço por regras, sincronizar custo e estoque, repassar pedidos e rastreio",
+      "fr": "Fournisseurs dropshipping : import de produits tarifés par règles, sync coût et stock, transfert des commandes, suivi",
+      "de": "Dropshipping-Lieferanten: Produktimport mit Preisregeln, Kosten- und Bestandssync, Bestellweiterleitung, Tracking",
+      "ja": "ドロップシッピング仕入先：ルール価格での商品取込、原価・在庫同期、支払済み注文の転送、追跡、例外処理",
+      "zh-CN": "代发货供应商：按规则定价导入商品、同步成本和库存、转发已付订单、物流跟踪和异常队列",
+      "ko": "드롭시핑 공급사: 규칙 가격으로 상품 가져오기, 원가·재고 동기화, 결제 주문 전달, 배송 추적, 예외 처리"
+    },
+    "k": [
+      "dropshipping",
+      "suppliers",
+      "ecommerce",
+      "fulfillment",
+      "import"
+    ],
+    "g": {
+      "@core/catalog": "^1.0.0",
+      "@core/orders": "^1.0.0",
+      "@core/pricing": "^1.0.0",
+      "@core/jobs": "^1.0.0",
+      "@core/media": "^1.0.0",
+      "@core/email": "^1.0.1",
+      "@core/money": "^1.0.0",
+      "@core/rich-text": "^1.0.0",
+      "@core/db": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "SUPPLIER_COST_ALERT_PCT"
+    ]
+  },
+  "consent": {
+    "v": "1.1.0",
+    "s": {
+      "en": "GDPR cookie consent: banner with equal reject/accept, categories, proof records, ConsentGate and Google Consent Mode v2",
+      "es": "Consentimiento de cookies RGPD: banner con rechazar igual de visible, categorías, registro de prueba, ConsentGate y Consent Mode v2",
+      "pt-BR": "Consentimento de cookies LGPD/RGPD: banner com recusar igual a aceitar, categorias, registro de prova e Consent Mode v2",
+      "fr": "Consentement cookies RGPD : bandeau refuser/accepter à égalité, catégories, preuve, ConsentGate et Consent Mode v2",
+      "de": "DSGVO-Cookie-Einwilligung: Banner mit gleichwertigem Ablehnen, Kategorien, Nachweis, ConsentGate und Consent Mode v2",
+      "ja": "GDPR クッキー同意：拒否と同意を同等に扱うバナー、カテゴリ、同意記録、ConsentGate、Consent Mode v2",
+      "zh-CN": "GDPR Cookie 同意：拒绝与接受同等显著的横幅、分类、同意记录、ConsentGate 和 Consent Mode v2",
+      "ko": "GDPR 쿠키 동의: 거부·동의가 동등한 배너, 카테고리, 동의 기록, ConsentGate, Consent Mode v2"
+    },
+    "k": [
+      "gdpr",
+      "cookies",
+      "consent",
+      "privacy",
+      "analytics"
+    ],
+    "g": {
+      "@core/db": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0",
+      "react": "^19.0.0"
+    },
+    "e": [
+      "CONSENT_POLICY_VERSION",
+      "SITE_URL",
+      "CONSENT_COOKIE_DOMAIN"
+    ]
+  },
+  "pixels": {
+    "v": "1.0.1",
+    "s": {
+      "en": "Conversion tracking with consent: GA4, Meta Pixel + Conversions API, TikTok Pixel + Events API, deduplicated event ids",
+      "es": "Medición de conversiones con consentimiento: GA4, Meta Pixel + Conversions API, TikTok Pixel + Events API, sin duplicados",
+      "pt-BR": "Medição de conversões com consentimento: GA4, Meta Pixel + Conversions API, TikTok Pixel + Events API, sem duplicados",
+      "fr": "Suivi des conversions avec consentement : GA4, Meta Pixel + Conversions API, TikTok Pixel + Events API, dédoublonnés",
+      "de": "Conversion-Tracking mit Einwilligung: GA4, Meta Pixel + Conversions API, TikTok Pixel + Events API, dedupliziert",
+      "ja": "同意に基づくコンバージョン計測：GA4、Meta ピクセル + CAPI、TikTok ピクセル + Events API、重複排除",
+      "zh-CN": "基于同意的转化追踪：GA4、Meta 像素 + Conversions API、TikTok 像素 + Events API，事件去重",
+      "ko": "동의 기반 전환 추적: GA4, Meta 픽셀 + Conversions API, TikTok 픽셀 + Events API, 이벤트 중복 제거"
+    },
+    "k": [
+      "analytics",
+      "pixels",
+      "conversions",
+      "marketing",
+      "gdpr"
+    ],
+    "g": {
+      "@core/consent": "^1.0.0",
+      "@core/antispam": "^1.0.0",
+      "@core/contracts": "^1.0.0",
+      "@core/money": "^1.0.0",
+      "@core/db": "^1.0.0"
+    },
+    "p": {
+      "react": "^19.0.0"
+    },
+    "e": [
+      "GA4_MEASUREMENT_ID",
+      "GA4_API_SECRET",
+      "META_PIXEL_ID",
+      "META_CAPI_TOKEN",
+      "TIKTOK_PIXEL_ID",
+      "TIKTOK_EVENTS_TOKEN"
+    ]
+  },
+  "ui": {
+    "v": "1.0.1",
+    "s": {
+      "en": "Accessible base UI for React on native elements: fields, buttons, table, tabs, dialog, toasts and WCAG AA light/dark tokens",
+      "es": "Interfaz base accesible para React sobre elementos nativos: campos, botones, tabla, pestañas, diálogo, avisos y tokens AA",
+      "pt-BR": "UI base acessível para React com elementos nativos: campos, botões, tabela, abas, diálogo, avisos e tokens AA claro/escuro",
+      "fr": "UI de base accessible pour React sur éléments natifs : champs, boutons, tableau, onglets, dialogue, toasts, jetons AA",
+      "de": "Barrierefreie Basis-UI für React mit nativen Elementen: Felder, Buttons, Tabelle, Tabs, Dialog, Toasts, AA-Tokens",
+      "ja": "ネイティブ要素による React 用アクセシブル UI：フィールド、ボタン、表、タブ、ダイアログ、通知、AA 準拠トークン",
+      "zh-CN": "基于原生元素的 React 无障碍基础组件：表单、按钮、表格、标签页、对话框、提示和符合 AA 的明暗主题",
+      "ko": "네이티브 요소 기반 React 접근성 UI: 필드, 버튼, 표, 탭, 대화상자, 알림, AA 명/암 토큰"
+    },
+    "k": [
+      "ui",
+      "react",
+      "accessibility",
+      "design-tokens",
+      "components"
+    ],
+    "p": {
+      "react": "^19.0.0"
+    }
+  },
+  "admin": {
+    "s": {
+      "en": "Admin panel generated from AdminResource: lists, forms, actions, dashboard, RBAC, CSRF protection and audit log",
+      "es": "Panel de administración generado desde AdminResource: listas, formularios, acciones, dashboard, RBAC, anti-CSRF y auditoría",
+      "pt-BR": "Painel admin gerado a partir de AdminResource: listas, formulários, ações, dashboard, RBAC, anti-CSRF e auditoria",
+      "fr": "Back-office généré depuis AdminResource : listes, formulaires, actions, tableau de bord, RBAC, anti-CSRF et audit",
+      "de": "Admin-Panel aus AdminResource generiert: Listen, Formulare, Aktionen, Dashboard, RBAC, CSRF-Schutz und Audit-Log",
+      "ja": "AdminResource から生成する管理画面：一覧、フォーム、アクション、ダッシュボード、RBAC、CSRF 対策、監査ログ",
+      "zh-CN": "由 AdminResource 生成的管理后台：列表、表单、操作、仪表盘、RBAC、CSRF 防护和审计日志",
+      "ko": "AdminResource로 생성되는 관리자 패널: 목록, 폼, 액션, 대시보드, RBAC, CSRF 방지, 감사 로그"
+    },
+    "k": [
+      "admin",
+      "cms",
+      "dashboard",
+      "crud",
+      "rbac"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/auth": "^1.1.0",
+      "@core/rbac": "^1.0.0",
+      "@core/ui": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "react": "^19.0.0",
+      "zod": "^4.0.0"
+    }
+  },
+  "blocks": {
+    "s": {
+      "en": "Page builder blocks: 15 accessible sections (hero, pricing, FAQ with JSON-LD…), admin editor and registry for more",
+      "es": "Bloques de página: 15 secciones accesibles (hero, precios, FAQ con JSON-LD…), editor en el admin y registro ampliable",
+      "pt-BR": "Blocos de página: 15 seções acessíveis (hero, preços, FAQ com JSON-LD…), editor no admin e registro extensível",
+      "fr": "Blocs de page : 15 sections accessibles (hero, tarifs, FAQ avec JSON-LD…), éditeur d'admin et registre extensible",
+      "de": "Seitenblöcke: 15 barrierefreie Sektionen (Hero, Preise, FAQ mit JSON-LD…), Admin-Editor und erweiterbares Register",
+      "ja": "ページブロック：アクセシブルな 15 セクション（ヒーロー、料金、JSON-LD 付き FAQ など）、管理エディタ、拡張可能な登録",
+      "zh-CN": "页面区块：15 个无障碍版块（首屏、价格、带 JSON-LD 的 FAQ 等）、后台编辑器和可扩展注册表",
+      "ko": "페이지 블록: 접근성 갖춘 15개 섹션(히어로, 가격, JSON-LD FAQ 등), 관리자 편집기, 확장 가능한 등록"
+    },
+    "k": [
+      "blocks",
+      "page-builder",
+      "landing",
+      "cms",
+      "accessibility"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/contracts": "^1.0.0",
+      "@core/rich-text": "^1.0.0",
+      "@core/media": "^1.0.0",
+      "@core/ui": "^1.0.0",
+      "@core/admin": "^1.0.0"
+    },
+    "p": {
+      "react": "^19.0.0",
+      "zod": "^4.0.0"
+    }
+  },
+  "kit-cms": {
+    "v": "1.0.1",
+    "d": "src/app/(cms)",
+    "s": {
+      "en": "Self-managed website kit for Next.js: /admin to edit pages with blocks, media, menus, settings, forms and users",
+      "es": "Kit de sitio autoadministrable para Next.js: /admin para editar páginas con bloques, medios, menús, ajustes y usuarios",
+      "pt-BR": "Kit de site autogerenciável para Next.js: /admin para editar páginas com blocos, mídia, menus, ajustes e usuários",
+      "fr": "Kit de site autogéré pour Next.js : /admin pour éditer pages à blocs, médias, menus, réglages, formulaires, comptes",
+      "de": "Kit für selbst verwaltete Next.js-Websites: /admin für Seiten mit Blöcken, Medien, Menüs, Einstellungen und Nutzer",
+      "ja": "Next.js 向け自己管理サイトキット：/admin でブロックページ、メディア、メニュー、設定、フォーム、ユーザーを編集",
+      "zh-CN": "Next.js 自助管理网站套件：在 /admin 编辑区块页面、媒体、菜单、设置、表单和用户",
+      "ko": "Next.js 자체 관리 사이트 키트: /admin에서 블록 페이지, 미디어, 메뉴, 설정, 폼, 사용자 편집"
+    },
+    "k": [
+      "cms",
+      "kit",
+      "nextjs",
+      "admin",
+      "website"
+    ],
+    "g": {
+      "@core/admin": "^1.0.0",
+      "@core/content": "^1.1.0",
+      "@core/media": "^1.0.0",
+      "@core/rich-text": "^1.0.0",
+      "@core/blocks": "^1.0.0",
+      "@core/site": "^1.0.0",
+      "@core/seo": "^1.0.0",
+      "@core/forms": "^1.0.0",
+      "@core/search": "^1.0.0"
+    },
+    "p": {
+      "next": ">=15.5.0",
+      "react": "^19.0.0",
+      "zod": "^4.0.0"
+    }
+  },
+  "kit-blog": {
+    "v": "1.0.1",
+    "d": "src/app/(blog)",
+    "s": {
+      "en": "Blog kit for Next.js: posts with authors, categories, tags, series, feeds, moderated comments and newsletter",
+      "es": "Kit de blog para Next.js: posts con autores, categorías, etiquetas, series, feeds, comentarios moderados y newsletter",
+      "pt-BR": "Kit de blog para Next.js: posts com autores, categorias, tags, séries, feeds, comentários moderados e newsletter",
+      "fr": "Kit blog pour Next.js : articles, auteurs, catégories, tags, séries, flux, commentaires modérés et newsletter",
+      "de": "Blog-Kit für Next.js: Beiträge mit Autoren, Kategorien, Tags, Serien, Feeds, moderierten Kommentaren, Newsletter",
+      "ja": "Next.js 向けブログキット：著者・カテゴリ・タグ・シリーズ付き記事、フィード、承認制コメント、ニュースレター",
+      "zh-CN": "Next.js 博客套件：含作者、分类、标签、系列的文章，订阅源，审核评论和邮件简报",
+      "ko": "Next.js 블로그 키트: 작성자·카테고리·태그·시리즈 글, 피드, 검토 댓글, 뉴스레터"
+    },
+    "k": [
+      "blog",
+      "kit",
+      "nextjs",
+      "rss",
+      "newsletter"
+    ],
+    "g": {
+      "@core/kit-cms": "^1.0.0",
+      "@core/blog": "^1.0.0",
+      "@core/comments": "^1.0.0",
+      "@core/newsletter": "^1.1.0"
+    },
+    "p": {
+      "next": ">=15.5.0",
+      "react": "^19.0.0",
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "NEWSLETTER_FROM",
+      "NEWSLETTER_POSTAL_ADDRESS",
+      "NEWSLETTER_SECRET"
+    ]
+  },
+  "kit-landing": {
+    "v": "1.0.1",
+    "d": "src/app/(landing)",
+    "s": {
+      "en": "Landing page kit for Next.js: block-built pages, lead forms, cookie banner and consent-gated pixels with dedup",
+      "es": "Kit de landings para Next.js: páginas con bloques, formularios de leads, banner de cookies y píxeles con consentimiento",
+      "pt-BR": "Kit de landing pages para Next.js: páginas com blocos, formulários de leads, banner de cookies e pixels com consentimento",
+      "fr": "Kit de landing pages Next.js : pages à blocs, formulaires de leads, bandeau cookies, pixels avec consentement",
+      "de": "Landingpage-Kit für Next.js: Blockseiten, Lead-Formulare, Cookie-Banner und Pixel nur mit Einwilligung",
+      "ja": "Next.js 向けランディングページキット：ブロック構成、リードフォーム、Cookie バナー、同意制ピクセル",
+      "zh-CN": "Next.js 落地页套件：区块页面、线索表单、Cookie 横幅和需同意的转化像素",
+      "ko": "Next.js 랜딩 페이지 키트: 블록 페이지, 리드 폼, 쿠키 배너, 동의 기반 픽셀"
+    },
+    "k": [
+      "landing",
+      "kit",
+      "nextjs",
+      "leads",
+      "conversion"
+    ],
+    "g": {
+      "@core/kit-cms": "^1.0.0",
+      "@core/consent": "^1.1.0",
+      "@core/pixels": "^1.0.0",
+      "@core/experiments": "^1.0.0"
+    },
+    "p": {
+      "next": ">=15.5.0",
+      "react": "^19.0.0",
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "GA4_MEASUREMENT_ID",
+      "META_PIXEL_ID",
+      "TIKTOK_PIXEL_ID",
+      "CONSENT_POLICY_VERSION",
+      "EXPERIMENTS_SECRET"
+    ]
+  },
+  "kit-store": {
+    "v": "1.0.1",
+    "d": "src/app/(store)",
+    "s": {
+      "en": "Online store kit for Next.js: catalog, cart, Stripe checkout, orders, shipping, coupons, verified reviews, accounts",
+      "es": "Kit de tienda online para Next.js: catálogo, carrito, pago con Stripe, pedidos, envíos, cupones, reseñas y cuentas",
+      "pt-BR": "Kit de loja online para Next.js: catálogo, carrinho, Stripe, pedidos, frete, cupons, avaliações e contas",
+      "fr": "Kit boutique en ligne Next.js : catalogue, panier, paiement Stripe, commandes, livraison, coupons, avis, comptes",
+      "de": "Online-Shop-Kit für Next.js: Katalog, Warenkorb, Stripe-Checkout, Bestellungen, Versand, Gutscheine, Bewertungen",
+      "ja": "Next.js 向けオンラインストアキット：カタログ、カート、Stripe 決済、注文、配送、クーポン、レビュー、アカウント",
+      "zh-CN": "Next.js 网店套件：商品目录、购物车、Stripe 结账、订单、配送、优惠券、真实评价和账户",
+      "ko": "Next.js 온라인 스토어 키트: 카탈로그, 장바구니, Stripe 결제, 주문, 배송, 쿠폰, 검증 리뷰, 계정"
+    },
+    "k": [
+      "ecommerce",
+      "kit",
+      "nextjs",
+      "stripe",
+      "shop"
+    ],
+    "g": {
+      "@core/kit-cms": "^1.0.0",
+      "@core/catalog": "^1.0.0",
+      "@core/cart": "^1.0.0",
+      "@core/checkout": "^1.0.0",
+      "@core/orders": "^1.0.0",
+      "@core/shipping": "^1.0.0",
+      "@core/discounts": "^1.0.0",
+      "@core/reviews": "^1.0.0"
+    },
+    "p": {
+      "next": ">=15.5.0",
+      "react": "^19.0.0",
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "STRIPE_SECRET_KEY",
+      "STRIPE_WEBHOOK_SECRET",
+      "CART_COOKIE_SECRET",
+      "ORDER_LINK_SECRET",
+      "STORE_CURRENCY"
+    ]
+  },
+  "kit-dropshipping": {
+    "v": "1.0.1",
+    "d": "src/app/(dropshipping)",
+    "s": {
+      "en": "Dropshipping kit for Next.js: supplier import, margin rules, product landings, order forwarding and exceptions",
+      "es": "Kit de dropshipping para Next.js: importar de proveedores, reglas de margen, landings de producto, reenvío y excepciones",
+      "pt-BR": "Kit de dropshipping para Next.js: importação de fornecedores, margens, landings de produto, repasse e exceções",
+      "fr": "Kit dropshipping Next.js : import fournisseurs, règles de marge, landings produit, transfert des commandes",
+      "de": "Dropshipping-Kit für Next.js: Lieferantenimport, Margenregeln, Produkt-Landingpages, Auftragsweiterleitung",
+      "ja": "Next.js 向けドロップシッピングキット：仕入先インポート、マージン規則、商品 LP、注文転送、例外管理",
+      "zh-CN": "Next.js 代发货套件：供应商导入、利润规则、单品落地页、订单转发和异常处理",
+      "ko": "Next.js 드롭쉬핑 키트: 공급사 가져오기, 마진 규칙, 상품 랜딩, 주문 전달, 예외 처리"
+    },
+    "k": [
+      "dropshipping",
+      "kit",
+      "nextjs",
+      "ecommerce",
+      "suppliers"
+    ],
+    "g": {
+      "@core/kit-store": "^1.0.0",
+      "@core/kit-landing": "^1.0.0",
+      "@core/suppliers": "^1.0.0",
+      "@core/pricing": "^1.0.0"
+    },
+    "p": {
+      "next": ">=15.5.0",
+      "react": "^19.0.0"
+    },
+    "e": [
+      "PAYMENT_FEE_BPS",
+      "PAYMENT_FEE_FIXED",
+      "SUPPLIERS_SYNC_CRON",
+      "SUPPLIERS_TRACKING_CRON"
+    ]
+  },
+  "experiments": {
+    "v": "1.0.1",
+    "s": {
+      "en": "A/B tests with consent: stable assignment, conversion goals and results with significance, no extra cookies",
+      "es": "Tests A/B con consentimiento: asignación estable, objetivos de conversión y resultados con significación",
+      "pt-BR": "Testes A/B com consentimento: atribuição estável, metas de conversão e resultados com significância",
+      "fr": "Tests A/B avec consentement : affectation stable, objectifs de conversion et résultats significatifs",
+      "de": "A/B-Tests mit Einwilligung: stabile Zuteilung, Conversion-Ziele und Ergebnisse mit Signifikanz",
+      "ja": "同意ベースの A/B テスト：安定した割り当て、コンバージョン目標、有意性付きの結果",
+      "zh-CN": "基于同意的 A/B 测试：稳定分组、转化目标和带显著性的结果",
+      "ko": "동의 기반 A/B 테스트: 안정적 배정, 전환 목표, 유의성 포함 결과"
+    },
+    "k": [
+      "ab-testing",
+      "experiments",
+      "conversion",
+      "analytics",
+      "privacy"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/consent": "^1.0.0",
+      "@core/contracts": "^1.0.0",
+      "@core/jobs": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0",
+      "react": "^19.0.0"
+    },
+    "e": [
+      "EXPERIMENTS_SECRET"
+    ]
+  },
+  "invoices": {
+    "v": "1.0.1",
+    "s": {
+      "en": "Spanish invoices from paid orders: legal numbering, simplified/full, credit notes and VeriFactu-style hash chain",
+      "es": "Facturas españolas desde pedidos: numeración legal, simplificada/completa, rectificativas y cadena de huellas VeriFactu",
+      "pt-BR": "Faturas espanholas a partir de pedidos: numeração legal, simplificada/completa, retificativas e cadeia de hashes",
+      "fr": "Factures espagnoles depuis les commandes : numérotation légale, simplifiées/complètes, avoirs et chaîne d'empreintes",
+      "de": "Spanische Rechnungen aus Bestellungen: gesetzliche Nummerierung, vereinfacht/voll, Korrekturen, Hash-Kette",
+      "ja": "注文からスペインの請求書：法定採番、簡易/完全、訂正請求書、VeriFactu 形式のハッシュチェーン",
+      "zh-CN": "从订单生成西班牙发票：合法编号、简易/完整发票、更正发票和 VeriFactu 风格哈希链",
+      "ko": "주문에서 스페인 송장 발행: 법정 번호, 간이/정식, 정정 송장, VeriFactu 방식 해시 체인"
+    },
+    "k": [
+      "invoices",
+      "spain",
+      "verifactu",
+      "ecommerce",
+      "tax"
+    ],
+    "g": {
+      "@core/db": "^1.0.0",
+      "@core/orders": "^1.0.0",
+      "@core/contracts": "^1.0.0"
+    },
+    "p": {
+      "zod": "^4.0.0"
+    },
+    "e": [
+      "INVOICE_ISSUER_NIF",
+      "INVOICE_ISSUER_NAME",
+      "INVOICE_ISSUER_ADDRESS",
+      "INVOICE_SERIES",
+      "INVOICE_VAT_RATE",
+      "INVOICE_RETAIL",
+      "INVOICE_QR_ENV"
+    ]
+  }
+}
