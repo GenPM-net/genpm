@@ -29,10 +29,21 @@ describe('AdminApp (happy-dom + axe)', () => {
       json: async () => JSON.parse(String(init?.body ?? 'null')),
     } as unknown as Request;
     const u = owner();
-    return handleAdminApi(req, admin, { getUser: async () => ({ id: u.id, email: null, name: 'Owner' }) });
+    inflight++;
+    try {
+      return await handleAdminApi(req, admin, { getUser: async () => ({ id: u.id, email: null, name: 'Owner' }) });
+    } finally {
+      inflight--;
+    }
   };
+  let inflight = 0;
+  // Espera a que no queden peticiones en vuelo (con Postgres real tardan más que con PGlite): una que siga viva
+  // tras el test pisaría el esquema del siguiente.
   const settle = async () => {
-    for (let i = 0; i < 20; i++) await act(async () => new Promise((r) => setTimeout(r, 5)));
+    for (let i = 0, idle = 0; i < 400 && idle < 10; i++) {
+      await act(async () => new Promise((r) => setTimeout(r, 5)));
+      idle = inflight === 0 ? idle + 1 : 0;
+    }
   };
   const violations = async () => {
     const r = await axe.run(container, { rules: { 'color-contrast': { enabled: false }, region: { enabled: false } } });
