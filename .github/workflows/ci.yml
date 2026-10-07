@@ -109,6 +109,10 @@ jobs:
           node-version: 22
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
+      # Los mismos tests contra Postgres real con postgres-js (el driver de producción), no solo PGlite.
+      - run: pnpm test:pg
+        env:
+          TEST_DATABASE_URL: postgres://genpm:genpm@localhost:5432/genpm_e2e
       # Tren de versiones: un módulo que cambia sube su `v` (sustituye a Changesets; ver scripts/check-versions.mjs).
       - run: node scripts/check-versions.mjs origin/main
       # Proyecto de ejemplo: `next build` de producción con Turbopack (ADR-034: imports `.ts`) y e2e con Playwright

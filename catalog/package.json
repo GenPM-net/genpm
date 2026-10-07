@@ -12,7 +12,8 @@
     "check": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json && eslint src && vitest run && tsx scripts/check-migrations.ts && node scripts/kit-snippets.mjs --check",
     "check:migrations": "tsx scripts/check-migrations.ts",
     "build:example": "next build --turbopack --experimental-build-mode=compile",
-    "e2e": "next build --turbopack && tsx --tsconfig tsconfig.app.json e2e/run.ts"
+    "e2e": "next build --turbopack && tsx --tsconfig tsconfig.app.json e2e/run.ts",
+    "test:pg": "vitest run"
   },
   "dependencies": {
     "@oslojs/crypto": "^1.0.1",

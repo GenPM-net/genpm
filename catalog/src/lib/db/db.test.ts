@@ -47,8 +47,9 @@ describe('database helpers', () => {
     const rows = await db.select().from(notes);
     expect(rows.map((r) => r.body)).toEqual(['kept']);
     expect(getDb()).toBe(db);
-    const res = (await db.execute(sql`select 1 as n`)) as unknown as { rows: Array<{ n: number }> };
-    expect(res.rows[0]?.n).toBe(1);
+    // PGlite devuelve { rows }, postgres-js un array: el código de los paquetes acepta ambos.
+    const res = (await db.execute(sql`select 1 as n`)) as unknown as { rows: Array<{ n: number }> } | Array<{ n: number }>;
+    expect((Array.isArray(res) ? res : res.rows)[0]?.n).toBe(1);
   });
 
   it('createDb needs DATABASE_URL', () => {

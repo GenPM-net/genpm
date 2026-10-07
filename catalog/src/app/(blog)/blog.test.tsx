@@ -14,7 +14,8 @@ import { RenderBlocks } from '@/lib/blocks';
 import { comments } from '@/lib/comments';
 import { createEntry, publish, schedulePublish, seedEntry } from '@/lib/content';
 import { projectDb } from '@/genpm/__fixtures__/db';
-import { campaigns } from '@/lib/newsletter';
+import { campaigns, subscribers } from '@/lib/newsletter';
+import { NEWSLETTER_CONSENT } from './_components/subscribe-form';
 import { docFromText } from '@/lib/rich-text';
 import { sitemapChunkXml } from '@/lib/seo';
 import { POST as postCommentRoute } from './api/comments/[type]/[id]/route';
@@ -159,8 +160,14 @@ describe('forms without JavaScript', () => {
   });
 
   it('subscribes to the newsletter with double opt-in', async () => {
-    const res = await subscribeRoute(htmlPost('https://site.test/newsletter/subscribe', await human({ email: 'reader@x.test' }), '198.51.100.3'));
+    const consentVersion = `${NEWSLETTER_CONSENT.version}: ${NEWSLETTER_CONSENT.text}`;
+    // El formulario del kit declara su casilla: sin marcarla, no hay alta.
+    const unchecked = await subscribeRoute(htmlPost('https://site.test/newsletter/subscribe', await human({ email: 'reader@x.test', consentVersion }), '198.51.100.3'));
+    expect(unchecked.headers.get('location')).toBe('https://site.test/blog/hello?newsletter=consent_required#newsletter');
+    expect(await db.select().from(subscribers)).toEqual([]);
+    const res = await subscribeRoute(htmlPost('https://site.test/newsletter/subscribe', await human({ email: 'reader@x.test', consentVersion, consent: 'on' }), '198.51.100.6'));
     expect(res.headers.get('location')).toBe('https://site.test/blog/hello?newsletter=pending#newsletter');
+    expect((await db.select().from(subscribers))[0]).toMatchObject({ consentVersion, status: 'pending' });
   });
 });
 

@@ -61,7 +61,7 @@
 - [ ] `CAT-BLG-04` **BLOCKED** Implementar y publicar @core/kit-blog · C · 14h · deps: CAT-CMS-14, CAT-BLG-01, CAT-BLG-02, CAT-BLG-03
   - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/app/(blog)` (2026-10-06). Falta crear el repo `genpm-net/kit-blog` (fundador), publicar, pruebas de agente y la autorrevisión diferida de ADR-023 (la revisión independiente con IA ya se hizo y sus hallazgos están corregidos, 2026-10-06).
 - [ ] `CAT-BLG-05` **TODO** Aceptación kit-blog: prueba de agente, feeds válidos y Lighthouse ≥ 95 · T · 3h · deps: CAT-BLG-04
-  - Nota (2026-10-07): en el e2e, RSS y Atom bien formados y JSON Feed 1.1 con el post; Lighthouse móvil 100 en las cuatro categorías en `/blog/hello`. Falta la prueba de agente específica del blog y repetirla con el kit publicado.
+  - Nota (2026-10-07): en el e2e, RSS y Atom bien formados y JSON Feed 1.1 con el post; Lighthouse móvil 100 en las cuatro categorías en `/blog/hello`. Prueba de agente del blog con newsletter (2026-10-07): integrado en ~7 min y ~40 llamadas, post en `/blog`, feeds, sitemap y búsqueda; doble opt-in, campaña y baja verificados con Postgres. Encontró que las campañas no se enviaban con postgres-js (corregido; la suite completa corre ahora también contra Postgres real en CI) y la casilla de consentimiento que faltaba (añadida). Queda repetirla con el kit publicado.
 
 ## F3 · Landing (kit-landing)
 

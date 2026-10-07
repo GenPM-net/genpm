@@ -27,6 +27,9 @@ JSON-LD, sitemap, Open Graph). Glue and templates only: logic lives in @core/blo
 5. Add "Blog" to the header menu in Admin → Menus, and link the feeds from the site footer if wanted.
 6. Verify: create an author and a post, schedule it, check it is absent from `/blog`, the feed and the sitemap until
    its time; comment as a guest (goes to moderation) and approve it; subscribe, confirm from the email and unsubscribe.
+   Without an OAuth app nobody can sign in to the admin: an agent can create the author and posts with `seedEntry` /
+   `createEntry` + `publish` (@core/content) from a script. Without `RESEND_API_KEY`, emails are printed to the console
+   only under `next dev` (`next start` is production and refuses to send without a provider).
 
 ## Conventions
 - Posts reference authors, categories, tags and series by slug; renaming a slug breaks links, so prefer editing names.
