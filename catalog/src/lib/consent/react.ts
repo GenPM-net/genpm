@@ -71,6 +71,11 @@ async function save(endpoint: string, choices: Choices, action: string) {
 /** Abre el centro de preferencias desde cualquier enlace ("Preferencias de cookies" en el pie). */
 export const openConsentPreferences = () => window.dispatchEvent(new Event('consentopen'));
 
+/** Botón "Cookie settings" para el pie (se puede usar desde un Server Component): reabre el centro de preferencias. */
+export function CookieSettingsButton(props: { label?: string; className?: string }): ReactNode {
+  return h('button', { type: 'button', className: props.className ?? 'consent-settings-link', onClick: openConsentPreferences }, props.label ?? 'Cookie settings');
+}
+
 export function ConsentBanner(props: { policyVersion: string; policyHref: string; endpoint?: string; labels?: Partial<ConsentLabels>; className?: string }): ReactNode {
   const l = { ...DEFAULT_LABELS, ...props.labels };
   const endpoint = props.endpoint ?? '/api/consent';

@@ -144,7 +144,8 @@ export async function ban(target: { userId: string } | { email: string } | { com
     subject = c.authorId ? `user:${c.authorId}` : `email:${c.guestEmailHash}`;
   } else subject = 'userId' in target ? `user:${target.userId}` : `email:${await emailHash(target.email)}`;
   await db.insert(commentBans).values({ subject, reason: reason ?? null }).onConflictDoNothing();
-  const [kind, value] = subject.split(/:(.*)/s) as [string, string];
+  const sep = subject.indexOf(':');
+  const [kind, value] = [subject.slice(0, sep), subject.slice(sep + 1)];
   await db
     .update(comments)
     .set({ status: 'spam' })

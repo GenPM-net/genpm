@@ -4,6 +4,7 @@ import { eq, inArray } from 'drizzle-orm';
 import type { ProductView } from '@/lib/catalog';
 import { getDb } from '@/lib/db';
 import { supplierProducts, suppliers } from '@/lib/suppliers';
+import Link from 'next/link';
 
 export async function DeliveryNotice({ product }: { product: Pick<ProductView, 'variants'> }) {
   const ids = product.variants.map((v) => v.id);
@@ -28,7 +29,7 @@ export async function DeliveryNotice({ product }: { product: Pick<ProductView, '
       )}
       {from.some((c) => c && !EU.has(c)) && <p>Shipped from outside the EU: import VAT or duties may apply depending on your country.</p>}
       <p>
-        You buy from this shop, which handles your order, returns and the 14-day right of withdrawal. <a href="/returns">Returns policy</a>.
+        You buy from this shop, which handles your order, returns and the 14-day right of withdrawal. <Link href="/returns">Returns policy</Link>.
       </p>
     </aside>
   );

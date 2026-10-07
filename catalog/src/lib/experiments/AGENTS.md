@@ -13,12 +13,14 @@ Conversions are recorded once per visitor and goal; results show rates, lift, p-
 
 ## Integration
 1. Requires @core/consent (the banner) and its cookie. Env: `EXPERIMENTS_SECRET` (≥ 32 random chars).
-2. Migrations as in `src/lib/db/AGENTS.md`. Add `experimentsAdminResource` to `src/genpm/admin.ts`.
+2. Migrations as in `src/lib/db/AGENTS.md`. Add `experimentsAdminResource` to `src/genpm/admin.ts` (with kit-landing:
+   its "A/B tests (optional)" lines).
 3. Create the experiment in the admin (key, goal, variants: the first is the control), then press "Start".
 4. Render: `const { variant } = await getVariant('hero-test', cookieHeader)` (cookie header of the request) and show
    the matching content; or `<Experiment name="hero-test" cookieHeader={…} variants={{ a: <A />, b: <B /> }} />`.
 5. Conversion: where the goal happens on the server, `await recordConversion('lead', req.headers.get('cookie'))`.
-6. Schedule `experiments.prune` daily (@core/jobs `schedule`) to delete participants 30 days after an experiment stops.
+6. Schedule `experiments.prune` daily (@core/jobs `schedule`) to delete participants 30 days after an experiment stops
+   (with kit-cms, its `setup-schedules.ts` does it).
 7. Verify: with analytics accepted the same browser always sees the same variant; with cookies rejected, always the control.
 
 ## Conventions

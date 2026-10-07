@@ -7,6 +7,7 @@ with double opt-in and one-click unsubscribe, share links without third-party sc
 JSON-LD, sitemap, Open Graph). Glue and templates only: logic lives in @core/blog, comments and newsletter.
 
 ## Map
+- `_templates/genpm.md` — the exact lines this kit adds to the project's `src/genpm/*.ts` (generated, always current).
 - `blog/page.tsx` — index (featured first, `?page=`). `blog/[slug]/page.tsx` — post.
 - `blog/{category,tag,author,series}/[slug]/page.tsx` — archives (shared `_lib/archive.tsx`). `blog/archive/[year]/[month]`.
 - `blog/feed.xml`, `blog/atom.xml`, `blog/feed.json` — feeds. `api/comments/[type]/[id]` — comments (type `post`).
@@ -20,14 +21,9 @@ JSON-LD, sitemap, Open Graph). Glue and templates only: logic lives in @core/blo
    `RESEND_API_KEY` (see src/lib/newsletter/AGENTS.md). Explain to the person how to verify their sending domain
    (SPF, DKIM, DMARC) with their email provider; do not change their DNS yourself.
 3. Migrations for @core/comments and @core/newsletter (src/lib/db/AGENTS.md).
-4. Add these lines to the project's registration files (marked `// kit-blog`):
-   - `src/genpm/content.ts`: `import '@/lib/blog';`
-   - `src/genpm/seo.ts`: `registerSitemapSource(blogSitemapSource());`
-   - `src/genpm/search.ts`: `registerSearchSource(blogSearchSource());`
-   - `src/genpm/blocks.ts`: add `latestPosts` from `@/app/(blog)/_blocks/latest-posts` to the registry.
-   - `src/genpm/admin.ts`: `const [posts, ...taxonomies] = blogAdminResources();` then add `withSendAsCampaign(posts)`,
-     `...taxonomies`, `commentsAdminResource`, `...newsletterAdminResources()` to `resources`, and a widget with
-     the pending comments count (`commentsAdminResource.list({ page: 1, pageSize: 1, filters: { status: 'pending' } }, ctx)`).
+4. Add the lines of `_templates/genpm.md` to the project's `src/genpm/*.ts` (it says which file and where): the blog
+   collections, sitemap and search sources, the `latestPosts` block, and the admin resources (posts with "Create
+   newsletter campaign", taxonomies, comments, newsletter) plus the pending-comments widget.
 5. Add "Blog" to the header menu in Admin → Menus, and link the feeds from the site footer if wanted.
 6. Verify: create an author and a post, schedule it, check it is absent from `/blog`, the feed and the sitemap until
    its time; comment as a guest (goes to moderation) and approve it; subscribe, confirm from the email and unsubscribe.

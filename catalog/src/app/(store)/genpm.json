@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/kit-store",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Online store kit for Next.js: catalog, cart, Stripe checkout, orders, shipping, coupons, verified reviews, accounts",
     "es": "Kit de tienda online para Next.js: catálogo, carrito, pago con Stripe, pedidos, envíos, cupones, reseñas y cuentas",

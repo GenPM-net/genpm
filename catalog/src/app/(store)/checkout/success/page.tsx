@@ -2,6 +2,7 @@
 import type { Metadata } from 'next';
 import { getCheckoutStatus } from '@/lib/checkout';
 import { one } from '../../_lib/store';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = { title: 'Order status', robots: { index: false, follow: false } };
@@ -27,7 +28,7 @@ export default async function Success({ searchParams }: { searchParams: Promise<
         <>
           <h1>The payment was not completed</h1>
           <p>
-            Nothing was charged. <a href="/cart">Back to your cart</a>.
+            Nothing was charged. <Link href="/cart">Back to your cart</Link>.
           </p>
         </>
       ) : (

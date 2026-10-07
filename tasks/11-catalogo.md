@@ -106,7 +106,7 @@
 - [ ] `CAT-DRP-04` **TODO** Alta de la app en AliExpress Open Platform (dropshipping) y aprobación · F · 2h · deps: CAT-00-01
 - [ ] `CAT-DRP-05` **TODO** Adaptador AliExpress para @core/suppliers · C · 14h · deps: CAT-DRP-02, CAT-DRP-04
 - [ ] `CAT-DRP-06` **BLOCKED** Implementar y publicar @core/kit-dropshipping (importar, reenvío, excepciones, landing de producto) · C · 24h · deps: CAT-STO-10, CAT-LND-03, CAT-DRP-02
-  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/app/(dropshipping)` (2026-10-06). Falta crear el repo `genpm-net/kit-dropshipping` (fundador), publicar, pruebas de agente y la autorrevisión diferida de ADR-023 (la revisión independiente con IA ya se hizo y sus hallazgos están corregidos, 2026-10-06).
+  - Bloqueo: implementado, con tests y `genpm validate` 5/5 en `catalog/src/app/(dropshipping)` (2026-10-06). Prueba de agente con `genpm add` simulado (2026-10-07): proyecto nuevo con cms+landing+store+dropshipping integrado en ~30 llamadas, `tsc` y `next build` en verde; sus 10 defectos ya están corregidos (`_templates/genpm.md` generados por kit, lint de Next y target ES2017 en el CI del workspace, tareas diarias de todos los kits en `setup-schedules`). Falta crear el repo `genpm-net/kit-dropshipping` (fundador), publicar, repetir la prueba con el registro real y la autorrevisión diferida de ADR-023 (la revisión independiente con IA ya se hizo y sus hallazgos están corregidos, 2026-10-06).
 - [ ] `CAT-DRP-07` **TODO** Aceptación kit-dropshipping: recorrido completo con proveedor simulado en < 45 min de agente · T · 4h · deps: CAT-DRP-06
 
 ## F6 · Crecimiento

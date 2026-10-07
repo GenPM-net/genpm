@@ -387,6 +387,7 @@
     ]
   },
   "comments": {
+    "v": "1.0.1",
     "s": {
       "en": "Moderated comments on any entity: guest or user, replies, optional 1–5 ratings, bans, GDPR erasure, safe HTML",
       "es": "Comentarios moderados sobre cualquier entidad: invitado o usuario, respuestas, valoración 1–5, bloqueos, RGPD y HTML seguro",
@@ -1101,6 +1102,7 @@
     ]
   },
   "kit-store": {
+    "v": "1.0.1",
     "d": "src/app/(store)",
     "s": {
       "en": "Online store kit for Next.js: catalog, cart, Stripe checkout, orders, shipping, coupons, verified reviews, accounts",
@@ -1143,6 +1145,7 @@
     ]
   },
   "kit-dropshipping": {
+    "v": "1.0.1",
     "d": "src/app/(dropshipping)",
     "s": {
       "en": "Dropshipping kit for Next.js: supplier import, margin rules, product landings, order forwarding and exceptions",

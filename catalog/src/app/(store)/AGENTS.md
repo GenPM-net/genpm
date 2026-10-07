@@ -7,6 +7,8 @@ verified reviews, customer orders page, transactional emails and SEO (Product JS
 form is a Next.js Server Action, so it works without JavaScript and never accepts prices from the browser.
 
 ## Map
+- `_templates/genpm.md` — the exact lines this kit adds to the project's `src/genpm/*.ts` (generated, always current).
+- `_lib/maintenance.ts` — daily `store.maintenance` job (deletes expired carts).
 - `shop/page.tsx`, `categories/[slug]`, `collections/[slug]` — listings. `products/[slug]/page.tsx` — product page.
 - `cart/page.tsx` — cart, discount code, shipping country/method, totals and payment. `checkout/success` — real status.
 - `orders/[number]/page.tsx` — order for its owner or with the signed email link. `account/page.tsx` — customer orders.
@@ -22,11 +24,10 @@ form is a Next.js Server Action, so it works without JavaScript and never accept
    `STORE_CURRENCY` (e.g. `EUR`), `SITE_URL`, `EMAIL_FROM`. Use Stripe test mode until the end-to-end check passes.
    If the Stripe MCP server is available and the person agrees, use it to inspect the test account (never live keys).
 3. Migrations for catalog, cart, checkout, orders, shipping, discounts, reviews, comments and stripe.
-4. Add the lines marked `// kit-store` to the registration files: `src/genpm/commerce.ts` (imports that register
-   webhooks and cart steps) imported from `src/genpm/index.ts`; `productSitemapSource()` in `seo.ts`;
-   `productSearchSource()` in `search.ts`; `productGrid`, `buyNow` in `blocks.ts`; in `admin.ts`
-   `...catalogAdminResources()`, `ordersAdminResource`, `...shippingAdminResources()`, `discountsAdminResource`,
-   `...storeWidgets` and `legalPagesWidget`.
+4. Add every line of `_templates/genpm.md` to the project's `src/genpm/*.ts` (it says which file and where): it creates
+   `src/genpm/commerce.ts` (imports that register webhooks, cart steps and the daily `store.maintenance` job), the
+   product sitemap and search sources, the `productGrid` / `buyNow` blocks, and the admin resources and widgets
+   (including comments, where product reviews are moderated). Then run the kit-cms `setup-schedules.ts` again.
 5. Stripe webhook: endpoint `https://<site>/api/stripe/webhook` with `checkout.session.completed`,
    `checkout.session.async_payment_succeeded` and `checkout.session.expired` (refunds are started from the admin); locally `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
 6. Create shipping zones and rates in the admin; put `<CartLink />` in the site header and "Shop" in the menu.

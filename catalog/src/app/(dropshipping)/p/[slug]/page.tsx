@@ -20,6 +20,7 @@ import { shippingZones } from '@/lib/shipping';
 import { DeliveryNotice } from '../../_components/delivery-notice';
 import { TrackView } from '../../_components/track-view';
 import { buyNow } from '../../_lib/actions';
+import Link from 'next/link';
 
 type Props = { params: Promise<{ slug: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 
@@ -127,7 +128,7 @@ export default async function ProductLanding({ params, searchParams }: Props) {
               Continue to secure payment
             </button>
             <p className="blog-meta">
-              Shipping cost is added at checkout. By paying you accept the <a href="/terms">terms of sale</a>.
+              Shipping cost is added at checkout. By paying you accept the <Link href="/terms">terms of sale</Link>.
             </p>
           </form>
         ) : (

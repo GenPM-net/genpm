@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = { title: 'You have been unsubscribed', robots: { index: false, follow: false } };
 
@@ -8,7 +9,7 @@ export default function Page() {
       <h1>You have been unsubscribed</h1>
       <p>You will not receive more emails from us. You can subscribe again at any time.</p>
       <p>
-        <a href="/blog">Back to the blog</a>
+        <Link href="/blog">Back to the blog</Link>
       </p>
     </main>
   );

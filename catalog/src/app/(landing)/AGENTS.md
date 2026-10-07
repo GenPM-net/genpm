@@ -8,6 +8,7 @@ consent), a cookie banner, consent-gated GA4/Meta/TikTok pixels and a real-deadl
 A/B tests with @core/experiments: a landing can name an experiment and show `blocksB` to variant `b`.
 
 ## Map
+- `_templates/genpm.md` — the exact lines this kit adds to the project's `src/genpm/*.ts` (generated, always current).
 - `lp/[slug]/page.tsx` — landing. `lp/[slug]/lead/[formKey]/route.ts` — form posts. `lp/[slug]/thanks/page.tsx` — thank-you + browser event.
 - `api/consent/route.ts` — saves the banner choice and deletes cookies of rejected categories.
 - `_lib/landings.ts` — collection and `landingPath`. `_lib/conversion.ts` — lead handling and the `landing.lead-event` job.
@@ -16,18 +17,17 @@ A/B tests with @core/experiments: a landing can name an experiment and show `blo
 
 ## Integration
 1. @core/kit-cms must be integrated first.
-2. Add the lines marked `// kit-landing` to the project's registration files:
-   - `src/genpm/content.ts`: `import '@/app/(landing)/_lib/landings';` and `import '@/app/(landing)/_lib/conversion';`
-   - `src/genpm/blocks.ts`: add `countdown` from `@/app/(landing)/_blocks/countdown`.
-   - `src/genpm/seo.ts`: `registerSitemapSource(contentSitemapSource('landings', landingPath));`
-   - `src/genpm/admin.ts`: `{ ...contentAdminResource('landings', { path: landingPath }), group: 'Marketing' }` and `leadsByLandingWidget`.
+2. Add the lines of `_templates/genpm.md` to the project's `src/genpm/*.ts` (it says which file and where): the
+   landings collection and lead event, the `countdown` block, the sitemap source and the admin resource and widget.
+   Lines marked "A/B tests (optional)" are only needed for step 5.
 3. Root layout: render `<SiteTracking policyHref="/cookies" />` at the end of `<body>`, and add `className="site-chrome"`
-   to the site header and footer so minimal landings can hide them. Add a "Cookie settings" link that calls
-   `openConsentPreferences()` (@core/consent) in the footer.
+   to the site header and footer so minimal landings can hide them. Add `<CookieSettingsButton />` (@core/consent/react, a client
+   component that calls `openConsentPreferences()`) in the footer.
 4. Env (all optional; a platform is active only when configured): public ids `GA4_MEASUREMENT_ID`, `META_PIXEL_ID`,
    `TIKTOK_PIXEL_ID` and the server tokens described in src/lib/pixels/AGENTS.md. Bump `CONSENT_POLICY_VERSION`
    when the cookie policy changes (everyone is asked again).
-5. A/B tests: set `EXPERIMENTS_SECRET`, add `experimentsAdminResource` to `src/genpm/admin.ts`, create an experiment
+5. A/B tests (optional): set `EXPERIMENTS_SECRET`, add the "A/B tests (optional)" lines of `_templates/genpm.md`, run the
+   kit-cms `setup-schedules.ts` again (schedules `experiments.prune`), create an experiment
    with variants `a` (control) and `b` and goal `lead`, then set its key and the "variant B" sections on the landing.
 6. Give editors the `landings:*` permission if they should manage landings (`defineRole`, @core/rbac).
 7. Verify: create a landing with a hero and a form block, submit it with UTM parameters, see the submission with

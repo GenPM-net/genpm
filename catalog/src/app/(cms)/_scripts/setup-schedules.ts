@@ -1,18 +1,32 @@
-// Programa las tareas periódicas del CMS en @core/jobs y construye el índice de búsqueda la primera vez (idempotente).
+// Programa las tareas periódicas de los kits instalados en @core/jobs y construye el índice de búsqueda la primera vez
+// (idempotente: se puede repetir tras instalar otro kit). Solo programa las tareas que el proyecto registra.
 // Uso (lo ejecuta la persona, con DATABASE_URL): npx tsx "src/app/(cms)/_scripts/setup-schedules.ts"
 import '@/genpm';
-import { schedule } from '@/lib/jobs';
+import { getJob, schedule } from '@/lib/jobs';
 import { reindexJob } from '@/lib/search';
-import { maintenanceJob } from '../_lib/maintenance';
+import '../_lib/maintenance';
 
-export async function setupSchedules(): Promise<void> {
-  await schedule(maintenanceJob.type, '30 3 * * *'); // rate limits y tareas antiguas
-  await schedule(reindexJob.type, '0 3 * * *'); // el índice se mantiene al publicar; esto lo reconstruye por si acaso
+/** Tarea → cron (UTC). Las de kits no instalados se omiten. */
+export const SCHEDULES: Record<string, string> = {
+  'cms.maintenance': '30 3 * * *', // rate limits y tareas antiguas
+  'search.reindex': '0 3 * * *', // el índice se mantiene al publicar; esto lo reconstruye por si acaso
+  'store.maintenance': '45 3 * * *', // kit-store: carritos caducados
+  'experiments.prune': '15 4 * * *', // kit-landing: participantes de experimentos parados
+};
+
+export async function setupSchedules(): Promise<string[]> {
+  const done: string[] = [];
+  for (const [type, cron] of Object.entries(SCHEDULES)) {
+    if (!getJob(type)) continue;
+    await schedule(type, cron);
+    done.push(type);
+  }
   await reindexJob.enqueue({});
+  return done;
 }
 
 if (process.argv[1]?.endsWith('setup-schedules.ts')) {
-  await setupSchedules();
-  console.log('Scheduled cms.maintenance and search.reindex (daily) and queued a first reindex. Make sure /api/cron runs every minute.');
+  const done = await setupSchedules();
+  console.log(`Scheduled daily: ${done.join(', ')}; queued a first reindex. Make sure /api/cron runs every minute.`);
   process.exit(0);
 }

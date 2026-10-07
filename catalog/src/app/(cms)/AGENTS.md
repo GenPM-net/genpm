@@ -18,14 +18,15 @@ auth and rbac (the last two arrive through @core/admin). Public routes: pages cr
   `_templates/layout.tsx` — root layout for a new site. `_templates/env.example` — every variable the kit and its packages read.
 - `_lib/maintenance.ts` — daily `cms.maintenance` job (prunes rate limits and old jobs), loaded by `api/cron`.
 - `_scripts/create-owner.ts` — gives the first signed-in user the `owner` role (and creates the default roles).
-- `_scripts/setup-schedules.ts` — schedules `cms.maintenance` and `search.reindex` and queues the first reindex.
+- `_scripts/setup-schedules.ts` — schedules the daily jobs of the installed kits (`cms.maintenance`, `search.reindex`,
+  `store.maintenance`, `experiments.prune`) and queues the first reindex.
 
 ## Integration
 1. Check Next ≥ 15.5 with App Router, `src/app` and the `@/*` → `src/*` alias. Without `src/`: install with `--dest app/(cms)` and adapt `@/` imports.
    GenPM packages import each other with `.ts` extensions: `tsconfig.json` needs `"allowImportingTsExtensions": true`
    (Next projects already have `"noEmit": true`). Works with webpack and Turbopack, no extra `next.config`.
-2. Env: copy `_templates/env.example` to the project's `.env.example` (merge if it exists; make sure `.gitignore` does not
-   ignore it) and the real values to `.env.local`. Required: `DATABASE_URL`, `AUTH_SECRET`, one OAuth provider
+2. Env: copy `_templates/env.example` to the project's `.env.example` (merge if it exists; Next's default `.gitignore`
+   has `.env*`, so add a line `!.env.example`) and the real values to `.env.local`. Required: `DATABASE_URL`, `AUTH_SECRET`, one OAuth provider
    (`GITHUB_CLIENT_ID/SECRET` or `GOOGLE_…`), `STORAGE_*`, `EMAIL_FROM` + `RESEND_API_KEY`, `SITE_URL`,
    `CONTENT_PREVIEW_SECRET` (≥ 32 chars), `ANTISPAM_SECRET`, `CRON_SECRET`. With `STORAGE_DRIVER=local` also mount the
    storage route (`src/lib/storage/AGENTS.md`, Integration 1).
@@ -35,7 +36,8 @@ auth and rbac (the last two arrive through @core/admin). Public routes: pages cr
 5. Migrations: GenPM does not install dev tools — run `src/lib/db/AGENTS.md` steps 3–5 (`drizzle-kit` + `tsx`, the
    `db:generate` / `db:migrate` scripts), generate one migration for all packages and apply it where a database exists.
 6. Schedule `GET /api/cron` every minute with `Authorization: Bearer $CRON_SECRET` (e.g. `vercel.json` crons). Once the
-   database is migrated, the person runs `npx tsx "src/app/(cms)/_scripts/setup-schedules.ts"` (idempotent).
+   database is migrated, the person runs `npx tsx "src/app/(cms)/_scripts/setup-schedules.ts"` (idempotent; it schedules
+   the daily jobs of every installed kit, so run it again after adding another kit).
 7. The person signs in once at `/admin/login`, then runs `npx tsx "src/app/(cms)/_scripts/create-owner.ts" <their email>`.
    Never run it for them with an email they did not give you.
 8. New site: create `src/app/page.tsx` with `export { default, generateMetadata } from './(cms)/_lib/home';` and create
@@ -46,8 +48,8 @@ auth and rbac (the last two arrive through @core/admin). Public routes: pages cr
    `next build` tries to prerender and fails without `DATABASE_URL`).
 10. Verify: `npx tsc --noEmit` and `npx next build` pass without a database. Then, with one: sign in at `/admin`, edit a
     page, open "Preview", publish, and see the change on the public URL.
-11. Optional: packages ship `adapters/hono.ts` next to `adapters/next.ts`; nothing imports them in a Next project, so they
-    can stay or be deleted (`hono` is not needed).
+11. Delete every `src/lib/*/adapters/hono.ts` (`rm src/lib/*/adapters/hono.ts`): they import `hono`, which a Next
+    project does not install, and `tsc` checks every file. Keep `adapters/next.ts`.
 
 ## Retrofit (make an existing site editable)
 Follow the @core/content procedure page by page, one commit per page: inventory visible literals → a singleton per

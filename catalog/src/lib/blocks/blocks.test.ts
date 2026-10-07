@@ -94,7 +94,7 @@ describe('RenderBlocks', () => {
 
   it('escapes FAQ structured data so it cannot close the script tag', () => {
     const html = render({ blocks: [allBlocks[6]!] });
-    const script = html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)![1]!;
+    const script = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)![1]!;
     expect(script).not.toContain('</script');
     expect(JSON.parse(script).mainEntity[0].acceptedAnswer.text).toBe('Yes </script><script>alert(1)</script>');
     expect(render({ blocks: [{ ...allBlocks[6]!, data: { ...allBlocks[6]!.data, structuredData: false } }] })).not.toContain('ld+json');

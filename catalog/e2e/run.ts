@@ -57,6 +57,11 @@ expect(await bootstrapOwner(owner.id), 'owner not created');
 const token = generateSessionToken();
 await createSession(token, owner.id);
 await seedEntry({ collection: 'site_settings', data: { name: 'E2E Mugs', tagline: 'Mugs for everyone' } });
+// Tareas diarias de todos los kits del proyecto de ejemplo (lo que ejecuta la persona tras migrar).
+const { setupSchedules } = await import('../src/app/(cms)/_scripts/setup-schedules.ts');
+const scheduled = await setupSchedules();
+for (const t of ['cms.maintenance', 'search.reindex', 'store.maintenance', 'experiments.prune'])
+  expect(scheduled.includes(t), `${t} not scheduled (got ${scheduled.join(', ')})`);
 
 // 3. Servidor de producción.
 const require = createRequire(import.meta.url);

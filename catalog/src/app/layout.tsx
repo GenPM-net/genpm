@@ -4,7 +4,9 @@ import type { ReactNode } from 'react';
 import '@/lib/ui/ui.css';
 import '@/lib/blocks/blocks.css';
 import { CartLink } from './(store)/_components/cart-link';
+import { CookieSettingsButton } from '@/lib/consent/react';
 import { SiteTracking } from './(landing)/_components/site-tracking';
+import Link from 'next/link';
 
 export const metadata = { title: 'GenPM catalog example' };
 
@@ -14,12 +16,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="ui-root">
         <header className="site-chrome">
           <nav aria-label="Main">
-            <a href="/">Home</a> · <a href="/blog">Blog</a> · <a href="/shop">Shop</a> · <CartLink />
+            <Link href="/">Home</Link> · <Link href="/blog">Blog</Link> · <Link href="/shop">Shop</Link> · <CartLink />
           </nav>
         </header>
         {children}
         <footer className="site-chrome">
-          <a href="/privacy">Privacy</a> · <a href="/cookies">Cookies</a>
+          <Link href="/privacy">Privacy</Link> · <Link href="/cookies">Cookies</Link> · <CookieSettingsButton />
         </footer>
         <SiteTracking />
       </body>

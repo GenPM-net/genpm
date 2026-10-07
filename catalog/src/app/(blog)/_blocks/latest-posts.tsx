@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { listPosts } from '@/lib/blog';
 import { defineBlock, Section } from '@/lib/blocks';
 import { PostCard } from '../_components/post-card';
+import Link from 'next/link';
 
 export const latestPosts = defineBlock({
   type: 'latest-posts',
@@ -32,7 +33,7 @@ export const latestPosts = defineBlock({
           ))}
         </ul>
         <p>
-          <a href="/blog">All posts</a>
+          <Link href="/blog">All posts</Link>
         </p>
       </Section>
     );

@@ -8,6 +8,7 @@ import { ratesFor, shippingZones } from '@/lib/shipping';
 import '../_components/store.css';
 import { applyCode, checkout, setShipping, updateLine } from '../_lib/actions';
 import { cookieHeader, currentUserId, one, price } from '../_lib/store';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = { title: 'Cart', robots: { index: false, follow: false } };
@@ -32,9 +33,9 @@ export default async function CartPage({ searchParams }: { searchParams: Promise
         <h1>Cart</h1>
         <p>Your cart is empty.</p>
         <p>
-          <a className="ui-button ui-button--primary" href="/shop">
+          <Link className="ui-button ui-button--primary" href="/shop">
             Continue shopping
-          </a>
+          </Link>
         </p>
       </main>
     );
@@ -185,7 +186,7 @@ export default async function CartPage({ searchParams }: { searchParams: Promise
             Pay securely with Stripe
           </button>
           <p className="blog-meta">
-            By paying you accept the <a href="/terms">terms of sale</a>. You have 14 days to withdraw (<a href="/returns">returns</a>).
+            By paying you accept the <Link href="/terms">terms of sale</Link>. You have 14 days to withdraw (<Link href="/returns">returns</Link>).
           </p>
         </form>
       </div>

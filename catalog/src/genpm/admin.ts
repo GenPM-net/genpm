@@ -1,5 +1,6 @@
 // Panel de administración: recursos y widgets. Cada kit o paquete instalado indica qué añadir aquí.
 import { withSendAsCampaign } from '@/app/(blog)/_lib/campaign'; // kit-blog
+import { pendingCommentsWidget } from '@/app/(blog)/_lib/widgets'; // kit-blog
 import { landingPath } from '@/app/(landing)/_lib/landings'; // kit-landing
 import { leadsByLandingWidget } from '@/app/(landing)/_lib/widgets'; // kit-landing
 import { legalPagesWidget } from '@/app/(store)/_lib/legal'; // kit-store
@@ -8,9 +9,9 @@ import { dropshippingWidgets } from '@/app/(dropshipping)/_lib/widgets'; // kit-
 import { type AdminWidget, auditAdminResource, defineAdmin } from '@/lib/admin';
 import { blogAdminResources } from '@/lib/blog'; // kit-blog
 import { catalogAdminResources } from '@/lib/catalog'; // kit-store
-import { commentsAdminResource } from '@/lib/comments'; // kit-blog
+import { commentsAdminResource } from '@/lib/comments'; // kit-blog kit-store
 import { contentAdminResource } from '@/lib/content';
-import { experimentsAdminResource } from '@/lib/experiments'; // kit-landing
+import { experimentsAdminResource } from '@/lib/experiments'; // kit-landing: A/B tests (optional)
 import { discountsAdminResource } from '@/lib/discounts'; // kit-store
 import { formsAdminResources, submissionsAdminResource } from '@/lib/forms';
 import { mediaAdminResource } from '@/lib/media';
@@ -46,13 +47,7 @@ const widgets: AdminWidget[] = [
       })),
     }),
   },
-  {
-    // kit-blog: cola de moderación
-    name: 'pending-comments',
-    title: 'Comments to moderate',
-    permission: 'comments:read',
-    load: async (ctx) => ({ value: (await commentsAdminResource.list({ page: 1, pageSize: 1, filters: { status: 'pending' } }, ctx)).total }),
-  },
+  pendingCommentsWidget, // kit-blog
   leadsByLandingWidget, // kit-landing
   ...storeWidgets, // kit-store
   legalPagesWidget, // kit-store
@@ -64,10 +59,10 @@ export const admin = defineAdmin({
   resources: [
     pagesResource,
     { ...contentAdminResource('landings', { path: landingPath }), group: 'Marketing' }, // kit-landing
-    experimentsAdminResource, // kit-landing
+    experimentsAdminResource, // kit-landing: A/B tests (optional)
     withSendAsCampaign(postsResource!), // kit-blog
     ...blogTaxonomies, // kit-blog
-    commentsAdminResource, // kit-blog
+    commentsAdminResource, // kit-blog kit-store
     ...newsletterAdminResources(), // kit-blog
     ...catalogAdminResources(), // kit-store
     ordersAdminResource, // kit-store

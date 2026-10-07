@@ -9,7 +9,7 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json",
-    "check": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json && vitest run && tsx scripts/check-migrations.ts",
+    "check": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json && eslint src && vitest run && tsx scripts/check-migrations.ts && node scripts/kit-snippets.mjs --check",
     "check:migrations": "tsx scripts/check-migrations.ts",
     "build:example": "next build --turbopack --experimental-build-mode=compile",
     "e2e": "next build --turbopack && tsx --tsconfig tsconfig.app.json e2e/run.ts"
@@ -37,12 +37,15 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.3.0",
+    "@eslint/eslintrc": "^3.3.7",
     "@tiptap/core": "^3.31.4",
     "@types/node": "^22.0.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "axe-core": "^4.14.0",
     "drizzle-kit": "^0.31.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "15.5.27",
     "happy-dom": "^20.14.5",
     "next": "^15.5.27",
     "playwright-core": "1.56.1",

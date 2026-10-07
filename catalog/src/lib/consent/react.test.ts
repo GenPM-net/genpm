@@ -3,7 +3,7 @@ import { act, createElement as h } from 'react';
 import { createRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { ConsentBanner, ConsentGate, readClientConsent } from './react.ts';
+import { ConsentBanner, ConsentGate, CookieSettingsButton, readClientConsent } from './react.ts';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 const setConsent = (v: string, c: Record<string, boolean>) => {
@@ -30,5 +30,19 @@ describe('client consent and the policy version', () => {
     expect(el.querySelector('[role=dialog]')).not.toBeNull(); // pregunta otra vez
     expect(el.textContent?.endsWith('off')).toBe(true);
     await act(async () => root.unmount());
+  });
+});
+
+describe('CookieSettingsButton', () => {
+  it('reopens the preferences center', async () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    let opened = 0;
+    window.addEventListener('consentopen', () => opened++);
+    await act(async () => createRoot(el).render(h(CookieSettingsButton, { label: 'Cookies' })));
+    const b = el.querySelector('button')!;
+    expect([b.type, b.textContent]).toEqual(['button', 'Cookies']);
+    await act(async () => b.click());
+    expect(opened).toBe(1);
   });
 });

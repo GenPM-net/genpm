@@ -4,4 +4,10 @@ import { countdown } from '@/app/(landing)/_blocks/countdown'; // kit-landing
 import { buyNow, productGrid } from '@/app/(store)/_blocks/products'; // kit-store
 import { coreBlocks, createBlockRegistry } from '@/lib/blocks';
 
-export const blocks = createBlockRegistry([...coreBlocks, latestPosts, countdown, productGrid, buyNow]);
+export const blocks = createBlockRegistry([
+  ...coreBlocks,
+  latestPosts, // kit-blog
+  countdown, // kit-landing
+  productGrid, // kit-store
+  buyNow, // kit-store
+]);

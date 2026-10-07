@@ -20,7 +20,7 @@ No payments or orders. Tables: `carts`, `cart_lines`.
    order discounts must go through `applyOrderDiscount` so they are allocated to lines.
    Modules that open payments before the order exists (@core/checkout) register `registerPendingCodeUses` so
    usage-limited codes (@core/discounts) count in-flight payments as reserved.
-5. Schedule `pruneCarts()` daily (@core/jobs).
+5. Schedule `pruneCarts()` daily (@core/jobs; with kit-store, its `store.maintenance` job does it).
 6. Verify: add a product, change its price in the admin, the cart shows the new price.
 
 ## Conventions
