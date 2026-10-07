@@ -8,8 +8,13 @@ export async function setupSchedules(): Promise<void> {
   await schedule('suppliers.tracking', process.env.SUPPLIERS_TRACKING_CRON ?? '0 */12 * * *'); // seguimiento cada 12 h
 }
 
+// Sin top-level await: tsx compila a CommonJS en proyectos sin "type": "module" (lo normal en Next).
 if (process.argv[1]?.endsWith('setup-schedules.ts')) {
-  await setupSchedules();
-  console.log('Scheduled suppliers.sync (every 6 h) and suppliers.tracking (every 12 h). Make sure /api/cron runs every minute.');
-  process.exit(0);
+  setupSchedules().then(() => {
+    console.log('Scheduled suppliers.sync (every 6 h) and suppliers.tracking (every 12 h). Make sure /api/cron runs every minute.');
+    process.exit(0);
+  }, (e) => {
+    console.error(e);
+    process.exit(1);
+  });
 }

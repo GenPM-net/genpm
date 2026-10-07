@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/db",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Postgres with Drizzle: shared client, per-module schemas, transactions and ULID ids",
     "es": "Postgres con Drizzle: cliente compartido, esquemas por módulo, transacciones e IDs ULID",

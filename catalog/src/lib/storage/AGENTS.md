@@ -15,7 +15,8 @@ no image processing (that is @core/media). No tables.
 1. Env for S3/R2 (default driver): `STORAGE_ENDPOINT` (R2: `https://<account>.r2.cloudflarestorage.com`),
    `STORAGE_BUCKET`, `STORAGE_ACCESS_KEY_ID`, `STORAGE_SECRET_ACCESS_KEY`, optional `STORAGE_REGION` (default `auto`)
    and `STORAGE_PUBLIC_URL` (CDN/custom domain serving the `public/` prefix).
-   Local dev: `STORAGE_DRIVER=local`, `STORAGE_SECRET` (≥ 32 chars), `STORAGE_PUBLIC_URL=http://localhost:3000`, and
+   Local dev: `STORAGE_DRIVER=local`, `STORAGE_SECRET` (≥ 32 chars), `STORAGE_PUBLIC_URL=http://localhost:3000`
+   (files go to `STORAGE_LOCAL_DIR`, default `.storage/`: add it to `.gitignore`), and
    mount the route: Hono `app.route('/api/storage', localStorageRoutes())`; Next.js
    `app/api/storage/[[...key]]/route.ts` with `export { localStoragePut as PUT, localStorageGet as GET } from '@/lib/storage/adapters/next'`.
 2. Bucket CORS (S3/R2): allow `PUT` from your origin with header `content-type`.

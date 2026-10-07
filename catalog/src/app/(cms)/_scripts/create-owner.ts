@@ -11,6 +11,7 @@ export async function createOwner(email: string): Promise<'created' | 'exists' |
   return (await bootstrapOwner(user.id)) ? 'created' : 'exists';
 }
 
+// Sin top-level await: tsx compila a CommonJS en proyectos sin "type": "module" (lo normal en Next).
 const isMain = typeof process !== 'undefined' && process.argv[1]?.endsWith('create-owner.ts');
 if (isMain) {
   const email = process.argv[2];
@@ -18,12 +19,16 @@ if (isMain) {
     console.error('Usage: create-owner <email>');
     process.exit(1);
   }
-  const r = await createOwner(email);
   const messages = {
     created: `${email} is now the owner. Open /admin.`,
     exists: 'The site already has an owner: ask them to grant you a role in Admin → Users.',
     no_user: `No user with email ${email}. Sign in once at /admin/login, then run this again.`,
   };
-  console.log(messages[r]);
-  process.exit(r === 'no_user' ? 1 : 0);
+  createOwner(email).then((r) => {
+    console.log(messages[r]);
+    process.exit(r === 'no_user' ? 1 : 0);
+  }, (e) => {
+    console.error(e);
+    process.exit(1);
+  });
 }

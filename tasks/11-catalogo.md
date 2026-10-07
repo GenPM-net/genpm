@@ -48,6 +48,7 @@
 - [ ] `CAT-CMS-14` **BLOCKED** Implementar y publicar @core/kit-cms (rutas /admin, páginas, vista previa, cron, registro en src/genpm) · C · 20h · deps: CAT-CMS-05, CAT-CMS-10, CAT-CMS-11, CAT-CMS-12, CAT-CMS-13
   - Bloqueo: implementado, con tests, `genpm validate` 5/5 y e2e (Playwright + Postgres) en `catalog/src/app/(cms)` (2026-10-06). Prueba de agente con `genpm add` simulado (`scripts/simulate-add.mjs`): sitio nuevo integrado en ~6 min y ~20 llamadas, `tsc` y `next build` en verde; sus huecos de documentación ya están corregidos en AGENTS.md y plantillas. Falta crear el repo `genpm-net/kit-cms` (fundador), publicar, repetir la prueba con el registro real y la autorrevisión diferida de ADR-023 (la revisión independiente con IA ya se hizo y sus hallazgos están corregidos, 2026-10-06).
 - [ ] `CAT-CMS-15` **TODO** Aceptación kit-cms: retrofit de un sitio Next de 5 páginas con snapshots idénticos y sitio nuevo desde cero en < 30 min de agente · T · 4h · deps: CAT-CMS-14
+  - Nota (2026-10-07): ejecutada con `genpm add` simulado; cumple: retrofit idéntico (salvo el `<div hidden>` vacío de Next) en ~19 min y sitio nuevo en ~6 min. Fixture y criterio en `catalog/acceptance/kit-cms-retrofit/`. Queda repetirla con el registro real cuando CAT-CMS-14 esté publicado.
 
 ## F2 · Blog (kit-blog)
 

@@ -31,11 +31,17 @@ with fallback and signed preview. Implements `ContentSource`, sitemap/search sou
 ### Retrofit: make an existing site editable
 Work page by page, one commit per page, without changing markup or styles:
 1. List every visible literal (texts, image URLs, links) of the page.
-2. Group them: one singleton per page (`home`, `about`); a collection for repeated items (testimonials, FAQs).
+2. Group them: one singleton per page (`home`, `about`). Repeated items of one page (features, prices, FAQs) are a
+   `list` field inside that singleton (ordered, one edit screen); use a collection only when the items have their own
+   pages or are shared by several pages.
 3. Define the schema with the current values' shape and call `seedEntry` with the current values (idempotent; it
-   never overwrites editor changes), e.g. from a seed script.
+   only creates, so it never overwrites editor changes — and a field added later to the seed does not reach an
+   already-seeded database: set it in the admin or with `saveDraft` + `publish`), e.g. from a seed script.
 4. Replace literals with typed reads; keep a fallback only where a value is optional.
-5. Render before/after and compare the HTML: it must be identical.
+5. Render before/after and compare the HTML: it must be identical. Next 15 streams metadata into `<body>` for browsers
+   once `generateMetadata` awaits data; set `htmlLimitedBots: /.*/` in `next.config` to keep it in `<head>` (as before).
+6. Grant editors the new singletons: `defineRole` with `<singleton>:*` (e.g. `home:*`, `site_settings:*`) — the
+   default `editor` role only covers the kit's collections.
 
 ## Conventions
 - Field names in admin resources are `data.<field>`; slugs are lowercase `a-z0-9-` with up to 6 `/` segments.

@@ -25,8 +25,13 @@ export async function setupSchedules(): Promise<string[]> {
   return done;
 }
 
+// Sin top-level await: tsx compila a CommonJS en proyectos sin "type": "module" (lo normal en Next).
 if (process.argv[1]?.endsWith('setup-schedules.ts')) {
-  const done = await setupSchedules();
-  console.log(`Scheduled daily: ${done.join(', ')}; queued a first reindex. Make sure /api/cron runs every minute.`);
-  process.exit(0);
+  setupSchedules().then((done) => {
+    console.log(`Scheduled daily: ${done.join(', ')}; queued a first reindex. Make sure /api/cron runs every minute.`);
+    process.exit(0);
+  }, (e) => {
+    console.error(e);
+    process.exit(1);
+  });
 }

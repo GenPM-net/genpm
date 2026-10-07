@@ -3,6 +3,11 @@
 import '@/genpm';
 import { seedLegalPages } from '../_lib/legal';
 
-const created = await seedLegalPages();
-console.log(created.length ? `Draft legal pages created: ${created.map((s) => `/${s}`).join(', ')}. Complete and review them before publishing.` : 'Legal pages already exist.');
-process.exit(0);
+// Sin top-level await: tsx compila a CommonJS en proyectos sin "type": "module" (lo normal en Next).
+seedLegalPages().then((created) => {
+  console.log(created.length ? `Draft legal pages created: ${created.map((s) => `/${s}`).join(', ')}. Complete and review them before publishing.` : 'Legal pages already exist.');
+  process.exit(0);
+}, (e) => {
+    console.error(e);
+    process.exit(1);
+  });

@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/storage",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "File storage for S3-compatible buckets (R2, S3, MinIO) and local disk, with signed direct uploads",
     "es": "Almacenamiento de archivos en buckets S3 compatibles (R2, S3, MinIO) y disco local, con subidas firmadas",
@@ -30,6 +30,8 @@
     "STORAGE_ENDPOINT",
     "STORAGE_ACCESS_KEY_ID",
     "STORAGE_SECRET_ACCESS_KEY",
-    "STORAGE_PUBLIC_URL"
+    "STORAGE_PUBLIC_URL",
+    "STORAGE_SECRET",
+    "STORAGE_LOCAL_DIR"
   ]
 }

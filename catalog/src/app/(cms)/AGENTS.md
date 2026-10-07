@@ -55,7 +55,10 @@ auth and rbac (the last two arrive through @core/admin). Public routes: pages cr
 Follow the @core/content procedure page by page, one commit per page: inventory visible literals → a singleton per
 page (or a collection when repeated) defined in `src/genpm/content.ts` → seed with the current values (`seedEntry`) →
 replace literals with typed reads → compare the rendered HTML before/after (must be identical). Keep markup and design;
-only the data source changes. Local images go to @core/media with their alt text. Existing routes keep priority over
+only the data source changes: skip `className="ui-root"` on `<body>` and don't add `buildMetadata` tags the site did not
+have (keep its titles and descriptions, now read from the CMS). Local images go to @core/media with their alt text;
+SVG (which @core/media rejects) stays in `public/` with its path in a text field. Keep the root layout's existing
+header/footer markup and feed it from `getSiteSettings()` / `getMenu()`. Existing routes keep priority over
 `[...slug]`. Non-Next sites (static HTML, Astro, Vite): out of scope for 1.0 — say so.
 
 ## Conventions
