@@ -207,7 +207,7 @@ periódicamente (`jobs`), **reenviar pedidos** pagados al proveedor (`onOrderPai
 | Adaptador | Cómo | Notas |
 |---|---|---|
 | `manual` | Importación por CSV, pedidos al proveedor por email/CSV, seguimiento introducido a mano | Funciona con cualquier proveedor desde el día 1 |
-| `cj` | API de CJdropshipping | Verificar endpoints, límites y términos vigentes antes de implementar |
+| `cj` | API v2 de CJdropshipping (`CJ_API_KEY`) | Implementado en `@core/suppliers` 1.2.0 (CAT-DRP-03). API verificada el 2026-10-07: token de 180 días, 1 petición/s en cuentas gratuitas, `orderNumber` como clave de idempotencia (código `1603003`), sandbox con `isSandbox=1` |
 | `aliexpress` | API oficial de AliExpress Open Platform (dropshipping) | Requiere alta y aprobación de la app; prohibido el scraping |
 | Futuros | Spocket, Zendrop, BigBuy (UE), proveedores locales | Mismo contrato |
 
