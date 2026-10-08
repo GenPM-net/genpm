@@ -85,10 +85,13 @@ de simplificada, HTML imprimible y registros de facturación encadenados con hue
 |---|---|---|---|---|
 | `src/lib/invoices` | `@core/db ^1`, `@core/orders ^1`, `@core/contracts ^1` | `zod` | `INVOICE_ISSUER_NIF`, `INVOICE_ISSUER_NAME`, `INVOICE_ISSUER_ADDRESS`, `INVOICE_SERIES`, `INVOICE_VAT_RATE`, `INVOICE_RETAIL`, `INVOICE_QR_ENV` | — |
 
-**Plazos verificados (6-oct-2026):** el RD-ley 15/2025 fijó la obligatoriedad de los sistemas de facturación
-(RD 1007/2023) el 1-ene-2027 (Impuesto sobre Sociedades) y el 1-jul-2027 (resto); el 5-oct-2026 Hacienda anunció su
-aplazamiento a octubre de 2028, alineado con la factura electrónica B2B (Orden HAC/1028/2026). Volver a verificar
-antes de publicar.
+**Plazos verificados (7-oct-2026, BOE y sede de la AEAT):** en vigor, los del RD-ley 15/2025: sistemas de facturación
+(RD 1007/2023) adaptados antes del 1-ene-2027 (contribuyentes del Impuesto sobre Sociedades) y del 1-jul-2027 (resto);
+el texto consolidado del RD 1007/2023 en el BOE (última actualización 3-dic-2025) y la nota informativa de la AEAT
+(actualizada 7-oct-2026) mantienen esas fechas. El 5-oct-2026 Hacienda publicó una **previsión** de aplazamiento de las
+obligaciones pendientes a octubre de 2028, para alinearlas con la factura electrónica de empresas de hasta 8 M€
+(Orden HAC/1028/2026); aún no hay norma en el BOE que lo formalice. Volver a verificar antes de publicar cada versión
+de `@core/invoices`.
 **Alcance 1.0.** Datos y cadena de registros conforme a la Orden HAC/1177/2024 (huella comprobada con el ejemplo de la
 AEAT); **sin** firma de registros (modo no VERI*FACTU) ni remisión a la AEAT (modo VERI*FACTU): siguiente versión.
 Un solo tipo de IVA por factura; solo EUR.
@@ -204,7 +207,7 @@ periódicamente (`jobs`), **reenviar pedidos** pagados al proveedor (`onOrderPai
 | Adaptador | Cómo | Notas |
 |---|---|---|
 | `manual` | Importación por CSV, pedidos al proveedor por email/CSV, seguimiento introducido a mano | Funciona con cualquier proveedor desde el día 1 |
-| `cj` | API de CJdropshipping | Verificar endpoints, límites y términos vigentes antes de implementar |
+| `cj` | API v2 de CJdropshipping (`CJ_API_KEY`) | Implementado en `@core/suppliers` 1.2.0 (CAT-DRP-03). API verificada el 2026-10-07: token de 180 días, 1 petición/s en cuentas gratuitas, `orderNumber` como clave de idempotencia (código `1603003`), sandbox con `isSandbox=1` |
 | `aliexpress` | API oficial de AliExpress Open Platform (dropshipping) | Requiere alta y aprobación de la app; prohibido el scraping |
 | Futuros | Spocket, Zendrop, BigBuy (UE), proveedores locales | Mismo contrato |
 
