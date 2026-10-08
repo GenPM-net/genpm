@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import '@/lib/ui/ui.css';
 import '@/lib/blocks/blocks.css';
+import { SiteChrome } from '@/app/(cms)/_components/site-chrome';
 import { getMenu, getSiteSettings, type MenuItem } from '@/lib/site';
 
 // Lee menús y ajustes de la base de datos en cada petición: sin esto, `next build` intenta prerenderizar y necesita la BD.
@@ -12,7 +13,8 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteSettings();
-  return { title: { default: s?.name ?? 'Site', template: `%s · ${s?.name ?? 'Site'}` }, ...(s?.tagline && { description: s.tagline }) };
+  // Sin `title.template`: `buildMetadata` (@core/seo) ya devuelve `Página · Sitio` y la plantilla lo duplicaría.
+  return { title: s?.name ?? 'Site', ...(s?.tagline && { description: s.tagline }) };
 }
 
 function Menu({ items, label }: { items: MenuItem[]; label: string }) {
@@ -36,16 +38,20 @@ function Menu({ items, label }: { items: MenuItem[]; label: string }) {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const [settings, header, footer] = await Promise.all([getSiteSettings(), getMenu('header'), getMenu('footer')]);
   return (
-    <html lang="en">
+    <html lang={process.env.CONTENT_DEFAULT_LOCALE ?? 'en'}>
       <body className="ui-root">
-        <header className="site-chrome">
-          <Link href="/">{settings?.name ?? 'Site'}</Link>
-          <Menu items={header} label="Main" />
-        </header>
+        <SiteChrome>
+          <header className="site-chrome">
+            <Link href="/">{settings?.name ?? 'Site'}</Link>
+            <Menu items={header} label="Main" />
+          </header>
+        </SiteChrome>
         {children}
-        <footer className="site-chrome">
-          <Menu items={footer} label="Footer" />
-        </footer>
+        <SiteChrome>
+          <footer className="site-chrome">
+            <Menu items={footer} label="Footer" />
+          </footer>
+        </SiteChrome>
       </body>
     </html>
   );

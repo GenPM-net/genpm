@@ -176,6 +176,7 @@ try {
     expect(res!.status() === 200, `status ${res!.status()}`);
     expect((await visitor.locator('h1').innerText()).includes('We make e2e mugs'), 'hero h1 missing');
     expect((await visitor.locator('link[rel=canonical]').getAttribute('href')) === `${base}/about-e2e`, 'bad canonical');
+    expect((await visitor.locator('header.site-chrome').count()) === 1, 'site header missing on a public page');
     const v = await axe(visitor);
     expect(!v.length, `axe: ${v.join(', ')}`);
   });
@@ -191,6 +192,7 @@ try {
   await step('the admin panel has no accessibility violations and no client errors', async () => {
     await editor.goto(`${base}/admin/pages`);
     await editor.getByText('About E2E').first().waitFor();
+    expect((await editor.locator('.site-chrome').count()) === 0, 'the site header and footer show over the admin panel');
     const v = await axe(editor);
     expect(!v.length, `axe: ${v.join(', ')}`);
     expect(!errors.length, `page errors: ${errors.join(' | ')}`);

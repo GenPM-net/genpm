@@ -22,14 +22,17 @@ async function* published(collection: string): AsyncGenerator<ContentRow> {
   }
 }
 
-/** URLs publicadas de una colección, con `hreflang` entre traducciones. */
+// Campo `seo.noindex` de @core/seo (grupo `seo` de los datos de la entrada): fuera del sitemap y de los hreflang.
+const noindex = (r: ContentRow) => (r.data?.seo as { noindex?: unknown } | undefined)?.noindex === true;
+
+/** URLs publicadas e indexables de una colección, con `hreflang` entre traducciones. */
 export function contentSitemapSource(collection: string, path: PathFn): SitemapSource {
   getCollection(collection);
   return defineSitemapSource({
     name: collection,
     async *urls() {
       const rows: ContentRow[] = [];
-      for await (const r of published(collection)) rows.push(r);
+      for await (const r of published(collection)) if (!noindex(r)) rows.push(r);
       const groups = new Map<string, ContentRow[]>();
       for (const r of rows) groups.set(r.groupId, [...(groups.get(r.groupId) ?? []), r]);
       for (const r of rows) {

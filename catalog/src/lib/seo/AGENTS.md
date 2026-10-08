@@ -26,6 +26,8 @@ No tables. OG image generation is out of scope for 1.0.
 7. Verify: `/sitemap.xml` lists chunks, each chunk lists published URLs; page `<head>` has one canonical.
 
 ## Conventions
+- `buildMetadata` titles already end in ` · <site name>`: don't add a `title.template` in the root layout (it would
+  repeat the name).
 - One `buildMetadata` per page; don't set `<title>` or description elsewhere.
 - Canonical paths are the public URL without query strings; pass `alternates` for every translated page.
 - `noindex` previews, internal search results and account pages.

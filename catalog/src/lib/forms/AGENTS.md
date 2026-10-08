@@ -17,7 +17,8 @@ HMAC-signed webhook and `onSubmission` handlers. CSV export, retention and erasu
 2. Define code forms in a module imported at startup (e.g. `src/genpm/forms.ts`):
    `defineForm({ key: 'contact', label: 'Contact', schema: z.object({ name: z.string().min(1), email: z.email(), message: z.string().min(5) }), emailField: 'email', consent: { required: true, version: '2026-10', text: '…' } })`.
 3. Mount `formRoutes()` or `formRoute` at `/api/forms/<key>` and render `<Form formKey="contact" searchParams={await searchParams} />`:
-   it includes the anti-spam fields, the consent checkbox (never pre-checked) and shows the result after the 303.
+   it includes the anti-spam fields, the consent checkbox (never pre-checked) and shows the result after the 303
+   (back to the page with `?form=<key>&form_status=sent|<reason>#form-<key>`: the form's `id` is `form-<key>`).
    Custom markup: post to the same endpoint with `honeypotProps`, `_ts` and `consent`; JSON callers get `{ ok, reason, errors }`.
    In Next.js Server Actions call `submitForm(key, formData, { headers: await headers() })` instead.
 4. Translate the messages with `labels` (keys: `formLabels`).

@@ -125,7 +125,10 @@ describe('sources and admin', () => {
   it('sitemap and search sources, members-only bodies stay out of search', async () => {
     const urls = [];
     for await (const u of blogSitemapSource().urls()) urls.push(u.loc);
-    expect(urls.sort()).toEqual(['/blog/first', '/blog/second', '/blog/third']);
+    expect(urls.sort()).toEqual(['/blog', '/blog/first', '/blog/second', '/blog/third']);
+    const withoutIndex = [];
+    for await (const u of blogSitemapSource(undefined, { index: false }).urls()) withoutIndex.push(u.loc);
+    expect(withoutIndex).not.toContain('/blog');
     const docs = [];
     for await (const d of blogSearchSource().documents()) docs.push(d);
     expect(docs.find((d) => d.url === '/blog/first')?.body).toContain('Body of first');

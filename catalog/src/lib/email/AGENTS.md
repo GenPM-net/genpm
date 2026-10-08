@@ -13,7 +13,8 @@ no queues, no tracking pixels.
 
 ## Integration
 1. Env: `EMAIL_FROM` (`"App <hello@yourdomain.com>"`) and `RESEND_API_KEY` (verify the domain in Resend first).
-   Without `RESEND_API_KEY`, outside production, emails are printed to the console.
+   Without `RESEND_API_KEY`, outside production, emails are printed to the console. In production (`next start`) that
+   fallback throws so mail is never lost silently; set `EMAIL_PROVIDER=console` to print them there too (local tests).
    Optional `APP_NAME`: brand name shown in the email layout (default `App`).
    `@types/react` is only needed at build time: move it to devDependencies if GenPM added it to dependencies.
    SMTP instead: `EMAIL_PROVIDER=smtp`, `SMTP_URL=smtps://user:pass@host:465` and install `nodemailer`.

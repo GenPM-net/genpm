@@ -1,6 +1,7 @@
 // Ficha de producto: galería, variantes, precio, stock, descripción, reseñas y JSON-LD Product.
 // El precio "antes" no se muestra: en la UE solo puede ser el más bajo de los 30 días previos (Ómnibus);
 // con @core/pricing instalado, usa `honestCompareAt` para mostrarlo con garantías.
+import '@/genpm'; // registra colecciones, bloques y pasos de la tienda antes de renderizar
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getProduct } from '@/lib/catalog';

@@ -19,7 +19,8 @@ timestamps. It owns no tables itself. Not an ORM wrapper: use Drizzle's query bu
    `"db:generate": "drizzle-kit generate --config src/lib/db/drizzle.config.ts"`,
    `"db:migrate": "drizzle-kit migrate --config src/lib/db/drizzle.config.ts"`.
 5. Run `db:generate` then `db:migrate` after installing any module that has a `schema.ts`. `drizzle-kit` reads
-   `DATABASE_URL` from the environment or `.env`, not `.env.local`: run `node --env-file=.env.local ./node_modules/.bin/drizzle-kit migrate --config …`
+   `DATABASE_URL` from the environment or `.env`, not `.env.local`: run `node --env-file=.env.local node_modules/drizzle-kit/bin.cjs migrate --config …`
+   (the real entry point: with pnpm `.bin/drizzle-kit` is a shell script). Same for `tsx` scripts: `npx tsx --env-file=.env.local <script>`
    (or export the variable) when the value lives there.
 6. Query from app code:
    ```ts

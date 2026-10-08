@@ -13,7 +13,8 @@ auth and rbac (the last two arrive through @core/admin). Public routes: pages cr
   `api/forms/[key]` — form posts. `api/cron` — @core/jobs. `api/search` — JSON search.
 - `[...slug]/page.tsx` — pages of the `pages` collection (redirects before the 404). `search/page.tsx` — results.
 - `_lib/page.tsx` — `CmsPage`, `pageMetadata`. `_lib/home.tsx` — home page from the `home` entry. `_lib/session.ts`.
-- `_components/` — admin client app and the `media` / `richText` field editors.
+- `_components/` — admin client app, the `media` / `richText` field editors and `SiteChrome` (hides the site header and
+  footer on `/admin`).
 - `_templates/genpm/*.ts` — the project's registration files. `_templates/middleware.ts` — redirects middleware.
   `_templates/layout.tsx` — root layout for a new site. `_templates/env.example` — every variable the kit and its packages read.
 - `_lib/maintenance.ts` — daily `cms.maintenance` job (prunes rate limits and old jobs), loaded by `api/cron`.
@@ -27,31 +28,38 @@ auth and rbac (the last two arrive through @core/admin). Public routes: pages cr
    (Next projects already have `"noEmit": true`). Works with webpack and Turbopack. In `next.config` set
    `htmlLimitedBots: /.*/`: metadata comes from the database, and without it Next 15 streams `<title>`, description and
    canonical into `<body>` for every client except a few bots (Lighthouse, link previews and some crawlers miss them).
-2. Env: copy `_templates/env.example` to the project's `.env.example` (merge if it exists; Next's default `.gitignore`
+   Next 16: `create-next-app` turns on `cacheComponents`, which this kit does not support yet (pages read the database
+   per request and routes use `export const dynamic`): set `cacheComponents: false` and remove `partialPrefetching`.
+2. Env: `genpm add` already wrote a `genpm:env` block with bare variable names to `.env.example`; replace that block
+   with `_templates/env.example` (every variable, optional ones and defaults; Next's default `.gitignore`
    has `.env*`, so add a line `!.env.example`) and the real values to `.env.local`. Required: `DATABASE_URL`, `AUTH_SECRET`, one OAuth provider
    (`GITHUB_CLIENT_ID/SECRET` or `GOOGLE_…`), `STORAGE_*`, `EMAIL_FROM` + `RESEND_API_KEY`, `SITE_URL`,
    `CONTENT_PREVIEW_SECRET` (≥ 32 chars), `ANTISPAM_SECRET`, `CRON_SECRET`. With `STORAGE_DRIVER=local` also mount the
    storage route (`src/lib/storage/AGENTS.md`, Integration 1).
 3. Mount the @core/auth routes (`app/auth/login/[provider]`, `app/auth/callback/[provider]`, `app/auth/logout`) as its AGENTS.md says.
 4. Copy `_templates/genpm/*.ts` to `src/genpm/` (skip files that exist and merge by hand). These files belong to the project:
-   later kits add lines to them. Copy `_templates/middleware.ts` to `src/middleware.ts` (or merge into the existing one).
+   later kits add lines to them. Copy `_templates/middleware.ts` to `src/middleware.ts` (or merge into the existing one);
+   on Next 16 copy it to `src/proxy.ts`, rename the function to `proxy` and remove `runtime` from `config`.
 5. Migrations: GenPM does not install dev tools — run `src/lib/db/AGENTS.md` steps 3–5 (`drizzle-kit` + `tsx`, the
    `db:generate` / `db:migrate` scripts), generate one migration for all packages and apply it where a database exists.
 6. Schedule `GET /api/cron` every minute with `Authorization: Bearer $CRON_SECRET` (e.g. `vercel.json` crons). Once the
    database is migrated, the person runs `npx tsx "src/app/(cms)/_scripts/setup-schedules.ts"` (idempotent; it schedules
    the daily jobs of every installed kit, so run it again after adding another kit).
-7. The person signs in once at `/admin/login`, then runs `npx tsx "src/app/(cms)/_scripts/create-owner.ts" <their email>`.
+7. The person signs in once at `/admin/login` (it needs a real OAuth app: create one with the callback
+   `<SITE_URL>/auth/callback/github` — there is no password or dev login), then runs `npx tsx "src/app/(cms)/_scripts/create-owner.ts" <their email>`.
    Never run it for them with an email they did not give you.
 8. New site: create `src/app/page.tsx` with `export { default, generateMetadata } from './(cms)/_lib/home';` and create
    the `home` page in the admin (blocks: hero, features, cta…). Existing site: follow "Retrofit" below.
-9. Root layout: new site → copy `_templates/layout.tsx` to `src/app/layout.tsx`. Existing layout → import `@/lib/ui/ui.css`
+9. Root layout: new site → copy `_templates/layout.tsx` to `src/app/layout.tsx` (`<html lang>` comes from
+   `CONTENT_DEFAULT_LOCALE`; translate built-in form and UI texts with their `labels` props). Existing layout → import `@/lib/ui/ui.css`
    and `@/lib/blocks/blocks.css`, render menus with `getMenu('header')` / `getMenu('footer')` and the site name with
    `getSiteSettings()` (@core/site), and add `export const dynamic = 'force-dynamic'` (it reads the database; without it
    `next build` tries to prerender and fails without `DATABASE_URL`).
 10. Verify: `npx tsc --noEmit` and `npx next build` pass without a database. Then, with one: sign in at `/admin`, edit a
     page, open "Preview", publish, and see the change on the public URL.
 11. Delete every `src/lib/*/adapters/hono.ts` (`rm src/lib/*/adapters/hono.ts`): they import `hono`, which a Next
-    project does not install, and `tsc` checks every file. Keep `adapters/next.ts`.
+    project does not install, and `tsc` checks every file. Keep `adapters/next.ts`. `genpm list` then shows those
+    packages with "1 file changed": that is this deletion, expected.
 
 ## Retrofit (make an existing site editable)
 Follow the @core/content procedure page by page, one commit per page: inventory visible literals → a singleton per
@@ -60,7 +68,8 @@ replace literals with typed reads → compare the rendered HTML before/after (mu
 only the data source changes: skip `className="ui-root"` on `<body>` and don't add `buildMetadata` tags the site did not
 have (keep its titles and descriptions, now read from the CMS). Local images go to @core/media with their alt text;
 SVG (which @core/media rejects) stays in `public/` with its path in a text field. Keep the root layout's existing
-header/footer markup and feed it from `getSiteSettings()` / `getMenu()`. Existing routes keep priority over
+header/footer markup and feed it from `getSiteSettings()` / `getMenu()`; wrap the header and the footer in
+`<SiteChrome>` (`@/app/(cms)/_components/site-chrome`) so they don't show over the admin panel. Existing routes keep priority over
 `[...slug]`. Non-Next sites (static HTML, Astro, Vite): out of scope for 1.0 — say so.
 
 ## Conventions

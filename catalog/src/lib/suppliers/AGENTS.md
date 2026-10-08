@@ -23,7 +23,12 @@ order and keep an exceptions queue. Ships the `manual` adapter (CSV import, orde
    `payWithBalance: "true"` to pay each order from the CJ balance (otherwise orders wait unpaid in CJ), and
    `sandbox: "true"` while testing (no charge, no shipment). CJ allows 1 request/s on free accounts: raise `CJ_QPS`
    only if your CJ level allows it. Import with `getAdapter('cj').getProduct(supplier, pid)` → `importProduct`.
-4. Import: `importProduct(supplierId, parseSupplierCsv(csv, currency)[0], { slug, categories })` → review the draft, then publish.
+4. Import: `importProduct(supplierId, parseSupplierCsv(csv, currency)[0], { slug, categories })` (or the supplier's
+   "Import products from CSV" admin action) → review the draft, then publish. CSV header (one row per variant):
+   `product_id,title,description,image_urls,option1_name,option1_value,option2_name,option2_value,variant_id,cost,stock,weight_grams,ship_min_days,ship_max_days`
+   (`image_urls` separated by `|`, https only; `cost` decimal in the supplier currency). Images are copied only from
+   allowed hosts: add the supplier's image domains to its `config.imageHosts` (`cdn.supplier.com,.img.supplier.com`);
+   skipped images open an `images_skipped` exception.
 5. Schedule `syncAllJob` (e.g. every 6 h) and `pollTrackingJob` (every 12 h) with @core/jobs `schedule`. Suppliers
    in another currency need exchange rates for the scheduled sync: `setFxRatesProvider(async () => ({ base, rates }))`
    at startup, or env `SUPPLIER_FX_RATES='{"base":"EUR","rates":{"USD":1.08}}'`. Without them, products whose cost

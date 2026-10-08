@@ -1,3 +1,4 @@
+import '@/genpm'; // registra colecciones, bloques y pasos de la tienda antes de renderizar
 import { listing } from '../../_lib/listing';
 
 const l = listing('category');
