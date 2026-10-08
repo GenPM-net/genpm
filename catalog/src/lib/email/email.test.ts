@@ -67,6 +67,8 @@ describe('providers', () => {
     expect(defaultProvider({ NODE_ENV: 'development' }).name).toBe('console');
     expect(defaultProvider({ RESEND_API_KEY: 're_x' }).name).toBe('resend');
     expect(() => defaultProvider({ NODE_ENV: 'production' })).toThrow(/production/);
+    // Pedida explícitamente (p. ej. `next start` en local), la consola sí vale en producción.
+    expect(defaultProvider({ NODE_ENV: 'production', EMAIL_PROVIDER: 'console' }).name).toBe('console');
   });
   it('console provider prints instead of sending', async () => {
     const lines: string[] = [];

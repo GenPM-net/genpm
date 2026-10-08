@@ -36,12 +36,17 @@ Work page by page, one commit per page, without changing markup or styles:
    pages or are shared by several pages.
 3. Define the schema with the current values' shape and call `seedEntry` with the current values (idempotent; it
    only creates, so it never overwrites editor changes — and a field added later to the seed does not reach an
-   already-seeded database: set it in the admin or with `saveDraft` + `publish`), e.g. from a seed script.
+   already-seeded database: set it in the admin or with `saveDraft` + `publish`) from a seed script, e.g.
+   `src/genpm/seed.ts` (`import './content'; await seedEntry({ collection: 'home', data: {…} }); …`) run with
+   `npx tsx --env-file=.env.local src/genpm/seed.ts` and kept as an npm script (`cms:seed`).
 4. Replace literals with typed reads; keep a fallback only where a value is optional.
 5. Render before/after and compare the HTML: it must be identical. Next 15 streams metadata into `<body>` for browsers
    once `generateMetadata` awaits data; `htmlLimitedBots: /.*/` in `next.config` (kit-cms Integration 1) keeps it in `<head>`.
 6. Grant editors the new singletons: `defineRole` with `<singleton>:*` (e.g. `home:*`, `site_settings:*`) — the
    default `editor` role only covers the kit's collections.
+7. Make the pages findable again: register each singleton's URL in `src/genpm/seo.ts` (a `defineSitemapSource` that
+   yields the page paths) and in `src/genpm/search.ts` (`contentSearchSource('<singleton>', { path: () => '/<page>' })`,
+   one per singleton, each with its own `type`); otherwise `/sitemap.xml` and `/search` miss them.
 
 ## Conventions
 - Field names in admin resources are `data.<field>`; slugs are lowercase `a-z0-9-` with up to 6 `/` segments.

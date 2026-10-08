@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/kit-cms",
-  "v": "1.0.1",
+  "v": "1.0.2",
   "s": {
     "en": "Self-managed website kit for Next.js: /admin to edit pages with blocks, media, menus, settings, forms and users",
     "es": "Kit de sitio autoadministrable para Next.js: /admin para editar páginas con bloques, medios, menús, ajustes y usuarios",

@@ -1,4 +1,5 @@
 // Pedido de cliente: accesible para su dueño con sesión o con el enlace firmado del email (`?token=`).
+import '@/genpm'; // registra colecciones, bloques y pasos de la tienda antes de renderizar
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getOrderForCustomer } from '@/lib/orders';

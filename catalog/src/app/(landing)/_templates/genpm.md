@@ -1,4 +1,4 @@
-<!-- Generado por catalog/scripts/kit-snippets.mjs desde el proyecto de ejemplo: no editar a mano. -->
+<!-- Generated from the GenPM catalog example project. -->
 # @core/kit-landing: lines for `src/genpm/*.ts`
 
 Add each line below to the project's registration files (created by @core/kit-cms from its `_templates/genpm`).

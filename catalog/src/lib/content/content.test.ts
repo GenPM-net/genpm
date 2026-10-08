@@ -40,7 +40,7 @@ import {
 // El job de publicación programada se registra al importar entries; clearCollections no lo borra.
 
 let db: Db;
-const Page = z.object({ title: z.string().min(1), body: z.string().default(''), category: z.string().optional() });
+const Page = z.object({ title: z.string().min(1), body: z.string().default(''), category: z.string().optional(), seo: z.object({ noindex: z.boolean().optional() }).optional() });
 
 beforeEach(async () => {
   db = await testDb(schema, jobsSchema);
@@ -248,6 +248,8 @@ describe('sources', () => {
     const es = await createEntry({ collection: 'pages', slug: 'sobre', locale: 'es', data: { title: 'Sobre', body: 'Tazas' }, translationOf: en.id });
     await publish(es.id);
     await createEntry({ collection: 'pages', slug: 'secret', data: { title: 'Draft' } });
+    // Publicada pero con `seo.noindex`: no va al sitemap (sí al buscador interno).
+    await seedEntry({ collection: 'pages', slug: 'privacy', data: { title: 'Privacy', seo: { noindex: true } } });
     const path = ({ slug, locale }: { slug: string; locale: string }) => (locale === 'en' ? `/${slug}` : `/${locale}/${slug}`);
     const urls = [];
     for await (const u of contentSitemapSource('pages', path).urls()) urls.push(u);

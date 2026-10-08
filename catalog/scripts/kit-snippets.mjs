@@ -45,7 +45,7 @@ for (const kit of kits) {
     sections.push(`## \`src/genpm/${file}\`${isNew ? ' (create it if missing)' : ''}\n\n${body}`);
   }
   if (!sections.length) continue;
-  const out = `<!-- Generado por catalog/scripts/kit-snippets.mjs desde el proyecto de ejemplo: no editar a mano. -->
+  const out = `<!-- Generated from the GenPM catalog example project. -->
 # @core/kit-${kit}: lines for \`src/genpm/*.ts\`
 
 Add each line below to the project's registration files (created by @core/kit-cms from its \`_templates/genpm\`).

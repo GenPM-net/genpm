@@ -1,5 +1,5 @@
 // Proveedores de envío. Elige con EMAIL_PROVIDER (resend | smtp | console); por defecto Resend si hay
-// RESEND_API_KEY y, si no, consola (solo fuera de producción).
+// RESEND_API_KEY y, si no, consola (solo fuera de producción, salvo `EMAIL_PROVIDER=console` explícito).
 import { Resend } from 'resend';
 
 export type EmailMessage = { from: string; to: string | string[]; subject: string; html: string; text: string; replyTo?: string };
@@ -63,6 +63,8 @@ export function defaultProvider(env: NodeJS.ProcessEnv = process.env): EmailProv
   const choice = env.EMAIL_PROVIDER ?? (env.RESEND_API_KEY ? 'resend' : 'console');
   if (choice === 'resend') return resendProvider(env.RESEND_API_KEY);
   if (choice === 'smtp') return smtpProvider(env.SMTP_URL);
-  if (env.NODE_ENV === 'production') throw new Error('No email provider configured in production (set RESEND_API_KEY)');
+  // En producción la consola solo se usa si se pide (p. ej. `next start` en local o un entorno de pruebas): por defecto
+  // se falla para no perder correos en silencio.
+  if (env.NODE_ENV === 'production' && env.EMAIL_PROVIDER !== 'console') throw new Error('No email provider configured in production (set RESEND_API_KEY, or EMAIL_PROVIDER=console to print emails)');
   return consoleProvider();
 }

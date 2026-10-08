@@ -1,5 +1,5 @@
-// Utilidades de la tienda: rutas, formato de precios, cookies y usuario actual.
-import '@/genpm';
+// Utilidades de la tienda: rutas, formato de precios, cookies y usuario actual. No importa `@/genpm`: los bloques de la
+// tienda (que el registro carga) usan este archivo, y importarlo aquí cerraría un ciclo que rompe `next start`.
 import { cookies } from 'next/headers';
 import { currentUser } from '@/app/(cms)/_lib/session';
 import { format, type Money } from '@/lib/money';

@@ -1,4 +1,5 @@
 // Área de cliente: pedidos de la cuenta (las direcciones se guardan en cada pedido; Stripe las recuerda en el pago).
+import '@/genpm'; // registra colecciones, bloques y pasos de la tienda antes de renderizar
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { currentUser } from '@/app/(cms)/_lib/session';

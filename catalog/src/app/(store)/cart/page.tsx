@@ -1,4 +1,5 @@
 // Carrito: cantidades, cupón, país y método de envío, totales del servidor y pago con Stripe Checkout.
+import '@/genpm'; // registra colecciones, bloques y pasos de la tienda antes de renderizar
 import type { Metadata } from 'next';
 import { computeTotals, getCart } from '@/lib/cart';
 import { getDb } from '@/lib/db';

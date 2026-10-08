@@ -47,7 +47,7 @@
     }
   },
   "jobs": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "Background jobs on Postgres: durable queue, retries with backoff, cron schedules and a serverless cron endpoint",
       "es": "Tareas en segundo plano sobre Postgres: cola durable, reintentos con backoff, cron y endpoint para serverless",
@@ -143,7 +143,7 @@
     }
   },
   "content": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "Headless CMS core: typed collections and singletons with drafts, revisions, scheduling, locales and preview",
       "es": "Núcleo de CMS headless: colecciones y singletons tipados con borradores, revisiones, programación, idiomas y vista previa",
@@ -199,10 +199,11 @@
     },
     "p": {
       "zod": "^4.0.0"
-    }
+    },
+    "v": "1.0.1"
   },
   "site": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "Site settings, editable nested menus and managed redirects with loop and open-redirect protection",
       "es": "Ajustes del sitio, menús anidados editables y redirecciones gestionables sin bucles ni open redirect",
@@ -261,10 +262,11 @@
     "e": [
       "SITE_URL",
       "SEO_NOINDEX"
-    ]
+    ],
+    "v": "1.0.1"
   },
   "forms": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "Forms and lead capture: code or admin-built forms, spam checks, GDPR consent, email alerts, signed webhooks, CSV",
       "es": "Formularios y captación de leads: en código o desde el admin, antispam, consentimiento RGPD, avisos, webhooks firmados y CSV",
@@ -359,7 +361,7 @@
     }
   },
   "blog": {
-    "v": "1.0.1",
+    "v": "1.1.0",
     "s": {
       "en": "Blog domain on @core/content: posts, authors, categories, tags, series, related posts, archive and RSS/Atom/JSON feeds",
       "es": "Dominio de blog sobre @core/content: posts, autores, categorías, etiquetas, series, relacionados, archivo y feeds RSS/Atom/JSON",
@@ -591,7 +593,7 @@
     ]
   },
   "orders": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "Orders: frozen lines, stock reservation, payment and shipping states, partial shipments, refunds, emails and events",
       "es": "Pedidos: líneas congeladas, reserva de stock, estados de pago y envío, envíos parciales, reembolsos, emails y eventos",
@@ -801,7 +803,7 @@
     }
   },
   "suppliers": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "Dropshipping suppliers: import products priced by rules, sync cost and stock, forward paid orders, tracking and exceptions",
       "es": "Proveedores de dropshipping: importar productos con precio por reglas, sincronizar coste y stock, reenviar pedidos y seguimiento",
@@ -993,7 +995,7 @@
     }
   },
   "kit-cms": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "d": "src/app/(cms)",
     "s": {
       "en": "Self-managed website kit for Next.js: /admin to edit pages with blocks, media, menus, settings, forms and users",
@@ -1030,7 +1032,7 @@
     }
   },
   "kit-blog": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "d": "src/app/(blog)",
     "s": {
       "en": "Blog kit for Next.js: posts with authors, categories, tags, series, feeds, moderated comments and newsletter",
@@ -1067,7 +1069,7 @@
     ]
   },
   "kit-landing": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "d": "src/app/(landing)",
     "s": {
       "en": "Landing page kit for Next.js: block-built pages, lead forms, cookie banner and consent-gated pixels with dedup",
@@ -1106,7 +1108,7 @@
     ]
   },
   "kit-store": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "d": "src/app/(store)",
     "s": {
       "en": "Online store kit for Next.js: catalog, cart, Stripe checkout, orders, shipping, coupons, verified reviews, accounts",
@@ -1149,7 +1151,7 @@
     ]
   },
   "kit-dropshipping": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "d": "src/app/(dropshipping)",
     "s": {
       "en": "Dropshipping kit for Next.js: supplier import, margin rules, product landings, order forwarding and exceptions",

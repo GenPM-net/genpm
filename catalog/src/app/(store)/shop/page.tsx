@@ -1,3 +1,4 @@
+import '@/genpm'; // registra colecciones, bloques y pasos de la tienda antes de renderizar
 import type { Metadata } from 'next';
 import { listProducts, type ProductSort } from '@/lib/catalog';
 import { buildMetadata } from '@/lib/seo';

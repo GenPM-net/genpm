@@ -1,4 +1,5 @@
 // Resultado del pago consultando el estado real (el pedido lo crea el webhook de Stripe, no esta página).
+import '@/genpm'; // registra colecciones, bloques y pasos de la tienda antes de renderizar
 import type { Metadata } from 'next';
 import { getCheckoutStatus } from '@/lib/checkout';
 import { one } from '../../_lib/store';
