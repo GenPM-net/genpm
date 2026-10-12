@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.GenPM-net/genpm",
+  "title": "GenPM",
+  "description": "Search, inspect and inject full source modules (code + AI rules + MCP) pinned to a Git commit.",
+  "websiteUrl": "https://genpm.net/mcp",
+  "version": "0.2.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@genpm-net/mcp",
+      "version": "0.2.1",
+      "transport": { "type": "stdio" }
+    }
+  ],
+  "remotes": [{ "type": "streamable-http", "url": "https://mcp.genpm.net/" }]
+}

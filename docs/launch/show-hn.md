@@ -23,8 +23,10 @@
 > Codex or Gemini CLI, and then "add GitHub login and Stripe subscriptions" searches, shows you a dry-run plan and
 > installs.
 >
-> The five seed packages (@core/db, auth, billing, email, ai) are MIT. Publishing your own takes a public GitHub repo,
-> a genpm.json and a tag — the web wizard at genpm.net/publish checks what's missing and prefills the files.
+> The catalog has 48 MIT packages today: building blocks (auth, rbac, billing, stripe, email, storage, jobs, search…)
+> and kits that compose them into a whole app — `@core/kit-store`, `kit-blog`, `kit-cms`, `kit-landing`,
+> `kit-dropshipping`. Publishing your own takes a public GitHub repo, a genpm.json and a tag — the web wizard at
+> genpm.net/publish checks what's missing and prefills the files.
 >
 > What I'd love feedback on: the security model (docs at genpm.net/docs/security), and whether "own the code, keep
 > an upgrade path" is the right trade-off vs. regular dependencies. Updating modified modules (3-way merge assisted by
