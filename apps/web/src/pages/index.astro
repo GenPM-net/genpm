@@ -18,6 +18,17 @@ const [feat, stats] = await Promise.all([
 const featured = feat.data?.featured.slice(0, 3) ?? [];
 const trending = feat.data?.trending.slice(0, 5) ?? [];
 const s = stats.data ?? { packages: 0, publishers: 0, installs30d: 0, installsTotal: 0, withMcp: 0 };
+// Cifras de la portada (auditoría 12-10): instalaciones y publicadores solo cuando aportan confianza; hasta entonces,
+// datos igual de reales sobre el producto (clientes de IA de `genpm mcp setup` e idiomas de la web).
+const tiles = [
+  { n: compact(locale, s.packages), k: t.t('web.home.statPackages') },
+  s.installsTotal >= 1000
+    ? { n: compact(locale, s.installsTotal), k: t.t('web.home.statInstalls') }
+    : { n: compact(locale, 6), k: t.t('web.home.statClients') },
+  s.publishers >= 10
+    ? { n: compact(locale, s.publishers), k: t.t('web.home.statPublishers') }
+    : { n: compact(locale, 8), k: t.t('web.home.statLanguages') },
+];
 Astro.response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -145,6 +156,6 @@ const jsonLd = {
 
   <section class="wrap sec"><div class="pub">
     <div><div class="k">{t.t('web.home.pubKicker')}</div><h2 style="margin-top:10px">{t.t('web.home.pubTitle')}</h2><p>{t.t('web.home.pubText')}</p><div class="row" style="margin-top:28px"><a class="btn primary lg" href={href(locale, '/publish')}>{t.t('web.home.pubCta')}</a><a class="btn ghost lg" href={href(locale, '/docs')}>{t.t('web.common.readDocs')}</a></div></div>
-    <div class="stats"><div><b class="tnum">{compact(locale, s.packages)}</b><span class="k">{t.t('web.home.statPackages')}</span></div><div><b class="tnum">{compact(locale, s.installsTotal)}</b><span class="k">{t.t('web.home.statInstalls')}</span></div><div><b class="tnum">{compact(locale, s.publishers)}</b><span class="k">{t.t('web.home.statPublishers')}</span></div></div>
+    <div class="stats">{tiles.map((x) => <div><b class="tnum">{x.n}</b><span class="k">{x.k}</span></div>)}</div>
   </div></section>
 </Base>

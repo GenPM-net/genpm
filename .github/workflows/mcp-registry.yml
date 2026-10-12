@@ -1,0 +1,37 @@
+# Publica packages/mcp/server.json en el registro oficial de MCP (registry.modelcontextprotocol.io) con OIDC de GitHub
+# Actions: el espacio de nombres io.github.GenPM-net se demuestra con el token del job, sin secretos. A mano o al cambiar
+# server.json en main. mcp-publisher fijado por versión y SHA-256.
+name: mcp-registry
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['packages/mcp/server.json']
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # login github-oidc en el registro de MCP
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Instalar mcp-publisher v1.8.1
+        run: |
+          curl -fsSL -o mcp-publisher.tar.gz https://github.com/modelcontextprotocol/registry/releases/download/v1.8.1/mcp-publisher_linux_amd64.tar.gz
+          echo "a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc  mcp-publisher.tar.gz" | sha256sum --check --strict
+          tar xzf mcp-publisher.tar.gz mcp-publisher
+      - name: Publicar
+        working-directory: packages/mcp
+        run: |
+          ../../mcp-publisher login github-oidc
+          ../../mcp-publisher publish

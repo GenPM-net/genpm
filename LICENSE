@@ -1,0 +1,10 @@
+GenPM monorepo — licensing
+
+1. The client packages in packages/ (genpm / @genpm-net/cli, @genpm-net/mcp, @genpm/core, @genpm/manifest,
+   @genpm/i18n) are licensed under the MIT License. See the LICENSE file in each package directory.
+
+2. Everything else in this repository, including the registry (apps/registry) and the website (apps/web),
+   is Copyright (c) 2026 GenPM. All rights reserved. The source is published for transparency
+   and security review; no license to use, copy, modify or distribute it is granted.
+
+"GenPM" and the genpm logo are trademarks of their owner and are not licensed under either of the above.

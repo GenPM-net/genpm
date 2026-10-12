@@ -8,7 +8,12 @@ const registry = process.env.GENPM_REGISTRY ?? 'https://api.genpm.net';
 const lock = JSON.parse(readFileSync('genpm.lock', 'utf8'));
 for (const [n, e] of Object.entries(lock.p)) {
   const res = await fetch(`${registry}/v1/packages/${n}/versions/${e.v}?fmt=c`);
-  if (!res.ok) throw new Error(`${n}@${e.v}: HTTP ${res.status}`);
+  if (!res.ok) {
+    // Quién responde (Worker o la capa de seguridad de Cloudflare) para diagnosticar bloqueos desde CI.
+    const who = ['server', 'cf-mitigated', 'cf-ray'].map((h) => `${h}=${res.headers.get(h)}`).join(' ');
+    const body = (await res.text()).slice(0, 200).replace(/\s+/g, ' ');
+    throw new Error(`${n}@${e.v}: HTTP ${res.status} (${who}) ${body}`);
+  }
   const remote = await res.json();
   if (remote.c !== e.c) throw new Error(`${n}@${e.v}: commit ${remote.c} on the registry, ${e.c} in genpm.lock`);
   e.sg = remote.sg;

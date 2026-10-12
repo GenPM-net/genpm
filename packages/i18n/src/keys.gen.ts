@@ -457,6 +457,8 @@ export interface MessageParams {
   "web.home.statPackages": undefined;
   "web.home.statInstalls": undefined;
   "web.home.statPublishers": undefined;
+  "web.home.statClients": undefined;
+  "web.home.statLanguages": undefined;
   "web.home.empty": undefined;
   "web.home.termInstalled": undefined;
   "web.home.termAsks": undefined;

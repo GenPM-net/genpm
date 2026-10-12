@@ -131,6 +131,8 @@
     "statPackages": "패키지",
     "statInstalls": "설치",
     "statPublishers": "게시자",
+    "statClients": "AI 클라이언트",
+    "statLanguages": "개 언어",
     "empty": "아직 패키지가 없습니다. 첫 번째 패키지를 게시해 보세요.",
     "termInstalled": "이미 설치됨",
     "termAsks": "(먼저 확인)",

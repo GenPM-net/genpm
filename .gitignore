@@ -11,3 +11,6 @@ dist-standalone/
 !.env.example
 .DS_Store
 coverage/
+
+# Configuración local de Claude Code (rutas de cada máquina)
+.claude/launch.json
