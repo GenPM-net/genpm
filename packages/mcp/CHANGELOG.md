@@ -1,5 +1,13 @@
 # @genpm-net/mcp
 
+## 0.2.1
+
+### Patch Changes
+
+- 778b99e: Un servidor MCP declarado por varios paquetes (p. ej. `stripe` en `@core/billing` y `@core/stripe`) aparece una sola vez en el plan y se pregunta una sola vez.
+- 778b99e: Declara `mcpName` para publicar el servidor en el registro oficial de MCP (registry.modelcontextprotocol.io).
+- 564b772: `genpm add gh:owner/repo` without a ref, or with a branch (`#main`), now fails with `E_REF_MUTABLE` (exit 6) as the spec says, instead of a generic `E_USAGE`.
+
 ## 0.2.0
 
 ### Minor Changes
