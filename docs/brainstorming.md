@@ -488,6 +488,20 @@ extensión (rompen la ejecución directa en Node ESM).
 Requisito para el proyecto consumidor: `"allowImportingTsExtensions": true` en su `tsconfig.json` (lo indica el
 `AGENTS.md` de `@core/db`). Las semillas publicadas se actualizan como versión menor (1.x) en el siguiente tren.
 
+### ADR-035 · Monorepo público en el lanzamiento — ✅ Decidida (Tech Lead por delegación del fundador, 2026-10-12)
+
+**Contexto:** la auditoría del 12-10 ([launch/auditoria-2026-10-12.md](launch/auditoria-2026-10-12.md)) mostró 0 usos
+externos y un repo privado: el README, `docs/security.md` y el `repository` de npm daban 404, y la provenance de npm y
+los releases nativos (ADR-025) necesitan repo público. ADR-016 dejaba abierto si `apps/registry` y `apps/web` se abrían.
+
+**Opción elegida:** hacer público `GenPM-net/genpm` completo. `packages/*` siguen en MIT; `apps/registry` y
+`apps/web` son código visible pero con todos los derechos reservados (`LICENSE` en la raíz). Antes de abrirlo se
+escaneó todo el historial (357 commits) con gitleaks (reglas por defecto) y trufflehog con verificación: sin secretos
+reales (solo claves públicas por diseño y claves falsas de tests) y sin `.env` reales en ningún commit.
+
+**Alternativa descartada:** el espejo `GenPM-net/genpm-cli` con historial limpio, porque duplica el mantenimiento y no
+cambia lo esencial: el código privado retrasa a un copiador, no lo detiene; protegen la marca, el dominio y el efecto red.
+
 ## 2. Decisiones del fundador (antes "preguntas abiertas")
 
 El fundador fijó Q1 (multi-idioma) y Q2 (genpm.net, "genpm en todo") y delegó el resto en las recomendaciones del Tech Lead.

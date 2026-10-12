@@ -69,11 +69,11 @@ Después ejecuta `pnpm tasks sync`: **una casilla marcada pasa la tarea a `DONE`
 ## Tablero
 
 <!-- board:start -->
-<!-- Generado por `pnpm tasks sync` · 2026-10-08. No editar a mano. -->
+<!-- Generado por `pnpm tasks sync` · 2026-10-12. No editar a mano. -->
 
-**68 %** completado · 219/323 tareas · 758.5h estimadas pendientes
+**68 %** completado · 221/323 tareas · 757h estimadas pendientes
 
-TODO 37 · DOING 4 · DONE 219 · BLOCKED 63 · CUT 0
+TODO 35 · DOING 4 · DONE 221 · BLOCKED 63 · CUT 0
 
 | Fase | Progreso | Hechas | Pendiente |
 |---|---|---|---|
@@ -83,7 +83,7 @@ TODO 37 · DOING 4 · DONE 219 · BLOCKED 63 · CUT 0
 | [Día 3 · CLI y contexto](03-dia-3-cli-contexto.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 95 % | 21/22 | 1h |
 | [Día 4 · Servidor MCP](04-dia-4-mcp.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 88 % | 15/17 | 2h |
 | [Día 5 · Web MVP y pulido del cliente](05-dia-5-web.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 93 % | 28/30 | 1.5h |
-| [Día 6 · Integración, seguridad y producción](06-dia-6-produccion.md) | `▓▓▓▓▓▓▓▓░░░░` 63 % | 19/30 | 15h |
+| [Día 6 · Integración, seguridad y producción](06-dia-6-produccion.md) | `▓▓▓▓▓▓▓▓░░░░` 70 % | 21/30 | 13.5h |
 | [Día 7 · Lanzamiento](07-dia-7-lanzamiento.md) | `▓▓░░░░░░░░░░` 18 % | 2/11 | 16.5h |
 | [Semillas @core/*](08-semillas.md) | `▓▓▓▓▓▓▓▓▓░░░` 76 % | 32/42 | 5h |
 | [Marca y diseño](09-marca-diseno.md) | `▓▓▓▓▓▓▓▓▓▓▓░` 94 % | 17/18 | 2h |
@@ -166,8 +166,6 @@ TODO 37 · DOING 4 · DONE 219 · BLOCKED 63 · CUT 0
 **Siguientes disponibles** (TODO con todas sus dependencias cerradas)
 
 - `D6-P-04` Alertas: errores 5xx > 1 % y latencia p95 · A · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
-- `D6-P-07` Apertura del código (ADR-016): semillas públicas, paquetes cliente públicos con licencia, registry y web según decisión del fundador · F · 1h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
-- `D6-P-08` Datos del titular (nombre, NIF, domicilio, ciudad) en apps/web/src/content/legal/owner.json y revisión legal (ADR-024) · F · 0.5h ([06-dia-6-produccion.md](06-dia-6-produccion.md))
 - `D7-01` Vídeo demo de 90–120 s con el guion del objetivo (PLAN §1) · T · 3h ([07-dia-7-lanzamiento.md](07-dia-7-lanzamiento.md))
 - `D7-04` Hilo en X de 6 posts (esqueleto de branding §9) · F · 1h ([07-dia-7-lanzamiento.md](07-dia-7-lanzamiento.md))
 - `BR-16` Test de 5 segundos de la home con 5 desarrolladores: ¿entienden qué hace GenPM? · F · 2h ([09-marca-diseno.md](09-marca-diseno.md))
@@ -175,5 +173,7 @@ TODO 37 · DOING 4 · DONE 219 · BLOCKED 63 · CUT 0
 - `V03-06` Auditoría de seguridad externa · F · 8h ([10-post-mvp.md](10-post-mvp.md))
 - `V10-07` Pentest y bug bounty con recompensas · F · 8h ([10-post-mvp.md](10-post-mvp.md))
 - `ENT-04` SLA y soporte dedicado · F · 8h ([10-post-mvp.md](10-post-mvp.md))
+- `CAT-00-06` `genpm add` en proyectos Next: no inyectar `adapters/hono.ts` (o no contarlos como cambio local), `.env.example` con opcionales y valores por defecto, sin reordenar `package.json` ni duplicar líneas MCP en la salida · B · 8h ([11-catalogo.md](11-catalogo.md))
+- `CAT-DRP-04` Alta de la app en AliExpress Open Platform (dropshipping) y aprobación · F · 2h ([11-catalogo.md](11-catalogo.md))
 
 <!-- board:end -->

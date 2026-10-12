@@ -4,20 +4,47 @@
     {
       "name": "registry",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@genpm/registry", "dev", "--port", "8787"],
+      "runtimeArgs": [
+        "--filter",
+        "@genpm/registry",
+        "dev",
+        "--port",
+        "8787"
+      ],
       "port": 8787
     },
     {
       "name": "web",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@genpm/web", "dev", "--port", "4399"],
+      "runtimeArgs": [
+        "--filter",
+        "@genpm/web",
+        "dev",
+        "--port",
+        "4399"
+      ],
       "port": 4399
     },
     {
       "name": "web-preview",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@genpm/web", "preview", "--port", "4398"],
+      "runtimeArgs": [
+        "--filter",
+        "@genpm/web",
+        "preview",
+        "--port",
+        "4398"
+      ],
       "port": 4398
+    },
+    {
+      "name": "rosenails-local",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/macbook/code/rosenails && DATA_DIR=/private/tmp/claude-501/-Users-macbook-code-genpm/283d8b83-006b-431c-950f-efc481881e00/scratchpad/rose/data PUBLIC_URL=http://localhost:5181 npm run dev"
+      ],
+      "port": 5181
     }
   ]
 }
