@@ -29,11 +29,27 @@ escanea las reglas y escribe el lockfile en 1,3 s. El problema no es el producto
    npm dan 404 a cualquiera. En HN la primera pregunta será "¿es open source?".
 2. **Faltan los datos del titular para el aviso legal** (D6-P-08), que la LSSI exige antes de promocionar el sitio.
 3. **Sin publicar**: el vídeo demo (D7-01), Show HN (D7-03), el hilo de X (D7-04), LinkedIn (D7-05) y las comunidades (D7-06).
-4. **GenPM no está en el registro oficial de MCP**. Esta rama añade `mcpName` y `packages/mcp/server.json`. Falta
-   publicar `@genpm-net/mcp` 0.2.1 y después ejecutar `mcp-publisher login github` y `mcp-publisher publish` (fundador).
+4. **GenPM no está en el registro oficial de MCP.** `packages/mcp/server.json` publica el servidor remoto
+   (`mcp.genpm.net`) con el workflow `mcp-registry` (OIDC, sin secretos). El paquete npm se añadirá con
+   `@genpm-net/mcp` 0.2.1, que lleva `mcpName`.
 
 ## Recomendaciones sobre las cifras
 
 - Mientras no haya uso externo, mostrar contadores bajos en la portada resta credibilidad: considerar ocultar
   "Instalaciones" y "Publicadores" por debajo de un umbral.
 - No inflarlas nunca (instalaciones de CI, scripts, cuentas propias): la comunidad lo detecta y destruye la confianza.
+
+## Hecho el 12-10 (por delegación del fundador)
+
+- Repo `GenPM-net/genpm` público (ADR-035), con secret scanning y push protection, y `main` protegida contra
+  force-push y borrado. Push protection activada en los 47 repos públicos de la organización, todos escaneados
+  (gitleaks y trufflehog): sin secretos.
+- GitHub Actions vuelve a ejecutarse: los repos públicos usan minutos gratis y el bloqueo de facturación ya no aplica.
+- Binarios nativos 0.2.0 publicados en `GenPM-net/genpm-releases` (el mismo commit que `@genpm-net/cli@0.2.0` en npm),
+  y Homebrew y Scoop actualizados. Antes `curl … | sh` instalaba la 0.1.4.
+
+## Pendiente del fundador
+
+- `NPM_TOKEN` en los secretos del repo (o `npm login` con 2FA) para publicar `@genpm-net/mcp` 0.2.1.
+- El vídeo demo (D7-01) y estar disponible las 6 primeras horas de Show HN para responder.
+- La revisión legal del aviso legal (D6-P-08).
