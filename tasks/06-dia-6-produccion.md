@@ -48,7 +48,7 @@
   - ✅ 2026-10-04: repos GenPM-net/{db,auth,billing,email,ai} públicos (1 commit cada uno, sin secretos), las 5 publicadas en v1.0.0 desde la web, destacadas en la home (auth, db, billing, ai, email) y verificadas (scope de acc_system). Yohangel es staff (membresía manual en acc_system).
 - [ ] `D6-P-06` **TODO** npm publish de genpm@0.1.0 y @genpm/mcp@0.1.0 con provenance · B · 1h · deps: D5-B-05, D6-03
 - [x] `D6-P-07` **DONE** Apertura del código (ADR-016): semillas públicas, paquetes cliente públicos con licencia, registry y web según decisión del fundador · F · 1h · deps: D6-P-05
-- [x] `D6-P-08` **DONE** Datos del titular (nombre, NIF, domicilio, ciudad) en apps/web/src/content/legal/owner.json y revisión legal (ADR-024) · F · 0.5h · deps: D5-W-19
+- [ ] `D6-P-08` **TODO** Datos del titular (nombre, NIF, domicilio, ciudad) en apps/web/src/content/legal/owner.json y revisión legal (ADR-024) · F · 0.5h · deps: D5-W-19
 
 ## Documentación
 
