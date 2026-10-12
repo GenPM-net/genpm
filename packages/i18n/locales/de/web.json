@@ -131,6 +131,8 @@
     "statPackages": "Pakete",
     "statInstalls": "Installationen",
     "statPublishers": "Herausgeber",
+    "statClients": "KI-Clients",
+    "statLanguages": "Sprachen",
     "empty": "Noch keine Pakete. Veröffentliche als Erste:r eines.",
     "termInstalled": "bereits installiert",
     "termAsks": "(fragt zuerst)",

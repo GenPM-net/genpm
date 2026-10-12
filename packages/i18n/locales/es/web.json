@@ -131,6 +131,8 @@
     "statPackages": "paquetes",
     "statInstalls": "instalaciones",
     "statPublishers": "autores",
+    "statClients": "clientes de IA",
+    "statLanguages": "idiomas",
     "empty": "Aún no hay paquetes. Sé el primero en publicar uno.",
     "termInstalled": "ya instalado",
     "termAsks": "(pregunta antes)",

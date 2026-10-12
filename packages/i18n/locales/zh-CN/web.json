@@ -131,6 +131,8 @@
     "statPackages": "个包",
     "statInstalls": "次安装",
     "statPublishers": "发布者",
+    "statClients": "AI 客户端",
+    "statLanguages": "种语言",
     "empty": "还没有包。来发布第一个吧。",
     "termInstalled": "已安装",
     "termAsks": "（会先询问）",

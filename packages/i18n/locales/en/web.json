@@ -131,6 +131,8 @@
     "statPackages": "packages",
     "statInstalls": "installs",
     "statPublishers": "publishers",
+    "statClients": "AI clients",
+    "statLanguages": "languages",
     "empty": "No packages yet. Be the first to publish one.",
     "termInstalled": "already installed",
     "termAsks": "(asks first)",

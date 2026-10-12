@@ -131,6 +131,8 @@
     "statPackages": "パッケージ",
     "statInstalls": "インストール",
     "statPublishers": "公開者",
+    "statClients": "対応 AI クライアント",
+    "statLanguages": "言語",
     "empty": "まだパッケージがありません。最初の 1 つを公開しましょう。",
     "termInstalled": "インストール済み",
     "termAsks": "（事前に確認）",
