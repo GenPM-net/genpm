@@ -116,6 +116,26 @@ describe('plan()', () => {
     expect(reg.requests[0]).toContain('/v1/resolve/@core/auth?range=latest&fmt=c&client=cli&deps=1');
   });
 
+  it('lists an MCP server declared by several packages once (one consent question)', async () => {
+    const stripe = { n: 'stripe', c: 'npx', a: ['-y', '@stripe/mcp'], e: ['STRIPE_SECRET_KEY'] };
+    reg = new FakeRegistry()
+      .add({ n: '@core/db', v: '1.0.3', r: dbRepo.url, c: dbRepo.sha, d: 'src/lib/db', s: 'db', m: [stripe] })
+      .add({
+        n: '@core/auth',
+        v: '1.2.0',
+        r: authRepo.url,
+        c: authRepo.sha,
+        d: 'src/lib/auth',
+        s: 'auth',
+        g: { '@core/db': '^1.0.0' },
+        m: [{ ...stripe, e: ['STRIPE_SECRET_KEY', 'STRIPE_ACCOUNT'] }],
+      });
+    const p = await plan(input());
+    expect(p.mcp.map((m) => [m.n, m.from, m.env])).toEqual([
+      ['stripe', '@core/auth', ['STRIPE_SECRET_KEY', 'STRIPE_ACCOUNT']],
+    ]);
+  });
+
   it('rejects direct specs without an immutable ref with E_REF_MUTABLE (cli-mcp-spec §A.4)', async () => {
     for (const spec of ['gh:genpm-net/db', 'gh:genpm-net/db#main'])
       await expect(plan(input({ specs: [spec] }))).rejects.toMatchObject({ code: 'E_REF_MUTABLE' });

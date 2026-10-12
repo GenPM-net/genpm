@@ -508,13 +508,15 @@ export async function plan(input: PlanInput): Promise<InstallPlan> {
       if (s.c && !['npx', 'uvx', 'bunx', 'docker', 'node', 'python', 'deno'].includes(s.c)) {
         warnings.push({ code: 'W_MCP_COMMAND', detail: `${it.manifest.n}: MCP "${s.n}" runs "${s.c}"` });
       }
-      mcp.push({
-        n: s.n,
-        command: commandLine(s),
-        env: s.e ?? [],
-        targets: targets.map((t) => MCP_FILES[t]),
-        from: it.manifest.n,
-      });
+      const command = commandLine(s);
+      // Varios paquetes pueden declarar el mismo servidor (@core/billing y @core/stripe → stripe): una sola entrada,
+      // una sola pregunta de consentimiento.
+      const same = mcp.find((x) => x.n === s.n && x.command === command);
+      if (same) {
+        same.env = [...new Set([...same.env, ...(s.e ?? [])])];
+        continue;
+      }
+      mcp.push({ n: s.n, command, env: s.e ?? [], targets: targets.map((t) => MCP_FILES[t]), from: it.manifest.n });
     }
   }
   const wanted: Record<string, string> = {};
