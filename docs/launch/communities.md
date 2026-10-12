@@ -21,7 +21,7 @@ Nivel 1 (es, pt-BR): listos. Nivel 2 (ja, zh-CN, ko, fr, de): **pendiente de rev
 > e-mail, chat com IA) no seu projeto, fixados num commit e verificados por assinatura. Cada módulo traz as regras que o
 > seu agente precisa para integrá-lo e os servidores MCP que usa, adicionados só com o seu consentimento.
 >
-> `npx @genpm-net/cli add @core/billing` instala billing + auth + db em ~1 s. Beta gratuita: https://genpm.net/pt-br
+> `npx @genpm-net/cli add @core/billing` instala billing + Stripe + auth + db em ~1 s. Beta gratuita: https://genpm.net/pt-br
 
 ## ja · Zenn / Qiita（記事形式）— pendiente de revisión nativa
 

@@ -17,7 +17,7 @@
 >
 > Try it:
 >
->     npx @genpm-net/cli add @core/billing      # billing + auth + db, ~1 s
+>     npx @genpm-net/cli add @core/billing      # billing + stripe + auth + db, ~1 s
 >
 > or let your agent do it: `genpm mcp setup` registers the MCP server in Claude Code, Cursor, VS Code, Windsurf,
 > Codex or Gemini CLI, and then "add GitHub login and Stripe subscriptions" searches, shows you a dry-run plan and
