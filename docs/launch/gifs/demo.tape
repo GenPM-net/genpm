@@ -33,7 +33,7 @@ Type "n"
 Sleep 1.5s
 # npm install: luego, a mano
 Type "n"
-Wait /Injected/
+Wait+Screen /Injected/
 Sleep 3.5s
 Type "clear && find src -maxdepth 3 -type d"
 Enter
@@ -52,6 +52,6 @@ Type "# ...and rules my AI agent loads when it works in that folder."
 Enter
 Type "# Or let the agent do it all:  genpm mcp setup"
 Enter
-Type "# genpm.net · Install architectures, not dependencies."
+Type "# https://genpm.net  -  Install architectures, not dependencies."
 Enter
 Sleep 3.5s

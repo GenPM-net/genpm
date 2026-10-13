@@ -48,6 +48,30 @@ escanea las reglas y escribe el lockfile en 1,3 s. El problema no es el producto
 - Binarios nativos 0.2.0 publicados en `GenPM-net/genpm-releases` (el mismo commit que `@genpm-net/cli@0.2.0` en npm),
   y Homebrew y Scoop actualizados. Antes `curl … | sh` instalaba la 0.1.4.
 
+- **genpm 0.2.1** (binarios, Homebrew y Scoop): un servidor MCP declarado por varios paquetes se pregunta una sola
+  vez (`genpm add @core/billing` preguntaba dos veces por `stripe`). npm sigue en 0.2.0 hasta que haya `NPM_TOKEN`.
+- GenPM está en el registro oficial de MCP: `io.github.GenPM-net/genpm` (servidor remoto `mcp.genpm.net`).
+- La portada muestra 48 paquetes · 6 clientes de IA · 8 idiomas; instalaciones y publicadores aparecen al pasar los
+  umbrales (1000 y 10).
+- PR a punkpeye/awesome-mcp-servers (#16283). awesome-claude-code exige 14 días de repo: a partir del 17-10, y solo con
+  su formulario web.
+- Vídeo demo de terminal sin voz (54 s): `gifs/demo.mp4` y `gifs/demo.gif` (`vhs gifs/demo.tape`).
+
+## Bloqueo crítico: Cloudflare desafía a los centros de datos
+
+`api.genpm.net` responde **403 con un desafío** ("Just a moment…", `cf-mitigated: challenge`) a las IPs de GitHub
+Actions. El Worker nunca ve la petición. Lo mismo afecta a cualquier cliente que no sea un navegador desde un centro de datos: CI,
+Codespaces, agentes en la nube (Claude Code web, agentes en segundo plano de Cursor), Docker en servidores. Para ellos
+`genpm add` falla. Arreglo (panel de Cloudflare, zona genpm.net):
+
+1. Security → Bots: desactivar **Bot Fight Mode** (en el plan Free no admite excepciones por ruta).
+2. Security → WAF → Custom rules: si hay alguna regla con *Managed Challenge* o *JS Challenge*, excluir
+   `api.genpm.net` y `mcp.genpm.net` (y `genpm.net/install.sh`, `/install.ps1`).
+3. Security → Settings: Security Level en *Essentially off* o *Low* para esos hosts (Configuration Rules).
+4. Comprobar: el job `example` del CI vuelve a verde (el script ya imprime `server` y `cf-mitigated` si falla).
+
+El rate limiting propio del Worker (`RL_PUBLIC`, 300/min por IP) sigue protegiendo el API.
+
 ## Pendiente del fundador
 
 - `NPM_TOKEN` en los secretos del repo (o `npm login` con 2FA) para publicar `@genpm-net/mcp` 0.2.1.
