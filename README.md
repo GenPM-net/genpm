@@ -33,6 +33,13 @@ claude mcp add genpm -- genpm mcp serve          # or register it by hand (Claud
 
 The MCP server is built into the `genpm` binary. Without it, use `npx -y @genpm-net/mcp` (needs Node.js).
 
+**Claude Code plugin** (MCP server + a skill that tells Claude when to reach for GenPM):
+
+```bash
+claude plugin marketplace add GenPM-net/genpm
+claude plugin install genpm@genpm
+```
+
 Then ask: *"Add GitHub login to this project with genpm."* Your agent searches, shows you the plan and installs. Setup for Cursor, VS Code, Windsurf and Codex: [genpm.net/docs/mcp](https://genpm.net/docs/mcp).
 
 ## Security
