@@ -87,8 +87,12 @@ const jsonLd = m && {
 };
 Astro.response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
 const badgeMd = `[![genpm](https://api.genpm.net/v1/badge/${name}.svg)](https://genpm.net/p/${name})`;
+// SEO: la descripción va primero (es lo que se busca: "Stripe subscriptions Next.js…"), recortada en una palabra.
+const seoSummary =
+  (m?.summary ?? '').length > 72 ? `${(m?.summary ?? '').slice(0, 72).replace(/\s+\S*$/, '')}…` : (m?.summary ?? '');
+const seoTitle = seoSummary ? `${seoSummary} · ${name}` : name;
 ---
-<Base title={name} description={m?.summary ?? undefined} ogImage={quarantined ? undefined : `https://genpm.net/og/p/${name}.png`} canonical={latestPath} jsonLd={jsonLd || undefined} stale={v?.stale}>
+<Base title={seoTitle} description={m?.summary ?? undefined} ogImage={quarantined ? undefined : `https://genpm.net/og/p/${name}.png`} canonical={latestPath} jsonLd={jsonLd || undefined} stale={v?.stale}>
   <div class="wrap">
     {quarantined || !m || !p ? (
       <div class="phead"><h1>{name}</h1><div class="banner" style="--c:var(--danger)"><b>{t.t('web.pkg.quarantined')}</b><span>{t.t('web.pkg.quarantinedText')}</span></div></div>
