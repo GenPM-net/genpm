@@ -24,6 +24,12 @@ One native binary, no Node.js needed (`genpm upgrade` keeps it current). Also on
 - **Context**: an `AGENTS.md` per module (plus Cursor, Copilot, Windsurf and Claude Code rule files), loaded only when your agent works in that folder.
 - **Connections**: the MCP servers a module needs, added only with your consent.
 
+## Start a new project
+
+[**GenPM-net/saas-starter**](https://github.com/GenPM-net/saas-starter): a Next.js 16 template with GitHub login, Stripe
+subscriptions, plan gating and email already wired, built with `genpm add`. *Use this template* on GitHub, or
+`npx degit GenPM-net/saas-starter my-saas`.
+
 ## Use it from your AI
 
 ```bash
