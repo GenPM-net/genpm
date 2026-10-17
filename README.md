@@ -42,7 +42,7 @@ The MCP server is built into the `genpm` binary. Without it, use `npx -y @genpm-
 **Claude Code plugin** (MCP server + a skill that tells Claude when to reach for GenPM):
 
 ```bash
-claude plugin marketplace add GenPM-net/genpm
+claude plugin marketplace add GenPM-net/claude-plugin
 claude plugin install genpm@genpm
 ```
 
