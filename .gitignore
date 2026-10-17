@@ -14,3 +14,6 @@ coverage/
 
 # Configuración local de Claude Code (rutas de cada máquina)
 .claude/launch.json
+
+# Vídeos y muestras de voz de la campaña: nunca en git (la voz del fundador es un dato personal)
+docs/launch/media/

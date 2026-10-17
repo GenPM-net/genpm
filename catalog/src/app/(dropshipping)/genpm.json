@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/kit-dropshipping",
-  "v": "1.0.2",
+  "v": "1.0.3",
   "s": {
     "en": "Dropshipping kit for Next.js: supplier import, margin rules, product landings, order forwarding and exceptions",
     "es": "Kit de dropshipping para Next.js: importar de proveedores, reglas de margen, landings de producto, reenvío y excepciones",

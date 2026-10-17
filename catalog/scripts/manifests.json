@@ -19,10 +19,11 @@
     ],
     "p": {
       "zod": "^4.0.0"
-    }
+    },
+    "v": "1.0.1"
   },
   "rbac": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "s": {
       "en": "Roles and permissions on top of @core/auth: wildcards, own-only rules and escalation-safe grants",
       "es": "Roles y permisos sobre @core/auth: comodines, permisos sobre lo propio y concesiones sin escalada",
@@ -47,7 +48,7 @@
     }
   },
   "jobs": {
-    "v": "1.1.1",
+    "v": "1.1.2",
     "s": {
       "en": "Background jobs on Postgres: durable queue, retries with backoff, cron schedules and a serverless cron endpoint",
       "es": "Tareas en segundo plano sobre Postgres: cola durable, reintentos con backoff, cron y endpoint para serverless",
@@ -77,7 +78,7 @@
     ]
   },
   "storage": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "s": {
       "en": "File storage for S3-compatible buckets (R2, S3, MinIO) and local disk, with signed direct uploads",
       "es": "Almacenamiento de archivos en buckets S3 compatibles (R2, S3, MinIO) y disco local, con subidas firmadas",
@@ -110,7 +111,7 @@
     ]
   },
   "antispam": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "Spam protection for public forms: honeypot, signed timing, Turnstile or hCaptcha and Postgres rate limits",
       "es": "Protección antispam para formularios públicos: honeypot, tiempo firmado, Turnstile o hCaptcha y rate limit en Postgres",
@@ -143,7 +144,7 @@
     }
   },
   "content": {
-    "v": "1.1.1",
+    "v": "1.1.2",
     "s": {
       "en": "Headless CMS core: typed collections and singletons with drafts, revisions, scheduling, locales and preview",
       "es": "Núcleo de CMS headless: colecciones y singletons tipados con borradores, revisiones, programación, idiomas y vista previa",
@@ -200,10 +201,10 @@
     "p": {
       "zod": "^4.0.0"
     },
-    "v": "1.0.1"
+    "v": "1.0.2"
   },
   "site": {
-    "v": "1.1.1",
+    "v": "1.1.2",
     "s": {
       "en": "Site settings, editable nested menus and managed redirects with loop and open-redirect protection",
       "es": "Ajustes del sitio, menús anidados editables y redirecciones gestionables sin bucles ni open redirect",
@@ -263,10 +264,10 @@
       "SITE_URL",
       "SEO_NOINDEX"
     ],
-    "v": "1.0.1"
+    "v": "1.0.2"
   },
   "forms": {
-    "v": "1.1.1",
+    "v": "1.1.2",
     "s": {
       "en": "Forms and lead capture: code or admin-built forms, spam checks, GDPR consent, email alerts, signed webhooks, CSV",
       "es": "Formularios y captación de leads: en código o desde el admin, antispam, consentimiento RGPD, avisos, webhooks firmados y CSV",
@@ -301,7 +302,7 @@
     ]
   },
   "media": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "Media library: signed direct uploads, real file-type checks, EXIF/GPS removal, alt text, focal point, srcset",
       "es": "Biblioteca de medios: subida directa firmada, tipo real comprobado, sin EXIF/GPS, texto alternativo, punto focal, srcset",
@@ -332,7 +333,7 @@
     ]
   },
   "rich-text": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "s": {
       "en": "Rich text: Tiptap editor, allowlisted JSON documents and XSS-safe HTML/React rendering, plain text and TOC",
       "es": "Texto enriquecido: editor Tiptap, documentos JSON con lista blanca, render HTML/React sin XSS, texto plano e índice",
@@ -361,7 +362,7 @@
     }
   },
   "blog": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "Blog domain on @core/content: posts, authors, categories, tags, series, related posts, archive and RSS/Atom/JSON feeds",
       "es": "Dominio de blog sobre @core/content: posts, autores, categorías, etiquetas, series, relacionados, archivo y feeds RSS/Atom/JSON",
@@ -393,7 +394,7 @@
     ]
   },
   "comments": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "s": {
       "en": "Moderated comments on any entity: guest or user, replies, optional 1–5 ratings, bans, GDPR erasure, safe HTML",
       "es": "Comentarios moderados sobre cualquier entidad: invitado o usuario, respuestas, valoración 1–5, bloqueos, RGPD y HTML seguro",
@@ -427,7 +428,7 @@
     ]
   },
   "newsletter": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "Newsletter: double opt-in, one-click unsubscribe (RFC 8058), tags, rich-text campaigns sent in resumable batches",
       "es": "Newsletter: doble opt-in, baja en un clic (RFC 8058), etiquetas y campañas con texto enriquecido en lotes reanudables",
@@ -464,7 +465,7 @@
     ]
   },
   "money": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "s": {
       "en": "Money in integer minor units: ISO currencies, safe parsing, rounding, lossless allocation, charm prices, formatting",
       "es": "Dinero en enteros (céntimos): monedas ISO, parseo seguro, redondeo, reparto sin pérdidas, precios .99 y formato",
@@ -526,7 +527,8 @@
           "STRIPE_SECRET_KEY"
         ]
       }
-    ]
+    ],
+    "v": "1.0.1"
   },
   "catalog": {
     "s": {
@@ -557,10 +559,11 @@
     },
     "e": [
       "STORE_CURRENCY"
-    ]
+    ],
+    "v": "1.0.1"
   },
   "cart": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "Shopping cart: signed guest cookie, merge on login, server-side prices and a pluggable totals pipeline",
       "es": "Carrito: cookie firmada de invitado, fusión al iniciar sesión, precios en servidor y cálculo de totales enchufable",
@@ -593,7 +596,7 @@
     ]
   },
   "orders": {
-    "v": "1.1.1",
+    "v": "1.1.2",
     "s": {
       "en": "Orders: frozen lines, stock reservation, payment and shipping states, partial shipments, refunds, emails and events",
       "es": "Pedidos: líneas congeladas, reserva de stock, estados de pago y envío, envíos parciales, reembolsos, emails y eventos",
@@ -655,10 +658,11 @@
     },
     "p": {
       "zod": "^4.0.0"
-    }
+    },
+    "v": "1.0.1"
   },
   "checkout": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "s": {
       "en": "Stripe Checkout for one-off purchases: server-priced sessions, orders created only from the webhook, auto-refund if sold out",
       "es": "Stripe Checkout para compras: sesiones con precios del servidor, pedido solo desde el webhook y reembolso automático si se agota",
@@ -710,7 +714,7 @@
     ]
   },
   "discounts": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "s": {
       "en": "Discount codes and automatic discounts: percent, fixed, free shipping, product/category scope, usage and first-order limits",
       "es": "Cupones y descuentos automáticos: porcentaje, importe, envío gratis, por producto o categoría, límites de uso y primer pedido",
@@ -740,7 +744,7 @@
     }
   },
   "reviews": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "s": {
       "en": "Product reviews on @core/comments: verified purchases, photos, labeled imported reviews, ratings and review requests",
       "es": "Reseñas de producto sobre @core/comments: compra verificada, fotos, importadas etiquetadas, valoraciones y solicitud por email",
@@ -800,10 +804,11 @@
     },
     "p": {
       "zod": "^4.0.0"
-    }
+    },
+    "v": "1.0.1"
   },
   "suppliers": {
-    "v": "1.2.1",
+    "v": "1.2.2",
     "s": {
       "en": "Dropshipping suppliers: import products priced by rules, sync cost and stock, forward paid orders, tracking and exceptions",
       "es": "Proveedores de dropshipping: importar productos con precio por reglas, sincronizar coste y stock, reenviar pedidos y seguimiento",
@@ -844,7 +849,7 @@
     ]
   },
   "consent": {
-    "v": "1.1.0",
+    "v": "1.1.1",
     "s": {
       "en": "GDPR cookie consent: banner with equal reject/accept, categories, proof records, ConsentGate and Google Consent Mode v2",
       "es": "Consentimiento de cookies RGPD: banner con rechazar igual de visible, categorías, registro de prueba, ConsentGate y Consent Mode v2",
@@ -876,7 +881,7 @@
     ]
   },
   "pixels": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "s": {
       "en": "Conversion tracking with consent: GA4, Meta Pixel + Conversions API, TikTok Pixel + Events API, deduplicated event ids",
       "es": "Medición de conversiones con consentimiento: GA4, Meta Pixel + Conversions API, TikTok Pixel + Events API, sin duplicados",
@@ -914,7 +919,7 @@
     ]
   },
   "ui": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "s": {
       "en": "Accessible base UI for React on native elements: fields, buttons, table, tabs, dialog, toasts and WCAG AA light/dark tokens",
       "es": "Interfaz base accesible para React sobre elementos nativos: campos, botones, tabla, pestañas, diálogo, avisos y tokens AA",
@@ -964,7 +969,8 @@
     "p": {
       "react": "^19.0.0",
       "zod": "^4.0.0"
-    }
+    },
+    "v": "1.0.1"
   },
   "blocks": {
     "s": {
@@ -995,10 +1001,11 @@
     "p": {
       "react": "^19.0.0",
       "zod": "^4.0.0"
-    }
+    },
+    "v": "1.1.0"
   },
   "kit-cms": {
-    "v": "1.0.2",
+    "v": "1.0.3",
     "d": "src/app/(cms)",
     "s": {
       "en": "Self-managed website kit for Next.js: /admin to edit pages with blocks, media, menus, settings, forms and users",
@@ -1035,7 +1042,7 @@
     }
   },
   "kit-blog": {
-    "v": "1.0.2",
+    "v": "1.0.3",
     "d": "src/app/(blog)",
     "s": {
       "en": "Blog kit for Next.js: posts with authors, categories, tags, series, feeds, moderated comments and newsletter",
@@ -1072,7 +1079,7 @@
     ]
   },
   "kit-landing": {
-    "v": "1.0.2",
+    "v": "1.0.4",
     "d": "src/app/(landing)",
     "s": {
       "en": "Landing page kit for Next.js: block-built pages, lead forms, cookie banner and consent-gated pixels with dedup",
@@ -1111,7 +1118,7 @@
     ]
   },
   "kit-store": {
-    "v": "1.0.2",
+    "v": "1.0.3",
     "d": "src/app/(store)",
     "s": {
       "en": "Online store kit for Next.js: catalog, cart, Stripe checkout, orders, shipping, coupons, verified reviews, accounts",
@@ -1154,7 +1161,7 @@
     ]
   },
   "kit-dropshipping": {
-    "v": "1.0.2",
+    "v": "1.0.3",
     "d": "src/app/(dropshipping)",
     "s": {
       "en": "Dropshipping kit for Next.js: supplier import, margin rules, product landings, order forwarding and exceptions",
@@ -1191,7 +1198,7 @@
     ]
   },
   "experiments": {
-    "v": "1.0.1",
+    "v": "1.0.2",
     "s": {
       "en": "A/B tests with consent: stable assignment, conversion goals and results with significance, no extra cookies",
       "es": "Tests A/B con consentimiento: asignación estable, objetivos de conversión y resultados con significación",
@@ -1224,7 +1231,7 @@
     ]
   },
   "invoices": {
-    "v": "1.0.2",
+    "v": "1.0.3",
     "s": {
       "en": "Spanish invoices from paid orders: legal numbering, simplified/full, credit notes and VeriFactu-style hash chain",
       "es": "Facturas españolas desde pedidos: numeración legal, simplificada/completa, rectificativas y cadena de huellas VeriFactu",

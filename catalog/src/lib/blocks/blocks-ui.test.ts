@@ -39,6 +39,19 @@ describe('accessibility', () => {
   });
 });
 
+describe('class names', () => {
+  it('only the section carries blk-<type>: inner elements use blk-<type>__<part> (no double grid)', async () => {
+    await act(async () =>
+      root.render(h(RenderBlocks, { blocks: allBlocks, registry, media: allMedia, embeds: 'iframe', renderForm: () => h('p', null, 'form'), onSkip: () => {} })),
+    );
+    for (const section of container.querySelectorAll('section.blk')) {
+      const own = [...section.classList].find((c) => /^blk-[a-z-]+$/.test(c) && !c.includes('--'));
+      if (own) expect(section.querySelectorAll(`.${own}`).length, own).toBe(0);
+    }
+    expect(container.querySelector('.blk-gallery__list')).not.toBeNull();
+  });
+});
+
 describe('blocks editor', () => {
   const api = createAdminApi('/api/admin', async () => Response.json({ rows: [], total: 0 }));
   const render = blocksRenderer(JSON.parse(JSON.stringify(blockMeta(registry)))); // como llega al cliente

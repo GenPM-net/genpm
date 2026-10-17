@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/cart",
-  "v": "1.1.0",
+  "v": "1.1.1",
   "s": {
     "en": "Shopping cart: signed guest cookie, merge on login, server-side prices and a pluggable totals pipeline",
     "es": "Carrito: cookie firmada de invitado, fusión al iniciar sesión, precios en servidor y cálculo de totales enchufable",

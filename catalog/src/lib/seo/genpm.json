@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/seo",
-  "v": "1.0.1",
+  "v": "1.0.2",
   "s": {
     "en": "SEO for GenPM sites: metadata with canonical and hreflang, chunked sitemaps, robots.txt, llms.txt and safe JSON-LD",
     "es": "SEO para sitios GenPM: metadatos con canónica y hreflang, sitemaps troceados, robots.txt, llms.txt y JSON-LD seguro",

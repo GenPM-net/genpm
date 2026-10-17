@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/contracts",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Shared types for GenPM modules: content, sitemap, search, admin resources, payments and tracked events",
     "es": "Tipos compartidos entre módulos GenPM: contenido, sitemap, búsqueda, recursos de admin, pagos y eventos",

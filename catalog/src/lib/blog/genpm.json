@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/blog",
-  "v": "1.1.0",
+  "v": "1.1.1",
   "s": {
     "en": "Blog domain on @core/content: posts, authors, categories, tags, series, related posts, archive and RSS/Atom/JSON feeds",
     "es": "Dominio de blog sobre @core/content: posts, autores, categorías, etiquetas, series, relacionados, archivo y feeds RSS/Atom/JSON",

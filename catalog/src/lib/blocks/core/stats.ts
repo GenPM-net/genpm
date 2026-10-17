@@ -27,7 +27,7 @@ export const stats = defineBlock({
     h(
       Section,
       { id: ctx.id, block: 'stats', title: data.title, ctx, label: 'Stats' },
-      h('dl', { className: 'blk-stats' }, data.items.map((it, i) => h('div', { key: i }, h('dt', null, it.label), h('dd', null, it.value)))),
+      h('dl', { className: 'blk-stats__list' }, data.items.map((it, i) => h('div', { key: i }, h('dt', null, it.label), h('dd', null, it.value)))),
       data.source && h('p', { className: 'blk__note' }, data.source),
     ),
 });

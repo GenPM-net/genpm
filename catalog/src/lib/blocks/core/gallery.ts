@@ -28,7 +28,7 @@ export const gallery = defineBlock({
       { id: ctx.id, block: 'gallery', title: data.title, ctx, label: 'Gallery' },
       h(
         'ul',
-        { className: 'blk-gallery', role: 'list' },
+        { className: 'blk-gallery__list', role: 'list' },
         data.items.map((it, i) => {
           const img = ctx.image(it.image);
           return img && h('li', { key: i }, h('figure', null, h(Img, { image: img }), it.caption && h('figcaption', null, it.caption)));

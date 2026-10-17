@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/content",
-  "v": "1.1.1",
+  "v": "1.1.2",
   "s": {
     "en": "Headless CMS core: typed collections and singletons with drafts, revisions, scheduling, locales and preview",
     "es": "Núcleo de CMS headless: colecciones y singletons tipados con borradores, revisiones, programación, idiomas y vista previa",
