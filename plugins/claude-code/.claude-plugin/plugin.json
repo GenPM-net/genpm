@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "genpm",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Search the GenPM registry and inject full modules (auth, Stripe billing, email, AI chat, store, blog…) into your project as source code, with their AI rules and MCP config, pinned to a verified commit.",
   "author": { "name": "GenPM", "url": "https://genpm.net" },
   "homepage": "https://genpm.net/mcp",
