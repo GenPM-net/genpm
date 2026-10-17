@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/forms",
-  "v": "1.1.1",
+  "v": "1.1.2",
   "s": {
     "en": "Forms and lead capture: code or admin-built forms, spam checks, GDPR consent, email alerts, signed webhooks, CSV",
     "es": "Formularios y captación de leads: en código o desde el admin, antispam, consentimiento RGPD, avisos, webhooks firmados y CSV",

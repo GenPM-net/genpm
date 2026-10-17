@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/storage",
-  "v": "1.0.1",
+  "v": "1.0.2",
   "s": {
     "en": "File storage for S3-compatible buckets (R2, S3, MinIO) and local disk, with signed direct uploads",
     "es": "Almacenamiento de archivos en buckets S3 compatibles (R2, S3, MinIO) y disco local, con subidas firmadas",

@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/admin",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Admin panel generated from AdminResource: lists, forms, actions, dashboard, RBAC, CSRF protection and audit log",
     "es": "Panel de administración generado desde AdminResource: listas, formularios, acciones, dashboard, RBAC, anti-CSRF y auditoría",

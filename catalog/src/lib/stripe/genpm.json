@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/stripe",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Shared Stripe client and one idempotent, signature-verified webhook endpoint dispatching events to every module",
     "es": "Cliente de Stripe compartido y un único webhook idempotente y con firma verificada que reparte eventos a cada módulo",

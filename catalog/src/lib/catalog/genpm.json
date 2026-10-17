@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/catalog",
-  "v": "1.0.0",
+  "v": "1.0.1",
   "s": {
     "en": "Product catalog: variants with options, prices in cents, categories, collections, translations and safe stock reservations",
     "es": "Catálogo de productos: variantes con opciones, precios en céntimos, categorías, colecciones, traducciones y reserva de stock segura",

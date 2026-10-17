@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/antispam",
-  "v": "1.1.0",
+  "v": "1.1.1",
   "s": {
     "en": "Spam protection for public forms: honeypot, signed timing, Turnstile or hCaptcha and Postgres rate limits",
     "es": "Protección antispam para formularios públicos: honeypot, tiempo firmado, Turnstile o hCaptcha y rate limit en Postgres",

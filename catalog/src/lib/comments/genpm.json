@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/comments",
-  "v": "1.0.1",
+  "v": "1.0.2",
   "s": {
     "en": "Moderated comments on any entity: guest or user, replies, optional 1–5 ratings, bans, GDPR erasure, safe HTML",
     "es": "Comentarios moderados sobre cualquier entidad: invitado o usuario, respuestas, valoración 1–5, bloqueos, RGPD y HTML seguro",

@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/kit-blog",
-  "v": "1.0.2",
+  "v": "1.0.3",
   "s": {
     "en": "Blog kit for Next.js: posts with authors, categories, tags, series, feeds, moderated comments and newsletter",
     "es": "Kit de blog para Next.js: posts con autores, categorías, etiquetas, series, feeds, comentarios moderados y newsletter",

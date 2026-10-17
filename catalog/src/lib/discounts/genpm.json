@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/discounts",
-  "v": "1.0.1",
+  "v": "1.0.2",
   "s": {
     "en": "Discount codes and automatic discounts: percent, fixed, free shipping, product/category scope, usage and first-order limits",
     "es": "Cupones y descuentos automáticos: porcentaje, importe, envío gratis, por producto o categoría, límites de uso y primer pedido",

@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/checkout",
-  "v": "1.0.1",
+  "v": "1.0.2",
   "s": {
     "en": "Stripe Checkout for one-off purchases: server-priced sessions, orders created only from the webhook, auto-refund if sold out",
     "es": "Stripe Checkout para compras: sesiones con precios del servidor, pedido solo desde el webhook y reembolso automático si se agota",

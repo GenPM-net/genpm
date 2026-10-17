@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/blocks",
-  "v": "1.0.0",
+  "v": "1.1.0",
   "s": {
     "en": "Page builder blocks: 15 accessible sections (hero, pricing, FAQ with JSON-LD…), admin editor and registry for more",
     "es": "Bloques de página: 15 secciones accesibles (hero, precios, FAQ con JSON-LD…), editor en el admin y registro ampliable",

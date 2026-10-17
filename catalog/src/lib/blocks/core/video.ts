@@ -43,7 +43,7 @@ export const video = defineBlock({
       ctx.embeds === 'iframe'
         ? h(
             'div',
-            { className: 'blk-video' },
+            { className: 'blk-video__frame' },
             h('iframe', { src: embedUrl(v.provider, v.id, 'iframe'), title: name, loading: 'lazy', allow: 'fullscreen; picture-in-picture', referrerPolicy: 'strict-origin-when-cross-origin', sandbox: 'allow-scripts allow-same-origin allow-presentation' }),
           )
         : h('p', null, h('a', { href: embedUrl(v.provider, v.id, 'link'), rel: 'noopener noreferrer' }, `▶ ${name}`)),

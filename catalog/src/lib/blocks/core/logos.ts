@@ -32,7 +32,7 @@ export const logos = defineBlock({
       { id: ctx.id, block: 'logos', title: data.title, ctx, label: 'Logos' },
       h(
         'ul',
-        { className: 'blk-logos', role: 'list' },
+        { className: 'blk-logos__list', role: 'list' },
         data.items.map((it, i) => {
           const img = ctx.image(it.image);
           const content = img ? h(Img, { image: img, alt: it.name }) : h('span', null, it.name);

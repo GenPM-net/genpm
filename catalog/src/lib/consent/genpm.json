@@ -1,7 +1,7 @@
 {
   "$": 1,
   "n": "@core/consent",
-  "v": "1.1.0",
+  "v": "1.1.1",
   "s": {
     "en": "GDPR cookie consent: banner with equal reject/accept, categories, proof records, ConsentGate and Google Consent Mode v2",
     "es": "Consentimiento de cookies RGPD: banner con rechazar igual de visible, categorías, registro de prueba, ConsentGate y Consent Mode v2",

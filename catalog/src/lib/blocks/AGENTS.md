@@ -26,8 +26,14 @@ posts…) to the same registry. Blocks are stored as JSON inside @core/content e
 5. Styles: import `src/lib/ui/ui.css` then `src/lib/blocks/blocks.css` in the root layout.
 6. Verify: a page with every block passes axe and has one `h1`; a block with an unknown type renders nothing and warns in dev.
 
+## Upgrading from 1.0
+The inner lists of gallery, logos and stats and the video frame now use `blk-gallery__list`, `blk-logos__list`,
+`blk-stats__list` and `blk-video__frame` (before, they repeated the section's class and its grid applied twice). If your
+CSS targeted `.blk-gallery img`, `.blk-stats dd`… switch to the `__list` / `__frame` selectors.
+
 ## Conventions
 - A new block = new file with `defineBlock` + entry in the registry. Never add `if (type === …)` to `RenderBlocks`.
+- Inner elements use `blk-<type>__<part>` (`blk-gallery__list`); never reuse `blk-<type>`, which is the section's class.
 - Use `Section` and `Heading` with `ctx.level` (items one level below); only blocks with `pageTitle` may become the `h1`.
 - Images are media ids resolved with `loadBlockMedia`; links go through the `href` schema (no `javascript:`).
 - Text in blocks is plain text; use the `rich-text` block for formatting.
