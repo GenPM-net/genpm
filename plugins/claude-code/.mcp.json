@@ -1,5 +1,0 @@
-{
-  "mcpServers": {
-    "genpm": { "command": "npx", "args": ["-y", "@genpm-net/mcp@0.2.0"] }
-  }
-}
