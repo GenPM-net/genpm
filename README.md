@@ -24,6 +24,16 @@ One native binary, no Node.js needed (`genpm upgrade` keeps it current). Also on
 - **Context**: an `AGENTS.md` per module (plus Cursor, Copilot, Windsurf and Claude Code rule files), loaded only when your agent works in that folder.
 - **Connections**: the MCP servers a module needs, added only with your consent.
 
+## See it working
+
+| Demo | One command | What you get |
+|---|---|---|
+| [Restaurant site](https://github.com/GenPM-net/demo-restaurante) | `genpm add @core/kit-cms` | Menu, online bookings, editable pages and an admin panel (19 modules) |
+| [Dropshipping store](https://github.com/GenPM-net/demo-dropshipping) | `genpm add @core/kit-dropshipping` | Supplier CSV import, margin pricing, product landing pages, Stripe checkout (37 modules) |
+| [SaaS starter](https://github.com/GenPM-net/saas-starter) | `genpm add @core/billing @core/email` | GitHub login, Stripe subscriptions, plan gating and email |
+
+Each demo repo has a step-by-step guide (online and PDF) and commits that show every step.
+
 ## Start a new project
 
 [**GenPM-net/saas-starter**](https://github.com/GenPM-net/saas-starter): a Next.js 16 template with GitHub login, Stripe
