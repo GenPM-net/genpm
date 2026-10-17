@@ -11,8 +11,8 @@
     {
       "name": "genpm",
       "source": {
-        "source": "github",
-        "repo": "GenPM-net/claude-plugin"
+        "source": "url",
+        "url": "https://github.com/GenPM-net/claude-plugin.git"
       },
       "description": "Search the GenPM registry and inject full modules (code + AI rules + MCP) into your project, pinned to a verified commit.",
       "category": "development",
