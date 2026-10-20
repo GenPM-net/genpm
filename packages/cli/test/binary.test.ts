@@ -17,6 +17,7 @@ const REPO = 'https://github.com/genpm-smoke/db';
 let server: Server;
 let registry: string;
 let cache: string;
+let home: string;
 let sha: string;
 
 /** Ejecuta el binario sin heredar la configuración del usuario ni del CI. */
@@ -30,8 +31,9 @@ function genpm(cwd: string, ...args: string[]): Promise<{ code: number; stdout: 
         env: {
           PATH: process.env['PATH'],
           SystemRoot: process.env['SystemRoot'],
-          HOME: cwd,
-          USERPROFILE: cwd,
+          // Un HOME aparte: el proyecto nunca puede ser el directorio personal (findRoot lo rechaza a propósito).
+          HOME: home,
+          USERPROFILE: home,
           GENPM_REGISTRY: registry,
           GENPM_CACHE_DIR: cache,
           GENPM_TELEMETRY: '0',
@@ -55,6 +57,7 @@ describe.skipIf(!BINARY)('standalone binary', () => {
     sha = repo.sha;
     // La caché se siembra desde el repo local: el binario (que rechaza file://) instala sin red, como tras un fetch real.
     cache = await mkdtemp(join(tmpdir(), 'genpm-bincache-'));
+    home = await mkdtemp(join(tmpdir(), 'genpm-binhome-'));
     const seed = await fetchSource({ r: repo.url, c: sha }, { allowFileProtocol: true, cacheDir: cache });
     await cp(seed.dir, join(cache, repoCacheKey(REPO), sha), { recursive: true });
 
@@ -121,8 +124,8 @@ describe.skipIf(!BINARY)('standalone binary', () => {
       env: {
         PATH: process.env['PATH'],
         SystemRoot: process.env['SystemRoot'],
-        HOME: dir,
-        USERPROFILE: dir,
+        HOME: home,
+        USERPROFILE: home,
         GENPM_REGISTRY: registry,
         GENPM_TELEMETRY: '0',
       },
