@@ -551,14 +551,19 @@
       "manifest": "[genpm.json ŕéƒéŕéñçé ········]",
       "writing-rules": "[Wŕîţîñĝ ÅÎ ŕûļéš ·······]",
       "mcp": "[MCP šéŕvéŕ ····]",
-      "security": "[Séçûŕîţý ɱöðéļ ······]"
+      "security": "[Séçûŕîţý ɱöðéļ ······]",
+      "nextjs-github-login": "[Åðð GîţHûƀ ļöĝîñ ţö Next.js ···········]",
+      "nextjs-stripe-subscriptions": "[Sţŕîþé šûƀšçŕîþţîöñš îñ Next.js ·············]",
+      "shadcn-for-backend": "[Lîķé šĥåðçñ/ûî, ƒöŕ ƀåçķéñð ɱöðûļéš ··············]",
+      "ai-agent-installs-modules": "[Léţ Cļåûðé Cöðé öŕ Cûŕšöŕ îñšţåļļ ɱöðûļéš ·················]"
     },
     "sections": {
       "gettingStarted": "[Géţţîñĝ šţåŕţéð ······]",
       "usingPackages": "[Ûšîñĝ þåçķåĝéš ······]",
       "publishing": "[Pûƀļîšĥîñĝ ····]",
       "mcpServer": "[MCP šéŕvéŕ ····]",
-      "security": "[Séçûŕîţý ····]"
+      "security": "[Séçûŕîţý ····]",
+      "guides": "[Gûîðéš ···]"
     }
   },
   "legal": {

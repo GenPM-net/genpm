@@ -839,11 +839,16 @@ export interface MessageParams {
   "web.docs.pages.writing-rules": undefined;
   "web.docs.pages.mcp": undefined;
   "web.docs.pages.security": undefined;
+  "web.docs.pages.nextjs-github-login": undefined;
+  "web.docs.pages.nextjs-stripe-subscriptions": undefined;
+  "web.docs.pages.shadcn-for-backend": undefined;
+  "web.docs.pages.ai-agent-installs-modules": undefined;
   "web.docs.sections.gettingStarted": undefined;
   "web.docs.sections.usingPackages": undefined;
   "web.docs.sections.publishing": undefined;
   "web.docs.sections.mcpServer": undefined;
   "web.docs.sections.security": undefined;
+  "web.docs.sections.guides": undefined;
   "web.legal.binding": undefined;
   "web.legal.updated": { date: string | number };
   "web.legal.formNotice": { owner: string | number };

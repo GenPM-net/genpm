@@ -60,6 +60,7 @@ const SECTION_KEYS: Record<string, string> = {
   Publishing: 'publishing',
   'MCP server': 'mcpServer',
   Security: 'security',
+  Guides: 'guides',
 };
 
 export function docPages(locale: string, t: Translator = enT): DocPage[] {
