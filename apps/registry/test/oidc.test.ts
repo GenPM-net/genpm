@@ -249,5 +249,5 @@ describe('trusted publishing from GitLab (V03-03)', () => {
     expect(((await priv.json()) as { code: string }).code).toBe('E_REPO_NOT_ALLOWED');
     const bad = await trust({ provider: 'gitlab', repository: '../x' });
     expect(bad.status).toBe(400);
-  });
+  }, 30_000); // runners de Windows lentos: 7,7 s en Node 22 frente a 1,5 s en Node 20
 });
