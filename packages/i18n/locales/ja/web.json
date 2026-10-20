@@ -551,14 +551,19 @@
       "manifest": "genpm.json リファレンス",
       "writing-rules": "AI ルールの書き方",
       "mcp": "MCP サーバー",
-      "security": "セキュリティモデル"
+      "security": "セキュリティモデル",
+      "nextjs-github-login": "Next.js に GitHub ログインを追加",
+      "nextjs-stripe-subscriptions": "Next.js で Stripe サブスクリプション",
+      "shadcn-for-backend": "shadcn/ui のようにバックエンドモジュールを",
+      "ai-agent-installs-modules": "Claude Code や Cursor にモジュールをインストールさせる"
     },
     "sections": {
       "gettingStarted": "はじめに",
       "usingPackages": "パッケージを使う",
       "publishing": "公開",
       "mcpServer": "MCP サーバー",
-      "security": "セキュリティ"
+      "security": "セキュリティ",
+      "guides": "ガイド"
     }
   },
   "legal": {

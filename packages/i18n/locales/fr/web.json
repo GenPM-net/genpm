@@ -551,14 +551,19 @@
       "manifest": "Référence genpm.json",
       "writing-rules": "Écrire des règles IA",
       "mcp": "Serveur MCP",
-      "security": "Modèle de sécurité"
+      "security": "Modèle de sécurité",
+      "nextjs-github-login": "Connexion GitHub dans Next.js",
+      "nextjs-stripe-subscriptions": "Abonnements Stripe dans Next.js",
+      "shadcn-for-backend": "Comme shadcn/ui, pour des modules backend",
+      "ai-agent-installs-modules": "Laissez Claude Code ou Cursor installer des modules"
     },
     "sections": {
       "gettingStarted": "Premiers pas",
       "usingPackages": "Utiliser des paquets",
       "publishing": "Publication",
       "mcpServer": "Serveur MCP",
-      "security": "Sécurité"
+      "security": "Sécurité",
+      "guides": "Guides"
     }
   },
   "legal": {

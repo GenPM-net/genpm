@@ -551,14 +551,19 @@
       "manifest": "genpm.json 参考",
       "writing-rules": "编写 AI 规则",
       "mcp": "MCP 服务器",
-      "security": "安全模型"
+      "security": "安全模型",
+      "nextjs-github-login": "在 Next.js 中添加 GitHub 登录",
+      "nextjs-stripe-subscriptions": "在 Next.js 中使用 Stripe 订阅",
+      "shadcn-for-backend": "像 shadcn/ui 一样使用后端模块",
+      "ai-agent-installs-modules": "让 Claude Code 或 Cursor 安装模块"
     },
     "sections": {
       "gettingStarted": "入门",
       "usingPackages": "使用包",
       "publishing": "发布",
       "mcpServer": "MCP 服务器",
-      "security": "安全"
+      "security": "安全",
+      "guides": "指南"
     }
   },
   "legal": {

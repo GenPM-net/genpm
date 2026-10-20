@@ -551,14 +551,19 @@
       "manifest": "genpm.json 참조",
       "writing-rules": "AI 규칙 작성하기",
       "mcp": "MCP 서버",
-      "security": "보안 모델"
+      "security": "보안 모델",
+      "nextjs-github-login": "Next.js에 GitHub 로그인 추가",
+      "nextjs-stripe-subscriptions": "Next.js에서 Stripe 구독",
+      "shadcn-for-backend": "shadcn/ui처럼, 백엔드 모듈을",
+      "ai-agent-installs-modules": "Claude Code나 Cursor가 모듈을 설치하게 하기"
     },
     "sections": {
       "gettingStarted": "시작하기",
       "usingPackages": "패키지 사용하기",
       "publishing": "게시하기",
       "mcpServer": "MCP 서버",
-      "security": "보안"
+      "security": "보안",
+      "guides": "가이드"
     }
   },
   "legal": {
