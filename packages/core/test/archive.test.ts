@@ -13,7 +13,11 @@ async function setup() {
   const repo = await makeRepo({ 'AGENTS.md': '# kit\n', 'index.ts': 'export const kit = 1;\n' });
   // `git archive` deja el commit en el comentario pax global, igual que codeload.
   const gz = new Uint8Array(
-    execFileSync('git', ['archive', '--format=tar.gz', `--prefix=kit-${repo.sha}/`, repo.sha], { cwd: repo.dir }),
+    execFileSync(
+      'git',
+      ['-c', 'core.autocrlf=false', 'archive', '--format=tar.gz', `--prefix=kit-${repo.sha}/`, repo.sha],
+      { cwd: repo.dir },
+    ),
   );
   const project = await mkdtemp(join(tmpdir(), 'genpm-arch-'));
   await writeFile(join(project, 'package.json'), '{"name":"app"}');
