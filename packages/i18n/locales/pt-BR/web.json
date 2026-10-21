@@ -137,7 +137,35 @@
     "termInstalled": "já instalado",
     "termAsks": "(pergunta antes)",
     "termConfirm": "Injetar {count, plural, one {# pacote} other {# pacotes}} ({files, number} arquivos, {size})?",
-    "termInjected": "{count, plural, one {# pacote injetado} other {# pacotes injetados}} em {seconds, number, ::.0}s"
+    "termInjected": "{count, plural, one {# pacote injetado} other {# pacotes injetados}} em {seconds, number, ::.0}s",
+    "heroTitle": "Módulos completos que a sua IA sabe instalar.",
+    "heroLede": "Login, cobranças com Stripe, um CMS, uma loja online e mais: injetados no seu repositório como código que é seu, com as regras que o seu agente precisa para integrá-los.",
+    "catalogTitle": "{count} pacotes prontos para instalar",
+    "filterPlaceholder": "Filtre: stripe, login, blog, newsletter…",
+    "filterLabel": "Filtrar pacotes",
+    "categoriesLabel": "Categorias",
+    "filterEmpty": "Nenhum pacote aqui corresponde ao seu filtro.",
+    "searchRegistry": "Buscar em todo o registry",
+    "cat": {
+      "kits": "Apps completos",
+      "auth": "Login e usuários",
+      "commerce": "Pagamentos e loja",
+      "content": "Conteúdo e CMS",
+      "marketing": "Marketing e formulários",
+      "admin": "Painel e interface",
+      "base": "Base",
+      "more": "Mais pacotes"
+    },
+    "catText": {
+      "kits": "Seções inteiras de um app Next.js, montadas com os módulos abaixo.",
+      "auth": "Sessões, OAuth e papéis, no seu banco de dados.",
+      "commerce": "Stripe, carrinho, checkout, pedidos, frete e notas fiscais.",
+      "content": "Páginas, blog, mídia, busca e SEO que o seu cliente pode editar.",
+      "marketing": "Formulários, newsletter, consentimento, pixels e testes A/B.",
+      "admin": "Um painel de administração gerado a partir dos seus dados e interface acessível.",
+      "base": "Banco de dados, e-mail, tarefas em segundo plano, arquivos e IA.",
+      "more": "Pacotes de outros autores."
+    }
   },
   "clients": {
     "label": "Cliente",

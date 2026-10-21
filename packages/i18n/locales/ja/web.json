@@ -137,7 +137,35 @@
     "termInstalled": "インストール済み",
     "termAsks": "（事前に確認）",
     "termConfirm": "{count, plural, other {# 個のパッケージ}}を組み込みますか？（{files, number} ファイル、{size}）",
-    "termInjected": "{count, plural, other {# 個のパッケージ}}を {seconds, number, ::.0} 秒で組み込みました"
+    "termInjected": "{count, plural, other {# 個のパッケージ}}を {seconds, number, ::.0} 秒で組み込みました",
+    "heroTitle": "AI がインストールできるフルスタックモジュール。",
+    "heroLede": "ログイン、Stripe 決済、CMS、オンラインストアなどを、あなたのものになるソースコードとしてリポジトリに注入。エージェントが統合に必要なルール付き。",
+    "catalogTitle": "すぐにインストールできる {count} パッケージ",
+    "filterPlaceholder": "絞り込み: stripe、login、blog、newsletter…",
+    "filterLabel": "パッケージを絞り込む",
+    "categoriesLabel": "カテゴリー",
+    "filterEmpty": "条件に合うパッケージはここにはありません。",
+    "searchRegistry": "レジストリ全体を検索",
+    "cat": {
+      "kits": "完全なアプリ",
+      "auth": "ログインとユーザー",
+      "commerce": "決済とストア",
+      "content": "コンテンツと CMS",
+      "marketing": "マーケティングとフォーム",
+      "admin": "管理画面と UI",
+      "base": "基盤",
+      "more": "その他のパッケージ"
+    },
+    "catText": {
+      "kits": "下のモジュールで構成された Next.js アプリのセクション全体。",
+      "auth": "セッション、OAuth、ロールをあなたのデータベースに。",
+      "commerce": "Stripe、カート、チェックアウト、注文、配送、請求書。",
+      "content": "クライアントが編集できるページ、ブログ、メディア、検索、SEO。",
+      "marketing": "フォーム、ニュースレター、同意管理、ピクセル、A/B テスト。",
+      "admin": "データから生成される管理画面とアクセシブルな UI。",
+      "base": "データベース、メール、バックグラウンドジョブ、ファイル、AI。",
+      "more": "他の作者のパッケージ。"
+    }
   },
   "clients": {
     "label": "クライアント",

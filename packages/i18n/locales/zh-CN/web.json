@@ -137,7 +137,35 @@
     "termInstalled": "已安装",
     "termAsks": "（会先询问）",
     "termConfirm": "注入 {count, plural, other {# 个包}}（{files, number} 个文件，{size}）？",
-    "termInjected": "已在 {seconds, number, ::.0} 秒内注入 {count, plural, other {# 个包}}"
+    "termInjected": "已在 {seconds, number, ::.0} 秒内注入 {count, plural, other {# 个包}}",
+    "heroTitle": "你的 AI 会安装的全栈模块。",
+    "heroLede": "登录、Stripe 计费、CMS、在线商店等,以归你所有的源代码注入仓库,并附带智能体集成所需的规则。",
+    "catalogTitle": "{count} 个可直接安装的包",
+    "filterPlaceholder": "筛选:stripe、login、blog、newsletter…",
+    "filterLabel": "筛选包",
+    "categoriesLabel": "分类",
+    "filterEmpty": "这里没有符合筛选条件的包。",
+    "searchRegistry": "搜索整个 registry",
+    "cat": {
+      "kits": "完整应用",
+      "auth": "登录与用户",
+      "commerce": "支付与商店",
+      "content": "内容与 CMS",
+      "marketing": "营销与表单",
+      "admin": "后台与界面",
+      "base": "基础",
+      "more": "更多包"
+    },
+    "catText": {
+      "kits": "由下方模块组成的 Next.js 应用完整板块。",
+      "auth": "会话、OAuth 和角色,存于你的数据库。",
+      "commerce": "Stripe、购物车、结账、订单、配送和发票。",
+      "content": "客户可编辑的页面、博客、媒体、搜索和 SEO。",
+      "marketing": "表单、新闻邮件、同意管理、像素和 A/B 测试。",
+      "admin": "根据你的数据生成的管理后台和无障碍界面。",
+      "base": "数据库、邮件、后台任务、文件存储和 AI。",
+      "more": "其他作者的包。"
+    }
   },
   "clients": {
     "label": "客户端",

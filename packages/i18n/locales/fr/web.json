@@ -137,7 +137,35 @@
     "termInstalled": "déjà installé",
     "termAsks": "(demande d’abord)",
     "termConfirm": "Injecter {count, plural, one {# paquet} other {# paquets}} ({files, number} fichiers, {size}) ?",
-    "termInjected": "{count, plural, one {# paquet injecté} other {# paquets injectés}} en {seconds, number, ::.0} s"
+    "termInjected": "{count, plural, one {# paquet injecté} other {# paquets injectés}} en {seconds, number, ::.0} s",
+    "heroTitle": "Des modules complets que votre IA sait installer.",
+    "heroLede": "Connexion, facturation Stripe, un CMS, une boutique en ligne et plus : injectés dans votre dépôt sous forme de code qui vous appartient, avec les règles dont votre agent a besoin pour les intégrer.",
+    "catalogTitle": "{count} paquets prêts à installer",
+    "filterPlaceholder": "Filtrer : stripe, login, blog, newsletter…",
+    "filterLabel": "Filtrer les paquets",
+    "categoriesLabel": "Catégories",
+    "filterEmpty": "Aucun paquet ici ne correspond à votre filtre.",
+    "searchRegistry": "Chercher dans tout le registry",
+    "cat": {
+      "kits": "Applications complètes",
+      "auth": "Connexion et utilisateurs",
+      "commerce": "Paiements et boutique",
+      "content": "Contenu et CMS",
+      "marketing": "Marketing et formulaires",
+      "admin": "Administration et UI",
+      "base": "Fondations",
+      "more": "Autres paquets"
+    },
+    "catText": {
+      "kits": "Des sections entières d'une app Next.js, composées des modules ci-dessous.",
+      "auth": "Sessions, OAuth et rôles, dans votre base de données.",
+      "commerce": "Stripe, panier, paiement, commandes, livraison et factures.",
+      "content": "Pages, blog, médias, recherche et SEO modifiables par votre client.",
+      "marketing": "Formulaires, newsletter, consentement, pixels et tests A/B.",
+      "admin": "Un panneau d'administration généré depuis vos données et une UI accessible.",
+      "base": "Base de données, e-mail, tâches de fond, fichiers et IA.",
+      "more": "Paquets d'autres auteurs."
+    }
   },
   "clients": {
     "label": "Client",

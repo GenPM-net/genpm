@@ -137,7 +137,35 @@
     "termInstalled": "ya instalado",
     "termAsks": "(pregunta antes)",
     "termConfirm": "¿Inyectar {count, plural, one {# paquete} other {# paquetes}} ({files, number} archivos, {size})?",
-    "termInjected": "{count, plural, one {# paquete inyectado} other {# paquetes inyectados}} en {seconds, number, ::.0} s"
+    "termInjected": "{count, plural, one {# paquete inyectado} other {# paquetes inyectados}} en {seconds, number, ::.0} s",
+    "heroTitle": "Módulos completos que tu IA sabe instalar.",
+    "heroLede": "Login, cobros con Stripe, un CMS, una tienda online y más: inyectados en tu repo como código que es tuyo, con las reglas que tu agente necesita para integrarlos.",
+    "catalogTitle": "{count} paquetes listos para instalar",
+    "filterPlaceholder": "Filtra: stripe, login, blog, newsletter…",
+    "filterLabel": "Filtrar paquetes",
+    "categoriesLabel": "Categorías",
+    "filterEmpty": "Ningún paquete de aquí coincide con tu filtro.",
+    "searchRegistry": "Buscar en todo el registry",
+    "cat": {
+      "kits": "Apps completas",
+      "auth": "Login y usuarios",
+      "commerce": "Pagos y tienda",
+      "content": "Contenido y CMS",
+      "marketing": "Marketing y formularios",
+      "admin": "Panel e interfaz",
+      "base": "Base",
+      "more": "Más paquetes"
+    },
+    "catText": {
+      "kits": "Secciones enteras de una app Next.js, montadas con los módulos de abajo.",
+      "auth": "Sesiones, OAuth y roles, en tu base de datos.",
+      "commerce": "Stripe, carrito, checkout, pedidos, envíos y facturas.",
+      "content": "Páginas, blog, medios, búsqueda y SEO que tu cliente puede editar.",
+      "marketing": "Formularios, newsletter, consentimiento, píxeles y tests A/B.",
+      "admin": "Un panel de administración generado desde tus datos e interfaz accesible.",
+      "base": "Base de datos, email, tareas en segundo plano, archivos e IA.",
+      "more": "Paquetes de otros autores."
+    }
   },
   "clients": {
     "label": "Cliente",
