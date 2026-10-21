@@ -137,7 +137,35 @@
     "termInstalled": "이미 설치됨",
     "termAsks": "(먼저 확인)",
     "termConfirm": "{count, plural, other {패키지 #개}}를 주입할까요? (파일 {files, number}개, {size})",
-    "termInjected": "{seconds, number, ::.0}초 만에 {count, plural, other {패키지 #개}}를 주입했습니다"
+    "termInjected": "{seconds, number, ::.0}초 만에 {count, plural, other {패키지 #개}}를 주입했습니다",
+    "heroTitle": "AI가 설치할 줄 아는 풀스택 모듈.",
+    "heroLede": "로그인, Stripe 결제, CMS, 온라인 스토어 등을 당신이 소유하는 소스 코드로 저장소에 주입합니다. 에이전트가 통합에 필요한 규칙도 함께.",
+    "catalogTitle": "바로 설치할 수 있는 패키지 {count}개",
+    "filterPlaceholder": "필터: stripe, login, blog, newsletter…",
+    "filterLabel": "패키지 필터",
+    "categoriesLabel": "카테고리",
+    "filterEmpty": "필터와 일치하는 패키지가 없습니다.",
+    "searchRegistry": "전체 레지스트리 검색",
+    "cat": {
+      "kits": "완성형 앱",
+      "auth": "로그인과 사용자",
+      "commerce": "결제와 스토어",
+      "content": "콘텐츠와 CMS",
+      "marketing": "마케팅과 폼",
+      "admin": "관리자와 UI",
+      "base": "기반",
+      "more": "더 많은 패키지"
+    },
+    "catText": {
+      "kits": "아래 모듈로 구성된 Next.js 앱의 전체 섹션.",
+      "auth": "세션, OAuth, 역할을 당신의 데이터베이스에.",
+      "commerce": "Stripe, 장바구니, 결제, 주문, 배송, 청구서.",
+      "content": "고객이 편집할 수 있는 페이지, 블로그, 미디어, 검색, SEO.",
+      "marketing": "폼, 뉴스레터, 동의 관리, 픽셀, A/B 테스트.",
+      "admin": "데이터로 생성되는 관리자 패널과 접근성 있는 UI.",
+      "base": "데이터베이스, 이메일, 백그라운드 작업, 파일, AI.",
+      "more": "다른 작성자의 패키지."
+    }
   },
   "clients": {
     "label": "클라이언트",

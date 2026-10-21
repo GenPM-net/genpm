@@ -3349,3 +3349,123 @@ table.tbl .sub.mono {
     background-size: calc(100% - 32px) 1px;
   }
 }
+
+/* ——— Portada como catálogo ——— */
+.hero.hero-cat {
+  padding-block: 56px 40px;
+  align-items: center;
+}
+.hero-cat .h1 {
+  font-size: clamp(36px, 5vw, 56px);
+  margin-block: 18px 16px;
+}
+.catalog {
+  padding-block: 8px 72px;
+}
+.cat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--line);
+  padding-top: 32px;
+}
+.cat-top h2 {
+  font-size: clamp(24px, 2.6vw, 30px);
+  letter-spacing: -0.03em;
+  font-variation-settings: "wdth" 88;
+}
+.cat-q {
+  display: flex;
+  width: min(100%, 420px);
+  height: 42px;
+}
+.cat-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block: 20px 8px;
+}
+.cat-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 6px 10px;
+  font-size: 13px;
+  color: var(--ink-2);
+  transition:
+    background 0.15s ease-out,
+    border-color 0.15s ease-out;
+}
+.cat-nav a:hover {
+  background: var(--wash);
+  border-color: var(--line-2);
+  color: var(--ink);
+}
+.cat-nav a span {
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.cat-g {
+  margin-top: 36px;
+  scroll-margin-top: 80px;
+}
+.cat-h {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.cat-h h3 {
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+.cat-h p {
+  color: var(--ink-3);
+  font-size: 14px;
+}
+.cards.cards3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.cat-empty {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  margin-top: 36px;
+  color: var(--ink-2);
+}
+.cat-empty[hidden],
+.cat-g[hidden],
+.cat-nav a[hidden],
+.pcard[hidden] {
+  display: none;
+}
+@media (max-width: 1000px) {
+  .cards.cards3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .cards.cards3 {
+    grid-template-columns: 1fr;
+  }
+  .hero.hero-cat {
+    padding-block: 28px 16px;
+    gap: 24px;
+  }
+  /* En móvil el catálogo tiene que asomar antes: las garantías ya están en la sección de seguridad. */
+  .hero-cat .trust {
+    display: none;
+  }
+  .hero-cat .lede {
+    font-size: 16px;
+  }
+  .catalog .cat-top {
+    padding-top: 24px;
+  }
+}

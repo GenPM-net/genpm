@@ -7,12 +7,16 @@ import LayerBadges from './LayerBadges.astro';
 
 interface Props {
   p: SearchRow;
+  /** Texto en minúsculas para el filtro instantáneo del catálogo (portada). */
+  filter?: string;
+  /** Ocultar las instalaciones del mes (en la portada, mientras las cifras no aporten confianza). */
+  installs?: boolean;
 }
-const { p } = Astro.props;
+const { p, filter, installs = true } = Astro.props;
 const { t, locale } = Astro.locals;
 ---
-<a class="pcard" href={href(locale, `/p/${p.name}`)}>
+<a class="pcard" href={href(locale, `/p/${p.name}`)} data-filter={filter}>
   <div class="nm"><b>{p.name}</b><span class="v">{p.version}</span><span class="r">{p.publisher.verified && <span class="vmark"><Ico name="shield" />{t.t('web.common.verified')}</span>}</span></div>
   <p>{p.summary}</p>
-  <div class="ft"><div class="row"><LayerBadges short mcp={p.hasMcp ? ['mcp'] : []} /></div><span class="inst tnum">{t.t('web.common.perMonth', { count: compact(locale, p.installs30d) })}</span></div>
+  <div class="ft"><div class="row"><LayerBadges short mcp={p.hasMcp ? ['mcp'] : []} /></div>{installs && <span class="inst tnum">{t.t('web.common.perMonth', { count: compact(locale, p.installs30d) })}</span>}</div>
 </a>

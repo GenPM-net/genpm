@@ -137,7 +137,35 @@
     "termInstalled": "already installed",
     "termAsks": "(asks first)",
     "termConfirm": "Inject {count, plural, one {# package} other {# packages}} ({files, number} files, {size})?",
-    "termInjected": "Injected {count, plural, one {# package} other {# packages}} in {seconds, number, ::.0}s"
+    "termInjected": "Injected {count, plural, one {# package} other {# packages}} in {seconds, number, ::.0}s",
+    "heroTitle": "Full-stack modules your AI knows how to install.",
+    "heroLede": "Login, Stripe billing, a CMS, an online store and more: injected into your repo as source code you own, with the rules your agent needs to integrate them.",
+    "catalogTitle": "{count} packages, ready to install",
+    "filterPlaceholder": "Filter: stripe, login, blog, newsletter…",
+    "filterLabel": "Filter packages",
+    "categoriesLabel": "Categories",
+    "filterEmpty": "No package here matches your filter.",
+    "searchRegistry": "Search the whole registry",
+    "cat": {
+      "kits": "Complete apps",
+      "auth": "Login & users",
+      "commerce": "Payments & store",
+      "content": "Content & CMS",
+      "marketing": "Marketing & forms",
+      "admin": "Admin & UI",
+      "base": "Foundations",
+      "more": "More packages"
+    },
+    "catText": {
+      "kits": "Whole sections of a Next.js app, composed from the modules below.",
+      "auth": "Sessions, OAuth and roles, in your database.",
+      "commerce": "Stripe, cart, checkout, orders, shipping and invoices.",
+      "content": "Pages, blog, media, search and SEO your client can edit.",
+      "marketing": "Forms, newsletter, consent, pixels and A/B tests.",
+      "admin": "An admin panel generated from your data, and accessible UI.",
+      "base": "Database, email, background jobs, file storage and AI.",
+      "more": "Packages from other publishers."
+    }
   },
   "clients": {
     "label": "Client",

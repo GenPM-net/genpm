@@ -137,7 +137,35 @@
     "termInstalled": "bereits installiert",
     "termAsks": "(fragt zuerst)",
     "termConfirm": "{count, plural, one {# Paket} other {# Pakete}} einbinden ({files, number} Dateien, {size})?",
-    "termInjected": "{count, plural, one {# Paket} other {# Pakete}} in {seconds, number, ::.0} s eingebunden"
+    "termInjected": "{count, plural, one {# Paket} other {# Pakete}} in {seconds, number, ::.0} s eingebunden",
+    "heroTitle": "Komplette Module, die deine KI installieren kann.",
+    "heroLede": "Login, Stripe-Abrechnung, ein CMS, ein Onlineshop und mehr: als Quellcode in dein Repo eingefügt, der dir gehört, mit den Regeln, die dein Agent zur Integration braucht.",
+    "catalogTitle": "{count} Pakete, bereit zur Installation",
+    "filterPlaceholder": "Filtern: stripe, login, blog, newsletter…",
+    "filterLabel": "Pakete filtern",
+    "categoriesLabel": "Kategorien",
+    "filterEmpty": "Kein Paket hier passt zu deinem Filter.",
+    "searchRegistry": "Die ganze Registry durchsuchen",
+    "cat": {
+      "kits": "Komplette Apps",
+      "auth": "Login & Nutzer",
+      "commerce": "Zahlungen & Shop",
+      "content": "Inhalte & CMS",
+      "marketing": "Marketing & Formulare",
+      "admin": "Admin & UI",
+      "base": "Grundlagen",
+      "more": "Weitere Pakete"
+    },
+    "catText": {
+      "kits": "Ganze Bereiche einer Next.js-App, aus den Modulen unten zusammengesetzt.",
+      "auth": "Sessions, OAuth und Rollen, in deiner Datenbank.",
+      "commerce": "Stripe, Warenkorb, Checkout, Bestellungen, Versand und Rechnungen.",
+      "content": "Seiten, Blog, Medien, Suche und SEO, die dein Kunde bearbeiten kann.",
+      "marketing": "Formulare, Newsletter, Einwilligung, Pixel und A/B-Tests.",
+      "admin": "Ein aus deinen Daten generiertes Admin-Panel und barrierefreie UI.",
+      "base": "Datenbank, E-Mail, Hintergrundjobs, Dateien und KI.",
+      "more": "Pakete anderer Autoren."
+    }
   },
   "clients": {
     "label": "Client",
