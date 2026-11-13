@@ -1,0 +1,59 @@
+---
+// /guides: índice de la sección de guías. Una guía = un fallo concreto, por qué pasa, el arreglo en código y el
+// módulo del registro que ya lo trae. El objetivo de búsqueda es el problema, no la categoría ni la marca.
+import Base from '../layouts/Base.astro';
+import { guidePages } from '../lib/guides.js';
+import { href } from '../lib/i18n.js';
+
+const { t, locale } = Astro.locals;
+const guides = guidePages(locale);
+const org = {
+  '@type': 'Organization',
+  '@id': 'https://genpm.net/#org',
+  name: 'GenPM',
+  url: 'https://genpm.net',
+  logo: 'https://genpm.net/apple-touch-icon.png',
+};
+// El nodo Organization va en el @graph de cada página: un `@id` suelto que solo existe en la portada no resuelve.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    org,
+    {
+      '@type': 'CollectionPage',
+      '@id': 'https://genpm.net/guides#page',
+      name: t.t('web.guides.title'),
+      description: t.t('web.guides.lede'),
+      url: 'https://genpm.net/guides',
+      isPartOf: { '@id': 'https://genpm.net/#website' },
+      publisher: { '@id': 'https://genpm.net/#org' },
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: guides.length,
+        itemListElement: guides.map((g, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: `https://genpm.net/guides/${g.slug}`,
+          name: g.title,
+        })),
+      },
+    },
+  ],
+};
+Astro.response.headers.set('Cache-Control', 'public, max-age=3600');
+---
+<Base title={t.t('web.guides.metaTitle')} description={t.t('web.guides.lede')} nav="guides" canonical="/guides" jsonLd={jsonLd}>
+  <div class="wrap">
+    <div class="phead"><h1>{t.t('web.guides.title')}</h1><p>{t.t('web.guides.lede')}</p></div>
+    <div class="cards">
+      {guides.map((g) => (
+        <a class="pcard" href={href(locale, `/guides/${g.slug}`)}>
+          <div class="nm"><b style="font-family:var(--f-sans);font-size:17px;letter-spacing:-0.02em">{g.title}</b></div>
+          <p>{g.description}</p>
+          <div class="ft"><span class="mono" style="font-size:12px;color:var(--ink-3)">{g.pkg}</span><span class="inst tnum">{g.updated}</span></div>
+        </a>
+      ))}
+    </div>
+    <p class="hint" style="margin-top:28px" set:html={t.t('web.guides.docsHint', { link: `<a href="${href(locale, '/docs')}">${t.t('web.docs.title')}</a>` })} />
+  </div>
+</Base>

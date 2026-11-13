@@ -13,6 +13,7 @@
     "searchPlaceholder": "{count, plural, =0 {Pakete} one {# Paket} other {# Pakete}} durchsuchen…",
     "searchLabel": "Pakete durchsuchen",
     "docs": "Doku",
+    "guides": "Leitfäden",
     "mcp": "MCP",
     "publish": "Veröffentlichen",
     "signIn": "Anmelden",
@@ -593,6 +594,12 @@
       "security": "Sicherheit",
       "guides": "Anleitungen"
     }
+  },
+  "guides": {
+    "title": "Leitfäden",
+    "metaTitle": "Leitfäden: konkrete Fehler und ihre Lösung",
+    "lede": "Ein Leitfaden, ein konkreter Fehler: was bricht, warum, die Lösung in echtem Code und das Modul, das sie schon mitbringt.",
+    "docsHint": "Die Referenz zu GenPM selbst steht in der {link}."
   },
   "legal": {
     "binding": "Rechtlich verbindlich ist die spanische Fassung.",

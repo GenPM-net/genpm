@@ -13,6 +13,7 @@
     "searchPlaceholder": "Rechercher {count, plural, =0 {des paquets} one {# paquet} other {# paquets}}…",
     "searchLabel": "Rechercher des paquets",
     "docs": "Docs",
+    "guides": "Guides",
     "mcp": "MCP",
     "publish": "Publier",
     "signIn": "Se connecter",
@@ -593,6 +594,12 @@
       "security": "Sécurité",
       "guides": "Guides"
     }
+  },
+  "guides": {
+    "title": "Guides",
+    "metaTitle": "Guides : pannes concrètes et leurs correctifs",
+    "lede": "Un guide, une panne concrète : ce qui casse, pourquoi, le correctif en vrai code et le module qui l’embarque déjà.",
+    "docsHint": "La référence de GenPM se trouve dans la {link}."
   },
   "legal": {
     "binding": "Seule la version espagnole fait foi juridiquement.",

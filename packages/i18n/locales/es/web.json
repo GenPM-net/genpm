@@ -13,6 +13,7 @@
     "searchPlaceholder": "Buscar {count, plural, =0 {paquetes} one {en # paquete} other {en # paquetes}}…",
     "searchLabel": "Buscar paquetes",
     "docs": "Docs",
+    "guides": "Guías",
     "mcp": "MCP",
     "publish": "Publicar",
     "signIn": "Iniciar sesión",
@@ -593,6 +594,12 @@
       "security": "Seguridad",
       "guides": "Guías"
     }
+  },
+  "guides": {
+    "title": "Guías",
+    "metaTitle": "Guías: fallos concretos y cómo se arreglan",
+    "lede": "Una guía, un fallo concreto: qué se rompe, por qué, el arreglo en código real y el módulo que ya lo trae resuelto.",
+    "docsHint": "La referencia de GenPM vive en su {link}."
   },
   "legal": {
     "binding": "La versión en español es la jurídicamente vinculante.",

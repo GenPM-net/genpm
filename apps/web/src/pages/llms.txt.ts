@@ -2,6 +2,7 @@
 import { AGENT_RULES, LEGEND } from '@genpm/manifest';
 import type { APIRoute } from 'astro';
 import { docPages } from '../lib/docs.js';
+import { guidePages } from '../lib/guides.js';
 import { registryGet, type SearchResponse } from '../lib/registry.js';
 
 export const GET: APIRoute = async () => {
@@ -29,6 +30,14 @@ export const GET: APIRoute = async () => {
     '',
     '## Docs',
     ...docPages('en').map((d) => `- [${d.title}](https://genpm.net/docs/${d.slug}.md)`),
+    '',
+    '## Guides',
+    '',
+    'Each guide starts from a concrete failure, explains why it happens, fixes it in plain code and ends with the module that ships that fix.',
+    '',
+    ...guidePages('en').map(
+      (g) => `- [${g.title}](https://genpm.net/guides/${g.slug}.md): ${g.description} (${g.pkg})`,
+    ),
     '',
     '## Packages',
     ...(top.data?.results ?? []).map(

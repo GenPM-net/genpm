@@ -13,6 +13,7 @@
     "searchPlaceholder": "搜索 {count, plural, =0 {包} other {# 个包}}…",
     "searchLabel": "搜索包",
     "docs": "文档",
+    "guides": "指南",
     "mcp": "MCP",
     "publish": "发布",
     "signIn": "登录",
@@ -593,6 +594,12 @@
       "security": "安全",
       "guides": "指南"
     }
+  },
+  "guides": {
+    "title": "指南",
+    "metaTitle": "指南：具体故障及其修复方法",
+    "lede": "每篇指南对应一个具体故障：哪里出错、为什么出错、用真实代码如何修复，以及哪个模块已经内置了该修复。",
+    "docsHint": "GenPM 本身的参考文档在{link}。"
   },
   "legal": {
     "binding": "具有法律约束力的是西班牙语版本。",

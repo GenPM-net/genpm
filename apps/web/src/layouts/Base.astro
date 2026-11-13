@@ -18,7 +18,7 @@ interface Props {
   noindex?: boolean;
   jsonLd?: Record<string, unknown>;
   stale?: boolean;
-  nav?: 'docs' | 'mcp' | 'publish' | 'search';
+  nav?: 'docs' | 'guides' | 'mcp' | 'publish' | 'search';
   packages?: number;
 }
 const { title, description, canonical, ogImage, noindex, jsonLd, stale, nav, packages = 0 } = Astro.props;
@@ -98,6 +98,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
         <nav class="hnav" aria-label={t.t('web.nav.main')}>
           <a href={href(locale, '/search')} aria-current={nav === 'search' ? 'page' : undefined}>{t.t('web.nav.packages')}</a>
           <a href={href(locale, '/docs')} aria-current={nav === 'docs' ? 'page' : undefined}>{t.t('web.nav.docs')}</a>
+          <a href={href(locale, '/guides')} aria-current={nav === 'guides' ? 'page' : undefined}>{t.t('web.nav.guides')}</a>
           <a href={href(locale, '/mcp')} aria-current={nav === 'mcp' ? 'page' : undefined}>{t.t('web.nav.mcp')}</a>
           <a href={href(locale, '/publish')} aria-current={nav === 'publish' ? 'page' : undefined}>{t.t('web.nav.publish')}</a>
         </nav>
@@ -124,6 +125,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
         <div class="wrap">
           <a href={href(locale, '/search')}>{t.t('web.nav.packages')}</a>
           <a href={href(locale, '/docs')}>{t.t('web.nav.docs')}</a>
+          <a href={href(locale, '/guides')}>{t.t('web.nav.guides')}</a>
           <a href={href(locale, '/mcp')}>{t.t('web.nav.mcp')}</a>
           <a href={href(locale, '/publish')}>{t.t('web.nav.publish')}</a>
           <a href={href(locale, session ? '/dashboard' : '/login')}>{session ? session.handle : t.t('web.nav.signIn')}</a>
@@ -145,7 +147,7 @@ const fontsCjk = locale === 'ja' || locale === 'zh-CN' || locale === 'ko';
     <footer class="wrap foot">
       <div class="cols">
         <div><a class="logo" href={href(locale, '/')}>genpm<span class="caret"></span></a><p style="font-size:14px;color:var(--ink-3);margin-top:12px;max-width:30ch">{t.t('web.footer.tagline')}</p></div>
-        <div><h2>{t.t('web.footer.product')}</h2><ul><li><a href={href(locale, '/docs')}>{t.t('web.nav.docs')}</a></li><li><a href={href(locale, '/mcp')}>{t.t('web.nav.mcp')}</a></li><li><a href={href(locale, '/publish')}>{t.t('web.nav.publish')}</a></li><li><a href={href(locale, '/recipes')}>{t.t('web.footer.recipes')}</a></li><li><a href={href(locale, '/search')}>{t.t('web.footer.browse')}</a></li></ul></div>
+        <div><h2>{t.t('web.footer.product')}</h2><ul><li><a href={href(locale, '/docs')}>{t.t('web.nav.docs')}</a></li><li><a href={href(locale, '/mcp')}>{t.t('web.nav.mcp')}</a></li><li><a href={href(locale, '/publish')}>{t.t('web.nav.publish')}</a></li><li><a href={href(locale, '/guides')}>{t.t('web.nav.guides')}</a></li><li><a href={href(locale, '/recipes')}>{t.t('web.footer.recipes')}</a></li><li><a href={href(locale, '/search')}>{t.t('web.footer.browse')}</a></li></ul></div>
         <div><h2>{t.t('web.footer.company')}</h2><ul><li><a href={href(locale, '/sponsors')}>{t.t('web.footer.sponsors')}</a></li><li><a href={href(locale, '/enterprise')}>{t.t('web.footer.enterprise')}</a></li><li><a href={href(locale, '/security')}>{t.t('web.footer.security')}</a></li><li><a href={href(locale, '/security/advisories')}>{t.t('web.footer.advisories')}</a></li></ul></div>
         <div><h2>{t.t('web.footer.community')}</h2><ul><li><a href="https://github.com/genpm-net/genpm" rel="noopener">GitHub</a></li><li><a href="/llms.txt">llms.txt</a></li></ul></div>
         <div><h2>{t.t('web.footer.legal')}</h2><ul><li><a href={href(locale, '/terms')}>{t.t('web.footer.terms')}</a></li><li><a href={href(locale, '/privacy')}>{t.t('web.footer.privacy')}</a></li><li><a href={href(locale, '/policy')}>{t.t('web.footer.policy')}</a></li><li><a href={href(locale, '/cookies')}>{t.t('web.footer.cookies')}</a></li>{env.POSTHOG_KEY && <li><button class="linkbtn" type="button" data-consent-open>{t.t('web.consent.settings')}</button></li>}<li><a href={href(locale, '/legal')}>{t.t('web.footer.legalNotice')}</a></li><li><a href={`${href(locale, '/security')}#report`}>{t.t('web.footer.report')}</a></li></ul></div>

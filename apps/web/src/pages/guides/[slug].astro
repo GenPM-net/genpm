@@ -1,0 +1,70 @@
+---
+// /guides/<slug>: una guía. Mismo layout de tres columnas que /docs (lista a la izquierda para que el rastreador
+// llegue a todas desde cualquiera, "en esta página" a la derecha) y JSON-LD TechArticle con fechas y autor.
+import Base from '../../layouts/Base.astro';
+import { guidePage, guidePages } from '../../lib/guides.js';
+import { href, localizeLinks } from '../../lib/i18n.js';
+import { renderMarkdown } from '../../lib/markdown.js';
+
+const { t, locale } = Astro.locals;
+const slug = String(Astro.params.slug ?? '');
+const page = guidePage(locale, slug);
+if (!page) return Astro.rewrite('/404');
+const guides = guidePages(locale);
+const headings: Array<{ depth: number; text: string; id: string }> = [];
+const html = localizeLinks(renderMarkdown(page.body, { trusted: true, headings }), locale);
+const idx = guides.findIndex((g) => g.slug === page.slug);
+const prev = guides[idx - 1];
+const next = guides[idx + 1];
+const org = {
+  '@type': 'Organization',
+  '@id': 'https://genpm.net/#org',
+  name: 'GenPM',
+  url: 'https://genpm.net',
+  logo: 'https://genpm.net/apple-touch-icon.png',
+};
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    org,
+    {
+      '@type': 'TechArticle',
+      '@id': `https://genpm.net/guides/${page.slug}#article`,
+      headline: page.title,
+      description: page.description,
+      url: `https://genpm.net/guides/${page.slug}`,
+      datePublished: page.published,
+      dateModified: page.updated,
+      inLanguage: 'en',
+      image: `https://genpm.net/og/guides/${page.slug}.png`,
+      author: { '@type': 'Person', name: 'Yohangel Ramos', url: 'https://yohangel.com' },
+      publisher: { '@id': 'https://genpm.net/#org' },
+      isPartOf: { '@id': 'https://genpm.net/guides#page' },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `https://genpm.net/guides/${page.slug}` },
+      about: page.pkg
+        ? { '@type': 'SoftwareSourceCode', name: page.pkg, url: `https://genpm.net/p/${page.pkg}` }
+        : undefined,
+    },
+  ],
+};
+Astro.response.headers.set('Cache-Control', 'public, max-age=3600');
+---
+<Base title={page.title} description={page.description} nav="guides" canonical={`/guides/${page.slug}`} ogImage={`https://genpm.net/og/guides/${page.slug}.png`} jsonLd={jsonLd}>
+  <div class="wrap"><div class="docs">
+    <nav class="dnav" aria-label={t.t('web.guides.title')}>
+      <div><div class="k" style="margin-bottom:8px;padding-left:10px">{t.t('web.guides.title')}</div><ul>{guides.map((g) => <li><a href={href(locale, `/guides/${g.slug}`)} aria-current={g.slug === page.slug ? 'page' : undefined}>{g.title}</a></li>)}</ul></div>
+    </nav>
+    <article class="dbody md">
+      <div class="crumb"><a href={href(locale, '/guides')}>{t.t('web.guides.title')}</a></div>
+      {!page.translated && <div class="banner" style="--c:var(--warn)"><b>!</b><span>{t.t('web.docs.notTranslated')}</span></div>}
+      <h1>{page.title}</h1>
+      <p class="lead">{page.description}</p>
+      <Fragment set:html={html} />
+      <div class="dfoot">
+        <a class="hint" href={href(locale, `/guides/${page.slug}.md`)}>{t.t('web.docs.copyMd')}</a>
+        <span class="row">{prev && <a class="btn sm" href={href(locale, `/guides/${prev.slug}`)}>← {prev.title}</a>}{next && <a class="btn sm" href={href(locale, `/guides/${next.slug}`)}>{next.title} →</a>}</span>
+      </div>
+    </article>
+    <aside class="dtoc"><div class="k" style="margin-bottom:6px">{t.t('web.docs.onThisPage')}</div>{headings.filter((h) => h.depth === 2).map((h) => <a href={`#${h.id}`}>{h.text}</a>)}</aside>
+  </div></div>
+</Base>

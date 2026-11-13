@@ -30,7 +30,8 @@ const handle: Parameters<typeof defineMiddleware>[0] = async (ctx, next) => {
   const wantsHtml = accept.indexOf('text/html');
   if (ctx.request.method === 'GET' && wantsMd !== -1 && (wantsHtml === -1 || wantsMd < wantsHtml)) {
     const p = url.pathname.replace(/\/$/, '');
-    const target = p === '' ? '/llms.txt' : /^\/(p\/@[^/]+\/[^/.]+|docs\/[a-z0-9-]+)$/.test(p) ? `${p}.md` : null;
+    const target =
+      p === '' ? '/llms.txt' : /^\/(p\/@[^/]+\/[^/.]+|docs\/[a-z0-9-]+|guides\/[a-z0-9-]+)$/.test(p) ? `${p}.md` : null;
     if (target) {
       const res = await ctx.rewrite(target);
       if (res.ok)

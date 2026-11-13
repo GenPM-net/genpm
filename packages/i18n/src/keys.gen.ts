@@ -345,6 +345,7 @@ export interface MessageParams {
   "web.nav.searchPlaceholder": { count: number };
   "web.nav.searchLabel": undefined;
   "web.nav.docs": undefined;
+  "web.nav.guides": undefined;
   "web.nav.mcp": undefined;
   "web.nav.publish": undefined;
   "web.nav.signIn": undefined;
@@ -873,6 +874,10 @@ export interface MessageParams {
   "web.docs.sections.mcpServer": undefined;
   "web.docs.sections.security": undefined;
   "web.docs.sections.guides": undefined;
+  "web.guides.title": undefined;
+  "web.guides.metaTitle": undefined;
+  "web.guides.lede": undefined;
+  "web.guides.docsHint": { link: string | number };
   "web.legal.binding": undefined;
   "web.legal.updated": { date: string | number };
   "web.legal.formNotice": { owner: string | number };

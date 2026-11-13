@@ -1,6 +1,7 @@
 // sitemap.xml con alternativas por idioma (hreflang), generado desde el registry (web-ui-spec §8 SEO).
 import type { APIRoute } from 'astro';
 import { docPages } from '../lib/docs.js';
+import { guidePages } from '../lib/guides.js';
 import { href, LOCALES } from '../lib/i18n.js';
 import { registryGet, type SearchResponse } from '../lib/registry.js';
 
@@ -19,8 +20,10 @@ export const GET: APIRoute = async () => {
     '/policy',
     '/sponsors',
     '/recipes',
+    '/guides',
     '/enterprise',
     ...docPages('en').map((d) => `/docs/${d.slug}`),
+    ...guidePages('en').map((g) => `/guides/${g.slug}`),
   ];
   let cursor: string | null = null;
   for (let i = 0; i < 20; i++) {

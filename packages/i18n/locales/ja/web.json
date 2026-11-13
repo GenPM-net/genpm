@@ -13,6 +13,7 @@
     "searchPlaceholder": "{count, plural, =0 {パッケージ} other {# 件のパッケージ}}を検索…",
     "searchLabel": "パッケージを検索",
     "docs": "ドキュメント",
+    "guides": "ガイド",
     "mcp": "MCP",
     "publish": "公開",
     "signIn": "ログイン",
@@ -593,6 +594,12 @@
       "security": "セキュリティ",
       "guides": "ガイド"
     }
+  },
+  "guides": {
+    "title": "ガイド",
+    "metaTitle": "ガイド：具体的な不具合とその直し方",
+    "lede": "1 本のガイドに 1 つの具体的な不具合。何が壊れ、なぜ壊れ、実際のコードでどう直し、どのモジュールがそれを備えているか。",
+    "docsHint": "GenPM 自体のリファレンスは{link}にあります。"
   },
   "legal": {
     "binding": "法的拘束力を持つのはスペイン語版です。",

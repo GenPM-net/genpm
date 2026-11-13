@@ -13,6 +13,7 @@
     "searchPlaceholder": "Search {count, plural, =0 {packages} other {# packages}}…",
     "searchLabel": "Search packages",
     "docs": "Docs",
+    "guides": "Guides",
     "mcp": "MCP",
     "publish": "Publish",
     "signIn": "Sign in",
@@ -593,6 +594,12 @@
       "security": "Security",
       "guides": "Guides"
     }
+  },
+  "guides": {
+    "title": "Guides",
+    "metaTitle": "Guides: concrete failures and their fixes",
+    "lede": "One concrete failure per guide: what breaks, why it breaks, the fix in real code, and the module that already ships it.",
+    "docsHint": "GenPM’s own reference lives in the {link}."
   },
   "legal": {
     "binding": "The Spanish version is the legally binding one.",
