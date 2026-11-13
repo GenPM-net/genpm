@@ -10,6 +10,7 @@
     "build:deps": "turbo run build --filter=@genpm/web^...",
     "deploy:staging": "pnpm build:deps && CLOUDFLARE_ENV=staging pnpm build && wrangler deploy --config dist/server/wrangler.json",
     "deploy": "node ../../scripts/check-legal.mjs && pnpm build:deps && pnpm build && wrangler deploy --config dist/server/wrangler.json",
+    "indexnow": "node scripts/indexnow.mjs",
     "typecheck": "astro check",
     "test": "vitest run"
   },
