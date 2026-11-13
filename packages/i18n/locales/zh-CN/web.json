@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "GenPM — 安装架构，而不是依赖",
-    "description": "GenPM 从不可变的 Git 提交将源代码、AI 规则和 MCP 配置注入你的项目。你的 AI 直接就会用的模块。",
+    "title": "GenPM — 面向 AI 编程智能体与 MCP 的包管理器",
+    "description": "将完整模块安装到你的项目中——源代码、AI 规则和 MCP 服务器——固定在不可变的 Git 提交上。面向 AI 编程智能体的包管理器。",
     "suffix": "GenPM",
     "searchDescription": "浏览 GenPM 软件包：认证、支付、邮件、AI 等，每个都附带源代码、AI 规则和 MCP 配置。",
     "advisoriesDescription": "GenPM 软件包的安全公告：受影响版本、严重程度和修复方式。也提供 JSON 订阅并可通过 genpm audit 查看。",

@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "GenPM — Installez des architectures, pas des dépendances",
-    "description": "GenPM injecte code source, règles IA et config MCP dans votre projet depuis des commits Git immuables. Des modules que votre IA sait utiliser.",
+    "title": "GenPM — Gestionnaire de paquets pour agents de codage IA et MCP",
+    "description": "Installez des modules complets dans votre projet — code source, règles IA et serveurs MCP — figés sur des commits Git immuables. Le gestionnaire de paquets pour agents de codage IA.",
     "suffix": "GenPM",
     "searchDescription": "Parcourez les paquets GenPM : auth, paiements, e-mail, IA et plus, chacun avec son code, ses règles IA et sa config MCP.",
     "advisoriesDescription": "Avis de sécurité des paquets GenPM : versions touchées, gravité et correctif. Aussi en flux JSON et dans genpm audit.",

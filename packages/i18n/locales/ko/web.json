@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "GenPM — 의존성이 아닌 아키텍처를 설치하세요",
-    "description": "GenPM은 변경 불가능한 Git 커밋에서 소스 코드, AI 규칙, MCP 설정을 프로젝트에 주입합니다. AI가 바로 쓸 줄 아는 모듈입니다.",
+    "title": "GenPM — AI 코딩 에이전트와 MCP를 위한 패키지 매니저",
+    "description": "소스 코드, AI 규칙, MCP 서버를 포함한 모듈 전체를 불변 Git 커밋에 고정해 프로젝트에 설치합니다. AI 코딩 에이전트를 위한 패키지 매니저.",
     "suffix": "GenPM",
     "searchDescription": "GenPM 패키지 둘러보기: 인증, 결제, 이메일, AI 등. 모두 소스 코드, AI 규칙, MCP 설정을 포함합니다.",
     "advisoriesDescription": "GenPM 패키지 보안 권고: 영향받는 버전, 심각도, 해결 방법. JSON 피드와 genpm audit에서도 확인할 수 있습니다.",

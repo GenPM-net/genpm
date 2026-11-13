@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "GenPM — Install architectures, not dependencies",
-    "description": "GenPM injects source code, AI rules and MCP config into your project from immutable Git commits. Modules your AI already knows how to use.",
+    "title": "GenPM — Package manager for AI coding agents and MCP",
+    "description": "Install full modules into your project — source code, AI rules and MCP servers — pinned to immutable Git commits. The package manager for AI coding agents.",
     "suffix": "GenPM",
     "searchDescription": "Browse GenPM packages: auth, billing, email, AI and more, each with its source code, AI rules and MCP config.",
     "advisoriesDescription": "Security advisories for GenPM packages: affected versions, severity and fix. Also in a JSON feed and in genpm audit.",

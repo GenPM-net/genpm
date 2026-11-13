@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "GenPM — 依存関係ではなく、アーキテクチャをインストール",
-    "description": "GenPM は不変の Git コミットから、ソースコード・AI ルール・MCP 設定をプロジェクトに組み込みます。AI がすぐに使いこなせるモジュールです。",
+    "title": "GenPM — AI コーディングエージェントと MCP のためのパッケージマネージャー",
+    "description": "ソースコード、AI ルール、MCP サーバーをまとめたモジュールを、不変の Git コミットに固定してプロジェクトへインストール。AI コーディングエージェントのためのパッケージマネージャー。",
     "suffix": "GenPM",
     "searchDescription": "GenPM のパッケージを探す：認証、決済、メール、AI など。どれもソースコード、AI ルール、MCP 設定付きです。",
     "advisoriesDescription": "GenPM パッケージのセキュリティ勧告：影響を受けるバージョン、深刻度、修正。JSON フィードと genpm audit でも確認できます。",
